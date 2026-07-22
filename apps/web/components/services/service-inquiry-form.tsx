@@ -57,7 +57,9 @@ export function ServiceInquiryForm({
       ].join('\n'),
     );
 
-    window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
+    window.location.assign(
+      `mailto:${siteConfig.email}?subject=${subject}&body=${body}`,
+    );
     setSubmitted(true);
   };
 

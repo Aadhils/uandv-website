@@ -9,6 +9,12 @@ export type ContactPayload = {
   company?: string;
   interest?: string;
   message: string;
+  /** Sprint 1 journey lead context */
+  visitorType?: string;
+  journey?: string;
+  partnerType?: string;
+  preferredLanguage?: string;
+  sourcePage?: string;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,6 +54,11 @@ export function buildEnquiryEmailHtml(payload: ContactPayload) {
     ['Phone', payload.phone || '—'],
     ['Company', payload.company || '—'],
     ['Interest', payload.interest || '—'],
+    ['Visitor type', payload.visitorType || '—'],
+    ['Selected journey', payload.journey || '—'],
+    ['Partner type', payload.partnerType || '—'],
+    ['Preferred language', payload.preferredLanguage || '—'],
+    ['Source page', payload.sourcePage || '—'],
   ]
     .map(
       ([label, value]) =>

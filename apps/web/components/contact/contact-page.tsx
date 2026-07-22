@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, type FormEvent } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 import {
   Button,
@@ -18,15 +19,94 @@ import {
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
+import {
+  defaultLocale,
+  getJourneyById,
+  isLocale,
+  localeLabels,
+} from '@/lib/i18n';
 import { getAllServices } from '@/lib/services';
 import { formatLocation, siteConfig } from '@/lib/site';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
+function buildPrefillMessage(input: {
+  journeyTitle?: string;
+  steps?: string;
+  partnerLabel?: string;
+  preferredLanguage?: string;
+  sourcePage?: string;
+}) {
+  const lines = [
+    input.journeyTitle
+      ? `Selected journey: ${input.journeyTitle}`
+      : null,
+    input.steps ? `Path: ${input.steps}` : null,
+    input.partnerLabel ? `Partner type: ${input.partnerLabel}` : null,
+    input.preferredLanguage
+      ? `Preferred language: ${input.preferredLanguage}`
+      : null,
+    input.sourcePage ? `Source page: ${input.sourcePage}` : null,
+    '',
+    'Tell us more about your goals:',
+    '',
+  ].filter((line): line is string => line !== null);
+
+  return lines.join('\n');
+}
+
 export function ContactPage() {
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const services = getAllServices();
+
+  const leadContext = useMemo(() => {
+    const journeyId = searchParams.get('journey') ?? '';
+    const langParam = searchParams.get('lang');
+    const preferredLanguage = isLocale(langParam)
+      ? langParam
+      : defaultLocale;
+    const journey = journeyId
+      ? getJourneyById(preferredLanguage, journeyId)
+      : undefined;
+    const partnerType = searchParams.get('partnerType') ?? '';
+    const partnerLabel = journey?.partnerTypes?.find(
+      (item) => item.id === partnerType,
+    )?.label;
+    const visitorType =
+      searchParams.get('visitorType') || journey?.visitorType || '';
+    const sourcePage = searchParams.get('source') || '/contact';
+    const interestFromQuery = searchParams.get('interest');
+    const interest =
+      interestFromQuery ||
+      journey?.interestSlug ||
+      services[0]?.slug ||
+      'website-development';
+
+    const message = journey
+      ? buildPrefillMessage({
+          journeyTitle: journey.title,
+          steps: journey.steps?.map((step) => step.label).join(' → '),
+          partnerLabel,
+          preferredLanguage: localeLabels[preferredLanguage],
+          sourcePage,
+        })
+      : '';
+
+    return {
+      journeyId: journey?.id ?? journeyId,
+      journeyTitle: journey?.title ?? '',
+      visitorType,
+      partnerType,
+      partnerLabel: partnerLabel ?? '',
+      preferredLanguage,
+      sourcePage,
+      interest,
+      message,
+      hasJourney: Boolean(journey),
+    };
+  }, [searchParams, services]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,6 +127,11 @@ export function ContactPage() {
           company: String(data.get('company') ?? ''),
           interest: String(data.get('interest') ?? ''),
           message: String(data.get('message') ?? ''),
+          visitorType: String(data.get('visitorType') ?? ''),
+          journey: String(data.get('journey') ?? ''),
+          partnerType: String(data.get('partnerType') ?? ''),
+          preferredLanguage: String(data.get('preferredLanguage') ?? ''),
+          sourcePage: String(data.get('sourcePage') ?? ''),
         }),
       });
 
@@ -104,6 +189,17 @@ export function ContactPage() {
               Share your goals and we will recommend the right next step —
               planning, product, AI, or growth.
             </p>
+            {leadContext.hasJourney ? (
+              <p className="mt-4 rounded-uv-lg border border-uv-brand/20 bg-uv-brand-muted/40 px-4 py-3 text-sm text-uv-foreground sm:text-base">
+                Journey selected:{' '}
+                <span className="font-semibold text-uv-brand">
+                  {leadContext.journeyTitle}
+                </span>
+                {leadContext.partnerLabel
+                  ? ` · ${leadContext.partnerLabel}`
+                  : ''}
+              </p>
+            ) : null}
             <p className="mt-4 text-sm font-medium text-uv-brand sm:text-base">
               Response within 24 business hours.
             </p>
@@ -263,6 +359,34 @@ export function ContactPage() {
                   </div>
                 ) : (
                   <Form onSubmit={onSubmit} className="mt-6 sm:mt-8">
+                    <input
+                      type="hidden"
+                      name="visitorType"
+                      value={leadContext.visitorType}
+                    />
+                    <input
+                      type="hidden"
+                      name="journey"
+                      value={leadContext.journeyTitle || leadContext.journeyId}
+                    />
+                    <input
+                      type="hidden"
+                      name="partnerType"
+                      value={
+                        leadContext.partnerLabel || leadContext.partnerType
+                      }
+                    />
+                    <input
+                      type="hidden"
+                      name="preferredLanguage"
+                      value={localeLabels[leadContext.preferredLanguage]}
+                    />
+                    <input
+                      type="hidden"
+                      name="sourcePage"
+                      value={leadContext.sourcePage}
+                    />
+
                     <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
                       <FormField label="Name" required>
                         <Input
@@ -300,10 +424,9 @@ export function ContactPage() {
                     </FormField>
                     <FormField label="I need help with">
                       <Select
+                        key={leadContext.interest}
                         name="interest"
-                        defaultValue={
-                          services[0]?.slug ?? 'website-development'
-                        }
+                        defaultValue={leadContext.interest}
                         disabled={status === 'submitting'}
                       >
                         {services.map((service) => (
@@ -315,9 +438,11 @@ export function ContactPage() {
                     </FormField>
                     <FormField label="Message" required>
                       <Textarea
+                        key={leadContext.message || 'empty-message'}
                         name="message"
                         required
-                        rows={5}
+                        rows={leadContext.hasJourney ? 8 : 5}
+                        defaultValue={leadContext.message}
                         placeholder="Tell us about your business and what you want to achieve."
                         disabled={status === 'submitting'}
                       />

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import { JsonLd } from '@/components/seo/json-ld';
 import { ContactPage } from '@/components/contact/contact-page';
@@ -51,7 +52,15 @@ export default function ContactRoute() {
           ],
         }}
       />
-      <ContactPage />
+      <Suspense
+        fallback={
+          <div className="mx-auto max-w-7xl px-4 py-16 text-uv-foreground-muted sm:px-6 lg:px-8">
+            Loading contact form…
+          </div>
+        }
+      >
+        <ContactPage />
+      </Suspense>
     </>
   );
 }

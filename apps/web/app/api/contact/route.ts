@@ -37,6 +37,11 @@ function parsePayload(body: unknown): ContactPayload | null {
     company: readString(data.company) || undefined,
     interest: readString(data.interest) || undefined,
     message,
+    visitorType: readString(data.visitorType) || undefined,
+    journey: readString(data.journey) || undefined,
+    partnerType: readString(data.partnerType) || undefined,
+    preferredLanguage: readString(data.preferredLanguage) || undefined,
+    sourcePage: readString(data.sourcePage) || undefined,
   };
 }
 
