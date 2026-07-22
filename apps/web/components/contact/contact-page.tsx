@@ -111,28 +111,18 @@ export function ContactPage() {
                     <dt className="font-medium text-uv-foreground">
                       Business email
                     </dt>
-                    <dd className="mt-1 text-uv-foreground-muted">
+                    <dd className="mt-1 space-y-1 text-uv-foreground-muted">
                       <a
                         href={`mailto:${siteConfig.email}`}
-                        className="underline-offset-4 hover:underline"
+                        className="block underline-offset-4 hover:underline"
                       >
                         {siteConfig.email}
                       </a>
-                    </dd>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <Icon name="MessageCircle" className="mt-0.5 text-uv-brand" />
-                  <div>
-                    <dt className="font-medium text-uv-foreground">WhatsApp</dt>
-                    <dd className="mt-1 text-uv-foreground-muted">
                       <a
-                        href={siteConfig.whatsapp}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline-offset-4 hover:underline"
+                        href={`mailto:${siteConfig.emailSecondary}`}
+                        className="block underline-offset-4 hover:underline"
                       >
-                        {siteConfig.whatsappDisplay}
+                        {siteConfig.emailSecondary}
                       </a>
                     </dd>
                   </div>
@@ -157,24 +147,9 @@ export function ContactPage() {
                     </dd>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <Icon name="Linkedin" className="mt-0.5 text-uv-brand" />
-                  <div>
-                    <dt className="font-medium text-uv-foreground">LinkedIn</dt>
-                    <dd className="mt-1 text-uv-foreground-muted">
-                      <a
-                        href={siteConfig.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline-offset-4 hover:underline"
-                      >
-                        U&V on LinkedIn
-                      </a>
-                    </dd>
-                  </div>
-                </div>
               </dl>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+
+              <div className="mt-8">
                 <a
                   href={siteConfig.whatsapp}
                   target="_blank"
@@ -186,15 +161,53 @@ export function ContactPage() {
                 >
                   Chat on WhatsApp
                 </a>
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className={cn(
-                    buttonVariants({ size: 'md', variant: 'outline' }),
-                    'w-full justify-center sm:w-auto',
-                  )}
-                >
-                  Email {siteConfig.email}
-                </a>
+              </div>
+
+              <div className="mt-10 border-t border-uv-border pt-8">
+                <p className="text-sm font-medium text-uv-foreground">
+                  Follow U&V
+                </p>
+                <p className="mt-1 text-sm text-uv-foreground-muted">
+                  Updates, product stories, and company news.
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {(
+                    [
+                      {
+                        label: 'Facebook',
+                        href: siteConfig.social.facebook,
+                        icon: 'Facebook' as const,
+                      },
+                      {
+                        label: 'YouTube',
+                        href: siteConfig.social.youtube,
+                        icon: 'Youtube' as const,
+                      },
+                      {
+                        label: 'LinkedIn',
+                        href: siteConfig.social.linkedin,
+                        icon: 'Linkedin' as const,
+                      },
+                      {
+                        label: 'X',
+                        href: siteConfig.social.x,
+                        icon: 'Twitter' as const,
+                      },
+                    ] as const
+                  ).map((item) => (
+                    <li key={item.label}>
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={item.label}
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg border border-uv-border bg-uv-background text-uv-foreground-muted transition-colors hover:border-uv-brand/40 hover:text-uv-brand uv-focus-ring"
+                      >
+                        <Icon name={item.icon} size="md" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </Reveal>
 
@@ -224,14 +237,14 @@ export function ContactPage() {
                       >
                         {siteConfig.email}
                       </a>{' '}
-                      or message us on WhatsApp at{' '}
+                      or{' '}
                       <a
                         href={siteConfig.whatsapp}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-uv-brand underline-offset-4 hover:underline"
                       >
-                        {siteConfig.whatsappDisplay}
+                        chat on WhatsApp
                       </a>
                       .
                     </p>
@@ -365,7 +378,7 @@ export function ContactPage() {
                   rel="noopener noreferrer"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
-                  WhatsApp {siteConfig.whatsappDisplay}
+                  Chat on WhatsApp
                 </a>
                 <Link
                   href="/services"

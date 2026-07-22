@@ -22,6 +22,7 @@ import {
   Database,
   Eye,
   EyeOff,
+  Facebook,
   Factory,
   FileText,
   Globe,
@@ -58,6 +59,7 @@ import {
   Sun,
   Trash2,
   Truck,
+  Twitter,
   User,
   Users,
   UtensilsCrossed,
@@ -65,6 +67,7 @@ import {
   Workflow,
   Wrench,
   X,
+  Youtube,
   Bike,
 } from 'lucide-react';
 
@@ -95,6 +98,7 @@ export const icons = {
   Database,
   Eye,
   EyeOff,
+  Facebook,
   Factory,
   FileText,
   Globe,
@@ -129,6 +133,7 @@ export const icons = {
   Sun,
   Trash2,
   Truck,
+  Twitter,
   User,
   Users,
   UtensilsCrossed,
@@ -136,6 +141,7 @@ export const icons = {
   Workflow,
   Wrench,
   X,
+  Youtube,
   Bike,
 } as const;
 

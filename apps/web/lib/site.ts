@@ -16,15 +16,21 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://uandv.com',
   locale: 'en_IN',
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'info@uandv.com',
-  /** WhatsApp deep link */
+  emailSecondary:
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL_SECONDARY ?? 'uandv.com@gmail.com',
+  /** WhatsApp deep link — do not display phone digits on the Contact page */
   whatsapp:
     process.env.NEXT_PUBLIC_WHATSAPP_URL ??
     'https://wa.me/919688884554',
-  /** Display number for contact surfaces */
-  whatsappDisplay: '+91 9688884554',
   linkedin:
     process.env.NEXT_PUBLIC_LINKEDIN_URL ??
-    'https://www.linkedin.com/company/uandvi',
+    'https://linkedin.com/company/UandVi',
+  social: {
+    facebook: 'https://facebook.com/UandV',
+    youtube: 'https://youtube.com/@UandV',
+    linkedin: 'https://linkedin.com/company/UandVi',
+    x: 'https://x.com/UandVi',
+  },
   /** Region only — no street address until officially provided */
   location: {
     region: 'Tamil Nadu',

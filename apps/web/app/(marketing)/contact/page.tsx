@@ -52,7 +52,6 @@ export default function ContactRoute() {
       name: siteConfig.legalName,
       url: siteConfig.url,
       email: siteConfig.email,
-      telephone: siteConfig.whatsappDisplay,
       address: {
         '@type': 'PostalAddress',
         addressRegion: siteConfig.location.region,
@@ -60,6 +59,12 @@ export default function ContactRoute() {
       },
       areaServed: formatLocation(),
       openingHours: siteConfig.hours,
+      sameAs: [
+        siteConfig.social.facebook,
+        siteConfig.social.youtube,
+        siteConfig.social.linkedin,
+        siteConfig.social.x,
+      ],
     },
   };
 

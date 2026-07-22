@@ -13,7 +13,12 @@ export function JsonLd() {
         description: siteConfig.description,
         email: siteConfig.email,
         foundingDate: String(siteConfig.founded),
-        sameAs: [siteConfig.linkedin, siteConfig.whatsapp],
+        sameAs: [
+          siteConfig.social.facebook,
+          siteConfig.social.youtube,
+          siteConfig.social.linkedin,
+          siteConfig.social.x,
+        ],
         address: {
           '@type': 'PostalAddress',
           addressRegion: siteConfig.location.region,
