@@ -4,6 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { ThemeScript } from '@uandv/ui';
 
 import { AppProviders } from './app-providers';
+import { MicrosoftClarity } from '@/components/analytics/microsoft-clarity';
 import { siteConfig } from '@/lib/site';
 import './globals.css';
 
@@ -127,6 +128,7 @@ export default function RootLayout({
           {children}
         </AppProviders>
         <GoogleAnalytics gaId={gaMeasurementId} />
+        <MicrosoftClarity />
       </body>
     </html>
   );
