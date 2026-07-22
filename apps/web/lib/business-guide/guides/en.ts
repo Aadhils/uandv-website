@@ -18,8 +18,8 @@ export const enGuide: BusinessGuideCopy = {
     'When you’re ready, pick a next step. We’ll already know your journey so the conversation starts warm, not cold.',
   clearSelection: 'Choose a different goal',
   changeLanguage: 'Change guide language',
-  ctaContinue: 'Continue your journey',
-  ctaConsultation: 'Get a free consultation',
+  ctaContinue: "Let's Get Started",
+  ctaConsultation: 'Book a free strategy conversation',
   ctaPartner: 'Partner with U&V',
   journeys: [
     {

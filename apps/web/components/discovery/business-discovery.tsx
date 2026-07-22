@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { buttonVariants, cn, Icon } from '@uandv/ui';
 
@@ -34,6 +34,8 @@ type BusinessDiscoveryProps = {
   onClose: () => void;
 };
 
+const REASSURANCE_MS = 750;
+
 export function BusinessDiscovery({
   journeyId,
   journeyTitle,
@@ -51,6 +53,8 @@ export function BusinessDiscovery({
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<DiscoveryAnswers>({});
   const [transitionKey, setTransitionKey] = useState(0);
+  const [reassurance, setReassurance] = useState<string | null>(null);
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const question = discoveryQuestions[stepIndex];
   const progressPercent =
@@ -60,6 +64,16 @@ export function BusinessDiscovery({
         ? 0
         : Math.round(((stepIndex + 1) / TOTAL_DISCOVERY_STEPS) * 100);
 
+  const progressText = useMemo(() => {
+    if (phase === 'bridge') return copy.progressBeginLabel;
+    if (phase === 'summary') return copy.progressCompleteLabel;
+    return formatProgressLabel(
+      copy.progressConversationLabel,
+      stepIndex + 1,
+      TOTAL_DISCOVERY_STEPS,
+    );
+  }, [copy, phase, stepIndex]);
+
   useEffect(() => {
     trackEvent('discovery_started', {
       journey_id: journeyId,
@@ -67,6 +81,12 @@ export function BusinessDiscovery({
       guide_language: guideLanguage,
     });
   }, [guideLanguage, journeyId, journeyTitle]);
+
+  useEffect(() => {
+    return () => {
+      if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    };
+  }, []);
 
   const summary = useMemo(() => {
     if (phase !== 'summary') return null;
@@ -83,8 +103,19 @@ export function BusinessDiscovery({
     setTransitionKey((value) => value + 1);
   }, []);
 
+  const pickReassurance = useCallback(
+    (step: number) => {
+      const messages = copy.reassuranceMessages;
+      if (!messages.length) return null;
+      return messages[step % messages.length] ?? messages[0];
+    },
+    [copy.reassuranceMessages],
+  );
+
   const answerQuestion = useCallback(
     (questionId: DiscoveryQuestionId, optionId: string) => {
+      if (reassurance) return;
+
       const nextAnswers = {
         ...answers,
         [questionId]: optionId,
@@ -99,21 +130,35 @@ export function BusinessDiscovery({
         step: stepIndex + 1,
       });
 
-      if (stepIndex >= TOTAL_DISCOVERY_STEPS - 1) {
-        setPhase('summary');
-        setTransitionKey((value) => value + 1);
-        trackEvent('summary_generated', {
-          journey_id: journeyId,
-          journey_name: journeyTitle,
-          industry: nextAnswers.industry,
-          stage: nextAnswers.stage,
-        });
-        return;
-      }
+      const message = pickReassurance(stepIndex);
+      setReassurance(message);
 
-      goToStep(stepIndex + 1);
+      if (advanceTimer.current) clearTimeout(advanceTimer.current);
+      advanceTimer.current = setTimeout(() => {
+        setReassurance(null);
+        if (stepIndex >= TOTAL_DISCOVERY_STEPS - 1) {
+          setPhase('summary');
+          setTransitionKey((value) => value + 1);
+          trackEvent('summary_generated', {
+            journey_id: journeyId,
+            journey_name: journeyTitle,
+            industry: nextAnswers.industry,
+            stage: nextAnswers.stage,
+          });
+          return;
+        }
+        goToStep(stepIndex + 1);
+      }, REASSURANCE_MS);
     },
-    [answers, goToStep, journeyId, journeyTitle, stepIndex],
+    [
+      answers,
+      goToStep,
+      journeyId,
+      journeyTitle,
+      pickReassurance,
+      reassurance,
+      stepIndex,
+    ],
   );
 
   const skipBudget = useCallback(() => {
@@ -131,7 +176,7 @@ export function BusinessDiscovery({
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'uv-business-roadmap.txt';
+    anchor.download = 'uv-growth-roadmap.txt';
     anchor.click();
     URL.revokeObjectURL(url);
   }, [copy, journeyId, journeyTitle, summary]);
@@ -140,18 +185,16 @@ export function BusinessDiscovery({
     if (!summary) return;
     const body = encodeURIComponent(buildRoadmapText(summary, copy));
     const subject = encodeURIComponent(
-      `U&V Business Roadmap — ${summary.businessLabel}`,
+      `U&V Growth Roadmap — ${summary.businessLabel}`,
     );
-    window.location.assign(
-      `mailto:?subject=${subject}&body=${body}`,
-    );
+    window.location.assign(`mailto:?subject=${subject}&body=${body}`);
   }, [copy, summary]);
 
   const whatsappHref = useMemo(() => {
     if (!summary) return siteConfig.whatsapp;
     const text = encodeURIComponent(
       [
-        'Hi U&V — I completed the Business Discovery experience.',
+        'Hi U&V — I shared my business story with you.',
         '',
         buildRoadmapText(summary, copy),
       ].join('\n'),
@@ -182,13 +225,13 @@ export function BusinessDiscovery({
 
   return (
     <div
-      className="mt-6 rounded-uv-2xl border border-white/15 bg-black/30 p-5 shadow-[0_20px_60px_rgb(0_0_0_/_0.25)] sm:p-7"
+      className="mt-6 rounded-uv-2xl border border-white/12 bg-black/25 p-5 shadow-[0_18px_50px_rgb(0_0_0_/_0.2)] sm:p-7"
       aria-live="polite"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#C4B5FD]">
-            Business Discovery
+          <p className="text-sm font-medium tracking-[0.08em] text-[#DDD6FE]">
+            {copy.sectionBadge}
           </p>
           <p className="mt-1 text-sm text-[#EDE9FE]/90">{journeyTitle}</p>
         </div>
@@ -203,22 +246,10 @@ export function BusinessDiscovery({
 
       <div className="mt-5">
         <div className="flex items-center justify-between gap-3 text-sm text-[#EDE9FE]">
-          <span>
-            {phase === 'bridge'
-              ? formatProgressLabel(copy.progressLabel, 0, TOTAL_DISCOVERY_STEPS)
-              : phase === 'summary'
-                ? formatProgressLabel(
-                    copy.progressLabel,
-                    TOTAL_DISCOVERY_STEPS,
-                    TOTAL_DISCOVERY_STEPS,
-                  )
-                : formatProgressLabel(
-                    copy.progressLabel,
-                    stepIndex + 1,
-                    TOTAL_DISCOVERY_STEPS,
-                  )}
+          <span>{progressText}</span>
+          <span className="tabular-nums text-[#C4B5FD]">
+            {`${progressPercent}%`}
           </span>
-          <span className="tabular-nums text-[#C4B5FD]">{progressPercent}%</span>
         </div>
         <div
           className="mt-2 h-2 overflow-hidden rounded-full bg-white/10"
@@ -228,25 +259,22 @@ export function BusinessDiscovery({
           aria-valuemax={100}
         >
           <div
-            className="h-full rounded-full bg-uv-brand transition-[width] duration-500 ease-out"
+            className="h-full rounded-full bg-uv-brand/90 transition-[width] duration-500 ease-out"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
 
-      <div
-        key={`${phase}-${transitionKey}`}
-        className="discovery-fade mt-6"
-      >
+      <div key={`${phase}-${transitionKey}`} className="discovery-fade mt-6">
         {phase === 'bridge' ? (
           <div>
             <h3 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-white sm:text-2xl">
               {copy.bridgeTitle}
             </h3>
-            <p className="mt-3 max-w-2xl text-base leading-relaxed text-[#EDE9FE]">
+            <p className="mt-4 max-w-2xl whitespace-pre-line text-base leading-relaxed text-[#EDE9FE]">
               {copy.bridgeBody}
             </p>
-            <p className="mt-3 text-sm text-[#C4B5FD]">
+            <p className="mt-4 text-sm text-[#C4B5FD]">
               {copy.changeAnswerHint}
             </p>
             <button
@@ -275,6 +303,15 @@ export function BusinessDiscovery({
               {copy.questions[question.id].helper}
             </p>
 
+            {reassurance ? (
+              <p
+                className="mt-4 text-sm font-medium text-[#DDD6FE] transition-opacity duration-300"
+                role="status"
+              >
+                {reassurance}
+              </p>
+            ) : null}
+
             <div
               className="mt-5 grid gap-3 sm:grid-cols-2"
               role="listbox"
@@ -291,12 +328,14 @@ export function BusinessDiscovery({
                     type="button"
                     role="option"
                     aria-selected={selected}
+                    disabled={Boolean(reassurance)}
                     onClick={() => answerQuestion(question.id, option.id)}
                     className={cn(
                       'rounded-uv-xl border px-4 py-3.5 text-left text-sm font-medium shadow-sm transition-all duration-200 uv-focus-ring sm:text-base',
                       selected
-                        ? 'border-uv-brand bg-uv-brand/30 text-white shadow-[0_0_0_1px_rgb(124_58_237_/_0.45)]'
-                        : 'border-white/15 bg-white/5 text-[#EDE9FE] hover:-translate-y-0.5 hover:border-uv-brand/45 hover:bg-white/10 hover:shadow-md',
+                        ? 'border-uv-brand/70 bg-uv-brand/25 text-white'
+                        : 'border-white/12 bg-white/5 text-[#EDE9FE] hover:-translate-y-0.5 hover:border-uv-brand/35 hover:bg-white/10',
+                      reassurance && 'opacity-70',
                     )}
                   >
                     {optionLabel(copy, group, option.id)}
@@ -306,7 +345,7 @@ export function BusinessDiscovery({
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              {stepIndex > 0 ? (
+              {stepIndex > 0 && !reassurance ? (
                 <button
                   type="button"
                   onClick={() => goToStep(stepIndex - 1)}
@@ -316,13 +355,13 @@ export function BusinessDiscovery({
                   {copy.backLabel}
                 </button>
               ) : null}
-              {question.optional ? (
+              {question.optional && !reassurance ? (
                 <button
                   type="button"
                   onClick={skipBudget}
                   className={cn(
                     buttonVariants({ size: 'md', variant: 'outline' }),
-                    'border-white/30 bg-transparent text-white hover:bg-white/10',
+                    'border-white/25 bg-transparent text-white hover:bg-white/10',
                   )}
                 >
                   {copy.skipBudgetLabel}
@@ -334,7 +373,7 @@ export function BusinessDiscovery({
 
         {phase === 'summary' && summary ? (
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#C4B5FD]">
+            <p className="text-sm font-medium tracking-[0.08em] text-[#DDD6FE]">
               {copy.summaryEyebrow}
             </p>
             <h3 className="mt-2 font-[family-name:var(--font-uv-display)] text-xl font-semibold text-white sm:text-2xl">
@@ -354,9 +393,9 @@ export function BusinessDiscovery({
               ).map(([label, value]) => (
                 <div
                   key={label}
-                  className="rounded-uv-xl border border-white/12 bg-white/5 p-4 shadow-sm"
+                  className="rounded-uv-xl border border-white/10 bg-white/5 p-4"
                 >
-                  <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#C4B5FD]">
+                  <p className="text-xs font-medium tracking-[0.1em] text-[#C4B5FD]">
                     {label}
                   </p>
                   <p className="mt-2 font-medium text-white">{value}</p>
@@ -364,8 +403,8 @@ export function BusinessDiscovery({
               ))}
             </div>
 
-            <div className="mt-4 rounded-uv-xl border border-white/12 bg-white/5 p-5 shadow-sm">
-              <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#C4B5FD]">
+            <div className="mt-4 rounded-uv-xl border border-white/10 bg-white/5 p-5">
+              <p className="text-xs font-medium tracking-[0.1em] text-[#C4B5FD]">
                 {copy.labelRecommendedServices}
               </p>
               <ul className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -382,8 +421,8 @@ export function BusinessDiscovery({
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-uv-xl border border-white/12 bg-white/5 p-4 shadow-sm">
-                <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#C4B5FD]">
+              <div className="rounded-uv-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-xs font-medium tracking-[0.1em] text-[#C4B5FD]">
                   {copy.labelEstimatedTimeline}
                 </p>
                 <p className="mt-2 font-[family-name:var(--font-uv-display)] text-2xl font-semibold text-white">
@@ -393,8 +432,8 @@ export function BusinessDiscovery({
                   )}
                 </p>
               </div>
-              <div className="rounded-uv-xl border border-white/12 bg-white/5 p-4 shadow-sm">
-                <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#C4B5FD]">
+              <div className="rounded-uv-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-xs font-medium tracking-[0.1em] text-[#C4B5FD]">
                   {copy.labelBusinessReadiness}
                 </p>
                 <p className="mt-2 font-[family-name:var(--font-uv-display)] text-2xl font-semibold text-white">
@@ -402,14 +441,14 @@ export function BusinessDiscovery({
                 </p>
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
                   <div
-                    className="h-full rounded-full bg-uv-brand transition-[width] duration-700"
+                    className="h-full rounded-full bg-uv-brand/90 transition-[width] duration-700"
                     style={{ width: `${summary.readinessPercent}%` }}
                   />
                 </div>
               </div>
             </div>
 
-            <p className="mt-5 rounded-uv-xl border border-uv-brand/30 bg-uv-brand/15 px-4 py-3 text-sm leading-relaxed text-[#EDE9FE]">
+            <p className="mt-5 rounded-uv-xl border border-uv-brand/25 bg-uv-brand/10 px-4 py-3 text-sm leading-relaxed text-[#EDE9FE]">
               {copy.disclaimer}
             </p>
 
@@ -419,7 +458,7 @@ export function BusinessDiscovery({
                 onClick={downloadRoadmap}
                 className={cn(
                   buttonVariants({ size: 'lg', variant: 'outline' }),
-                  'w-full justify-center border-white/35 bg-transparent text-white hover:bg-white/10',
+                  'w-full justify-center border-white/30 bg-transparent text-white hover:bg-white/10',
                 )}
               >
                 {copy.ctaDownloadRoadmap}
@@ -463,7 +502,7 @@ export function BusinessDiscovery({
                 onClick={emailReport}
                 className={cn(
                   buttonVariants({ size: 'lg', variant: 'outline' }),
-                  'w-full justify-center border-white/35 bg-transparent text-white hover:bg-white/10',
+                  'w-full justify-center border-white/30 bg-transparent text-white hover:bg-white/10',
                 )}
               >
                 {copy.ctaEmailReport}

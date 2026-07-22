@@ -281,8 +281,8 @@ export function buildRoadmapText(summary: BusinessSummary, copy: DiscoveryCopy) 
     .join('\n');
 
   return [
-    'U&V Business Roadmap',
-    '====================',
+    'U&V Growth Roadmap',
+    '==================',
     '',
     `${copy.labelYourBusiness}: ${summary.businessLabel}`,
     `${copy.labelCurrentStage}: ${summary.stageLabel}`,
@@ -300,7 +300,7 @@ export function buildRoadmapText(summary: BusinessSummary, copy: DiscoveryCopy) 
     copy.disclaimer,
     '',
     `Journey: ${summary.journeyTitle}`,
-    'Prepared with U&V Technologies — https://uandv.com',
+    'Prepared with your U&V growth partner — https://uandv.com',
   ].join('\n');
 }
 

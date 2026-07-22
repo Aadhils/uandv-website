@@ -107,10 +107,17 @@ export type BusinessSummary = {
 
 export type DiscoveryCopy = {
   language: GuideLanguage;
+  /** Small badge above the conversation panel */
+  sectionBadge: string;
   bridgeTitle: string;
+  /** Supports multi-line paragraphs separated by \\n */
   bridgeBody: string;
   startCta: string;
-  progressLabel: string;
+  /** Shown before the first question (never "Step 0") */
+  progressBeginLabel: string;
+  /** Conversation progress — e.g. "Conversation {current} of {total}" */
+  progressConversationLabel: string;
+  progressCompleteLabel: string;
   backLabel: string;
   skipBudgetLabel: string;
   continueLabel: string;
@@ -133,6 +140,8 @@ export type DiscoveryCopy = {
   ctaEmailReport: string;
   restartLabel: string;
   changeAnswerHint: string;
+  /** Short reassuring lines shown after each answer */
+  reassuranceMessages: string[];
   questions: Record<DiscoveryQuestionId, { prompt: string; helper: string }>;
   options: Record<string, string>;
   serviceLabels: Record<string, string>;

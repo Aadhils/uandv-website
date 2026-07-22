@@ -19,8 +19,8 @@ export const hiGuide: BusinessGuideCopy = {
     'जब तैयार हों, अगला कदम चुनें। आपकी यात्रा हमें पहले से पता होगी — बातचीत ठंडी नहीं, गर्मजोशी से शुरू होगी।',
   clearSelection: 'कोई और लक्ष्य चुनें',
   changeLanguage: 'गाइड की भाषा बदलें',
-  ctaContinue: 'अपनी यात्रा जारी रखें',
-  ctaConsultation: 'मुफ़्त परामर्श लें',
+  ctaContinue: 'चलिए शुरू करते हैं',
+  ctaConsultation: 'मुफ़्त रणनीति बातचीत बुक करें',
   ctaPartner: 'U&V के साथ पार्टनर बनें',
   journeys: [
     {
