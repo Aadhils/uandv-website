@@ -48,7 +48,7 @@ export function SiteHeader() {
             WhatsApp
           </a>
           <Link
-            href="/#contact"
+            href="/contact"
             className={cn(buttonVariants({ size: 'sm' }), 'hidden sm:inline-flex')}
           >
             Get started

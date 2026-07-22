@@ -92,7 +92,7 @@ export function MlmSolutionsPage() {
                 href="/business-consulting"
                 className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-uv-brand"
               >
-                See consulting framework
+                See business solutions
                 <Icon name="ArrowRight" size="sm" />
               </Link>
             </div>
@@ -468,7 +468,7 @@ export function MlmSolutionsPage() {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Book Consultation

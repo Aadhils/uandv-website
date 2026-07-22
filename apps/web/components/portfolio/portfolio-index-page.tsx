@@ -61,7 +61,7 @@ export function PortfolioIndexPage() {
                   View Live Demo
                 </a>
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
                     'justify-center',
@@ -226,7 +226,7 @@ export function PortfolioIndexPage() {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Book Consultation

@@ -30,13 +30,13 @@ export function BusinessConsultingPage() {
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Business Consulting' },
+              { label: 'Business Solutions' },
             ]}
           />
 
           <div className="mt-10 max-w-3xl">
             <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-              U&V Business Consulting Framework
+              U&V Business Solutions Framework
             </p>
             <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
               We Don&apos;t Just Build Software. We Build Businesses.
@@ -235,7 +235,7 @@ export function BusinessConsultingPage() {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Book a Free Business Consultation

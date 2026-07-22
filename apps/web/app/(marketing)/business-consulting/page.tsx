@@ -4,16 +4,16 @@ import { BusinessConsultingPage } from '@/components/consulting/business-consult
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Business Consulting Framework | U&V',
+  title: 'Business Solutions Framework | U&V',
   description:
     'U&V is a long-term technology and business growth partner — from discovery and architecture to launch, growth support, and continuous improvement.',
   keywords: [
-    'business consulting',
+    'business solutions',
     'technology consulting Tamil Nadu',
     'startup consulting',
     'AI transformation consulting',
     'ERP CRM consulting',
-    'U&V consulting framework',
+    'U&V business solutions framework',
   ],
   alternates: {
     canonical: '/business-consulting',
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Business Consulting Framework | U&V',
+    title: 'Business Solutions Framework | U&V',
     description:
-      'A premium consulting framework for strategy, software, AI, and long-term growth partnership.',
+      'A premium business solutions framework for strategy, software, AI, and long-term growth partnership.',
   },
 };
 
@@ -39,9 +39,9 @@ export default function BusinessConsultingRoute() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'U&V Business Consulting Framework',
+    name: 'U&V Business Solutions Framework',
     description:
-      'U&V business consulting framework covering discovery, architecture, development, launch, and continuous growth partnership.',
+      'U&V business solutions framework covering discovery, architecture, development, launch, and continuous growth partnership.',
     url: `${siteConfig.url}/business-consulting`,
     isPartOf: {
       '@type': 'WebSite',

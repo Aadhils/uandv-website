@@ -524,7 +524,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Book Consultation

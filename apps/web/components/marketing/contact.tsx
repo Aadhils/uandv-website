@@ -142,7 +142,7 @@ export function Contact() {
                 Chat on WhatsApp
               </a>
               <a
-                href="/#contact"
+                href="/contact"
                 className={cn(
                   buttonVariants({ size: 'md', variant: 'outline' }),
                   'w-full justify-center sm:w-auto',

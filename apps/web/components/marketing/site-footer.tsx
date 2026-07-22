@@ -23,7 +23,7 @@ export function SiteFooter() {
             { label: 'Services', href: '/services' },
             { label: 'Portfolio', href: '/portfolio' },
             { label: 'Why U&V', href: '/why-uandv' },
-            { label: 'Business Consulting', href: '/business-consulting' },
+            { label: 'Business Solutions', href: '/business-consulting' },
             { label: 'MLM Solutions', href: '/solutions/mlm-software' },
           ],
         },
@@ -33,7 +33,7 @@ export function SiteFooter() {
             { label: 'Technologies', href: '/#technologies' },
             { label: 'Outcomes', href: '/#outcomes' },
             { label: 'FAQ', href: '/#faq' },
-            { label: 'Contact', href: '/#contact' },
+            { label: 'Contact', href: '/contact' },
           ],
         },
         {
