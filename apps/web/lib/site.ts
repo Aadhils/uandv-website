@@ -1,9 +1,13 @@
 export const siteConfig = {
   name: 'U&V',
-  legalName: 'U&V Consulting Group',
+  legalName: 'U&V Technologies',
   shortName: 'U&V',
   founded: 2020,
   tagline: 'Everything your business needs under one roof.',
+  footerDescription: [
+    'Everything your business needs under one roof.',
+    'AI • Software • Digital Transformation.',
+  ] as const,
   headline: 'Your AI-powered business technology & growth partner.',
   description:
     'U&V helps startups, SMEs, and enterprises start, build, grow, and scale through technology, innovation, and trusted partnerships — from business setup to custom software, AI automation, and digital growth.',

@@ -12,7 +12,7 @@
 
 ## Company site
 
-Public marketing site for **U&V Consulting Group** (Tamil Nadu, India) — business technology & growth partner.
+Public marketing site for **U&V Technologies** (Tamil Nadu, India) — business technology & growth partner.
 
 ```bash
 pnpm --filter @uandv/web dev

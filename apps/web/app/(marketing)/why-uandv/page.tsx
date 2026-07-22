@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     'enterprise technology partner',
     'long-term software partner',
     'AI business partner India',
-    'U&V Consulting Group',
+    'U&V Technologies',
     'technology consulting Tamil Nadu',
   ],
   alternates: {

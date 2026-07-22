@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   applicationName: siteConfig.name,
   keywords: [
     'U&V',
-    'U&V Consulting Group',
+    'U&V Technologies',
     'business technology',
     'Tamil Nadu',
     'custom software',

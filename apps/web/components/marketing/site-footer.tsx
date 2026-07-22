@@ -9,7 +9,13 @@ export function SiteFooter() {
   return (
     <Footer
       brand={<Logo invert className="text-white" />}
-      description={`${siteConfig.legalName}. ${siteConfig.tagline}`}
+      description={
+        <>
+          {siteConfig.footerDescription[0]}
+          <br />
+          {siteConfig.footerDescription[1]}
+        </>
+      }
       columns={[
         {
           title: 'Company',
@@ -58,8 +64,8 @@ export function SiteFooter() {
       bottom={
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {siteConfig.legalName}. All rights
-            reserved. Tamil Nadu, India.
+            © 2026 {siteConfig.legalName}. All rights reserved. Tamil Nadu,
+            India.
           </p>
           <p className="flex flex-wrap gap-4">
             <Link

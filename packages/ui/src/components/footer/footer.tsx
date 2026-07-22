@@ -21,7 +21,7 @@ export interface FooterSocialItem {
 
 export interface FooterProps {
   brand: React.ReactNode;
-  description?: string;
+  description?: React.ReactNode;
   columns?: FooterColumn[];
   social?: FooterSocialItem[];
   bottom?: React.ReactNode;
