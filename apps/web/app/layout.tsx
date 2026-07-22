@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist_Mono, Manrope, Syne } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { ThemeScript } from '@uandv/ui';
 
 import { AppProviders } from './app-providers';
@@ -23,6 +24,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
   display: 'swap',
 });
+
+/** GA4 Measurement ID — loads after hydration via @next/third-parties */
+const gaMeasurementId =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? 'G-SKQJ0VHGWT';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -97,6 +102,7 @@ export default function RootLayout({
         <AppProviders clerkPublishableKey={publishableKey}>
           {children}
         </AppProviders>
+        <GoogleAnalytics gaId={gaMeasurementId} />
       </body>
     </html>
   );
