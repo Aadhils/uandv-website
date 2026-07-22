@@ -10,7 +10,6 @@ import {
   Icon,
   Input,
   Select,
-  Text,
   Textarea,
   buttonVariants,
   cn,
@@ -22,42 +21,56 @@ import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import { getAllServices } from '@/lib/services';
 import { formatLocation, siteConfig } from '@/lib/site';
 
-/**
- * Full contact experience (moved from the homepage section).
- * Client-side submission opens the visitor's email app (mailto).
- */
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+
 export function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const services = getAllServices();
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    const name = String(data.get('name') ?? '');
-    const email = String(data.get('email') ?? '');
-    const phone = String(data.get('phone') ?? '');
-    const company = String(data.get('company') ?? '');
-    const interest = String(data.get('interest') ?? '');
-    const message = String(data.get('message') ?? '');
 
-    const subject = encodeURIComponent(
-      `U&V inquiry${company ? ` — ${company}` : ''}`,
-    );
-    const body = encodeURIComponent(
-      [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Phone: ${phone || '—'}`,
-        `Company: ${company || '—'}`,
-        `Interest: ${interest}`,
-        '',
-        message,
-      ].join('\n'),
-    );
+    setStatus('submitting');
+    setErrorMessage(null);
 
-    window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: String(data.get('name') ?? ''),
+          email: String(data.get('email') ?? ''),
+          phone: String(data.get('phone') ?? ''),
+          company: String(data.get('company') ?? ''),
+          interest: String(data.get('interest') ?? ''),
+          message: String(data.get('message') ?? ''),
+        }),
+      });
+
+      const result = (await response.json().catch(() => null)) as
+        | { ok?: boolean; error?: string }
+        | null;
+
+      if (!response.ok) {
+        setStatus('error');
+        setErrorMessage(
+          result?.error ??
+            'We could not send your enquiry right now. Please try again or contact us on WhatsApp.',
+        );
+        return;
+      }
+
+      setStatus('success');
+      form.reset();
+    } catch {
+      setStatus('error');
+      setErrorMessage(
+        'Network error while sending your enquiry. Please check your connection and try again.',
+      );
+    }
   };
 
   return (
@@ -80,31 +93,34 @@ export function ContactPage() {
             ]}
           />
 
-          <div className="mt-10 max-w-3xl">
+          <div className="mt-8 max-w-3xl sm:mt-10">
             <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
               Contact
             </p>
-            <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
+            <h1 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:mt-4 sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
               Tell us what you are building.
             </h1>
-            <p className="mt-6 text-lg leading-relaxed text-uv-foreground-muted sm:text-xl">
+            <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:mt-6 sm:text-xl">
               Share your goals and we will recommend the right next step —
               planning, product, AI, or growth.
+            </p>
+            <p className="mt-4 text-sm font-medium text-uv-brand sm:text-base">
+              Response within 24 business hours.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-12 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-start">
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-14 xl:gap-16">
             <Reveal>
               <SectionHeading
                 eyebrow="Reach us"
                 title="Direct channels for a faster start."
                 description="Prefer email, WhatsApp, or the form — we respond during business hours with clear next steps."
               />
-              <dl className="mt-10 space-y-5 text-sm sm:text-base">
+              <dl className="mt-8 space-y-5 text-sm sm:mt-10 sm:space-y-6 sm:text-base">
                 <div className="flex gap-3">
                   <Icon name="Mail" className="mt-0.5 text-uv-brand" />
                   <div>
@@ -114,13 +130,13 @@ export function ContactPage() {
                     <dd className="mt-1 space-y-1 text-uv-foreground-muted">
                       <a
                         href={`mailto:${siteConfig.email}`}
-                        className="block underline-offset-4 hover:underline"
+                        className="block break-all underline-offset-4 hover:underline"
                       >
                         {siteConfig.email}
                       </a>
                       <a
                         href={`mailto:${siteConfig.emailSecondary}`}
-                        className="block underline-offset-4 hover:underline"
+                        className="block break-all underline-offset-4 hover:underline"
                       >
                         {siteConfig.emailSecondary}
                       </a>
@@ -145,6 +161,9 @@ export function ContactPage() {
                     <dd className="mt-1 text-uv-foreground-muted">
                       {siteConfig.hours}
                     </dd>
+                    <dd className="mt-1 text-sm text-uv-brand">
+                      Response within 24 business hours.
+                    </dd>
                   </div>
                 </div>
               </dl>
@@ -163,7 +182,7 @@ export function ContactPage() {
                 </a>
               </div>
 
-              <div className="mt-10 border-t border-uv-border pt-8">
+              <div className="mt-8 border-t border-uv-border pt-8 sm:mt-10">
                 <p className="text-sm font-medium text-uv-foreground">
                   Follow U&V
                 </p>
@@ -212,56 +231,46 @@ export function ContactPage() {
             </Reveal>
 
             <Reveal delayMs={100}>
-              <div className="rounded-uv-2xl border border-uv-border bg-uv-background p-6 sm:p-8">
-                <Text
-                  variant="caption"
-                  className="mb-6 block text-uv-foreground-muted"
-                >
-                  Form status: opens your email app to message{' '}
-                  <span className="font-medium text-uv-foreground">
-                    {siteConfig.email}
-                  </span>
-                  . Server-side form backend is not connected yet.
-                </Text>
+              <div className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-8">
+                <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
+                  Send a message
+                </h2>
+                <p className="mt-2 text-sm text-uv-foreground-muted">
+                  Response within 24 business hours.
+                </p>
 
-                {submitted ? (
-                  <div className="space-y-3 py-8 text-center">
-                    <p className="font-[family-name:var(--font-uv-display)] text-2xl font-semibold text-uv-foreground">
-                      Opening your email app
-                    </p>
-                    <p className="text-uv-foreground-muted">
-                      If it did not open, email{' '}
-                      <a
-                        href={`mailto:${siteConfig.email}`}
-                        className="text-uv-brand underline-offset-4 hover:underline"
-                      >
-                        {siteConfig.email}
-                      </a>{' '}
-                      or{' '}
-                      <a
-                        href={siteConfig.whatsapp}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-uv-brand underline-offset-4 hover:underline"
-                      >
-                        chat on WhatsApp
-                      </a>
-                      .
+                {status === 'success' ? (
+                  <div
+                    className="mt-8 space-y-4 rounded-uv-xl border border-uv-brand/25 bg-uv-brand-muted/40 px-5 py-8 text-center"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <div className="mx-auto inline-flex h-11 w-11 items-center justify-center rounded-full bg-uv-brand text-white">
+                      <Icon name="Check" size="md" />
+                    </div>
+                    <p className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
+                      Thank you! Your enquiry has been received. We&apos;ll
+                      contact you soon.
                     </p>
                     <Button
                       type="button"
                       variant="outline"
-                      className="mt-4"
-                      onClick={() => setSubmitted(false)}
+                      className="mt-2"
+                      onClick={() => setStatus('idle')}
                     >
-                      Edit message
+                      Send another message
                     </Button>
                   </div>
                 ) : (
-                  <Form onSubmit={onSubmit}>
-                    <div className="grid gap-6 sm:grid-cols-2">
+                  <Form onSubmit={onSubmit} className="mt-6 sm:mt-8">
+                    <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
                       <FormField label="Name" required>
-                        <Input name="name" autoComplete="name" required />
+                        <Input
+                          name="name"
+                          autoComplete="name"
+                          required
+                          disabled={status === 'submitting'}
+                        />
                       </FormField>
                       <FormField label="Email" required>
                         <Input
@@ -269,6 +278,7 @@ export function ContactPage() {
                           type="email"
                           autoComplete="email"
                           required
+                          disabled={status === 'submitting'}
                         />
                       </FormField>
                     </div>
@@ -278,15 +288,23 @@ export function ContactPage() {
                         type="tel"
                         autoComplete="tel"
                         placeholder="+91…"
+                        disabled={status === 'submitting'}
                       />
                     </FormField>
-                    <FormField label="Company">
-                      <Input name="company" autoComplete="organization" />
+                    <FormField label="Company (Optional)">
+                      <Input
+                        name="company"
+                        autoComplete="organization"
+                        disabled={status === 'submitting'}
+                      />
                     </FormField>
                     <FormField label="I need help with">
                       <Select
                         name="interest"
-                        defaultValue={services[0]?.slug ?? 'website-development'}
+                        defaultValue={
+                          services[0]?.slug ?? 'website-development'
+                        }
+                        disabled={status === 'submitting'}
                       >
                         {services.map((service) => (
                           <option key={service.slug} value={service.slug}>
@@ -299,11 +317,30 @@ export function ContactPage() {
                       <Textarea
                         name="message"
                         required
+                        rows={5}
                         placeholder="Tell us about your business and what you want to achieve."
+                        disabled={status === 'submitting'}
                       />
                     </FormField>
-                    <Button type="submit" size="lg" className="w-full sm:w-auto">
-                      Continue in email app
+
+                    {status === 'error' && errorMessage ? (
+                      <div
+                        className="rounded-uv-lg border border-uv-error/30 bg-uv-error/5 px-4 py-3 text-sm text-uv-error"
+                        role="alert"
+                      >
+                        {errorMessage}
+                      </div>
+                    ) : null}
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="w-full sm:w-auto"
+                      disabled={status === 'submitting'}
+                    >
+                      {status === 'submitting'
+                        ? 'Sending…'
+                        : 'Send enquiry'}
                     </Button>
                   </Form>
                 )}
@@ -313,7 +350,7 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
+      <section className="border-b border-uv-border bg-uv-background py-12 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -325,7 +362,7 @@ export function ContactPage() {
 
           <Reveal delayMs={80}>
             <div
-              className="relative mt-10 flex min-h-[280px] items-center justify-center overflow-hidden rounded-uv-2xl border border-dashed border-uv-border bg-uv-background-subtle sm:min-h-[360px]"
+              className="relative mt-8 flex min-h-[240px] items-center justify-center overflow-hidden rounded-uv-2xl border border-dashed border-uv-border bg-uv-background-subtle sm:mt-10 sm:min-h-[360px]"
               role="img"
               aria-label="Google Maps placeholder for Tamil Nadu, India"
             >
@@ -355,28 +392,31 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section className="bg-uv-background-subtle py-16 sm:py-24">
+      <section className="bg-uv-background-subtle py-12 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background px-6 py-10 sm:px-10 sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background px-5 py-8 sm:px-10 sm:py-14">
+            <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
                   Ready when you are
                 </p>
-                <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
+                <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-2xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
                   Start your project with U&V.
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
+                <p className="mt-3 text-base leading-relaxed text-uv-foreground-muted sm:mt-4 sm:text-lg">
                   Prefer WhatsApp? Message us directly and we will recommend a
                   clear next step.
                 </p>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:flex-col xl:flex-row">
                 <a
                   href={siteConfig.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'w-full justify-center sm:w-auto',
+                  )}
                 >
                   Chat on WhatsApp
                 </a>
@@ -384,7 +424,7 @@ export function ContactPage() {
                   href="/services"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
+                    'w-full justify-center sm:w-auto',
                   )}
                 >
                   Explore services
