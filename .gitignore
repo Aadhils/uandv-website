@@ -47,3 +47,5 @@ Thumbs.db
 /tsconfig.json
 /next.config.ts
 /package-lock.json
+
+.vercel
