@@ -14,6 +14,8 @@ export type JourneyLeadContext = {
   sourcePage?: string;
   cta?: 'continue' | 'consultation' | 'partner';
   interestSlug?: string;
+  /** Optional discovery snapshot keys for contact prefill */
+  discovery?: Record<string, string | undefined>;
 };
 
 export function buildContactHref(context: JourneyLeadContext) {
@@ -30,6 +32,13 @@ export function buildContactHref(context: JourneyLeadContext) {
   }
   if (context.interestSlug) {
     params.set('interest', context.interestSlug);
+  }
+  if (context.discovery) {
+    for (const [key, value] of Object.entries(context.discovery)) {
+      if (value) {
+        params.set(key, value);
+      }
+    }
   }
   return `/contact?${params.toString()}`;
 }

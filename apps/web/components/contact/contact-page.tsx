@@ -84,7 +84,23 @@ export function ContactPage() {
       services[0]?.slug ||
       'website-development';
 
-    const message = journey
+    const discoveryLines = [
+      searchParams.get('industry')
+        ? `Business: ${searchParams.get('industry')}`
+        : null,
+      searchParams.get('stage')
+        ? `Stage: ${searchParams.get('stage')}`
+        : null,
+      searchParams.get('goal') ? `Goal: ${searchParams.get('goal')}` : null,
+      searchParams.get('challenge')
+        ? `Challenge: ${searchParams.get('challenge')}`
+        : null,
+      searchParams.get('readiness')
+        ? `Business readiness (initial): ${searchParams.get('readiness')}%`
+        : null,
+    ].filter((line): line is string => Boolean(line));
+
+    const baseMessage = journey
       ? buildPrefillMessage({
           journeyTitle: journey.title,
           steps: journey.steps?.map((step) => step.label).join(' → '),
@@ -93,6 +109,16 @@ export function ContactPage() {
           sourcePage,
         })
       : '';
+
+    const message =
+      discoveryLines.length > 0
+        ? [
+            'Business Discovery summary:',
+            ...discoveryLines,
+            '',
+            baseMessage || 'Tell us more about your goals:',
+          ].join('\n')
+        : baseMessage;
 
     return {
       journeyId: journey?.id ?? journeyId,
