@@ -133,17 +133,23 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-uv-soft-violet sm:text-base">
                     {study.liveDemoHref
-                      ? study.liveDemoHref.includes('mlm')
-                        ? 'Interactive product demo ready — explore admin and member login, genealogy, wallet, KYC, e-pin, and more with mock data.'
-                        : study.liveDemoHref.includes('smart-mobility')
-                          ? 'Interactive product demo ready — explore booking, driver, and admin experiences with mock data.'
-                          : study.liveDemoHref.includes('enterprise-suite')
-                            ? study.liveDemoHref.includes('module=travel')
-                              ? 'Interactive travel suite ready — explore packages, bookings, itineraries, hotels, transport, visa, agents, and reports.'
-                              : 'Interactive enterprise suite ready — explore ERP, CRM, HR, inventory, accounting, and travel operations with role-based login.'
-                            : study.liveDemoHref.includes('erp')
-                              ? 'Interactive product demo ready — explore Admin, Sales, and HR workspaces across CRM, inventory, HR, and accounting.'
-                              : 'Interactive product demo ready — explore the working frontend with mock data.'
+                      ? study.liveDemoHref.includes('/demo/hotel-management')
+                        ? 'Interactive hotel management demo ready — explore admin, front desk, housekeeping, and guest stay workflows with mock data.'
+                        : study.liveDemoHref.includes('/demo/restaurant-platform')
+                        ? 'Interactive restaurant platform ready — explore customer ordering, dine-in QR, POS, kitchen display, delivery, inventory, and admin with mock data.'
+                        : study.liveDemoHref.includes('/demo/travel')
+                        ? 'Interactive travel platform ready — explore traveler, agent, and admin workspaces with flights, hotels, packages, checkout, and mock data.'
+                        : study.liveDemoHref.includes('mlm')
+                          ? 'Interactive product demo ready — explore admin and member login, genealogy, wallet, KYC, e-pin, and more with mock data.'
+                          : study.liveDemoHref.includes('smart-mobility')
+                            ? 'Interactive product demo ready — explore booking, driver, and admin experiences with mock data.'
+                            : study.liveDemoHref.includes('enterprise-suite')
+                              ? study.liveDemoHref.includes('module=travel')
+                                ? 'Interactive travel suite ready — explore packages, bookings, itineraries, hotels, transport, visa, agents, and reports.'
+                                : 'Interactive enterprise suite ready — explore ERP, CRM, HR, inventory, accounting, and travel operations with role-based login.'
+                              : study.liveDemoHref.includes('erp')
+                                ? 'Interactive product demo ready — explore Admin, Sales, and HR workspaces across CRM, inventory, HR, and accounting.'
+                                : 'Interactive product demo ready — explore the working frontend with mock data.'
                       : 'UI placeholder for the live demo environment. Book a consultation to schedule a guided product walkthrough.'}
                   </p>
                   <div className="mt-8 flex flex-col gap-3 sm:flex-row">

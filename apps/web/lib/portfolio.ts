@@ -115,14 +115,14 @@ export const portfolioProcess = [
 export const caseStudies: CaseStudy[] = [
   {
     slug: 'restaurant-ordering-platform',
-    title: 'Restaurant Ordering Platform',
-    businessType: 'Multi-outlet restaurant group',
+    title: 'Restaurant, Food Delivery & POS Platform',
+    businessType: 'Multi-outlet restaurant, cloud kitchen & delivery group',
     industry: 'Food & hospitality',
     category: 'Restaurant POS',
     services: [
       'Website & mobile apps',
       'Custom software',
-      'Digital marketing readiness',
+      'Hotel & restaurant software',
     ],
     relatedServiceSlugs: [
       'hotel-restaurant-software',
@@ -130,54 +130,54 @@ export const caseStudies: CaseStudy[] = [
       'website-development',
     ],
     summary:
-      'A concept for digital menus, table ordering, kitchen handoff, and billing designed to reduce floor friction during peak service.',
+      'An interactive platform concept covering customer ordering, dine-in QR menus, restaurant dashboards, POS, kitchen display, delivery partner apps, inventory, and multi-outlet admin controls.',
     objective:
-      'Give diners a clear ordering path while helping kitchen and floor staff work from one shared order state.',
+      'Show how U&V can deliver a complete restaurant, cloud kitchen, food delivery, multi-outlet, and dine-in operations platform in one Product Demo — Mock Data experience.',
     challenge: [
-      'Peak-hour orders were easy to lose between handwritten tickets, verbal updates, and separate billing steps.',
-      'Menu changes and modifiers were hard to keep consistent across outlets.',
-      'Managers lacked a simple view of open tickets and fulfillment status in real time.',
+      'Restaurants needed one story for customer apps, POS, kitchen, and delivery — not disconnected screenshots.',
+      'Cloud kitchens and multi-outlet chains needed shared menu, inventory, and admin visibility.',
+      'Prospects wanted a working order lifecycle from cart to kitchen to rider handoff.',
     ],
     solution: [
-      'Design a guest-facing ordering experience with clear categories, modifiers, and table context.',
-      'Connect orders to a kitchen display workflow with status updates the floor team can trust.',
-      'Unify billing, item notes, and completion states so service and settlement stay aligned.',
+      'Build role-based demos for customer, restaurant manager, kitchen, delivery partner, and admin.',
+      'Connect ordering, dine-in QR, POS tickets, kitchen lanes, and delivery OTP flows with shared mock state.',
+      'Add inventory, offers, reviews, support/refunds, and platform commercial settings.',
     ],
     features: [
       {
-        title: 'Digital menu with modifiers',
+        title: 'Customer ordering',
         description:
-          'Structured items, add-ons, and availability rules that stay consistent across outlets.',
+          'Restaurant listing, filters, customization, cart, coupons, payments, tracking, history, and reorder.',
       },
       {
-        title: 'Table-aware ordering',
+        title: 'Dine-in QR menu',
         description:
-          'Orders carry table context so kitchen and servers share the same reference.',
+          'Table selection, QR ordering, waiter request, split bill, pay-at-table, and feedback.',
       },
       {
-        title: 'Kitchen status board',
+        title: 'Restaurant dashboard',
         description:
-          'Incoming, preparing, and ready states that reduce verbal chase-downs during rush.',
+          'Orders, revenue, tables, menu/pricing, staff, offers, reviews, and sales reports.',
       },
       {
-        title: 'Billing handoff',
+        title: 'POS & kitchen display',
         description:
-          'Itemized totals, notes, and settlement readiness connected to the same order record.',
+          'Dine-in/takeaway/delivery tickets, hold/resume, bill preview, KDS timers, and item status.',
       },
       {
-        title: 'Outlet admin controls',
+        title: 'Delivery partner app',
         description:
-          'Menu updates, staff roles, and basic service reporting without spreadsheet patchwork.',
+          'Online toggle, accept/reject, mock navigation, OTP verification, earnings, and wallet.',
       },
       {
-        title: 'Mobile-ready guest flow',
+        title: 'Inventory & multi-outlet admin',
         description:
-          'Ordering journeys designed for phones first, where most diners already interact.',
+          'Stock alerts, purchase orders, suppliers, commissions, zones, promos, refunds, and analytics.',
       },
     ],
     technologies: [
       'Next.js',
-      'React Native / Flutter',
+      'React',
       'Node.js',
       'PostgreSQL',
       'Realtime updates',
@@ -187,39 +187,39 @@ export const caseStudies: CaseStudy[] = [
       {
         title: 'Discover',
         description:
-          'Map floor, kitchen, and billing handoffs across a sample service rush.',
+          'Map guest, floor, kitchen, POS, and delivery handoffs across peak service.',
       },
       {
         title: 'Design',
         description:
-          'Define guest flows, kitchen states, roles, and the minimum viable menu model.',
+          'Define role workspaces, order states, menu modifiers, and inventory rules.',
       },
       {
         title: 'Build',
         description:
-          'Implement ordering, kitchen board, and admin controls with iterative demos.',
+          'Implement interactive ordering, POS, KDS, delivery, and admin with mock JSON.',
       },
       {
         title: 'Pilot & refine',
         description:
-          'Validate during live-service scenarios and tighten edge cases before wider rollout.',
+          'Validate lifecycle demos and tighten edge cases before wider rollout conversations.',
       },
     ],
     outcomes: [
       {
-        title: 'Clearer order ownership',
+        title: 'End-to-end platform story',
         description:
-          'One shared order record reduces lost tickets between floor and kitchen.',
+          'Prospects can walk a mock order from customer cart through kitchen and delivery.',
       },
       {
-        title: 'Faster menu updates',
+        title: 'Clearer multi-outlet scope',
         description:
-          'Centralized catalog changes help outlets stay consistent without reprint cycles.',
+          'Manager, POS, inventory, and admin views make chain delivery easier to prioritize.',
       },
       {
-        title: 'Better peak-hour coordination',
+        title: 'Faster sales demos',
         description:
-          'Status visibility helps teams focus on service quality instead of status chasing.',
+          'Role logins replace slideware for restaurants, cloud kitchens, and delivery businesses.',
       },
     ],
     timeline: [
@@ -231,45 +231,46 @@ export const caseStudies: CaseStudy[] = [
       {
         phase: 'UX & architecture',
         duration: '2–3 weeks',
-        description: 'Finalize guest, kitchen, and admin journeys.',
+        description: 'Finalize guest, kitchen, POS, delivery, and admin journeys.',
       },
       {
         phase: 'Build & integrations',
-        duration: '6–10 weeks',
-        description: 'Deliver core ordering, kitchen board, and billing handoff.',
+        duration: '8–12 weeks',
+        description: 'Deliver core ordering, KDS, POS, delivery, and inventory modules.',
       },
       {
         phase: 'Pilot support',
         duration: '2–4 weeks',
-        description: 'Stabilize during live service and document operating playbooks.',
+        description: 'Stabilize during live service scenarios and document playbooks.',
       },
     ],
     visuals: [
       {
-        label: 'Guest ordering view',
-        caption: 'Concept placeholder for mobile menu and cart flow.',
+        label: 'Customer ordering',
+        caption: 'Restaurant listing, cart, and live mock tracking.',
       },
       {
-        label: 'Kitchen board',
-        caption: 'Concept placeholder for order status lanes.',
+        label: 'POS & kitchen board',
+        caption: 'Ticket building and preparation lanes with timers.',
       },
       {
-        label: 'Outlet admin',
-        caption: 'Concept placeholder for menu and reporting controls.',
+        label: 'Delivery & admin',
+        caption: 'Rider OTP flow and multi-outlet platform controls.',
       },
     ],
     illustration: 'hospitality',
     icon: 'UtensilsCrossed',
     featured: true,
+    liveDemoHref: '/demo/restaurant-platform',
     seo: {
-      title: 'Demo Case Study: Restaurant Ordering Platform | U&V Portfolio',
+      title: 'Product Demo: Restaurant, Food Delivery & POS Platform | U&V Portfolio',
       description:
-        'Demo project concept for a restaurant ordering platform covering digital menus, kitchen handoff, and billing coordination.',
+        'Interactive restaurant platform demo with customer ordering, dine-in QR, POS, kitchen display, delivery partner app, inventory, and multi-outlet admin — mock data only.',
       keywords: [
-        'restaurant ordering software demo',
-        'digital menu platform',
-        'kitchen display concept',
-        'hospitality software case study',
+        'restaurant POS software demo',
+        'food delivery platform demo',
+        'kitchen display system demo',
+        'dine-in QR ordering software',
       ],
     },
   },
@@ -905,158 +906,158 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: 'travel-tourism-management-suite',
-    title: 'Travel & Tourism Management Suite',
-    businessType: 'Tour operator and travel agency group',
+    title: 'Travel & Tourism Platform',
+    businessType: 'Travel marketplace and agency platform',
     industry: 'Travel & tourism',
     category: 'Travel & Tourism',
     services: [
       'Travel & tourism software',
       'Custom software',
-      'CRM',
+      'Web applications',
     ],
     relatedServiceSlugs: [
       'travel-tourism-software',
-      'crm-software',
       'custom-software-development',
+      'web-application-development',
     ],
     summary:
-      'A full travel operations concept for tour packages, enquiries, bookings, itinerary building, hotels, transport, visa, agents, suppliers, payments, and reports.',
+      'An interactive travel booking platform concept with customer portal, package explorer, hotels, flights, visa, insurance, car rental, sightseeing, wallet, offers, admin revenue controls, and a travel agent dashboard.',
     objective:
-      'Give travel managers one operating system from enquiry to departure, settlement, and reporting.',
+      'Show how travelers, agents, and admins can work in one Product Demo — Mock Data platform from search to confirmation.',
     challenge: [
-      'Package details, passenger lists, and supplier confirmations lived across spreadsheets and chats.',
-      'Agents needed clearer commission and booking visibility.',
-      'Leadership lacked destination, package, and outstanding-payment reporting in one place.',
+      'Travel brands needed a premium booking story beyond a static landing page.',
+      'Customer, agent, and admin journeys were usually demonstrated in disconnected decks.',
+      'Prospects wanted searchable hotels, fare cards, packages, and mock checkout in one place.',
     ],
     solution: [
-      'Model packages, bookings, itineraries, hotels, transport, and visa workflows in one demo workspace.',
-      'Add agent and supplier management with settlement views.',
-      'Provide travel dashboards and reports for bookings, destinations, revenue, and cancellations.',
+      'Build a role-based frontend demo for traveler, agent, and admin personas.',
+      'Cover flights, trains, buses, hotels, packages, visa, insurance, car rental, and sightseeing.',
+      'Add wallet, offers, mock checkout, confirmation, admin reports, and agent commission flows.',
     ],
     features: [
       {
-        title: 'Tour package management',
+        title: 'Customer portal',
         description:
-          'Domestic, international, group, honeymoon, pilgrimage, and corporate packages with pricing and itineraries.',
+          'Flight, train, bus, hotel, packages, visa, insurance, car rental, sightseeing, history, wallet, and offers.',
       },
       {
-        title: 'Booking & passenger ops',
+        title: 'Package explorer',
         description:
-          'New bookings, passenger details, payment status, vouchers, cancellations, and refunds.',
+          'Domestic, international, honeymoon, family, adventure, and pilgrimage tours with itineraries.',
       },
       {
-        title: 'Itinerary builder',
+        title: 'Hotel & flight modules',
         description:
-          'Day-wise hotels, transport, activities, meal plans, notes, and preview.',
+          'Hotel search/filters/rooms/gallery plus one-way, round-trip, and multi-city fare cards.',
       },
       {
-        title: 'Hotels & transport',
+        title: 'Mock checkout',
         description:
-          'Room rates, availability, cab/bus/airport transfers, and vehicle allocation.',
+          'Traveler details, promo codes, UPI/card/wallet payment simulation, and confirmation.',
       },
       {
-        title: 'Visa, agents & suppliers',
+        title: 'Admin panel',
         description:
-          'Visa checklists, agent commissions, and hotel/transport/guide supplier controls.',
+          'Customers, bookings, packages, hotels, flights, reports, and revenue dashboard.',
       },
       {
-        title: 'Travel reports & payments',
+        title: 'Travel agent dashboard',
         description:
-          'Booking, destination, package, agent, revenue, outstanding, and cancellation reports.',
+          'Booking requests, customer management, commission, and payment settlement status.',
       },
     ],
     technologies: [
-      'Next.js',
       'React',
+      'Next.js',
+      'Node.js',
+      'PostgreSQL',
       'TypeScript',
       'Role-based access',
-      'Operations workflows',
-      'Reporting views',
     ],
     process: [
       {
-        title: 'Operations mapping',
-        description: 'Capture enquiry-to-departure and supplier settlement steps.',
+        title: 'Journey mapping',
+        description: 'Define traveler, agent, and admin paths from search to settlement.',
       },
       {
-        title: 'Package & booking model',
-        description: 'Define package types, passenger fields, and payment states.',
+        title: 'Catalog & fare model',
+        description: 'Shape packages, hotels, flights, and add-on services for demo inventory.',
       },
       {
         title: 'Interactive demo build',
-        description: 'Ship travel modules inside the enterprise suite demo.',
+        description: 'Ship searchable modules, checkout, and role dashboards with mock JSON.',
       },
       {
         title: 'Walkthrough readiness',
-        description: 'Validate Travel Manager flows with mock seasonal demand.',
+        description: 'Validate filters, booking state, and portfolio Live Demo entry.',
       },
     ],
     outcomes: [
       {
-        title: 'End-to-end travel story',
+        title: 'Premium product story',
         description:
-          'Prospects can explore packages through bookings, suppliers, and reports in one product.',
+          'Prospects can book mock trips end-to-end instead of reviewing a landing page only.',
       },
       {
-        title: 'Clearer agent operations',
+        title: 'Multi-persona clarity',
         description:
-          'Commission and booking visibility reduce spreadsheet dependency in demos.',
+          'Traveler, agent, and admin views make delivery scope easier to discuss.',
       },
       {
         title: 'Faster scoping',
         description:
-          'Module breadth helps travel businesses prioritize delivery phases.',
+          'Module breadth helps travel businesses prioritize portal vs operations phases.',
       },
     ],
     timeline: [
       {
         phase: 'Discovery',
         duration: '2 weeks',
-        description: 'Map packages, suppliers, and booking exceptions.',
+        description: 'Map booking lanes and role permissions.',
       },
       {
         phase: 'Design',
         duration: '2–3 weeks',
-        description: 'Finalize travel IA and role permissions.',
+        description: 'Finalize portal IA, search forms, and dashboards.',
       },
       {
         phase: 'Build',
         duration: '8–12 weeks',
-        description: 'Deliver packages, bookings, itinerary, and settlements.',
+        description: 'Deliver booking modules, checkout, admin, and agent views.',
       },
       {
         phase: 'Pilot',
         duration: '2–3 weeks',
-        description: 'Run Travel Manager pilot and refine reports.',
+        description: 'Run demo walkthroughs and refine conversion flows.',
       },
     ],
     visuals: [
       {
-        label: 'Travel dashboard',
-        caption: 'Enquiries, bookings, departures, and revenue overview.',
+        label: 'Customer portal',
+        caption: 'Service grid, wallet, offers, and upcoming bookings.',
       },
       {
-        label: 'Package & itinerary',
-        caption: 'Catalog and day-wise trip builder surfaces.',
+        label: 'Search & packages',
+        caption: 'Flights, hotels, and holiday package explorer.',
       },
       {
-        label: 'Booking & settlements',
-        caption: 'Passenger, payment, agent, and supplier views.',
+        label: 'Admin & agent',
+        caption: 'Revenue dashboard and commission request queues.',
       },
     ],
     illustration: 'travel',
     icon: 'Plane',
     featured: true,
-    liveDemoHref: '/demo/enterprise-suite?module=travel',
+    liveDemoHref: '/demo/travel',
     seo: {
-      title: 'Product Demo: Travel & Tourism Management Suite | U&V Portfolio',
+      title: 'Product Demo: Travel & Tourism Platform | U&V Portfolio',
       description:
-        'Interactive travel management demo for packages, bookings, itineraries, hotels, transport, visa, agents, suppliers, payments, and reports.',
+        'Interactive travel booking platform demo with customer portal, packages, hotels, flights, visa, wallet, admin, and agent dashboards — mock data only.',
       keywords: [
-        'travel management software demo',
-        'tour package booking demo',
-        'itinerary builder software',
-        'travel agency ERP CRM demo',
+        'travel booking platform demo',
+        'holiday package software demo',
+        'hotel flight booking demo',
+        'travel agent dashboard demo',
       ],
     },
   },
@@ -1391,57 +1392,57 @@ export const caseStudies: CaseStudy[] = [
       'custom-software-development',
     ],
     summary:
-      'A concept property system for reservations, room status, guest communication, and front-desk operations.',
+      'An interactive hotel operations demo for reservations, room inventory, check-in/out, housekeeping, billing, maintenance, staff tasks, and guest stay history.',
     objective:
-      'Help front desk and operations manage stays from inquiry to checkout with fewer spreadsheet gaps.',
+      'Help prospects explore a full property management story — from booking to housekeeping to checkout — in one Product Demo — Mock Data workspace.',
     challenge: [
       'Reservations and room readiness were tracked in separate places.',
       'Guest confirmations and reminders depended on manual follow-up.',
       'Managers needed a cleaner daily view of arrivals, departures, and occupancy.',
     ],
     solution: [
-      'Centralize reservations, room status, and guest stay records.',
-      'Add confirmation and reminder workflows through practical channels.',
-      'Provide a front-desk dashboard for the day’s operational priorities.',
+      'Centralize reservations, room status, and guest stay records in a role-based demo.',
+      'Connect front desk check-in/out, housekeeping status, billing, and maintenance workflows.',
+      'Provide admin reports plus a guest portal for booking history.',
     ],
     features: [
       {
         title: 'Reservation management',
         description:
-          'Bookings with availability checks, deposits, and confirmation states.',
+          'New bookings, availability calendar, room assignment, and booking history.',
       },
       {
         title: 'Room status board',
         description:
-          'Clean, occupied, and maintenance states for house and front desk.',
+          'Clean, occupied, dirty, ready, and maintenance states for house and front desk.',
       },
       {
-        title: 'Guest stay timeline',
+        title: 'Check-in / check-out',
         description:
-          'Notes, preferences, and stay history in one operational record.',
+          'Assign ready rooms, collect balances, and release rooms to housekeeping.',
       },
       {
-        title: 'Communication hooks',
+        title: 'Housekeeping & maintenance',
         description:
-          'Confirmations and reminders via email or WhatsApp-ready flows.',
+          'Room status updates, task queues, and maintenance request tracking.',
       },
       {
-        title: 'Daily ops dashboard',
+        title: 'Billing & reports',
         description:
-          'Arrivals, departures, and occupancy at a glance for managers.',
+          'Invoice preview, payment status, occupancy and revenue summaries.',
       },
       {
-        title: 'Website booking entry',
+        title: 'Guest portal',
         description:
-          'A booking path that feeds the same reservation system.',
+          'Guest login for current stay details and booking history.',
       },
     ],
     technologies: [
       'React',
+      'Next.js',
       'Node.js',
       'PostgreSQL',
       'Payments',
-      'WhatsApp / email',
       'Cloud hosting',
     ],
     process: [
@@ -1453,24 +1454,24 @@ export const caseStudies: CaseStudy[] = [
       {
         title: 'Module design',
         description:
-          'Define reservation, room, and communication priorities.',
+          'Define reservation, room, billing, and role permissions.',
       },
       {
-        title: 'Build',
+        title: 'Interactive demo build',
         description:
-          'Implement core ops tools and booking entry points.',
+          'Ship admin, reception, housekeeping, and guest workspaces with mock JSON.',
       },
       {
         title: 'Staff pilot',
         description:
-          'Train teams during live occupancy and refine edge cases.',
+          'Validate check-in/out and housekeeping flows during demo walkthroughs.',
       },
     ],
     outcomes: [
       {
         title: 'Fewer booking conflicts',
         description:
-          'Shared reservation records reduce double-booking risk.',
+          'Shared reservation and availability views reduce double-booking risk in demos.',
       },
       {
         title: 'Smoother daily handoffs',
@@ -1478,9 +1479,9 @@ export const caseStudies: CaseStudy[] = [
           'Room status visibility helps front desk and housekeeping stay aligned.',
       },
       {
-        title: 'More reliable guest updates',
+        title: 'Clearer product story',
         description:
-          'Confirmations and reminders become part of the operating system.',
+          'Prospects can walk a full stay lifecycle instead of reviewing placeholders.',
       },
     ],
     timeline: [
@@ -1497,7 +1498,7 @@ export const caseStudies: CaseStudy[] = [
       {
         phase: 'Build',
         duration: '6–10 weeks',
-        description: 'Deliver ops dashboard and booking integrations.',
+        description: 'Deliver ops dashboard and booking workflows.',
       },
       {
         phase: 'Staff adoption',
@@ -1508,28 +1509,30 @@ export const caseStudies: CaseStudy[] = [
     visuals: [
       {
         label: 'Reservations calendar',
-        caption: 'Concept placeholder for booking availability view.',
+        caption: 'Availability grid and booking queue.',
       },
       {
         label: 'Room status',
-        caption: 'Concept placeholder for housekeeping board.',
+        caption: 'Housekeeping board with ready/dirty states.',
       },
       {
         label: 'Front-desk day view',
-        caption: 'Concept placeholder for arrivals and departures.',
+        caption: 'Arrivals, departures, occupancy, and revenue.',
       },
     ],
     illustration: 'hospitality',
     icon: 'Hotel',
+    featured: true,
+    liveDemoHref: '/demo/hotel-management',
     seo: {
-      title: 'Demo Case Study: Hotel Management Software | U&V Portfolio',
+      title: 'Product Demo: Hotel Management Software | U&V Portfolio',
       description:
-        'Demo project concept for hotel management software covering reservations, room status, and front-desk operations.',
+        'Interactive hotel management demo with reservations, room status, check-in/out, housekeeping, billing, and guest portal — mock data only.',
       keywords: [
         'hotel management software demo',
-        'property management concept',
-        'hospitality case study',
-        'reservation system demo',
+        'property management system demo',
+        'hotel PMS check-in demo',
+        'housekeeping room status software',
       ],
     },
   },
