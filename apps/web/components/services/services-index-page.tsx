@@ -35,12 +35,12 @@ export function ServicesIndexPage() {
               startup setup — explore every U&V service in detail.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#inquiry"
+              <Link
+                href="/contact"
                 className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
               >
                 Contact us
-              </a>
+              </Link>
               <a
                 href={siteConfig.whatsapp}
                 target="_blank"

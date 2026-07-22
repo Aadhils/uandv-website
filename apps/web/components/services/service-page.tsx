@@ -45,12 +45,12 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
                 {service.summary}
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a
-                  href={`#${inquiryId}`}
+                <Link
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Contact us
-                </a>
+                </Link>
                 <a
                   href={siteConfig.whatsapp}
                   target="_blank"
@@ -251,12 +251,12 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={`#${inquiryId}`}
+                <Link
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Contact us
-                </a>
+                </Link>
                 <a
                   href={siteConfig.whatsapp}
                   target="_blank"
