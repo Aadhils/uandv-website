@@ -1,26 +1,29 @@
 {
-  "name": "uandv-website",
+  "name": "uandv-platform",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
   },
-  "dependencies": {
-    "next": "16.2.9",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "postinstall": "pnpm db:generate",
+    "db:generate": "pnpm --filter @uandv/database db:generate",
+    "db:migrate": "pnpm --filter @uandv/database db:migrate",
+    "db:migrate:deploy": "pnpm --filter @uandv/database db:migrate:deploy",
+    "db:push": "pnpm --filter @uandv/database db:push",
+    "db:studio": "pnpm --filter @uandv/database db:studio",
+    "docker:up": "docker compose -f infrastructure/docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f infrastructure/docker/docker-compose.yml down",
+    "docker:logs": "docker compose -f infrastructure/docker/docker-compose.yml logs -f"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.9",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.2"
   }
 }

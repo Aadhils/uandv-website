@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  BUSINESS_OWNER
+  BUSINESS_STAFF
+  ADMIN
+  SUPER_ADMIN
+}
+
+model User {
+  id        String    @id @default(cuid())
+  clerkId   String    @unique @map("clerk_id")
+  email     String    @unique
+  firstName String?   @map("first_name")
+  lastName  String?   @map("last_name")
+  avatarUrl String?   @map("avatar_url")
+  role      UserRole  @default(USER)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  auditLogs AuthAuditLog[]
+
+  @@index([role])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+model AuthAuditLog {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  clerkId   String?  @map("clerk_id")
+  action    String
+  metadata  Json?
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([clerkId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("auth_audit_logs")
+}

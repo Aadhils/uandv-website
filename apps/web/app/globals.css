@@ -1,0 +1,136 @@
+@import '@uandv/ui/styles';
+
+@source "../../../packages/ui/src";
+@source "../components";
+
+/* Marketing font wiring */
+:root {
+  --font-uv-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-uv-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-uv-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Landing atmosphere */
+.marketing-grain {
+  background-image: radial-gradient(
+      circle at 20% 20%,
+      rgb(124 58 237 / 0.1),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 80% 0%,
+      rgb(8 21 47 / 0.06),
+      transparent 38%
+    );
+}
+
+[data-theme='dark'] .marketing-grain,
+.dark .marketing-grain {
+  background-image: radial-gradient(
+      circle at 20% 20%,
+      rgb(167 139 250 / 0.14),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 80% 0%,
+      rgb(16 42 86 / 0.35),
+      transparent 38%
+    );
+}
+
+/* Motion */
+@keyframes marketing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes marketing-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes marketing-ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+.marketing-animate-in {
+  animation: marketing-fade-up 700ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+.marketing-animate-in-delay-1 {
+  animation-delay: 120ms;
+}
+
+.marketing-animate-in-delay-2 {
+  animation-delay: 220ms;
+}
+
+.marketing-animate-in-delay-3 {
+  animation-delay: 320ms;
+}
+
+.marketing-hero-media {
+  animation: marketing-ken-burns 18s ease-out forwards;
+}
+
+/* Soft digital grid over hero media — software / AI atmosphere */
+.marketing-hero-grid {
+  background-image:
+    linear-gradient(rgb(167 139 250 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(167 139 250 / 0.1) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to top, black 10%, transparent 75%);
+}
+
+.marketing-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 700ms cubic-bezier(0.2, 0, 0, 1),
+    transform 700ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.marketing-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketing-animate-in,
+  .marketing-hero-media,
+  .marketing-reveal {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* FAQ accordion */
+.marketing-faq details summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.marketing-faq details summary::-webkit-details-marker {
+  display: none;
+}
+
+.marketing-faq details[open] summary .faq-chevron {
+  transform: rotate(180deg);
+}

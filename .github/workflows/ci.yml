@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+  env:
+  NODE_ENV: test
+  DATABASE_URL: postgresql://uandv:uandv_test_password@localhost:5432/uandv_test?schema=public
+  REDIS_URL: redis://localhost:6379
+  API_PORT: 3001
+  API_HOST: 0.0.0.0
+  LOG_LEVEL: error
+  CLERK_SECRET_KEY: sk_test_ci_placeholder_key_012345678901234567890
+  CLERK_PUBLISHABLE_KEY: pk_test_ci_placeholder_key_012345678901234567890
+  CLERK_WEBHOOK_SECRET: whsec_ci_placeholder_secret_012345678901234567890
+  CORS_ORIGINS: http://localhost:3000
+  THROTTLE_TTL_MS: 60000
+  THROTTLE_LIMIT: 1000
+
+jobs:
+  quality:
+    name: Lint, Typecheck, Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: uandv
+          POSTGRES_PASSWORD: uandv_test_password
+          POSTGRES_DB: uandv_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U uandv -d uandv_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm db:generate
+
+      - name: Run database migrations
+        run: pnpm db:migrate:deploy
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Test API
+        run: pnpm --filter @uandv/api test -- --passWithNoTests

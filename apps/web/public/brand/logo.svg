@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="uv" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08152F"/>
+      <stop offset="0.55" stop-color="#3B1C78"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#uv)"/>
+  <text x="32" y="40" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="18" font-weight="700">U&amp;V</text>
+</svg>
