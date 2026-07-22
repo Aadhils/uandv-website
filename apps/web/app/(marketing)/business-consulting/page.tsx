@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { BusinessConsultingPage } from '@/components/consulting/business-consulting-page';
 import { siteConfig } from '@/lib/site';
 
@@ -36,30 +37,20 @@ export const metadata: Metadata = {
 };
 
 export default function BusinessConsultingRoute() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: 'U&V Business Solutions Framework',
-    description:
-      'U&V business solutions framework covering discovery, architecture, development, launch, and continuous growth partnership.',
-    url: `${siteConfig.url}/business-consulting`,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-    about: {
-      '@type': 'Organization',
-      name: siteConfig.legalName,
-      url: siteConfig.url,
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Business Solutions Framework | U&V',
+          description:
+            'U&V business solutions framework covering discovery, architecture, development, launch, and continuous growth partnership.',
+          path: '/business-consulting',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Business Solutions', path: '/business-consulting' },
+          ],
+        }}
       />
       <BusinessConsultingPage />
     </>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { WhyUandvPage } from '@/components/why-uandv/why-uandv-page';
 import { siteConfig } from '@/lib/site';
 
@@ -36,31 +37,20 @@ export const metadata: Metadata = {
 };
 
 export default function WhyUandvRoute() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: 'Why Businesses Choose U&V',
-    description:
-      'U&V enterprise authority page covering principles, industries, technology expertise, workflow, and long-term partnership.',
-    url: `${siteConfig.url}/why-uandv`,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-    about: {
-      '@type': 'Organization',
-      name: siteConfig.legalName,
-      url: siteConfig.url,
-      email: siteConfig.email,
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Why Businesses Choose U&V | Enterprise Technology Partner',
+          description:
+            'U&V enterprise authority page covering principles, industries, technology expertise, workflow, and long-term partnership.',
+          path: '/why-uandv',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Why U&V', path: '/why-uandv' },
+          ],
+        }}
       />
       <WhyUandvPage />
     </>

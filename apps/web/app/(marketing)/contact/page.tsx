@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { ContactPage } from '@/components/contact/contact-page';
-import { formatLocation, siteConfig } from '@/lib/site';
+import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Contact U&V | Business Technology Partner',
@@ -35,44 +36,20 @@ export const metadata: Metadata = {
 };
 
 export default function ContactRoute() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
-    name: 'Contact U&V',
-    description:
-      'Contact U&V Technologies for software, AI, and digital transformation.',
-    url: `${siteConfig.url}/contact`,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-    about: {
-      '@type': 'Organization',
-      name: siteConfig.legalName,
-      url: siteConfig.url,
-      email: siteConfig.email,
-      address: {
-        '@type': 'PostalAddress',
-        addressRegion: siteConfig.location.region,
-        addressCountry: siteConfig.location.country,
-      },
-      areaServed: formatLocation(),
-      openingHours: siteConfig.hours,
-      sameAs: [
-        siteConfig.social.facebook,
-        siteConfig.social.youtube,
-        siteConfig.social.linkedin,
-        siteConfig.social.x,
-      ],
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Contact U&V | Business Technology Partner',
+          description:
+            'Contact U&V Technologies for software, AI, and digital transformation.',
+          path: '/contact',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Contact', path: '/contact' },
+          ],
+        }}
       />
       <ContactPage />
     </>

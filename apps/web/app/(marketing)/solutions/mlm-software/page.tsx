@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { MlmSolutionsPage } from '@/components/solutions/mlm-solutions-page';
+import { organizationId } from '@/lib/schema';
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -37,52 +39,58 @@ export const metadata: Metadata = {
 };
 
 export default function MlmSoftwareSolutionRoute() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Enterprise MLM Software & Business Growth Solutions',
-    serviceType: 'MLM software and consulting',
-    description:
-      'U&V helps businesses design, validate, launch, optimize, and scale MLM companies with technology, strategy, automation, and continuous consulting.',
-    url: `${siteConfig.url}/solutions/mlm-software`,
-    provider: {
-      '@type': 'Organization',
-      name: siteConfig.legalName,
-      url: siteConfig.url,
-      email: siteConfig.email,
-      areaServed: {
-        '@type': 'AdministrativeArea',
-        name: `${siteConfig.location.region}, ${siteConfig.location.country}`,
-      },
-    },
-    areaServed: 'IN',
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'MLM compensation plans and modules',
-      itemListElement: [
-        'Binary',
-        'Referral',
-        'Unilevel',
-        'Matrix',
-        'Custom Compensation Plan',
-        'Commission Engine',
-        'E-Wallet',
-        'Member Panel',
-      ].map((name) => ({
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name,
-        },
-      })),
-    },
-  };
+  const url = `${siteConfig.url}/solutions/mlm-software`;
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Enterprise MLM Software & Business Growth Solutions | U&V',
+          description:
+            'U&V helps businesses design, validate, launch, optimize, and scale MLM companies with technology, strategy, automation, and continuous consulting.',
+          path: '/solutions/mlm-software',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'MLM Software', path: '/solutions/mlm-software' },
+          ],
+        }}
+        extra={[
+          {
+            '@type': 'Service',
+            '@id': `${url}#mlm-service`,
+            name: 'Enterprise MLM Software & Business Growth Solutions',
+            serviceType: 'MLM software and consulting',
+            description:
+              'U&V helps businesses design, validate, launch, optimize, and scale MLM companies with technology, strategy, automation, and continuous consulting.',
+            url,
+            provider: { '@id': organizationId() },
+            areaServed: {
+              '@type': 'Country',
+              name: 'India',
+            },
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog',
+              name: 'MLM compensation plans and modules',
+              itemListElement: [
+                'Binary',
+                'Referral',
+                'Unilevel',
+                'Matrix',
+                'Custom Compensation Plan',
+                'Commission Engine',
+                'E-Wallet',
+                'Member Panel',
+              ].map((name) => ({
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name,
+                },
+              })),
+            },
+          },
+        ]}
       />
       <MlmSolutionsPage />
     </>

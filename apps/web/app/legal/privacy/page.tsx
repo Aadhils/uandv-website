@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -10,6 +11,19 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
+    <>
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Privacy Policy',
+          description: `Privacy Policy for ${siteConfig.legalName}.`,
+          path: '/legal/privacy',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Privacy Policy', path: '/legal/privacy' },
+          ],
+        }}
+      />
     <article className="prose-uv space-y-6">
       <h1 className="font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight sm:text-4xl">
         Privacy Policy
@@ -59,5 +73,6 @@ export default function PrivacyPage() {
         .
       </p>
     </article>
+    </>
   );
 }

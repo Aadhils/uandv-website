@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { CaseStudyPage } from '@/components/portfolio/case-study-page';
 import {
   DEMO_PROJECT_LABEL,
   getAllCaseStudies,
   getCaseStudyBySlug,
 } from '@/lib/portfolio';
+import { organizationId } from '@/lib/schema';
 import { siteConfig } from '@/lib/site';
 
 type CaseStudyRouteProps = {
@@ -62,34 +64,38 @@ export default async function CaseStudyDetailPage({
     notFound();
   }
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'CreativeWork',
-    name: study.title,
-    headline: study.title,
-    description: study.seo.description,
-    about: study.industry,
-    creativeWorkStatus: DEMO_PROJECT_LABEL,
-    genre: 'Product demo',
-    author: {
-      '@type': 'Organization',
-      name: siteConfig.legalName,
-      url: siteConfig.url,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: siteConfig.legalName,
-      url: siteConfig.url,
-    },
-    url: `${siteConfig.url}/portfolio/${study.slug}`,
-    keywords: study.seo.keywords.join(', '),
-  };
+  const url = `${siteConfig.url}/portfolio/${study.slug}`;
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        mode="page"
+        page={{
+          title: study.seo.title,
+          description: study.seo.description,
+          path: `/portfolio/${study.slug}`,
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Portfolio', path: '/portfolio' },
+            { name: study.title, path: `/portfolio/${study.slug}` },
+          ],
+        }}
+        extra={[
+          {
+            '@type': 'CreativeWork',
+            '@id': `${url}#creativework`,
+            name: study.title,
+            headline: study.title,
+            description: study.seo.description,
+            about: study.industry,
+            creativeWorkStatus: DEMO_PROJECT_LABEL,
+            genre: 'Product demo',
+            author: { '@id': organizationId() },
+            publisher: { '@id': organizationId() },
+            url,
+            keywords: study.seo.keywords.join(', '),
+          },
+        ]}
       />
       <CaseStudyPage study={study} />
     </>

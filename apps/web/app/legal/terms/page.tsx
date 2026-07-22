@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -10,6 +11,19 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
+    <>
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Terms of Service',
+          description: `Terms of Service for ${siteConfig.legalName}.`,
+          path: '/legal/terms',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Terms of Service', path: '/legal/terms' },
+          ],
+        }}
+      />
     <article className="prose-uv space-y-6">
       <h1 className="font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight sm:text-4xl">
         Terms of Service
@@ -55,5 +69,6 @@ export default function TermsPage() {
         .
       </p>
     </article>
+    </>
   );
 }

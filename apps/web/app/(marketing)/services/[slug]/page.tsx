@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { ServicePage } from '@/components/services/service-page';
 import {
   getAllServices,
   getServiceBySlug,
 } from '@/lib/services';
+import { organizationId } from '@/lib/schema';
 import { siteConfig } from '@/lib/site';
 
 type ServiceRouteProps = {
@@ -61,30 +63,37 @@ export default async function ServiceDetailPage({ params }: ServiceRouteProps) {
     notFound();
   }
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: service.title,
-    description: service.seo.description,
-    provider: {
-      '@type': 'Organization',
-      name: siteConfig.legalName,
-      url: siteConfig.url,
-      email: siteConfig.email,
-      areaServed: {
-        '@type': 'AdministrativeArea',
-        name: `${siteConfig.location.region}, ${siteConfig.location.country}`,
-      },
-    },
-    areaServed: 'IN',
-    url: `${siteConfig.url}/services/${service.slug}`,
-  };
+  const url = `${siteConfig.url}/services/${service.slug}`;
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        mode="page"
+        page={{
+          title: service.seo.title,
+          description: service.seo.description,
+          path: `/services/${service.slug}`,
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Services', path: '/services' },
+            { name: service.title, path: `/services/${service.slug}` },
+          ],
+        }}
+        extra={[
+          {
+            '@type': 'Service',
+            '@id': `${url}#page-service`,
+            name: service.title,
+            description: service.seo.description,
+            url,
+            provider: { '@id': organizationId() },
+            areaServed: {
+              '@type': 'Country',
+              name: 'India',
+            },
+            serviceType: service.title,
+          },
+        ]}
       />
       <ServicePage service={service} />
     </>

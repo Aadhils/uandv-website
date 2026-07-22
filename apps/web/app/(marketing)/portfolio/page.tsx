@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { PortfolioIndexPage } from '@/components/portfolio/portfolio-index-page';
 import { DEMO_PROJECT_LABEL } from '@/lib/portfolio';
 import { siteConfig } from '@/lib/site';
@@ -37,24 +38,19 @@ export const metadata: Metadata = {
 };
 
 export default function PortfolioPage() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'U&V Portfolio & Demo Center',
-    description: `U&V ${DEMO_PROJECT_LABEL.toLowerCase()}s across software, business systems, and AI-powered products.`,
-    url: `${siteConfig.url}/portfolio`,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Portfolio & Demo Center | U&V Technologies',
+          description: `U&V ${DEMO_PROJECT_LABEL.toLowerCase()}s across software, business systems, and AI-powered products.`,
+          path: '/portfolio',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Portfolio', path: '/portfolio' },
+          ],
+        }}
       />
       <PortfolioIndexPage />
     </>

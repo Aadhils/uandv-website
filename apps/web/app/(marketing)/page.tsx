@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { JsonLd } from '@/components/marketing/json-ld';
+import { JsonLd } from '@/components/seo/json-ld';
 import { LandingPage } from '@/components/marketing/landing-page';
 import { siteConfig } from '@/lib/site';
 
@@ -23,7 +23,15 @@ export const metadata: Metadata = {
 export default function MarketingHomePage() {
   return (
     <>
-      <JsonLd />
+      <JsonLd
+        mode="page"
+        page={{
+          title: `${siteConfig.name} — ${siteConfig.headline}`,
+          description: siteConfig.description,
+          path: '/',
+          breadcrumbs: [{ name: 'Home', path: '/' }],
+        }}
+      />
       <LandingPage />
     </>
   );
