@@ -1,10 +1,16 @@
-import { defaultLocale, type JourneyId, type Locale, type PartnerTypeId } from '@/lib/i18n';
+import {
+  defaultGuideLanguage,
+  type GuideLanguage,
+  type JourneyId,
+  type PartnerTypeId,
+} from '@/lib/business-guide';
 
 export type JourneyLeadContext = {
   journey: JourneyId;
   visitorType: string;
   partnerType?: PartnerTypeId;
-  preferredLanguage?: Locale;
+  /** Guide conversation language (not website locale). */
+  guideLanguage?: GuideLanguage;
   sourcePage?: string;
   cta?: 'continue' | 'consultation' | 'partner';
   interestSlug?: string;
@@ -17,7 +23,7 @@ export function buildContactHref(context: JourneyLeadContext) {
   if (context.partnerType) {
     params.set('partnerType', context.partnerType);
   }
-  params.set('lang', context.preferredLanguage ?? defaultLocale);
+  params.set('lang', context.guideLanguage ?? defaultGuideLanguage);
   params.set('source', context.sourcePage ?? '/');
   if (context.cta) {
     params.set('cta', context.cta);

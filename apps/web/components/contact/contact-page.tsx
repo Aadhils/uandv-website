@@ -20,11 +20,11 @@ import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import {
-  defaultLocale,
-  getJourneyById,
-  isLocale,
-  localeLabels,
-} from '@/lib/i18n';
+  defaultGuideLanguage,
+  getGuideJourney,
+  guideLanguageEnglishLabels,
+  isGuideLanguage,
+} from '@/lib/business-guide';
 import { getAllServices } from '@/lib/services';
 import { formatLocation, siteConfig } from '@/lib/site';
 
@@ -64,11 +64,11 @@ export function ContactPage() {
   const leadContext = useMemo(() => {
     const journeyId = searchParams.get('journey') ?? '';
     const langParam = searchParams.get('lang');
-    const preferredLanguage = isLocale(langParam)
+    const preferredLanguage = isGuideLanguage(langParam)
       ? langParam
-      : defaultLocale;
+      : defaultGuideLanguage;
     const journey = journeyId
-      ? getJourneyById(preferredLanguage, journeyId)
+      ? getGuideJourney(preferredLanguage, journeyId)
       : undefined;
     const partnerType = searchParams.get('partnerType') ?? '';
     const partnerLabel = journey?.partnerTypes?.find(
@@ -89,7 +89,7 @@ export function ContactPage() {
           journeyTitle: journey.title,
           steps: journey.steps?.map((step) => step.label).join(' → '),
           partnerLabel,
-          preferredLanguage: localeLabels[preferredLanguage],
+          preferredLanguage: guideLanguageEnglishLabels[preferredLanguage],
           sourcePage,
         })
       : '';
@@ -101,6 +101,7 @@ export function ContactPage() {
       partnerType,
       partnerLabel: partnerLabel ?? '',
       preferredLanguage,
+      preferredLanguageLabel: guideLanguageEnglishLabels[preferredLanguage],
       sourcePage,
       interest,
       message,
@@ -191,13 +192,18 @@ export function ContactPage() {
             </p>
             {leadContext.hasJourney ? (
               <p className="mt-4 rounded-uv-lg border border-uv-brand/20 bg-uv-brand-muted/40 px-4 py-3 text-sm text-uv-foreground sm:text-base">
-                Journey selected:{' '}
+                Business guide:{' '}
                 <span className="font-semibold text-uv-brand">
                   {leadContext.journeyTitle}
                 </span>
                 {leadContext.partnerLabel
                   ? ` · ${leadContext.partnerLabel}`
                   : ''}
+                {' · '}
+                Follow-up language:{' '}
+                <span className="font-semibold text-uv-brand">
+                  {leadContext.preferredLanguageLabel}
+                </span>
               </p>
             ) : null}
             <p className="mt-4 text-sm font-medium text-uv-brand sm:text-base">
@@ -379,7 +385,7 @@ export function ContactPage() {
                     <input
                       type="hidden"
                       name="preferredLanguage"
-                      value={localeLabels[leadContext.preferredLanguage]}
+                      value={leadContext.preferredLanguageLabel}
                     />
                     <input
                       type="hidden"

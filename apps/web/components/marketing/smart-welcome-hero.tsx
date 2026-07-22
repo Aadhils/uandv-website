@@ -14,38 +14,52 @@ import {
 import { Logo } from '@/components/brand/logo';
 import { trackEvent } from '@/lib/analytics';
 import {
-  defaultLocale,
-  getMessages,
-  localeLabels,
-  supportedLocales,
+  defaultGuideLanguage,
+  getBusinessGuide,
+  guideLanguageEnglishLabels,
+  guideLanguageNativeLabels,
+  guideLanguages,
+  type GuideLanguage,
   type JourneyId,
-  type Locale,
   type PartnerTypeId,
-} from '@/lib/i18n';
+} from '@/lib/business-guide';
 import { buildContactHref } from '@/lib/journey-lead';
 import { siteConfig } from '@/lib/site';
 
-type SmartWelcomeHeroProps = {
-  locale?: Locale;
-};
-
-export function SmartWelcomeHero({
-  locale = defaultLocale,
-}: SmartWelcomeHeroProps) {
-  const copy = getMessages(locale).smartWelcome;
+/**
+ * Homepage Business Guide — multilingual consultant experience.
+ * The rest of the website stays English.
+ */
+export function SmartWelcomeHero() {
   const panelId = useId();
+  const [guideLanguage, setGuideLanguage] = useState<GuideLanguage>(
+    defaultGuideLanguage,
+  );
   const [selectedJourneyId, setSelectedJourneyId] = useState<JourneyId | null>(
     null,
   );
   const [selectedPartnerType, setSelectedPartnerType] =
     useState<PartnerTypeId | null>(null);
-  const [preferredLanguage, setPreferredLanguage] =
-    useState<Locale>(locale);
+
+  const guide = useMemo(
+    () => getBusinessGuide(guideLanguage),
+    [guideLanguage],
+  );
 
   const selectedJourney = useMemo(
-    () => copy.journeys.find((journey) => journey.id === selectedJourneyId),
-    [copy.journeys, selectedJourneyId],
+    () => guide.journeys.find((journey) => journey.id === selectedJourneyId),
+    [guide.journeys, selectedJourneyId],
   );
+
+  const onLanguageChange = useCallback((language: GuideLanguage) => {
+    setGuideLanguage(language);
+    setSelectedJourneyId(null);
+    setSelectedPartnerType(null);
+    trackEvent('guide_language_selected', {
+      guide_language: language,
+      journey_name: guideLanguageEnglishLabels[language],
+    });
+  }, []);
 
   const selectJourney = useCallback(
     (journeyId: JourneyId, title: string) => {
@@ -55,17 +69,19 @@ export function SmartWelcomeHero({
           trackEvent('journey_card_selected', {
             journey_name: title,
             journey_id: journeyId,
+            guide_language: guideLanguage,
           });
           trackEvent('journey_panel_opened', {
             journey_name: title,
             journey_id: journeyId,
+            guide_language: guideLanguage,
           });
         }
         return next;
       });
       setSelectedPartnerType(null);
     },
-    [],
+    [guideLanguage],
   );
 
   const onCtaClick = useCallback(
@@ -74,27 +90,19 @@ export function SmartWelcomeHero({
       journeyId: JourneyId,
       journeyName: string,
     ) => {
-      if (cta === 'consultation') {
-        trackEvent('consultation_cta_clicked', {
-          journey_name: journeyName,
-          journey_id: journeyId,
-          cta,
-        });
-      } else if (cta === 'partner') {
-        trackEvent('partner_cta_clicked', {
-          journey_name: journeyName,
-          journey_id: journeyId,
-          cta,
-        });
+      const payload = {
+        journey_name: journeyName,
+        journey_id: journeyId,
+        guide_language: guideLanguage,
+        cta,
+      };
+      if (cta === 'partner') {
+        trackEvent('partner_cta_clicked', payload);
       } else {
-        trackEvent('consultation_cta_clicked', {
-          journey_name: journeyName,
-          journey_id: journeyId,
-          cta: 'continue',
-        });
+        trackEvent('consultation_cta_clicked', payload);
       }
     },
-    [],
+    [guideLanguage],
   );
 
   return (
@@ -127,19 +135,19 @@ export function SmartWelcomeHero({
           <Logo invert size="hero" className="text-white" />
         </div>
 
+        {/* Website brand layer — always English for SEO / brand consistency */}
         <p className="marketing-animate-in marketing-animate-in-delay-1 mt-6 text-sm font-medium uppercase tracking-[0.18em] text-[#C4B5FD]">
-          {copy.brandEyebrow}
+          U&V Technologies
         </p>
-
         <h1
           id="hero-heading"
           className="marketing-animate-in marketing-animate-in-delay-1 mt-3 max-w-3xl font-[family-name:var(--font-uv-display)] text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[3.25rem]"
         >
-          {copy.heading}
+          Your Business Growth Partner
         </h1>
-
         <p className="marketing-animate-in marketing-animate-in-delay-2 mt-5 max-w-2xl text-base leading-relaxed text-[#EDE9FE] sm:text-lg">
-          {copy.supportingText}
+          From idea and branding to software, AI, marketing, and growth —
+          everything your business needs under one roof.
         </p>
 
         <div className="marketing-animate-in marketing-animate-in-delay-3 mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
@@ -165,17 +173,71 @@ export function SmartWelcomeHero({
           </a>
         </div>
 
-        <div className="marketing-animate-in marketing-animate-in-delay-3 mt-12 sm:mt-14">
-          <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-white sm:text-2xl">
-            {copy.question}
+        {/* Multilingual Business Guide — consultant experience */}
+        <div
+          className="marketing-animate-in marketing-animate-in-delay-3 mt-12 rounded-uv-2xl border border-white/15 bg-[#08152F]/75 p-5 backdrop-blur-sm sm:mt-14 sm:p-7"
+          lang={guideLanguage === 'en' ? 'en' : guideLanguage}
+        >
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#C4B5FD]">
+                {guide.badge}
+              </p>
+              <p className="mt-2 font-[family-name:var(--font-uv-display)] text-lg font-semibold text-white sm:text-xl">
+                {guide.languagePrompt}
+              </p>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#EDE9FE]/90">
+                {guide.languageHelper}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="mt-5 flex flex-wrap gap-2"
+            role="radiogroup"
+            aria-label={guide.languagePrompt}
+          >
+            {guideLanguages.map((code) => {
+              const selected = guideLanguage === code;
+              return (
+                <button
+                  key={code}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => onLanguageChange(code)}
+                  className={cn(
+                    'rounded-uv-full border px-4 py-2 text-sm font-medium transition-colors uv-focus-ring',
+                    selected
+                      ? 'border-uv-brand bg-uv-brand text-white'
+                      : 'border-white/20 bg-white/5 text-[#EDE9FE] hover:border-uv-brand/50 hover:bg-white/10',
+                  )}
+                >
+                  <span className="block leading-tight">
+                    {guideLanguageNativeLabels[code]}
+                  </span>
+                  <span className="block text-[11px] font-normal opacity-80">
+                    {guideLanguageEnglishLabels[code]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <p className="mt-6 text-base leading-relaxed text-[#EDE9FE] sm:text-lg">
+            {guide.greeting}
+          </p>
+
+          <h2 className="mt-8 font-[family-name:var(--font-uv-display)] text-xl font-semibold text-white sm:text-2xl">
+            {guide.question}
           </h2>
 
           <div
             className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5"
             role="radiogroup"
-            aria-label={copy.question}
+            aria-label={guide.question}
           >
-            {copy.journeys.map((journey) => {
+            {guide.journeys.map((journey) => {
               const selected = selectedJourneyId === journey.id;
               return (
                 <button
@@ -220,197 +282,187 @@ export function SmartWelcomeHero({
             })}
           </div>
 
-          <p className="mt-4 text-sm text-[#C4B5FD]/90">{copy.scrollHint}</p>
-        </div>
+          <p className="mt-4 text-sm text-[#C4B5FD]/90">{guide.scrollHint}</p>
 
-        {selectedJourney ? (
-          <div
-            id={panelId}
-            role="region"
-            aria-label={`${copy.panelTitle}: ${selectedJourney.title}`}
-            className="mt-6 rounded-uv-2xl border border-white/15 bg-[#08152F]/80 p-5 backdrop-blur-sm sm:mt-8 sm:p-7"
-          >
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#C4B5FD]">
-                  {copy.panelTitle}
-                </p>
-                <h3 className="mt-2 font-[family-name:var(--font-uv-display)] text-xl font-semibold text-white sm:text-2xl">
-                  {selectedJourney.title}
-                </h3>
-              </div>
-              <button
-                type="button"
-                className="self-start text-sm text-[#C4B5FD] underline-offset-4 hover:underline uv-focus-ring rounded-uv-md"
-                onClick={() => {
-                  setSelectedJourneyId(null);
-                  setSelectedPartnerType(null);
-                }}
-              >
-                Clear selection
-              </button>
-            </div>
-
-            {selectedJourney.steps ? (
-              <div className="mt-6">
-                <p className="text-sm font-medium text-[#EDE9FE]">
-                  {copy.stepsLabel}
-                </p>
-                <ol className="mt-4 flex flex-wrap gap-2">
-                  {selectedJourney.steps.map((step, index) => (
-                    <li
-                      key={step.id}
-                      className="inline-flex items-center gap-2 rounded-uv-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white"
-                    >
-                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-uv-brand/80 text-[11px] font-semibold">
-                        {index + 1}
-                      </span>
-                      {step.label}
-                      {index < selectedJourney.steps!.length - 1 ? (
-                        <Icon
-                          name="ChevronRight"
-                          size="xs"
-                          className="text-[#C4B5FD]"
-                        />
-                      ) : null}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            ) : null}
-
-            {selectedJourney.partnerTypes ? (
-              <div className="mt-6">
-                <p className="text-sm font-medium text-[#EDE9FE]">
-                  {copy.partnerPrompt}
-                </p>
-                <div
-                  className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
-                  role="radiogroup"
-                  aria-label={copy.partnerPrompt}
+          {selectedJourney ? (
+            <div
+              id={panelId}
+              role="region"
+              aria-label={`${guide.panelEyebrow}: ${selectedJourney.title}`}
+              className="mt-6 rounded-uv-2xl border border-white/15 bg-black/25 p-5 sm:p-6"
+            >
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#C4B5FD]">
+                    {guide.panelEyebrow}
+                  </p>
+                  <h3 className="mt-2 font-[family-name:var(--font-uv-display)] text-xl font-semibold text-white sm:text-2xl">
+                    {selectedJourney.title}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  className="self-start text-sm text-[#C4B5FD] underline-offset-4 hover:underline uv-focus-ring rounded-uv-md"
+                  onClick={() => {
+                    setSelectedJourneyId(null);
+                    setSelectedPartnerType(null);
+                  }}
                 >
-                  {selectedJourney.partnerTypes.map((partner) => {
-                    const selected = selectedPartnerType === partner.id;
+                  {guide.clearSelection}
+                </button>
+              </div>
+
+              <p className="mt-4 text-base leading-relaxed text-[#EDE9FE]">
+                {selectedJourney.consultantIntro}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-[#C4B5FD]">
+                {selectedJourney.reassurance}
+              </p>
+
+              {selectedJourney.steps ? (
+                <div className="mt-6">
+                  <p className="text-sm font-medium text-white">
+                    {guide.stepsLabel}
+                  </p>
+                  <ol className="mt-4 space-y-3">
+                    {selectedJourney.steps.map((step, index) => (
+                      <li
+                        key={step.id}
+                        className="flex gap-3 rounded-uv-xl border border-white/10 bg-white/5 p-3"
+                      >
+                        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-uv-brand/80 text-xs font-semibold">
+                          {index + 1}
+                        </span>
+                        <div>
+                          <p className="font-medium text-white">{step.label}</p>
+                          <p className="mt-1 text-sm text-[#EDE9FE]/90">
+                            {step.coachNote}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ) : null}
+
+              {selectedJourney.partnerTypes ? (
+                <div className="mt-6">
+                  <p className="text-sm font-medium text-white">
+                    {guide.partnerPrompt}
+                  </p>
+                  <div
+                    className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+                    role="radiogroup"
+                    aria-label={guide.partnerPrompt}
+                  >
+                    {selectedJourney.partnerTypes.map((partner) => {
+                      const selected = selectedPartnerType === partner.id;
+                      return (
+                        <button
+                          key={partner.id}
+                          type="button"
+                          role="radio"
+                          aria-checked={selected}
+                          onClick={() =>
+                            setSelectedPartnerType(
+                              (current: PartnerTypeId | null) =>
+                                current === partner.id ? null : partner.id,
+                            )
+                          }
+                          className={cn(
+                            'rounded-uv-xl border p-4 text-left transition-colors uv-focus-ring',
+                            selected
+                              ? 'border-uv-brand bg-uv-brand/25'
+                              : 'border-white/15 bg-white/5 hover:border-uv-brand/40 hover:bg-white/10',
+                          )}
+                        >
+                          <span className="block font-medium text-white">
+                            {partner.label}
+                          </span>
+                          <span className="mt-1 block text-sm text-[#EDE9FE]/90">
+                            {partner.description}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="mt-6 border-t border-white/10 pt-6">
+                <p className="text-sm leading-relaxed text-[#EDE9FE]">
+                  {guide.nextStepPrompt}
+                </p>
+                <div className="mt-4 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  {(
+                    [
+                      {
+                        key: 'continue' as const,
+                        label: guide.ctaContinue,
+                        variant: 'outline' as const,
+                      },
+                      {
+                        key: 'consultation' as const,
+                        label: guide.ctaConsultation,
+                        variant: 'primary' as const,
+                      },
+                      {
+                        key: 'partner' as const,
+                        label: guide.ctaPartner,
+                        variant: 'secondary' as const,
+                      },
+                    ] as const
+                  ).map((cta) => {
+                    const href = buildContactHref({
+                      journey: selectedJourney.id,
+                      visitorType: selectedJourney.visitorType,
+                      partnerType:
+                        selectedJourney.id === 'partner-with-uandv'
+                          ? selectedPartnerType ?? undefined
+                          : undefined,
+                      guideLanguage,
+                      sourcePage: '/',
+                      cta: cta.key,
+                      interestSlug: selectedJourney.interestSlug,
+                    });
+
                     return (
-                      <button
-                        key={partner.id}
-                        type="button"
-                        role="radio"
-                        aria-checked={selected}
+                      <Link
+                        key={cta.key}
+                        href={href}
                         onClick={() =>
-                          setSelectedPartnerType(
-                            (current: PartnerTypeId | null) =>
-                              current === partner.id ? null : partner.id,
+                          onCtaClick(
+                            cta.key,
+                            selectedJourney.id,
+                            selectedJourney.title,
                           )
                         }
                         className={cn(
-                          'rounded-uv-xl border p-4 text-left transition-colors uv-focus-ring',
-                          selected
-                            ? 'border-uv-brand bg-uv-brand/25'
-                            : 'border-white/15 bg-white/5 hover:border-uv-brand/40 hover:bg-white/10',
+                          buttonVariants({
+                            size: 'lg',
+                            variant:
+                              cta.variant === 'primary'
+                                ? 'primary'
+                                : cta.variant === 'outline'
+                                  ? 'outline'
+                                  : 'secondary',
+                          }),
+                          'w-full justify-center sm:w-auto',
+                          cta.variant === 'outline' &&
+                            'border-white/40 bg-transparent text-white hover:bg-white/10',
+                          cta.variant === 'secondary' &&
+                            'bg-white/10 text-white hover:bg-white/15',
                         )}
                       >
-                        <span className="block font-medium text-white">
-                          {partner.label}
-                        </span>
-                        <span className="mt-1 block text-sm text-[#EDE9FE]/90">
-                          {partner.description}
-                        </span>
-                      </button>
+                        {cta.label}
+                      </Link>
                     );
                   })}
                 </div>
               </div>
-            ) : null}
-
-            <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
-              <label className="block max-w-xs text-sm text-[#EDE9FE]">
-                <span className="mb-1.5 block">{copy.languageHint}</span>
-                <select
-                  value={preferredLanguage}
-                  onChange={(event) =>
-                    setPreferredLanguage(event.target.value as Locale)
-                  }
-                  className="w-full rounded-uv-lg border border-white/20 bg-[#08152F] px-3 py-2 text-white uv-focus-ring"
-                >
-                  {supportedLocales.map((code) => (
-                    <option key={code} value={code}>
-                      {localeLabels[code]}
-                      {code === 'en' ? '' : ' (Sprint 2)'}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-                {(
-                  [
-                    {
-                      key: 'continue' as const,
-                      label: copy.ctaContinue,
-                      variant: 'outline' as const,
-                    },
-                    {
-                      key: 'consultation' as const,
-                      label: copy.ctaConsultation,
-                      variant: 'primary' as const,
-                    },
-                    {
-                      key: 'partner' as const,
-                      label: copy.ctaPartner,
-                      variant: 'secondary' as const,
-                    },
-                  ] as const
-                ).map((cta) => {
-                  const href = buildContactHref({
-                    journey: selectedJourney.id,
-                    visitorType: selectedJourney.visitorType,
-                    partnerType:
-                      selectedJourney.id === 'partner-with-uandv'
-                        ? selectedPartnerType ?? undefined
-                        : undefined,
-                    preferredLanguage,
-                    sourcePage: '/',
-                    cta: cta.key,
-                    interestSlug: selectedJourney.interestSlug,
-                  });
-
-                  return (
-                    <Link
-                      key={cta.key}
-                      href={href}
-                      onClick={() =>
-                        onCtaClick(
-                          cta.key,
-                          selectedJourney.id,
-                          selectedJourney.title,
-                        )
-                      }
-                      className={cn(
-                        buttonVariants({
-                          size: 'lg',
-                          variant:
-                            cta.variant === 'primary'
-                              ? 'primary'
-                              : cta.variant === 'outline'
-                                ? 'outline'
-                                : 'secondary',
-                        }),
-                        'w-full justify-center sm:w-auto',
-                        cta.variant === 'outline' &&
-                          'border-white/40 bg-transparent text-white hover:bg-white/10',
-                        cta.variant === 'secondary' &&
-                          'bg-white/10 text-white hover:bg-white/15',
-                      )}
-                    >
-                      {cta.label}
-                    </Link>
-                  );
-                })}
-              </div>
             </div>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
     </section>
   );

@@ -57,7 +57,7 @@ export function buildEnquiryEmailHtml(payload: ContactPayload) {
     ['Visitor type', payload.visitorType || '—'],
     ['Selected journey', payload.journey || '—'],
     ['Partner type', payload.partnerType || '—'],
-    ['Preferred language', payload.preferredLanguage || '—'],
+    ['Guide language', payload.preferredLanguage || '—'],
     ['Source page', payload.sourcePage || '—'],
   ]
     .map(
