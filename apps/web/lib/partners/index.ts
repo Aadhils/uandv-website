@@ -18,6 +18,8 @@ import {
   applyPartnerStatusOverride,
   listRegisteredPartners,
   loadPartnerRuntime,
+  registerPartnerRuntimeCacheInvalidator,
+  subscribePartnerRuntime,
 } from './runtime';
 import type {
   BusinessServiceTemplate,
@@ -190,4 +192,55 @@ export function getPublicDirectoryPartners(): Partner[] {
       p.verificationStatus === 'verified' ||
       p.verificationStatus === 'pending',
   );
+}
+
+/**
+ * Stable SSR/hydration snapshot for useSyncExternalStore.
+ * Seed-only (no localStorage). Same reference on every call.
+ */
+const SERVER_PUBLIC_DIRECTORY_PARTNERS: Partner[] = demoPartners.filter(
+  (p) =>
+    p.verificationStatus === 'verified' ||
+    p.verificationStatus === 'pending',
+);
+
+export function getPublicDirectoryPartnersServerSnapshot(): Partner[] {
+  return SERVER_PUBLIC_DIRECTORY_PARTNERS;
+}
+
+/** Client snapshot cache — invalidated when partner runtime notifies. */
+let clientPublicDirectoryCache: Partner[] | null = null;
+
+registerPartnerRuntimeCacheInvalidator(() => {
+  clientPublicDirectoryCache = null;
+});
+
+export function getPublicDirectoryPartnersClientSnapshot(): Partner[] {
+  if (clientPublicDirectoryCache === null) {
+    clientPublicDirectoryCache = getPublicDirectoryPartners();
+  }
+  return clientPublicDirectoryCache;
+}
+
+/**
+ * Subscribe to partner runtime on the client only.
+ * Cache invalidation is handled globally on notify().
+ */
+export function subscribePublicDirectoryPartners(
+  listener: () => void,
+): () => void {
+  return subscribePartnerRuntime(listener);
+}
+
+/** Stats derived from a partners list (hydration-safe; no localStorage read). */
+export function partnerDirectoryStatsFrom(partners: Partner[]) {
+  return {
+    total: partners.length,
+    verified: partners.filter((p) => p.verificationStatus === 'verified')
+      .length,
+    pending: partners.filter((p) => p.verificationStatus === 'pending')
+      .length,
+    available: partners.filter((p) => p.availability === 'available').length,
+    categories: new Set(partners.map((p) => p.category)).size,
+  };
 }

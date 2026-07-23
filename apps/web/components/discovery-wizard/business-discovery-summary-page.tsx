@@ -149,6 +149,15 @@ export function BusinessDiscoverySummaryPage() {
             Open Business OS Dashboard
           </Link>
           <Link
+            href="/dashboard/service-requests"
+            className={cn(
+              buttonVariants({ size: 'lg', variant: 'outline' }),
+              'justify-center border-white/40 bg-transparent text-white hover:bg-white/10',
+            )}
+          >
+            Create service request
+          </Link>
+          <Link
             href="/business-discovery"
             className={cn(
               buttonVariants({ size: 'lg', variant: 'outline' }),

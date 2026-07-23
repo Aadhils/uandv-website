@@ -141,6 +141,15 @@ export function MarketplaceListingPage() {
               </div>
             </div>
 
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href={`/marketplace/${service.id}/request`}
+                className={cn(buttonVariants({ size: 'sm' }))}
+              >
+                Request this Service
+              </Link>
+            </div>
+
             <div className="mt-4">
               <p className="text-xs font-medium uppercase tracking-wide text-uv-foreground-subtle">
                 Suggested partners

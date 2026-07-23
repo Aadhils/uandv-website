@@ -42,6 +42,17 @@ Extends Release 3.6 Partner Network (no duplicate catalog):
 | Service marketplace listing | `/marketplace` |
 | Admin approval queue | `/admin/partners/approvals` |
 
+### Sprint 3.2 — Smart Partner Matching
+
+| Surface | Route |
+|---------|-------|
+| Customer requests | `/dashboard/service-requests` |
+| Admin requests + match | `/admin/service-requests`, `.../match` |
+| Partner opportunities (Vendor WS) | `/vendor/opportunities` |
+| Marketplace request form | `/marketplace/[serviceId]/request` |
+
+Runtime: `uandv-service-requests-runtime`. Matching labeled **Demo Intelligence** (not real AI).
+
 Runtime registrations / verification overrides: `localStorage` key `uandv-partner-marketplace-runtime`.
 
 ```bash

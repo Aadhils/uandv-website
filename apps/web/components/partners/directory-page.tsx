@@ -15,20 +15,21 @@ import { StatusBadge } from '@/components/customer/status-badge';
 import {
   PARTNER_CATEGORY_LABELS,
   filterPartners,
-  getPublicDirectoryPartners,
+  getPublicDirectoryPartnersClientSnapshot,
+  getPublicDirectoryPartnersServerSnapshot,
   listPartnerCategorySummaries,
   listPartnerCities,
-  partnerDirectoryStats,
-  subscribePartnerRuntime,
+  partnerDirectoryStatsFrom,
+  subscribePublicDirectoryPartners,
   type PartnerCategory,
   type PartnerDirectoryFilters,
 } from '@/lib/partners';
 
 function useDirectoryPartners() {
   return React.useSyncExternalStore(
-    subscribePartnerRuntime,
-    getPublicDirectoryPartners,
-    getPublicDirectoryPartners,
+    subscribePublicDirectoryPartners,
+    getPublicDirectoryPartnersClientSnapshot,
+    getPublicDirectoryPartnersServerSnapshot,
   );
 }
 
@@ -38,7 +39,10 @@ function useDirectoryPartners() {
  */
 export function PartnersDirectoryPage() {
   const partners = useDirectoryPartners();
-  const stats = partnerDirectoryStats();
+  const stats = React.useMemo(
+    () => partnerDirectoryStatsFrom(partners),
+    [partners],
+  );
   const categories = listPartnerCategorySummaries(partners);
   const cities = listPartnerCities(partners);
 

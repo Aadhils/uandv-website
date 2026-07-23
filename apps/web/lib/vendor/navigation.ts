@@ -28,6 +28,12 @@ export const vendorRoutes: VendorRouteMeta[] = [
     breadcrumb: 'My Work',
   },
   {
+    path: '/vendor/opportunities',
+    title: 'Partner Opportunities',
+    subtitle: 'Marketplace requests · accept / decline',
+    breadcrumb: 'Opportunities',
+  },
+  {
     path: '/vendor/timeline',
     title: 'Work Timeline',
     subtitle: 'Vendor-visible delivery events',
@@ -104,6 +110,7 @@ export const vendorRoutes: VendorRouteMeta[] = [
 const vendorNavItems: Array<{ label: string; href: string; icon: IconName }> = [
   { label: 'Dashboard', href: '/vendor', icon: 'LayoutDashboard' },
   { label: 'My Work', href: '/vendor/work', icon: 'Briefcase' },
+  { label: 'Opportunities', href: '/vendor/opportunities', icon: 'Sparkles' },
   { label: 'Timeline', href: '/vendor/timeline', icon: 'Workflow' },
   { label: 'Deliverables', href: '/vendor/deliverables', icon: 'Package' },
   { label: 'Invoices', href: '/vendor/invoices', icon: 'FileText' },

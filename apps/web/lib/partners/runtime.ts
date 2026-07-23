@@ -14,9 +14,21 @@ type PartnerRuntimeStore = {
 };
 
 const listeners = new Set<() => void>();
+const cacheInvalidators = new Set<() => void>();
 
 function notify() {
+  for (const invalidate of cacheInvalidators) invalidate();
   for (const listener of listeners) listener();
+}
+
+/** Register a cache clearer to run before store listeners (avoids stale snapshots). */
+export function registerPartnerRuntimeCacheInvalidator(
+  invalidate: () => void,
+): () => void {
+  cacheInvalidators.add(invalidate);
+  return () => {
+    cacheInvalidators.delete(invalidate);
+  };
 }
 
 function canUseStorage() {
@@ -55,10 +67,24 @@ function savePartnerRuntime(store: PartnerRuntimeStore): void {
   }
 }
 
+/**
+ * Subscribe to partner runtime changes. No-op on the server so
+ * useSyncExternalStore only attaches listeners in the browser.
+ */
 export function subscribePartnerRuntime(listener: () => void): () => void {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
   listeners.add(listener);
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === PARTNER_RUNTIME_KEY || event.key === null) {
+      notify();
+    }
+  };
+  window.addEventListener('storage', onStorage);
   return () => {
     listeners.delete(listener);
+    window.removeEventListener('storage', onStorage);
   };
 }
 

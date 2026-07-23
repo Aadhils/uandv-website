@@ -112,6 +112,12 @@ export const customerRoutes: CustomerRouteMeta[] = [
     breadcrumb: 'Requests',
   },
   {
+    path: '/dashboard/service-requests',
+    title: 'Service Requests',
+    subtitle: 'Smart Matching marketplace workflow',
+    breadcrumb: 'Service Requests',
+  },
+  {
     path: '/dashboard/admin-preview',
     title: 'Admin Preview',
     subtitle: 'Operations UI foundation · not production admin',
@@ -127,6 +133,7 @@ const customerNavItems: Array<{
 }> = [
   { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
   { label: 'My Projects', href: '/dashboard/projects', icon: 'Briefcase' },
+  { label: 'Service Requests', href: '/dashboard/service-requests', icon: 'ClipboardList' },
   { label: 'Business Advisor', href: '/dashboard/business-advisor', icon: 'Sparkles' },
   { label: 'Quotations', href: '/dashboard/quotations', icon: 'FileText' },
   { label: 'Payments', href: '/dashboard/payments', icon: 'Wallet' },

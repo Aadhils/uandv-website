@@ -1,69 +1,29 @@
-import { CustomerPageHeader } from '@/components/customer/page-header';
-import { PlaceholderAction } from '@/components/customer/placeholder-action';
-import { ResponsiveDataList } from '@/components/customer/responsive-data-list';
-import { StatusBadge } from '@/components/customer/status-badge';
-import {
-  demoServiceRequests,
-  formatDisplayDate,
-} from '@/lib/customer';
+import Link from 'next/link';
 
+import { buttonVariants, cn } from '@uandv/ui';
+
+import { CustomerPageHeader } from '@/components/customer/page-header';
+
+/**
+ * Legacy /dashboard/requests entry — forwards to Sprint 3.2 service requests.
+ */
 export function CustomerRequestsPage() {
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8">
+    <div className="mx-auto flex max-w-6xl flex-col gap-6">
       <CustomerPageHeader
         title="Service Requests"
-        description="Track change requests and new service asks. Submission is a demo placeholder."
-        actions={<PlaceholderAction>New service request</PlaceholderAction>}
+        description="Service requests now live in the Smart Matching workflow."
       />
-
-      <ResponsiveDataList
-        rows={demoServiceRequests}
-        getRowId={(row) => row.id}
-        mobileTitle={(row) => row.title}
-        columns={[
-          {
-            key: 'id',
-            header: 'Request ID',
-            render: (row) => (
-              <span className="font-mono text-xs">{row.id}</span>
-            ),
-          },
-          {
-            key: 'title',
-            header: 'Title',
-            hideOnMobile: true,
-            render: (row) => <span className="font-medium">{row.title}</span>,
-          },
-          {
-            key: 'category',
-            header: 'Category',
-            render: (row) => row.category,
-          },
-          {
-            key: 'status',
-            header: 'Status',
-            render: (row) => <StatusBadge status={row.status} />,
-          },
-          {
-            key: 'priority',
-            header: 'Priority',
-            render: (row) => <StatusBadge status={row.priority} />,
-          },
-          {
-            key: 'created',
-            header: 'Created',
-            render: (row) => formatDisplayDate(row.createdAt),
-          },
-          {
-            key: 'team',
-            header: 'Assigned team',
-            mobileLabel: 'Team',
-            render: (row) => (
-              <span className="text-uv-foreground-muted">{row.assignedTeam}</span>
-            ),
-          },
-        ]}
-      />
+      <p className="text-sm text-uv-foreground-muted">
+        Create requests, review Demo Intelligence matches, and track partner
+        delivery from the unified Service Requests module.
+      </p>
+      <Link
+        href="/dashboard/service-requests"
+        className={cn(buttonVariants({ size: 'lg' }), 'w-fit')}
+      >
+        Open Service Requests
+      </Link>
     </div>
   );
 }

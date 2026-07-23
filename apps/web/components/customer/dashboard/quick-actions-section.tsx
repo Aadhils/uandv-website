@@ -14,9 +14,9 @@ export function DashboardQuickActionsSection() {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         <QuickActionCard
           title="Request a new service"
-          description="Open a service request"
+          description="Smart Matching marketplace request"
           icon="Plus"
-          href="/dashboard/requests"
+          href="/dashboard/service-requests"
         />
         <QuickActionCard
           title="View project"

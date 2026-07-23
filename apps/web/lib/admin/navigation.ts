@@ -99,6 +99,12 @@ export const adminRoutes: AdminRouteMeta[] = [
     breadcrumb: 'Assignment',
   },
   {
+    path: '/admin/service-requests',
+    title: 'Service Requests',
+    subtitle: 'Smart Matching marketplace workflow',
+    breadcrumb: 'Service Requests',
+  },
+  {
     path: '/admin/templates',
     title: 'Business Templates',
     subtitle: 'Industry service launch packs',
@@ -237,6 +243,7 @@ const adminNavItems: Array<{ label: string; href: string; icon: IconName }> = [
   { label: 'Partner Approvals', href: '/admin/partners/approvals', icon: 'Clock' },
   { label: 'Marketplace', href: '/admin/marketplace', icon: 'Briefcase' },
   { label: 'Assignment', href: '/admin/assignment', icon: 'Check' },
+  { label: 'Service Requests', href: '/admin/service-requests', icon: 'ClipboardList' },
   { label: 'Templates', href: '/admin/templates', icon: 'Layers' },
   {
     label: 'AI Requirement Analysis',

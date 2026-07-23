@@ -37,6 +37,17 @@ export function getSmartActions(
   const signedAgreement = agreements.find((a) => a.id === BOS_SPINE.agreementId);
 
   actions.push({
+    id: 'service-requests',
+    title: 'Create a service request',
+    description: 'Launch Smart Matching for a new marketplace need.',
+    href: '/dashboard/service-requests',
+    icon: 'ClipboardList',
+    priority: 'high',
+    module: 'os',
+    badge: 'New',
+  });
+
+  actions.push({
     id: 'open-advisor',
     title: 'Review AI Business Advisor',
     description: 'Readiness, roadmap, budget, and recommended services.',
