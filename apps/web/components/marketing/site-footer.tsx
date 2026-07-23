@@ -70,13 +70,13 @@ export function SiteFooter() {
           <p className="flex flex-wrap gap-4">
             <Link
               href="/legal/privacy"
-              className="text-uv-soft-violet/50 transition-colors hover:text-white"
+              className="text-uv-soft-violet/80 transition-colors hover:text-white"
             >
               Privacy
             </Link>
             <Link
               href="/legal/terms"
-              className="text-uv-soft-violet/50 transition-colors hover:text-white"
+              className="text-uv-soft-violet/80 transition-colors hover:text-white"
             >
               Terms
             </Link>

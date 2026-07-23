@@ -69,7 +69,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -90,7 +90,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -119,7 +119,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -148,7 +148,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -177,7 +177,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -201,7 +201,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
         </div>
       </section>
 
-      <section className="marketing-faq border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="marketing-faq border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -234,7 +234,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background-subtle px-6 py-10 sm:px-10 sm:py-12">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
@@ -275,7 +275,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
       </section>
 
       {related.length > 0 ? (
-        <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+        <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
               <SectionHeading

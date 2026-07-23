@@ -13,7 +13,7 @@ export function Services() {
   return (
     <section
       id="services"
-      className="scroll-mt-20 border-b border-uv-border bg-uv-background py-20 sm:py-28"
+      className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -29,7 +29,7 @@ export function Services() {
             <Reveal key={service.slug} delayMs={index * 30}>
               <Link
                 href={`/services/${service.slug}`}
-                className="group block uv-focus-ring rounded-uv-lg"
+                className="group block h-full uv-focus-ring rounded-uv-lg"
               >
                 <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand transition-transform duration-300 group-hover:-translate-y-0.5">
                   <Icon name={service.icon} size="md" />
@@ -40,7 +40,7 @@ export function Services() {
                 <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
                   {service.summary}
                 </p>
-                <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-uv-brand opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-uv-brand">
                   View service
                   <Icon name="ArrowRight" size="sm" />
                 </span>

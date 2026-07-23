@@ -9,7 +9,7 @@ export function Faq() {
   return (
     <section
       id="faq"
-      className="marketing-faq scroll-mt-20 border-b border-uv-border bg-uv-background py-20 sm:py-28"
+      className="marketing-faq scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -24,8 +24,8 @@ export function Faq() {
           {faqs.map((faq, index) => (
             <Reveal key={faq.question} delayMs={index * 40}>
               <details className="group py-5">
-                <summary className="flex items-start justify-between gap-4 text-left">
-                  <span className="font-[family-name:var(--font-uv-display)] text-base font-semibold text-uv-foreground sm:text-lg">
+                <summary className="flex min-h-11 cursor-pointer items-start justify-between gap-4 rounded-uv-md text-left uv-focus-ring">
+                  <span className="font-[family-name:var(--font-uv-display)] text-base font-semibold leading-snug text-uv-foreground sm:text-lg">
                     {faq.question}
                   </span>
                   <Icon

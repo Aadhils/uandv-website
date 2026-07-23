@@ -123,6 +123,7 @@ export function SmartWelcomeHero() {
           alt="Circuit board technology representing software, AI, and digital systems"
           fill
           priority
+          quality={75}
           sizes="100vw"
           className="marketing-hero-media object-cover object-center"
         />
