@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import { PartnersDirectoryPage } from '@/components/partners/directory-page';
 
 export const metadata: Metadata = {
-  title: 'Partner Network',
+  title: 'Partner Marketplace',
   description:
-    'Browse the U&V Business Service Ecosystem partner directory. Demo data only.',
+    'Browse the U&V Partner Marketplace directory with categories, ratings, and search. Demo data only.',
 };
 
 export default function PartnersDirectoryRoute() {

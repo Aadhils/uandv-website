@@ -11,7 +11,7 @@ export const customerRoutes: CustomerRouteMeta[] = [
   {
     path: '/dashboard',
     title: 'Dashboard',
-    subtitle: 'Customer Business Workspace overview',
+    subtitle: 'Version 3.0 Business Operating System overview',
     breadcrumb: 'Overview',
   },
   {
@@ -31,6 +31,12 @@ export const customerRoutes: CustomerRouteMeta[] = [
     title: 'Requirement Analysis Report',
     subtitle: 'Structured business requirement output',
     breadcrumb: 'Analysis Result',
+  },
+  {
+    path: '/dashboard/business-advisor/summary',
+    title: 'Business Advisor Summary',
+    subtitle: 'Readiness, roadmap, budget, and recommendations',
+    breadcrumb: 'Advisor Summary',
   },
   {
     path: '/dashboard/quotations',

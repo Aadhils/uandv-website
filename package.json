@@ -1,6 +1,6 @@
 {
   "name": "uandv-platform",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "private": true,
   "packageManager": "pnpm@9.15.4",
   "engines": {

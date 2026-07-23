@@ -18,6 +18,7 @@ import type {
   LeadPipelineStage,
   NewsletterCampaign,
 } from './types';
+import { getRuntimeLeadById, listRuntimeLeads } from './runtime-leads';
 
 /** Fixed demo “today” for overdue calculations (UI foundation). */
 export const CRM_DEMO_TODAY = '2026-07-23';
@@ -303,6 +304,27 @@ export const demoLeads: Lead[] = [
     reminderLabel: 'Today — confirm agenda',
     activityScore: 74,
     conversionProbability: 61,
+  },
+  {
+    id: 'lead-204',
+    name: 'Priya Sharma',
+    company: 'Sunrise Retail Pvt Ltd',
+    phone: '+91 98765 43210',
+    email: 'priya.sharma@demo.uandv.local',
+    interestedService: 'Website redesign + CMS',
+    source: 'website',
+    status: 'customer',
+    isHot: false,
+    assignedEmployee: 'Divya P.',
+    ownerEmployeeId: 'emp-001',
+    ownerUserId: 'user-emp-divya',
+    department: 'Sales',
+    priority: 'high',
+    nextFollowUp: null,
+    lastContact: '2026-01-05',
+    reminderLabel: 'Converted · Business OS spine',
+    activityScore: 98,
+    conversionProbability: 100,
   },
 ];
 
@@ -601,11 +623,13 @@ export function formatDisplayDate(isoDate: string): string {
 }
 
 export function getLeadsByStage(stage: LeadPipelineStage): Lead[] {
-  return demoLeads.filter((lead) => lead.status === stage);
+  return [...listRuntimeLeads(), ...demoLeads].filter(
+    (lead) => lead.status === stage,
+  );
 }
 
 export function getLeadById(id: string): Lead | undefined {
-  return demoLeads.find((lead) => lead.id === id);
+  return getRuntimeLeadById(id) ?? demoLeads.find((lead) => lead.id === id);
 }
 
 export function getEmployeeById(id: string): CrmEmployee | undefined {

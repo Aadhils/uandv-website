@@ -25,10 +25,13 @@ export function Contact() {
                   description="Share your goals and we will recommend the right next step — planning, product, AI, or growth."
                 />
               </div>
-              <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+              <div className="flex w-full min-w-0 shrink-0 flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
                 <Link
                   href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'w-full justify-center sm:w-auto',
+                  )}
                 >
                   Go to contact page
                 </Link>
@@ -38,7 +41,7 @@ export function Contact() {
                   rel="noopener noreferrer"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
+                    'w-full justify-center sm:w-auto',
                   )}
                 >
                   Chat on WhatsApp

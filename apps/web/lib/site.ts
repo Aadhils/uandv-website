@@ -42,6 +42,8 @@ export const siteConfig = {
 export const marketingNav = [
   { label: 'Services', href: '/services' },
   { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Partners', href: '/partners' },
+  { label: 'Marketplace', href: '/marketplace' },
   { label: 'Why U&V', href: '/why-uandv' },
   { label: 'Business Solutions', href: '/business-consulting' },
   { label: 'MLM', href: '/solutions/mlm-software' },

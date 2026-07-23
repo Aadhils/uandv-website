@@ -1,6 +1,7 @@
 /**
  * Partner Network & Service Marketplace — Release 3.6.
- * Demo / frontend foundation for the Business Service Ecosystem.
+ * Extended by Sprint 3.1.1 Partner Marketplace Foundation
+ * (registration, public profiles, approval queue, public listing).
  */
 
 export type PartnerCategory =

@@ -7,3 +7,4 @@ export { AdminPartnerProjectsPage } from './partner-projects-page';
 export { AdminPartnerPaymentsPage } from './partner-payments-page';
 export { AdminPartnerDocumentsPage } from './partner-documents-page';
 export { AdminPartnerCommunicationsPage } from './partner-communications-page';
+export { AdminPartnerApprovalsPage } from './approval-queue-page';

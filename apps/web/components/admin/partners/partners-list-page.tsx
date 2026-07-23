@@ -6,19 +6,33 @@ import * as React from 'react';
 import { Input, StatsCard, buttonVariants, cn } from '@uandv/ui';
 
 import { AdminPageHeader } from '@/components/admin/page-header';
-import { PlaceholderAction } from '@/components/customer/placeholder-action';
 import { ResponsiveDataList } from '@/components/customer/responsive-data-list';
 import { StatusBadge } from '@/components/customer/status-badge';
 import {
   PARTNER_CATEGORY_LABELS,
   partnerDirectoryStats,
   searchPartners,
+  subscribePartnerRuntime,
+  getAllPartners,
 } from '@/lib/partners';
+
+function usePartners(query: string) {
+  const partners = React.useSyncExternalStore(
+    subscribePartnerRuntime,
+    getAllPartners,
+    getAllPartners,
+  );
+  return React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return partners;
+    return searchPartners(query);
+  }, [partners, query]);
+}
 
 export function AdminPartnersListPage() {
   const [query, setQuery] = React.useState('');
   const stats = partnerDirectoryStats();
-  const rows = React.useMemo(() => searchPartners(query), [query]);
+  const rows = usePartners(query);
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8">
@@ -28,12 +42,23 @@ export function AdminPartnersListPage() {
         actions={
           <div className="flex flex-wrap gap-2">
             <Link
+              href="/admin/partners/approvals"
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+            >
+              Approval queue
+            </Link>
+            <Link
               href="/admin/assignment"
               className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
             >
               Smart Assignment
             </Link>
-            <PlaceholderAction>Invite partner</PlaceholderAction>
+            <Link
+              href="/partners/register"
+              className={cn(buttonVariants({ size: 'sm' }))}
+            >
+              Register partner
+            </Link>
           </div>
         }
       />

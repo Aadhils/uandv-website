@@ -26,7 +26,7 @@ export function SiteHeader() {
       brand={
         <Link
           href="/"
-          className="uv-focus-ring rounded-uv-md"
+          className="uv-focus-ring block max-w-full truncate rounded-uv-md"
           aria-label={`${siteConfig.name} home`}
         >
           <Logo />
@@ -44,7 +44,7 @@ export function SiteHeader() {
             href="/login"
             className={cn(
               buttonVariants({ size: 'sm', variant: 'ghost' }),
-              'hidden md:inline-flex',
+              'hidden lg:inline-flex',
             )}
           >
             Login
@@ -53,7 +53,7 @@ export function SiteHeader() {
             href="/signup"
             className={cn(
               buttonVariants({ size: 'sm' }),
-              'hidden sm:inline-flex',
+              'hidden lg:inline-flex',
             )}
           >
             Get Started
@@ -62,7 +62,6 @@ export function SiteHeader() {
       }
       mobileActions={
         <>
-          <ThemeToggle />
           <Link
             href="/login"
             className={cn(buttonVariants({ size: 'md', variant: 'outline' }))}

@@ -1,5 +1,7 @@
 export * from './types';
 export * from './demo-data';
+export * from './runtime';
+export * from './filters';
 
 import {
   PARTNER_CATEGORY_LABELS,
@@ -12,6 +14,11 @@ import {
   demoPartnerPerformance,
   demoPartners,
 } from './demo-data';
+import {
+  applyPartnerStatusOverride,
+  listRegisteredPartners,
+  loadPartnerRuntime,
+} from './runtime';
 import type {
   BusinessServiceTemplate,
   MarketplaceService,
@@ -24,18 +31,35 @@ import type {
   PartnerVerificationStatus,
 } from './types';
 
+/**
+ * Seed + runtime registered partners with demo verification overlays.
+ * Keeps Release 3.6 catalog intact while allowing Sprint 3.1.1 registration.
+ */
+export function getMergedPartners(): Partner[] {
+  const { statusOverrides } = loadPartnerRuntime();
+  const registered = listRegisteredPartners().map((partner) =>
+    applyPartnerStatusOverride(partner, statusOverrides),
+  );
+  const registeredIds = new Set(registered.map((p) => p.id));
+  const seed = demoPartners
+    .filter((partner) => !registeredIds.has(partner.id))
+    .map((partner) => applyPartnerStatusOverride(partner, statusOverrides));
+  return [...seed, ...registered];
+}
+
 export function getPartnerById(id: string): Partner | undefined {
-  return demoPartners.find((p) => p.id === id);
+  return getMergedPartners().find((p) => p.id === id);
 }
 
 export function getAllPartners(): Partner[] {
-  return [...demoPartners];
+  return getMergedPartners();
 }
 
 export function searchPartners(query: string): Partner[] {
   const q = query.trim().toLowerCase();
-  if (!q) return getAllPartners();
-  return demoPartners.filter((p) => {
+  const all = getMergedPartners();
+  if (!q) return all;
+  return all.filter((p) => {
     const haystack = [
       p.id,
       p.companyName,
@@ -55,13 +79,13 @@ export function searchPartners(query: string): Partner[] {
 }
 
 export function getPartnersByCategory(category: Partner['category']): Partner[] {
-  return demoPartners.filter((p) => p.category === category);
+  return getMergedPartners().filter((p) => p.category === category);
 }
 
 export function getPartnersByVerification(
   status: PartnerVerificationStatus,
 ): Partner[] {
-  return demoPartners.filter((p) => p.verificationStatus === status);
+  return getMergedPartners().filter((p) => p.verificationStatus === status);
 }
 
 export function getPartnerPerformance(
@@ -147,14 +171,23 @@ export function formatPartnerDateTime(iso: string): string {
 }
 
 export function partnerDirectoryStats() {
+  const partners = getMergedPartners();
   return {
-    total: demoPartners.length,
-    verified: demoPartners.filter((p) => p.verificationStatus === 'verified')
+    total: partners.length,
+    verified: partners.filter((p) => p.verificationStatus === 'verified')
       .length,
-    pending: demoPartners.filter((p) => p.verificationStatus === 'pending')
+    pending: partners.filter((p) => p.verificationStatus === 'pending')
       .length,
-    available: demoPartners.filter((p) => p.availability === 'available')
-      .length,
-    categories: new Set(demoPartners.map((p) => p.category)).size,
+    available: partners.filter((p) => p.availability === 'available').length,
+    categories: new Set(partners.map((p) => p.category)).size,
   };
+}
+
+/** Public directory defaults to verified partners (pending only if registered demo). */
+export function getPublicDirectoryPartners(): Partner[] {
+  return getMergedPartners().filter(
+    (p) =>
+      p.verificationStatus === 'verified' ||
+      p.verificationStatus === 'pending',
+  );
 }

@@ -1,11 +1,6 @@
-import { Badge } from '@uandv/ui';
-
-import { CustomerPageHeader } from '@/components/customer/page-header';
 import {
   AssetsSummarySection,
   BusinessHealthSection,
-  CustomerJourneySection,
-  DashboardQuickActionsSection,
   DashboardSummaryCards,
   PaymentSummarySection,
   ProjectProgressSection,
@@ -13,6 +8,13 @@ import {
   SupportSummarySection,
   UpcomingRenewalsSection,
 } from '@/components/customer/dashboard';
+import { CustomerPageHeader } from '@/components/customer/page-header';
+import {
+  CustomerJourneyTimeline,
+  SmartActionCenter,
+  UnifiedStatusPanel,
+  VendorRecommendationPanel,
+} from '@/components/business-os';
 import { HappinessScoreCard } from '@/components/lifecycle';
 import {
   demoAssets,
@@ -23,11 +25,9 @@ import {
   demoNotifications,
   demoRenewals,
   demoTickets,
-  demoTimeline,
 } from '@/lib/customer';
-import {
-  getCustomerHappiness,
-} from '@/lib/lifecycle';
+import { getCustomerHappiness } from '@/lib/lifecycle';
+import { BOS_SPINE } from '@/lib/business-os';
 import {
   DEMO_CUSTOMER_ID,
   getCustomerDeliverySummary,
@@ -37,8 +37,9 @@ import {
 } from '@/lib/projects';
 
 /**
- * Customer Business Workspace dashboard — Sprint 3.0.5 + 3.1.0 delivery hooks.
- * Demo UI only; no backend, payments, or file services.
+ * Customer Business Workspace dashboard — Version 3.0 Business OS.
+ * Unified status, journey timeline, and Smart Action Center over shared spine.
+ * Demo UI only; no backend.
  */
 export function CustomerOverviewPage() {
   const delivery = getCustomerDeliverySummary(DEMO_CUSTOMER_ID);
@@ -66,36 +67,17 @@ export function CustomerOverviewPage() {
     <div className="mx-auto flex max-w-6xl flex-col gap-8 lg:gap-10">
       <CustomerPageHeader
         title={`Welcome, ${demoCustomerProfile.fullName.split(' ')[0]}`}
-        description={`${demoCustomerProfile.businessName} · Customer Business Workspace. Understand progress, payments, renewals, support, and next actions in one place.`}
+        description={`${demoCustomerProfile.businessName} · Version 3.0 Business Operating System. Discovery, advisor, CRM, finance, vendors, and delivery share one customer spine (${BOS_SPINE.customerId} / ${BOS_SPINE.projectId}).`}
       />
 
-      <section
-        aria-labelledby="workspace-intro-heading"
-        className="relative overflow-hidden rounded-uv-xl border border-uv-border bg-uv-background-subtle"
-      >
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse 80% 60% at 100% 0%, color-mix(in srgb, var(--uv-brand) 16%, transparent), transparent 55%)',
-          }}
-          aria-hidden
-        />
-        <div className="relative space-y-2 px-5 py-6 sm:px-8 sm:py-7">
-          <Badge variant="default">Sprint 3.1.0 · Delivery linked</Badge>
-          <h2
-            id="workspace-intro-heading"
-            className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl"
-          >
-            Your business at a glance
-          </h2>
-          <p className="max-w-2xl text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
-            Active projects and pending actions come from the shared
-            service-delivery model. Demo data only — no live authentication,
-            payment gateway, or file storage.
-          </p>
-        </div>
-      </section>
+      <UnifiedStatusPanel />
+
+      <SmartActionCenter />
+
+      <div className="grid gap-8 lg:grid-cols-2">
+        <CustomerJourneyTimeline />
+        <VendorRecommendationPanel />
+      </div>
 
       <BusinessHealthSection health={demoBusinessHealth} />
 
@@ -171,14 +153,10 @@ export function CustomerOverviewPage() {
 
       <UpcomingRenewalsSection renewals={demoRenewals} />
 
-      <DashboardQuickActionsSection />
-
       <div className="grid gap-8 lg:grid-cols-2">
-        <CustomerJourneySection events={demoTimeline} />
         <SupportSummarySection tickets={demoTickets} />
+        <AssetsSummarySection assets={demoAssets} />
       </div>
-
-      <AssetsSummarySection assets={demoAssets} />
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { WhyChoose } from './why-choose';
 
 export function LandingPage() {
   return (
-    <div className="marketing-grain bg-uv-background text-uv-foreground">
+    <div className="marketing-grain w-full max-w-full overflow-x-clip bg-uv-background text-uv-foreground">
       <Hero />
       <Services />
       <WhyChoose />

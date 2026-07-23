@@ -81,6 +81,12 @@ export const adminRoutes: AdminRouteMeta[] = [
     breadcrumb: 'Partners',
   },
   {
+    path: '/admin/partners/approvals',
+    title: 'Partner Approvals',
+    subtitle: 'Pending marketplace registrations · demo',
+    breadcrumb: 'Approvals',
+  },
+  {
     path: '/admin/marketplace',
     title: 'Service Marketplace',
     subtitle: 'Service catalog · demo',
@@ -228,6 +234,7 @@ const adminNavItems: Array<{ label: string; href: string; icon: IconName }> = [
   { label: 'Settlements', href: '/admin/settlements', icon: 'Package' },
   { label: 'Profit', href: '/admin/profit', icon: 'TrendingUp' },
   { label: 'Partners', href: '/admin/partners', icon: 'Users' },
+  { label: 'Partner Approvals', href: '/admin/partners/approvals', icon: 'Clock' },
   { label: 'Marketplace', href: '/admin/marketplace', icon: 'Briefcase' },
   { label: 'Assignment', href: '/admin/assignment', icon: 'Check' },
   { label: 'Templates', href: '/admin/templates', icon: 'Layers' },
@@ -418,6 +425,13 @@ export function getAdminBreadcrumbs(pathname: string): BreadcrumbItem[] {
         href: `/admin/projects/${projectId}/overview`,
       },
       ...(section ? [{ label: meta.breadcrumb }] : []),
+    ];
+  }
+  if (pathname === '/admin/partners/approvals') {
+    return [
+      { label: 'Admin', href: '/admin' },
+      { label: 'Partners', href: '/admin/partners' },
+      { label: 'Approvals' },
     ];
   }
   if (pathname.startsWith('/admin/partners/') && pathname !== '/admin/partners') {
