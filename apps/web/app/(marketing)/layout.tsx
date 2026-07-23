@@ -18,11 +18,11 @@ export default function MarketingLayout({
         Skip to main content
       </a>
       <SiteHeader />
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="min-w-0 flex-1 overflow-x-clip pb-20">
         {children}
       </main>
       <SiteFooter />
-      <BackToTop />
+      <BackToTop className="bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] z-40" />
     </>
   );
 }

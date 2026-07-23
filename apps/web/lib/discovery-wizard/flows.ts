@@ -159,7 +159,7 @@ const startNewBusinessFlow: WizardFlow = {
 
 const growExistingFlow: WizardFlow = {
   goalId: 'grow-existing-business',
-  title: 'Grow My Existing Business',
+  title: 'Grow My Business',
   intro:
     'Growth isn’t about doing everything. Let’s find the few moves that unlock your next stage.',
   questions: [
@@ -254,7 +254,7 @@ const growExistingFlow: WizardFlow = {
 
 const buildSoftwareFlow: WizardFlow = {
   goalId: 'build-software-or-app',
-  title: 'Build Software or an App',
+  title: 'Build Software & Digital Solutions',
   intro:
     'Great products start with clarity. I’ll help us define what to build, for whom, and in what order.',
   questions: [
@@ -352,7 +352,7 @@ const buildSoftwareFlow: WizardFlow = {
 
 const automateAiFlow: WizardFlow = {
   goalId: 'automate-with-ai',
-  title: 'Automate My Business with AI',
+  title: 'Automate with AI',
   intro:
     'AI works best when we target real bottlenecks. Let’s find the practical wins first.',
   questions: [

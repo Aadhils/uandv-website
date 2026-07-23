@@ -71,9 +71,10 @@ export function BackToTop({
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
       className={cn(
-        'fixed z-[60] inline-flex h-11 w-11 items-center justify-center rounded-uv-full border border-uv-border bg-uv-background/95 text-uv-brand shadow-uv-md backdrop-blur-sm transition-[opacity,transform,visibility] duration-200 uv-focus-ring',
+        'fixed z-40 inline-flex h-11 w-11 items-center justify-center rounded-uv-full border border-uv-border bg-uv-background/95 text-uv-brand shadow-uv-md backdrop-blur-sm transition-[opacity,transform,visibility] duration-200 uv-focus-ring',
         'hover:border-uv-brand/40 hover:bg-uv-brand-muted dark:bg-uv-background/90',
-        'right-4 bottom-[max(1rem,env(safe-area-inset-bottom,0px))] sm:right-6',
+        // Keep clear of mobile browser chrome and primary CTAs
+        'right-3 bottom-[max(1.25rem,calc(env(safe-area-inset-bottom,0px)+0.75rem))] sm:right-6',
         visible
           ? 'pointer-events-auto translate-y-0 opacity-100'
           : 'pointer-events-none invisible translate-y-2 opacity-0',

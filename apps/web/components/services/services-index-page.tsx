@@ -5,7 +5,6 @@ import { Icon, buttonVariants, cn } from '@uandv/ui';
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { getAllServices } from '@/lib/services';
-import { siteConfig } from '@/lib/site';
 
 import { Breadcrumbs } from './breadcrumbs';
 import { ServiceInquiryForm } from './service-inquiry-form';
@@ -41,17 +40,15 @@ export function ServicesIndexPage() {
               >
                 Contact us
               </Link>
-              <a
-                href={siteConfig.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/solutions/digital-marketing"
                 className={cn(
                   buttonVariants({ size: 'lg', variant: 'outline' }),
                   'justify-center',
                 )}
               >
-                WhatsApp
-              </a>
+                Digital Marketing solution
+              </Link>
             </div>
           </div>
         </div>

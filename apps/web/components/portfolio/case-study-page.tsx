@@ -8,6 +8,7 @@ import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import { ServiceIllustration } from '@/components/services/service-illustration';
 import {
   DEMO_PROJECT_LABEL,
+  getValidatedLiveDemoHref,
   type CaseStudy,
 } from '@/lib/portfolio';
 import { getServiceBySlug } from '@/lib/services';
@@ -16,6 +17,7 @@ import { siteConfig } from '@/lib/site';
 import { DemoProjectBadge } from './portfolio-card';
 
 export function CaseStudyPage({ study }: { study: CaseStudy }) {
+  const demoHref = getValidatedLiveDemoHref(study.liveDemoHref);
   const relatedServices = study.relatedServiceSlugs
     .map((slug) => getServiceBySlug(slug))
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
@@ -38,7 +40,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               <p className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
                 Case study
               </p>
-              <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl">
+              <h1 className="mt-4 break-words font-[family-name:var(--font-uv-display)] text-[1.75rem] font-bold tracking-tight text-uv-foreground sm:text-4xl md:text-5xl">
                 {study.title}
               </h1>
               <p className="mt-4 text-lg text-uv-foreground-muted">
@@ -52,21 +54,14 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                 approach and expected business value — not a live client claim.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                {study.liveDemoHref ? (
+                {demoHref ? (
                   <Link
-                    href={study.liveDemoHref}
+                    href={demoHref}
                     className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                   >
                     Live Demo
                   </Link>
-                ) : (
-                  <a
-                    href="#live-demo"
-                    className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
-                  >
-                    Live Demo
-                  </a>
-                )}
+                ) : null}
                 <a
                   href="#inquiry"
                   className={cn(
@@ -103,12 +98,12 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
             <SectionHeading
               eyebrow="Live demo"
               title={
-                study.liveDemoHref
+                demoHref
                   ? 'Open the interactive product demo.'
                   : 'Interactive preview placeholder.'
               }
               description={
-                study.liveDemoHref
+                demoHref
                   ? 'Launch the working frontend demo with mock data. No live backend or real customer claims.'
                   : 'This is a product demo placeholder — not a claim of a live client deployment. Request a guided walkthrough for a working preview.'
               }
@@ -121,41 +116,37 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                 <span className="h-2.5 w-2.5 rounded-full bg-uv-soft-violet/45" />
                 <span className="h-2.5 w-2.5 rounded-full bg-uv-soft-violet/25" />
                 <p className="ml-3 text-xs font-medium text-uv-soft-violet/80">
-                  {study.liveDemoHref ?? `demo.uandv.local/${study.slug}`}
+                  {demoHref ?? `Product demo · ${study.slug}`}
                 </p>
               </div>
               <div className="relative min-h-[280px] bg-gradient-to-br from-uv-navy via-[#3B1C78] to-uv-accent p-8 sm:min-h-[360px] sm:p-12">
                 <div className="absolute inset-0 marketing-hero-grid opacity-40" aria-hidden />
                 <div className="relative mx-auto flex max-w-xl flex-col items-center justify-center text-center text-white">
                   <DemoProjectBadge className="border-white/20 bg-white/10 text-white" />
-                  <h3 className="mt-6 font-[family-name:var(--font-uv-display)] text-2xl font-bold sm:text-3xl">
+                  <h3 className="mt-6 break-words font-[family-name:var(--font-uv-display)] text-2xl font-bold sm:text-3xl">
                     {study.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-uv-soft-violet sm:text-base">
-                    {study.liveDemoHref
-                      ? study.liveDemoHref.includes('/demo/hotel-management')
+                  <p className="mt-3 break-words text-sm leading-relaxed text-uv-soft-violet sm:text-base">
+                    {demoHref
+                      ? demoHref.includes('/demo/hotel-management')
                         ? 'Interactive hotel management demo ready — explore admin, front desk, housekeeping, and guest stay workflows with mock data.'
-                        : study.liveDemoHref.includes('/demo/restaurant-platform')
+                        : demoHref.includes('/demo/restaurant-platform')
                         ? 'Interactive restaurant platform ready — explore customer ordering, dine-in QR, POS, kitchen display, delivery, inventory, and admin with mock data.'
-                        : study.liveDemoHref.includes('/demo/travel')
+                        : demoHref.includes('/demo/travel')
                         ? 'Interactive travel platform ready — explore traveler, agent, and admin workspaces with flights, hotels, packages, checkout, and mock data.'
-                        : study.liveDemoHref.includes('mlm')
+                        : demoHref.includes('mlm')
                           ? 'Interactive product demo ready — explore admin and member login, genealogy, wallet, KYC, e-pin, and more with mock data.'
-                          : study.liveDemoHref.includes('smart-mobility')
+                          : demoHref.includes('smart-mobility')
                             ? 'Interactive product demo ready — explore booking, driver, and admin experiences with mock data.'
-                            : study.liveDemoHref.includes('enterprise-suite')
-                              ? study.liveDemoHref.includes('module=travel')
-                                ? 'Interactive travel suite ready — explore packages, bookings, itineraries, hotels, transport, visa, agents, and reports.'
-                                : 'Interactive enterprise suite ready — explore ERP, CRM, HR, inventory, accounting, and travel operations with role-based login.'
-                              : study.liveDemoHref.includes('erp')
-                                ? 'Interactive product demo ready — explore Admin, Sales, and HR workspaces across CRM, inventory, HR, and accounting.'
-                                : 'Interactive product demo ready — explore the working frontend with mock data.'
+                            : demoHref.includes('enterprise-suite')
+                              ? 'Interactive enterprise suite ready — explore ERP, CRM, HR, inventory, accounting, and travel operations with role-based login.'
+                              : 'Interactive product demo ready — explore the working frontend with mock data.'
                       : 'UI placeholder for the live demo environment. Book a consultation to schedule a guided product walkthrough.'}
                   </p>
                   <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                    {study.liveDemoHref ? (
+                    {demoHref ? (
                       <Link
-                        href={study.liveDemoHref}
+                        href={demoHref}
                         className={cn(
                           buttonVariants({ size: 'md' }),
                           'justify-center',

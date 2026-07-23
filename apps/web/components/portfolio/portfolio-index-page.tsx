@@ -39,7 +39,7 @@ export function PortfolioIndexPage() {
               <p className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
                 Portfolio &amp; Demo Center
               </p>
-              <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
+              <h1 className="mt-4 break-words font-[family-name:var(--font-uv-display)] text-[1.75rem] font-bold tracking-tight text-uv-foreground sm:text-4xl md:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
                 Our Work Speaks for Itself
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-uv-foreground-muted sm:text-xl">
@@ -55,7 +55,7 @@ export function PortfolioIndexPage() {
                   href="#demos"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
-                  View Live Demo
+                  Browse demos
                 </a>
                 <Link
                   href="/contact"
@@ -110,7 +110,7 @@ export function PortfolioIndexPage() {
             <SectionHeading
               eyebrow="Portfolio categories & demo cards"
               title="Browse demos by product lane."
-              description="Filter by category. Each card includes an image placeholder, industry, technologies, Live Demo, and View Details."
+              description="Filter by category. Each card includes an image placeholder, industry, technologies, View Details, and Live Demo when an interactive demo exists."
             />
           </Reveal>
           <div className="mt-12">

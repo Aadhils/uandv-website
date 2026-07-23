@@ -18,14 +18,14 @@ export function Industries() {
           />
         </Reveal>
 
-        <div className="mt-14 grid gap-px overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-border sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map((industry, index) => (
-            <Reveal key={industry.name} delayMs={index * 50}>
-              <article className="h-full bg-uv-background p-7 transition-colors duration-300 hover:bg-uv-background-subtle sm:p-8">
-                <h3 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+            <Reveal key={industry.name} delayMs={index * 50} className="h-full">
+              <article className="flex h-full min-w-0 flex-col rounded-uv-xl border border-uv-border bg-uv-background p-6 transition-colors duration-300 hover:bg-uv-background-subtle sm:p-7">
+                <h3 className="break-words font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
                   {industry.name}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
+                <p className="mt-2 break-words text-sm leading-relaxed text-uv-foreground-muted">
                   {industry.detail}
                 </p>
               </article>

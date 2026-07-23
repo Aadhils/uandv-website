@@ -18,12 +18,6 @@ function readViewMode(pageKey: string, fallback: ViewMode): ViewMode {
   try {
     const raw = window.localStorage.getItem(storageKey(pageKey));
     if (raw === 'grid' || raw === 'list') return raw;
-
-    // Legacy portfolio key from Sprint polish pass
-    if (pageKey === 'portfolio') {
-      const legacy = window.localStorage.getItem('uandv-portfolio-view');
-      if (legacy === 'grid' || legacy === 'list') return legacy;
-    }
   } catch {
     // private mode / blocked storage
   }
@@ -36,9 +30,6 @@ function subscribeViewMode(pageKey: string, onStoreChange: () => void) {
 
   const onStorage = (event: StorageEvent) => {
     if (event.key === key || event.key === null) onStoreChange();
-    if (pageKey === 'portfolio' && event.key === 'uandv-portfolio-view') {
-      onStoreChange();
-    }
   };
   const onCustom = () => onStoreChange();
 
@@ -67,9 +58,6 @@ export function useViewMode(
     (next: ViewMode) => {
       try {
         window.localStorage.setItem(storageKey(pageKey), next);
-        if (pageKey === 'portfolio') {
-          window.localStorage.setItem('uandv-portfolio-view', next);
-        }
       } catch {
         // ignore
       }

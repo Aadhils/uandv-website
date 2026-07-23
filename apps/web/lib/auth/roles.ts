@@ -25,17 +25,17 @@ export const SIGNUP_ACCOUNT_TYPES = [
   {
     value: WORKSPACE_ROLES.CUSTOMER,
     label: 'Customer',
-    description: 'Buy, book, and manage your activity with U&V businesses.',
+    description: 'Buy, book, and manage services',
   },
   {
     value: WORKSPACE_ROLES.VENDOR,
     label: 'Vendor',
-    description: 'List offerings, fulfill orders, and run vendor operations.',
+    description: 'Deliver assigned work and manage operations',
   },
   {
     value: WORKSPACE_ROLES.PARTNER,
     label: 'Partner',
-    description: 'Collaborate, refer, and grow through shared partnerships.',
+    description: 'Collaborate, refer, and grow together',
   },
 ] as const;
 

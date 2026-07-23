@@ -140,35 +140,35 @@ export const WIZARD_GOALS: Array<{
     id: 'start-new-business',
     title: 'Start a New Business',
     description:
-      'You have an idea. Let’s turn it into something real — step by step, without overwhelm.',
+      'Turn your business idea into a registered, branded, and launch-ready company.',
     icon: 'Rocket',
   },
   {
     id: 'grow-existing-business',
-    title: 'Grow My Existing Business',
+    title: 'Grow My Business',
     description:
-      'You’re already running. Let’s strengthen what’s working and remove what’s slowing you down.',
+      'Increase customers, improve operations, and scale your business with smart business strategies.',
     icon: 'TrendingUp',
   },
   {
     id: 'build-software-or-app',
-    title: 'Build Software or an App',
+    title: 'Build Software & Digital Solutions',
     description:
-      'You need a product built properly — clear plan, clean design, reliable delivery.',
+      'Websites, Mobile Apps, ERP, CRM, AI Automation, and custom software tailored for your business.',
     icon: 'Smartphone',
   },
   {
     id: 'automate-with-ai',
-    title: 'Automate My Business with AI',
+    title: 'Automate with AI',
     description:
-      'Too much manual work? Let’s find where AI can save time — safely and practically.',
+      'Reduce manual work, save time, and boost productivity with practical AI-powered automation.',
     icon: 'Sparkles',
   },
   {
     id: 'partner-with-uandv',
     title: 'Partner with U&V',
     description:
-      'You want to grow together — as a collaborator, not just a client.',
+      'Join our trusted ecosystem as a Vendor, Business Partner, or Service Provider and grow with us.',
     icon: 'Handshake',
   },
 ];

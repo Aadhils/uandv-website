@@ -2,15 +2,15 @@ import type { BusinessGuideCopy } from '../types';
 
 export const enGuide: BusinessGuideCopy = {
   language: 'en',
-  badge: 'Personal business guide',
+  badge: "Let's Build Your Business Together",
   languagePrompt: 'Which language should I guide you in?',
   languageHelper:
     'I’ll stay with you in this language for the whole journey. The rest of the website stays in English.',
   greeting:
-    'I’m here with you — like a trusted growth partner sitting across the table. Tell me what you want to achieve, and I’ll show you a clear path. No pressure, no jargon.',
+    "U&V is more than a software company. We are your long-term business growth partner. Whether you're starting with an idea, expanding an existing business, or building for the future, we'll guide you every step of the way.",
   question: 'What would you like to achieve today?',
   scrollHint:
-    'Not ready to choose? That’s fine — scroll down and explore our work anytime.',
+    "Every successful business starts with one decision. Tell us your goal, and together we'll build the roadmap to your success.",
   panelEyebrow: 'Here’s how we’ll walk this together',
   stepsLabel: 'Your recommended path',
   partnerPrompt: 'Which kind of partnership feels right for you?',
@@ -26,7 +26,7 @@ export const enGuide: BusinessGuideCopy = {
       id: 'start-new-business',
       title: 'Start a New Business',
       description:
-        'You have an idea. Let’s turn it into something real — step by step, without overwhelm.',
+        'Turn your business idea into a registered, branded, and launch-ready company.',
       icon: 'Rocket',
       interestSlug: 'startup-business-consulting',
       visitorType: 'new-business',
@@ -69,9 +69,9 @@ export const enGuide: BusinessGuideCopy = {
     },
     {
       id: 'grow-existing-business',
-      title: 'Grow My Existing Business',
+      title: 'Grow My Business',
       description:
-        'You’re already running. Let’s strengthen what’s working and remove what’s slowing you down.',
+        'Increase customers, improve operations, and scale your business with smart business strategies.',
       icon: 'TrendingUp',
       interestSlug: 'digital-marketing',
       visitorType: 'existing-business',
@@ -114,9 +114,9 @@ export const enGuide: BusinessGuideCopy = {
     },
     {
       id: 'build-software-or-app',
-      title: 'Build Software or an App',
+      title: 'Build Software & Digital Solutions',
       description:
-        'You need a product built properly — clear plan, clean design, reliable delivery.',
+        'Websites, Mobile Apps, ERP, CRM, AI Automation, and custom software tailored for your business.',
       icon: 'Code2',
       interestSlug: 'custom-software-development',
       visitorType: 'software-buyer',
@@ -159,9 +159,9 @@ export const enGuide: BusinessGuideCopy = {
     },
     {
       id: 'automate-with-ai',
-      title: 'Automate My Business with AI',
+      title: 'Automate with AI',
       description:
-        'Too much manual work? Let’s find where AI can save time — safely and practically.',
+        'Reduce manual work, save time, and boost productivity with practical AI-powered automation.',
       icon: 'Bot',
       interestSlug: 'ai-automation',
       visitorType: 'ai-automation',
@@ -201,7 +201,7 @@ export const enGuide: BusinessGuideCopy = {
       id: 'partner-with-uandv',
       title: 'Partner with U&V',
       description:
-        'You want to grow together — as a collaborator, not just a client.',
+        'Join our trusted ecosystem as a Vendor, Business Partner, or Service Provider and grow with us.',
       icon: 'Handshake',
       interestSlug: 'startup-business-consulting',
       visitorType: 'partner',

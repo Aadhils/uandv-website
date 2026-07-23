@@ -82,7 +82,7 @@ export const growthServices = [
     title: 'MLM Consulting',
     description:
       'Advise on network marketing platforms, commission transparency, member experience, and operational controls.',
-    href: '/services/mlm-software',
+    href: '/solutions/mlm-software',
     icon: 'Network' as IconName,
   },
   {
@@ -103,7 +103,7 @@ export const growthServices = [
     title: 'Digital Growth Strategy',
     description:
       'Connect offer clarity, website experience, channels, and follow-up systems so demand can convert into pipeline.',
-    href: '/services/digital-marketing',
+    href: '/solutions/digital-marketing',
     icon: 'Megaphone' as IconName,
   },
 ];

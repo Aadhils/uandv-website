@@ -60,7 +60,9 @@ export function MlmSolutionsPage() {
                   href="/demo/mlm"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
+                    'justify-center border-uv-brand/55 bg-uv-brand/15 text-uv-brand shadow-none',
+                    'hover:border-uv-brand hover:bg-uv-brand/25 hover:text-uv-brand',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-uv-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-uv-background',
                   )}
                 >
                   View MLM Plan Live Demo
@@ -475,7 +477,9 @@ export function MlmSolutionsPage() {
                   href="/demo/mlm"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
+                    'justify-center border-uv-brand/55 bg-uv-brand/15 text-uv-brand shadow-none',
+                    'hover:border-uv-brand hover:bg-uv-brand/25 hover:text-uv-brand',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-uv-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-uv-background',
                   )}
                 >
                   View MLM Plan Live Demo

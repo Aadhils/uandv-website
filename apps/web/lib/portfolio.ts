@@ -17,6 +17,21 @@ export type PortfolioCategory =
   | 'AI Automation'
   | 'E-Commerce';
 
+/**
+ * Verified public interactive demo entry routes under `app/demo/*`.
+ * Only these may be used as portfolio Live Demo targets.
+ */
+export const VALIDATED_LIVE_DEMO_ROUTES = [
+  '/demo/restaurant-platform',
+  '/demo/mlm',
+  '/demo/smart-mobility',
+  '/demo/enterprise-suite',
+  '/demo/travel',
+  '/demo/hotel-management',
+] as const;
+
+export type LiveDemoHref = (typeof VALIDATED_LIVE_DEMO_ROUTES)[number];
+
 export type CaseStudy = {
   slug: string;
   title: string;
@@ -41,14 +56,30 @@ export type CaseStudy = {
   illustration: ServiceIllustrationKey;
   icon: IconName;
   featured?: boolean;
-  /** Optional interactive product demo route */
-  liveDemoHref?: string;
+  /**
+   * Optional interactive product demo route.
+   * Must be one of VALIDATED_LIVE_DEMO_ROUTES — omit when no demo exists.
+   */
+  liveDemoHref?: LiveDemoHref;
   seo: {
     title: string;
     description: string;
     keywords: string[];
   };
 };
+
+export function getValidatedLiveDemoHref(
+  href: string | undefined | null,
+): LiveDemoHref | undefined {
+  if (!href) return undefined;
+  return (VALIDATED_LIVE_DEMO_ROUTES as readonly string[]).includes(href)
+    ? (href as LiveDemoHref)
+    : undefined;
+}
+
+export function hasLiveDemo(study: Pick<CaseStudy, 'liveDemoHref'>): boolean {
+  return Boolean(getValidatedLiveDemoHref(study.liveDemoHref));
+}
 
 export const DEMO_PROJECT_LABEL = 'Product Demo';
 

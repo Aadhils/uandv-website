@@ -220,8 +220,8 @@ export function SmartWelcomeHero() {
       : WIZARD_GOALS;
 
   const resumeLabel = storedSession
-    ? `Resume previous consultation (${getWizardGoalTitle(storedSession.goalId)})`
-    : 'Resume previous consultation';
+    ? `Continue My Business Journey (${getWizardGoalTitle(storedSession.goalId)})`
+    : 'Continue My Business Journey';
 
   const resumeControl = showResume ? (
     <div className="mt-5 flex w-full min-w-0 justify-start">
@@ -291,7 +291,7 @@ export function SmartWelcomeHero() {
               'w-full max-w-full justify-center sm:w-auto',
             )}
           >
-            Get Started
+            Start My Business Journey
           </a>
         </div>
 

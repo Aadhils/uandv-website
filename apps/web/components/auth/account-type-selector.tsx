@@ -1,6 +1,6 @@
 'use client';
 
-import { Radio, RadioGroup, cn } from '@uandv/ui';
+import { Icon, Radio, RadioGroup, cn } from '@uandv/ui';
 
 import {
   SIGNUP_ACCOUNT_TYPES,
@@ -37,25 +37,52 @@ export function AccountTypeSelector({
               <label
                 key={type.value}
                 className={cn(
-                  'flex cursor-pointer flex-col gap-2 rounded-uv-xl border p-4 transition-colors',
+                  'relative flex min-h-[8.5rem] cursor-pointer flex-col gap-2 rounded-uv-xl border-2 p-4 transition-colors',
+                  'focus-within:ring-2 focus-within:ring-uv-brand/45 focus-within:ring-offset-2 focus-within:ring-offset-uv-background',
                   selected
-                    ? 'border-uv-brand bg-uv-brand-muted/60'
-                    : 'border-uv-border bg-uv-background hover:border-uv-brand/40',
+                    ? 'border-uv-brand bg-uv-brand/15 shadow-[0_0_0_1px_rgb(124_58_237_/_0.35)]'
+                    : 'border-uv-border bg-uv-background hover:border-uv-brand/45 hover:bg-uv-brand-muted/30',
+                  error && !selected ? 'border-uv-error/50' : null,
                 )}
               >
-                <span className="flex items-center gap-2">
-                  <Radio
-                    name={name}
-                    value={type.value}
-                    checked={selected}
-                    onChange={() => onChange(type.value)}
-                    aria-label={type.label}
-                  />
-                  <span className="text-sm font-medium text-uv-foreground">
-                    {type.label}
+                <span className="flex items-start justify-between gap-2">
+                  <span className="flex min-w-0 items-center gap-2.5">
+                    <Radio
+                      name={name}
+                      value={type.value}
+                      checked={selected}
+                      onChange={() => onChange(type.value)}
+                      aria-label={type.label}
+                    />
+                    <span
+                      className={cn(
+                        'font-[family-name:var(--font-uv-display)] text-base font-semibold',
+                        selected ? 'text-uv-brand' : 'text-uv-foreground',
+                      )}
+                    >
+                      {type.label}
+                    </span>
+                  </span>
+                  <span
+                    className={cn(
+                      'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-colors',
+                      selected
+                        ? 'border-uv-brand bg-uv-brand text-white'
+                        : 'border-uv-border bg-uv-background text-transparent',
+                    )}
+                    aria-hidden
+                  >
+                    <Icon name="Check" size="sm" />
                   </span>
                 </span>
-                <span className="pl-6 text-xs leading-relaxed text-uv-foreground-muted">
+                <span
+                  className={cn(
+                    'pl-7 text-sm leading-relaxed',
+                    selected
+                      ? 'text-uv-foreground'
+                      : 'text-uv-foreground-muted',
+                  )}
+                >
                   {type.description}
                 </span>
               </label>
