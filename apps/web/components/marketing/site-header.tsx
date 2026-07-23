@@ -49,17 +49,6 @@ export function SiteHeader() {
           >
             Login
           </Link>
-          <a
-            href={siteConfig.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              buttonVariants({ size: 'sm', variant: 'outline' }),
-              'hidden xl:inline-flex',
-            )}
-          >
-            WhatsApp
-          </a>
           <Link
             href="/signup"
             className={cn(
@@ -83,14 +72,6 @@ export function SiteHeader() {
           <Link href="/signup" className={cn(buttonVariants({ size: 'md' }))}>
             Get Started
           </Link>
-          <a
-            href={siteConfig.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(buttonVariants({ size: 'md', variant: 'ghost' }))}
-          >
-            Chat on WhatsApp
-          </a>
         </>
       }
     />
