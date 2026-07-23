@@ -25,7 +25,6 @@ import {
   type PartnerTypeId,
 } from '@/lib/business-guide';
 import { buildContactHref } from '@/lib/journey-lead';
-import { siteConfig } from '@/lib/site';
 
 /**
  * Homepage Business Guide — multilingual consultant experience.
@@ -167,17 +166,6 @@ export function SmartWelcomeHero() {
             )}
           >
             Get Started
-          </a>
-          <a
-            href={siteConfig.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              buttonVariants({ size: 'lg', variant: 'outline' }),
-              'w-full justify-center border-white/40 bg-transparent text-white hover:bg-white/10 sm:w-auto',
-            )}
-          >
-            Chat on WhatsApp
           </a>
         </div>
 
