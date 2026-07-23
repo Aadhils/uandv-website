@@ -58,6 +58,12 @@ export const employeeRoutes: EmployeeRouteMeta[] = [
     breadcrumb: 'Tasks',
   },
   {
+    path: '/employee/timeline',
+    title: 'Delivery Timeline',
+    subtitle: 'Assigned project timeline · role filtered',
+    breadcrumb: 'Timeline',
+  },
+  {
     path: '/employee/communications',
     title: 'Communications',
     subtitle: 'Calls, WhatsApp, email, meetings, notes',
@@ -97,6 +103,7 @@ const employeeNavItems: Array<{ label: string; href: string; icon: IconName }> =
   { label: 'Pipeline', href: '/employee/pipeline', icon: 'Workflow' },
   { label: 'Meetings', href: '/employee/meetings', icon: 'Phone' },
   { label: 'Tasks', href: '/employee/tasks', icon: 'Check' },
+  { label: 'Timeline', href: '/employee/timeline', icon: 'Workflow' },
   { label: 'Communications', href: '/employee/communications', icon: 'MessageCircle' },
   { label: 'Daily Report', href: '/employee/reports', icon: 'FileText' },
   { label: 'Notifications', href: '/employee/notifications', icon: 'Bell' },

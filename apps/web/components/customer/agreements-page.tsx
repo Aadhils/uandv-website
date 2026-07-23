@@ -2,20 +2,28 @@ import { CustomerPageHeader } from '@/components/customer/page-header';
 import { PlaceholderAction } from '@/components/customer/placeholder-action';
 import { ResponsiveDataList } from '@/components/customer/responsive-data-list';
 import { StatusBadge } from '@/components/customer/status-badge';
-import { demoAgreements, formatDisplayDate } from '@/lib/customer';
+import {
+  formatFinanceDate,
+  formatFinanceInr,
+  getAgreementsForCustomer,
+} from '@/lib/finance';
+import { DEMO_CUSTOMER_ID } from '@/lib/projects';
 
 export function CustomerAgreementsPage() {
+  const rows = getAgreementsForCustomer(DEMO_CUSTOMER_ID);
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8">
       <CustomerPageHeader
         title="Agreements"
-        description="Contract titles, signature status, and digital trust placeholders. No e-sign provider connected."
+        description="Your service agreements only. Linked to your projects where applicable. No e-sign provider connected."
       />
 
       <ResponsiveDataList
-        rows={demoAgreements}
+        rows={rows}
         getRowId={(row) => row.id}
         mobileTitle={(row) => row.title}
+        emptyMessage="No agreements yet."
         columns={[
           {
             key: 'title',
@@ -25,10 +33,15 @@ export function CustomerAgreementsPage() {
               <div>
                 <p className="font-medium">{row.title}</p>
                 <p className="mt-0.5 text-xs text-uv-foreground-subtle">
-                  {row.auditLabel}
+                  {row.projectTitle ?? 'Workspace agreement'} · {row.auditLabel}
                 </p>
               </div>
             ),
+          },
+          {
+            key: 'value',
+            header: 'Value',
+            render: (row) => formatFinanceInr(row.valueInr),
           },
           {
             key: 'status',
@@ -39,13 +52,13 @@ export function CustomerAgreementsPage() {
             key: 'signed',
             header: 'Signed date',
             render: (row) =>
-              row.signedDate ? formatDisplayDate(row.signedDate) : '—',
+              row.signedAt ? formatFinanceDate(row.signedAt) : '—',
           },
           {
             key: 'expiry',
             header: 'Expiry / renewal',
             mobileLabel: 'Renewal',
-            render: (row) => formatDisplayDate(row.expiryOrRenewalDate),
+            render: (row) => formatFinanceDate(row.expiryOrRenewalAt),
           },
           {
             key: 'actions',
@@ -59,11 +72,6 @@ export function CustomerAgreementsPage() {
           },
         ]}
       />
-
-      <p className="rounded-uv-lg border border-dashed border-uv-border bg-uv-background-subtle px-4 py-3 text-sm text-uv-foreground-muted">
-        Digital trust / audit: checksum and signature certificate labels are
-        placeholders only — not production legal evidence.
-      </p>
     </div>
   );
 }

@@ -32,6 +32,13 @@ export default function LoginPage() {
             Employee
           </Link>
           {' · '}
+          <Link
+            href="/login/vendor"
+            className="font-medium text-uv-brand underline-offset-4 hover:underline"
+          >
+            Vendor
+          </Link>
+          {' · '}
           Need help?{' '}
           <Link
             href="/contact"

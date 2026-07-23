@@ -22,7 +22,7 @@ export function EmployeeReportsPage() {
     <div className="mx-auto flex max-w-6xl flex-col gap-10">
       <EmployeePageHeader
         title="Daily Report & Performance"
-        description="Submit a demo daily work report and review performance targets. No payroll or incentive calculations."
+        description="Submit a demo daily work report and review performance targets. No payroll, profit, or financial reports — those remain Admin-only."
       />
 
       <section aria-label="Daily work report" className="space-y-4">

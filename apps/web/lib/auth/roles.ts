@@ -4,7 +4,7 @@
  * Architecture:
  * - One user identity may hold multiple workspace roles (memberships).
  * - Do NOT create separate auth systems / credential databases per role.
- * - Customer → /dashboard · Admin → /admin · Employee → /employee
+ * - Customer → /dashboard · Admin → /admin · Employee → /employee · Vendor → /vendor
  * - Dedicated login entry routes may exist; they share this identity engine.
  * - Signup offers Customer / Vendor / Partner only; Admin/Employee are internal.
  */

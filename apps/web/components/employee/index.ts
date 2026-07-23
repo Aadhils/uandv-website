@@ -11,5 +11,6 @@ export { EmployeeTasksPage } from './tasks-page';
 export { EmployeeCommunicationsPage } from './communications-page';
 export { EmployeeReportsPage } from './reports-page';
 export { EmployeeNotificationsPage } from './notifications-page';
+export { EmployeeTimelinePage } from './timeline-page';
 export { EmployeeProfilePage } from './profile-page';
 export { EmployeeSettingsPage } from './settings-page';

@@ -21,6 +21,12 @@ export const customerRoutes: CustomerRouteMeta[] = [
     breadcrumb: 'Projects',
   },
   {
+    path: '/dashboard/quotations',
+    title: 'Quotations',
+    subtitle: 'Your quotations only',
+    breadcrumb: 'Quotations',
+  },
+  {
     path: '/dashboard/payments',
     title: 'Payments',
     subtitle: 'Invoices and payment status — UI only',
@@ -41,7 +47,7 @@ export const customerRoutes: CustomerRouteMeta[] = [
   {
     path: '/dashboard/timeline',
     title: 'Timeline',
-    subtitle: 'Your journey with U&V',
+    subtitle: 'Lifetime business timeline · role-filtered',
     breadcrumb: 'Timeline',
   },
   {
@@ -103,6 +109,7 @@ const customerNavItems: Array<{
 }> = [
   { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
   { label: 'My Projects', href: '/dashboard/projects', icon: 'Briefcase' },
+  { label: 'Quotations', href: '/dashboard/quotations', icon: 'FileText' },
   { label: 'Payments', href: '/dashboard/payments', icon: 'Wallet' },
   { label: 'Agreements', href: '/dashboard/agreements', icon: 'FileText' },
   { label: 'Documents', href: '/dashboard/documents', icon: 'Layers' },

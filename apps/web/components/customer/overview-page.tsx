@@ -13,6 +13,7 @@ import {
   SupportSummarySection,
   UpcomingRenewalsSection,
 } from '@/components/customer/dashboard';
+import { HappinessScoreCard } from '@/components/lifecycle';
 import {
   demoAssets,
   demoBusinessHealth,
@@ -20,17 +21,47 @@ import {
   demoCustomerProfile,
   demoDashboardSummary,
   demoNotifications,
-  demoProjects,
   demoRenewals,
   demoTickets,
   demoTimeline,
 } from '@/lib/customer';
+import {
+  getCustomerHappiness,
+} from '@/lib/lifecycle';
+import {
+  DEMO_CUSTOMER_ID,
+  getCustomerDeliverySummary,
+  getCustomerVisibleUpdates,
+  getMilestonesForProject,
+  getProjectsForCustomer,
+} from '@/lib/projects';
 
 /**
- * Customer Business Workspace dashboard — Sprint 3.0.5.
+ * Customer Business Workspace dashboard — Sprint 3.0.5 + 3.1.0 delivery hooks.
  * Demo UI only; no backend, payments, or file services.
  */
 export function CustomerOverviewPage() {
+  const delivery = getCustomerDeliverySummary(DEMO_CUSTOMER_ID);
+  const projects = getProjectsForCustomer(DEMO_CUSTOMER_ID);
+  const happiness = getCustomerHappiness(DEMO_CUSTOMER_ID);
+  const summary = {
+    ...demoDashboardSummary,
+    activeProjects: delivery.activeProjects,
+    pendingApprovals: delivery.pendingApprovals,
+    pendingPayments: delivery.paymentActions,
+  };
+  const latestUpdates = projects.flatMap((p) =>
+    getCustomerVisibleUpdates(p.id).map((u) => ({
+      ...u,
+      projectTitle: p.title,
+    })),
+  );
+  const upcomingMilestones = projects.flatMap((p) =>
+    getMilestonesForProject(p.id)
+      .filter((m) => m.customerVisible && m.status !== 'completed')
+      .map((m) => ({ ...m, projectTitle: p.title })),
+  );
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 lg:gap-10">
       <CustomerPageHeader
@@ -51,7 +82,7 @@ export function CustomerOverviewPage() {
           aria-hidden
         />
         <div className="relative space-y-2 px-5 py-6 sm:px-8 sm:py-7">
-          <Badge variant="default">Sprint 3.0.5 · Business Workspace</Badge>
+          <Badge variant="default">Sprint 3.1.0 · Delivery linked</Badge>
           <h2
             id="workspace-intro-heading"
             className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl"
@@ -59,18 +90,79 @@ export function CustomerOverviewPage() {
             Your business at a glance
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
-            Demo data powers this overview. No live authentication elevation,
-            payment gateway, or file storage in this sprint.
+            Active projects and pending actions come from the shared
+            service-delivery model. Demo data only — no live authentication,
+            payment gateway, or file storage.
           </p>
         </div>
       </section>
 
       <BusinessHealthSection health={demoBusinessHealth} />
 
-      <DashboardSummaryCards summary={demoDashboardSummary} />
+      <HappinessScoreCard score={happiness} />
+
+      <DashboardSummaryCards summary={summary} />
+
+      <section
+        aria-label="Delivery snapshot"
+        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+      >
+        <div className="rounded-uv-xl border border-uv-border px-4 py-3">
+          <p className="text-xs text-uv-foreground-subtle">Latest updates</p>
+          <p className="text-2xl font-semibold tabular-nums">
+            {delivery.latestUpdates}
+          </p>
+        </div>
+        <div className="rounded-uv-xl border border-uv-border px-4 py-3">
+          <p className="text-xs text-uv-foreground-subtle">
+            Upcoming milestones
+          </p>
+          <p className="text-2xl font-semibold tabular-nums">
+            {delivery.upcomingMilestones}
+          </p>
+        </div>
+        <div className="rounded-uv-xl border border-uv-border px-4 py-3 sm:col-span-2">
+          <p className="text-xs text-uv-foreground-subtle">
+            Recent work updates
+          </p>
+          <ul className="mt-1 space-y-1 text-sm">
+            {latestUpdates.slice(0, 2).map((u) => (
+              <li key={u.id} className="text-uv-foreground-muted">
+                <span className="font-medium text-uv-foreground">{u.title}</span>
+                {' · '}
+                {u.projectTitle}
+              </li>
+            ))}
+            {latestUpdates.length === 0 ? (
+              <li className="text-uv-foreground-muted">No updates yet.</li>
+            ) : null}
+          </ul>
+        </div>
+      </section>
+
+      {upcomingMilestones.length > 0 ? (
+        <section aria-label="Upcoming milestones" className="space-y-2">
+          <h2 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold">
+            Upcoming milestones
+          </h2>
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {upcomingMilestones.slice(0, 4).map((m) => (
+              <li
+                key={m.id}
+                className="rounded-uv-lg border border-uv-border px-3 py-2.5 text-sm"
+              >
+                <p className="font-medium">{m.title}</p>
+                <p className="text-xs text-uv-foreground-muted">
+                  {m.projectTitle} · due {m.dueDate}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-8">
-        <ProjectProgressSection projects={demoProjects} />
+        <ProjectProgressSection projects={projects} />
         <div className="space-y-8">
           <PaymentSummarySection snapshot={demoBusinessPaymentSnapshot} />
           <RecentNotificationsSection notifications={demoNotifications} />

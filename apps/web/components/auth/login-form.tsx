@@ -17,6 +17,7 @@ import {
   DEMO_ADMIN_IDENTITY,
   DEMO_CUSTOMER_IDENTITY,
   DEMO_EMPLOYEE_IDENTITY,
+  DEMO_VENDOR_IDENTITY,
   WORKSPACE_ROLES,
   hasFieldErrors,
   setDemoAuthPreview,
@@ -37,6 +38,7 @@ export type LoginFormProps = {
 function identityForRole(role: WorkspaceRole) {
   if (role === WORKSPACE_ROLES.ADMIN) return DEMO_ADMIN_IDENTITY;
   if (role === WORKSPACE_ROLES.EMPLOYEE) return DEMO_EMPLOYEE_IDENTITY;
+  if (role === WORKSPACE_ROLES.VENDOR) return DEMO_VENDOR_IDENTITY;
   return DEMO_CUSTOMER_IDENTITY;
 }
 
@@ -135,8 +137,8 @@ export function LoginForm({
         </p>
       ) : (
         <p className="text-center text-sm text-uv-foreground-muted">
-          Internal access uses the same identity engine as customers — not a
-          separate credential database.
+          Uses the same shared identity engine — not a separate credential
+          database.
         </p>
       )}
 

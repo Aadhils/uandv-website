@@ -27,10 +27,76 @@ export const adminRoutes: AdminRouteMeta[] = [
     breadcrumb: 'Projects',
   },
   {
+    path: '/admin/timeline',
+    title: 'Business Timeline',
+    subtitle: 'Lifetime timeline, health, and activity',
+    breadcrumb: 'Timeline',
+  },
+  {
+    path: '/admin/business',
+    title: 'Business Dashboard',
+    subtitle: 'Finance operations rollup · admin only',
+    breadcrumb: 'Business',
+  },
+  {
+    path: '/admin/quotations',
+    title: 'Quotation Management',
+    subtitle: 'Quotes linked to customers and projects',
+    breadcrumb: 'Quotations',
+  },
+  {
+    path: '/admin/agreements',
+    title: 'Agreement Management',
+    subtitle: 'Contracts and renewals · demo',
+    breadcrumb: 'Agreements',
+  },
+  {
     path: '/admin/payments',
-    title: 'Payment Center',
-    subtitle: 'Invoices and reminders · no gateway',
+    title: 'Payment Tracker',
+    subtitle: 'Invoices and payment status · no gateway',
     breadcrumb: 'Payments',
+  },
+  {
+    path: '/admin/expenses',
+    title: 'Expense Management',
+    subtitle: 'Admin-only expense ledger',
+    breadcrumb: 'Expenses',
+  },
+  {
+    path: '/admin/settlements',
+    title: 'Vendor Settlement',
+    subtitle: 'Vendor payout queue · demo',
+    breadcrumb: 'Settlements',
+  },
+  {
+    path: '/admin/profit',
+    title: 'Profit Dashboard',
+    subtitle: 'Margin view · admin only',
+    breadcrumb: 'Profit',
+  },
+  {
+    path: '/admin/partners',
+    title: 'Partner Network',
+    subtitle: 'Partner directory and verification',
+    breadcrumb: 'Partners',
+  },
+  {
+    path: '/admin/marketplace',
+    title: 'Service Marketplace',
+    subtitle: 'Service catalog · demo',
+    breadcrumb: 'Marketplace',
+  },
+  {
+    path: '/admin/assignment',
+    title: 'Smart Assignment',
+    subtitle: 'Search, compare, and assign partners',
+    breadcrumb: 'Assignment',
+  },
+  {
+    path: '/admin/templates',
+    title: 'Business Templates',
+    subtitle: 'Industry service launch packs',
+    breadcrumb: 'Templates',
   },
   {
     path: '/admin/work-updates',
@@ -145,9 +211,20 @@ export const adminRoutes: AdminRouteMeta[] = [
 
 const adminNavItems: Array<{ label: string; href: string; icon: IconName }> = [
   { label: 'Dashboard', href: '/admin', icon: 'LayoutDashboard' },
+  { label: 'Business', href: '/admin/business', icon: 'Sparkles' },
   { label: 'Customers', href: '/admin/customers', icon: 'Users' },
   { label: 'Projects', href: '/admin/projects', icon: 'Briefcase' },
+  { label: 'Timeline', href: '/admin/timeline', icon: 'Workflow' },
+  { label: 'Quotations', href: '/admin/quotations', icon: 'FileText' },
+  { label: 'Agreements', href: '/admin/agreements', icon: 'Layers' },
   { label: 'Payments', href: '/admin/payments', icon: 'Wallet' },
+  { label: 'Expenses', href: '/admin/expenses', icon: 'CircleAlert' },
+  { label: 'Settlements', href: '/admin/settlements', icon: 'Package' },
+  { label: 'Profit', href: '/admin/profit', icon: 'TrendingUp' },
+  { label: 'Partners', href: '/admin/partners', icon: 'Users' },
+  { label: 'Marketplace', href: '/admin/marketplace', icon: 'Briefcase' },
+  { label: 'Assignment', href: '/admin/assignment', icon: 'Check' },
+  { label: 'Templates', href: '/admin/templates', icon: 'Layers' },
   { label: 'Work Updates', href: '/admin/work-updates', icon: 'Sparkles' },
   { label: 'Support', href: '/admin/support', icon: 'MessageCircle' },
   { label: 'Documents', href: '/admin/documents', icon: 'Layers' },
@@ -212,6 +289,57 @@ export function getAdminRouteMeta(pathname: string): AdminRouteMeta {
     };
   }
 
+  if (pathname.startsWith('/admin/projects/new')) {
+    return {
+      path: pathname,
+      title: 'Create Project',
+      subtitle: 'Service delivery project · demo',
+      breadcrumb: 'New Project',
+    };
+  }
+
+  if (pathname.match(/^\/admin\/projects\/[^/]+/)) {
+    const segment = pathname.split('/')[4] ?? 'overview';
+    const labels: Record<string, string> = {
+      overview: 'Overview',
+      timeline: 'Timeline',
+      tasks: 'Tasks',
+      team: 'Team',
+      employees: 'Employees',
+      vendors: 'Vendors',
+      documents: 'Documents',
+      payments: 'Payments',
+      approvals: 'Approvals',
+      updates: 'Updates',
+      activity: 'Activity',
+      risks: 'Risks',
+      support: 'Support',
+    };
+    return {
+      path: pathname,
+      title: `Project ${labels[segment] ?? 'Detail'}`,
+      subtitle: 'Service delivery control center',
+      breadcrumb: labels[segment] ?? 'Project',
+    };
+  }
+
+  if (pathname.match(/^\/admin\/partners\/[^/]+/)) {
+    const segment = pathname.split('/')[4] ?? 'profile';
+    const labels: Record<string, string> = {
+      performance: 'Performance',
+      projects: 'Assigned Projects',
+      payments: 'Payment Summary',
+      documents: 'Documents',
+      communications: 'Communication',
+    };
+    return {
+      path: pathname,
+      title: `Partner ${labels[segment] ?? 'Profile'}`,
+      subtitle: 'Partner network detail',
+      breadcrumb: labels[segment] ?? 'Profile',
+    };
+  }
+
   const nested = [...adminRoutes]
     .filter((route) => route.path !== '/admin')
     .sort((a, b) => b.path.length - a.path.length)
@@ -240,6 +368,41 @@ export function getAdminBreadcrumbs(pathname: string): BreadcrumbItem[] {
       { label: 'Admin', href: '/admin' },
       { label: 'Customers', href: '/admin/customers' },
       { label: 'Profile' },
+    ];
+  }
+  if (pathname.startsWith('/admin/projects/') && pathname !== '/admin/projects') {
+    const parts = pathname.split('/');
+    const projectId = parts[3];
+    const section = parts[4];
+    if (pathname === '/admin/projects/new') {
+      return [
+        { label: 'Admin', href: '/admin' },
+        { label: 'Projects', href: '/admin/projects' },
+        { label: 'New' },
+      ];
+    }
+    return [
+      { label: 'Admin', href: '/admin' },
+      { label: 'Projects', href: '/admin/projects' },
+      {
+        label: projectId,
+        href: `/admin/projects/${projectId}/overview`,
+      },
+      ...(section ? [{ label: meta.breadcrumb }] : []),
+    ];
+  }
+  if (pathname.startsWith('/admin/partners/') && pathname !== '/admin/partners') {
+    const parts = pathname.split('/');
+    const partnerId = parts[3];
+    const section = parts[4];
+    return [
+      { label: 'Admin', href: '/admin' },
+      { label: 'Partners', href: '/admin/partners' },
+      {
+        label: partnerId,
+        href: `/admin/partners/${partnerId}`,
+      },
+      ...(section ? [{ label: meta.breadcrumb }] : []),
     ];
   }
   if (pathname.startsWith('/admin/leads')) {

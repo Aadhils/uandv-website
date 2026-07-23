@@ -1,44 +1,109 @@
 import { Badge } from '@uandv/ui';
 
 import { CustomerPageHeader } from '@/components/customer/page-header';
-import { demoTimeline, formatDisplayDate } from '@/lib/customer';
+import {
+  BusinessTimeline,
+  DeliveryProgress,
+  HappinessScoreCard,
+  LifecycleActivityFeed,
+  ProjectHealthPanel,
+} from '@/components/lifecycle';
+import {
+  buildLifetimeTimeline,
+  filterTimelineForRole,
+  getActivityFeedForRole,
+  getCustomerHappiness,
+  getProjectHealthById,
+  getServiceDeliveryProgress,
+} from '@/lib/lifecycle';
+import { DEMO_CUSTOMER_ID, getProjectsForCustomer } from '@/lib/projects';
 
 export function CustomerTimelinePage() {
-  const events = [...demoTimeline].sort((a, b) =>
-    a.occurredAt.localeCompare(b.occurredAt),
-  );
+  const projects = getProjectsForCustomer(DEMO_CUSTOMER_ID);
+  const events = filterTimelineForRole(buildLifetimeTimeline(), 'customer', {
+    customerId: DEMO_CUSTOMER_ID,
+  });
+  const activity = getActivityFeedForRole('customer', {
+    customerId: DEMO_CUSTOMER_ID,
+    limit: 8,
+  });
+  const happiness = getCustomerHappiness(DEMO_CUSTOMER_ID);
+  const health = projects
+    .map((p) => getProjectHealthById(p.id))
+    .filter((h): h is NonNullable<typeof h> => Boolean(h));
+  const delivery = projects
+    .map((p) => getServiceDeliveryProgress(p.id))
+    .filter((d): d is NonNullable<typeof d> => Boolean(d));
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-8">
+    <div className="mx-auto flex max-w-6xl flex-col gap-8">
       <CustomerPageHeader
         title="Business Timeline"
-        description="Chronological customer journey with U&V. Static demo events only."
+        description="Your lifetime journey with U&V — customer-visible events only. Shared lifecycle engine · demo data."
       />
 
-      <ol className="relative space-y-0 border-l border-uv-border pl-6">
-        {events.map((event, index) => (
-          <li key={event.id} className="relative pb-8 last:pb-0">
-            <span
-              className="absolute -left-[1.625rem] top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-uv-brand bg-uv-background"
-              aria-hidden
-            />
-            <div className="space-y-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="secondary">{formatDisplayDate(event.occurredAt)}</Badge>
-                {index === events.length - 1 ? (
-                  <Badge variant="default">Latest</Badge>
-                ) : null}
-              </div>
-              <h3 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
-                {event.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-uv-foreground-muted">
-                {event.description}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <Badge variant="warning" className="w-fit">
+        Sprint 3.2 · Customer-visible timeline
+      </Badge>
+
+      <HappinessScoreCard score={happiness} />
+
+      {health.length > 0 ? (
+        <section aria-labelledby="cust-health-heading" className="space-y-3">
+          <h2
+            id="cust-health-heading"
+            className="font-[family-name:var(--font-uv-display)] text-lg font-semibold"
+          >
+            Project health
+          </h2>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {health.map((snapshot) => (
+              <ProjectHealthPanel
+                key={snapshot.projectId}
+                snapshot={snapshot}
+                compact
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {delivery.length > 0 ? (
+        <section aria-labelledby="cust-delivery-heading" className="space-y-3">
+          <h2
+            id="cust-delivery-heading"
+            className="font-[family-name:var(--font-uv-display)] text-lg font-semibold"
+          >
+            Service delivery progress
+          </h2>
+          <div className="space-y-4">
+            {delivery.map((item) => (
+              <DeliveryProgress key={item.projectId} progress={item} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <div className="grid gap-8 lg:grid-cols-2">
+        <section aria-labelledby="cust-timeline-heading" className="space-y-3">
+          <h2
+            id="cust-timeline-heading"
+            className="font-[family-name:var(--font-uv-display)] text-lg font-semibold"
+          >
+            Lifetime timeline
+          </h2>
+          <BusinessTimeline events={events} />
+        </section>
+        <section aria-labelledby="cust-activity-heading" className="space-y-3">
+          <h2
+            id="cust-activity-heading"
+            className="font-[family-name:var(--font-uv-display)] text-lg font-semibold"
+          >
+            Recent activity
+          </h2>
+          <LifecycleActivityFeed items={activity} />
+        </section>
+      </div>
     </div>
   );
 }

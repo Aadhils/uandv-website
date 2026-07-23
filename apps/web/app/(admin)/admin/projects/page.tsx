@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
-import { AdminProjectsPage } from '@/components/admin';
+import { AdminProjectsListPage } from '@/components/admin/projects';
 
 export const metadata: Metadata = { title: 'Projects' };
 
 export default function AdminProjectsRoute() {
-  return <AdminProjectsPage />;
+  return <AdminProjectsListPage />;
 }

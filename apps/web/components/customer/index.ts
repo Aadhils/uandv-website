@@ -3,6 +3,7 @@ export { CustomerProjectsPage } from './projects-page';
 export { CustomerWorkUpdatesPage } from './work-updates-page';
 export { CustomerRequestsPage } from './requests-page';
 export { CustomerAgreementsPage } from './agreements-page';
+export { CustomerQuotationsPage } from './quotations-page';
 export { CustomerPaymentsPage } from './payments-page';
 export { CustomerDocumentsPage } from './documents-page';
 export { CustomerSupportPage } from './support-page';

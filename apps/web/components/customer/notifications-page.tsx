@@ -1,15 +1,20 @@
 import { CustomerPageHeader } from '@/components/customer/page-header';
-import { NotificationCenter } from '@/components/lifecycle/notification-center';
-import { demoNotifications } from '@/lib/customer';
+import { RoleNotificationCenter } from '@/components/lifecycle';
+import { getNotificationsForRole } from '@/lib/lifecycle';
+import { DEMO_CUSTOMER_ID } from '@/lib/projects';
 
 export function CustomerNotificationsPage() {
+  const items = getNotificationsForRole('customer', {
+    customerId: DEMO_CUSTOMER_ID,
+  });
+
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8">
       <CustomerPageHeader
         title="Notification Center"
-        description="Read/unread states by category. Mark-as-read is local demo state only."
+        description="Role-based alerts for your projects, approvals, and payments. Mark-as-read is local demo state only."
       />
-      <NotificationCenter initialItems={demoNotifications} />
+      <RoleNotificationCenter initialItems={items} />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 /**
  * Shared identity + role-based access — one auth engine for all workspaces.
  *
- * Architecture (Sprint 3.0.7 correction):
- * - Customer, Admin, and Employee share one identity system.
+ * Architecture:
+ * - Customer, Admin, Employee, and Vendor share one identity system.
  * - Do NOT create separate credential databases per role.
  * - Dedicated login entry routes may exist; session resolves to a workspace home by membership.
  * - Demo / frontend only — no real authentication, APIs, or production permissions.
@@ -14,7 +14,7 @@ import {
   type WorkspaceRole,
 } from './roles';
 
-/** Stable identity used across Customer, Admin, and Employee workspaces. */
+/** Stable identity used across Customer, Admin, Employee, and Vendor workspaces. */
 export type SharedIdentity = {
   userId: string;
   displayName: string;
@@ -30,7 +30,7 @@ export type DemoWorkspaceSession = {
 
 export const WORKSPACE_HOME: Record<WorkspaceRole, string> = {
   [WORKSPACE_ROLES.CUSTOMER]: '/dashboard',
-  [WORKSPACE_ROLES.VENDOR]: '/dashboard',
+  [WORKSPACE_ROLES.VENDOR]: '/vendor',
   [WORKSPACE_ROLES.PARTNER]: '/dashboard',
   [WORKSPACE_ROLES.EMPLOYEE]: '/employee',
   [WORKSPACE_ROLES.ADMIN]: '/admin',
@@ -55,6 +55,11 @@ export const CAPABILITIES = {
   SUBMIT_WORK_UPDATES: 'submit_work_updates',
   PAYMENT_CONTROLS: 'payment_controls',
   ADMIN_SETTINGS: 'admin_settings',
+  VIEW_ASSIGNED_VENDOR_WORK: 'view_assigned_vendor_work',
+  SUBMIT_VENDOR_DELIVERABLES: 'submit_vendor_deliverables',
+  RAISE_VENDOR_INVOICES: 'raise_vendor_invoices',
+  VIEW_VENDOR_PAYMENTS: 'view_vendor_payments',
+  VIEW_LIMITED_PROJECT_CONTEXT: 'view_limited_project_context',
 } as const;
 
 export type Capability =
@@ -88,6 +93,15 @@ export const DEFAULT_EMPLOYEE_CAPABILITIES: Capability[] = [
   CAPABILITIES.SUBMIT_WORK_UPDATES,
 ];
 
+/** Default vendor capability set — assigned vendor work only. */
+export const DEFAULT_VENDOR_CAPABILITIES: Capability[] = [
+  CAPABILITIES.VIEW_ASSIGNED_VENDOR_WORK,
+  CAPABILITIES.SUBMIT_VENDOR_DELIVERABLES,
+  CAPABILITIES.RAISE_VENDOR_INVOICES,
+  CAPABILITIES.VIEW_VENDOR_PAYMENTS,
+  CAPABILITIES.VIEW_LIMITED_PROJECT_CONTEXT,
+];
+
 /** Capabilities employees must never receive (even if misconfigured in demo UI). */
 export const EMPLOYEE_FORBIDDEN_CAPABILITIES: Capability[] = [
   CAPABILITIES.VIEW_ALL_LEADS,
@@ -99,9 +113,25 @@ export const EMPLOYEE_FORBIDDEN_CAPABILITIES: Capability[] = [
   CAPABILITIES.CONTROL_EMPLOYEE_PERMISSIONS,
 ];
 
+/** Capabilities vendors must never receive. */
+export const VENDOR_FORBIDDEN_CAPABILITIES: Capability[] = [
+  CAPABILITIES.VIEW_ALL_LEADS,
+  CAPABILITIES.VIEW_ASSIGNED_LEADS,
+  CAPABILITIES.VIEW_ALL_CUSTOMERS,
+  CAPABILITIES.VIEW_ASSIGNED_CUSTOMERS,
+  CAPABILITIES.MANAGE_EMPLOYEES,
+  CAPABILITIES.VIEW_CRM_REPORTS,
+  CAPABILITIES.PAYMENT_CONTROLS,
+  CAPABILITIES.ADMIN_SETTINGS,
+  CAPABILITIES.CONTROL_EMPLOYEE_PERMISSIONS,
+  CAPABILITIES.ASSIGN_LEADS,
+  CAPABILITIES.REASSIGN_OWNERSHIP,
+];
+
 export function capabilitiesForRole(role: WorkspaceRole): Capability[] {
   if (role === WORKSPACE_ROLES.ADMIN) return [...ADMIN_CAPABILITIES];
   if (role === WORKSPACE_ROLES.EMPLOYEE) return [...DEFAULT_EMPLOYEE_CAPABILITIES];
+  if (role === WORKSPACE_ROLES.VENDOR) return [...DEFAULT_VENDOR_CAPABILITIES];
   return [];
 }
 
@@ -112,6 +142,12 @@ export function roleHasCapability(
   if (
     role === WORKSPACE_ROLES.EMPLOYEE &&
     EMPLOYEE_FORBIDDEN_CAPABILITIES.includes(capability)
+  ) {
+    return false;
+  }
+  if (
+    role === WORKSPACE_ROLES.VENDOR &&
+    VENDOR_FORBIDDEN_CAPABILITIES.includes(capability)
   ) {
     return false;
   }
@@ -151,8 +187,15 @@ export const demoIdentities: SharedIdentity[] = [
     email: 'priya.sharma@demo.uandv.local',
     memberships: [{ role: WORKSPACE_ROLES.CUSTOMER, status: 'active' }],
   },
+  {
+    userId: 'user-vendor-karthik',
+    displayName: 'Karthik Design Studio',
+    email: 'karthik@demo.vendor.uandv.local',
+    memberships: [{ role: WORKSPACE_ROLES.VENDOR, status: 'active' }],
+  },
 ];
 
 export const DEMO_ADMIN_IDENTITY = demoIdentities[0];
 export const DEMO_EMPLOYEE_IDENTITY = demoIdentities[1];
 export const DEMO_CUSTOMER_IDENTITY = demoIdentities[3];
+export const DEMO_VENDOR_IDENTITY = demoIdentities[4];

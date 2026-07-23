@@ -16,11 +16,15 @@ import {
   getOverdueEmployeeFollowUps,
   getTodaysEmployeeFollowUps,
 } from '@/lib/employee';
+import { getTasksForEmployee, getEmployeeProjectTaskViews } from '@/lib/projects';
 
 export function EmployeeDashboardPage() {
   const summary = getEmployeeDashboardSummary();
   const todayQueue = getTodaysEmployeeFollowUps();
   const overdue = getOverdueEmployeeFollowUps();
+  const projectTasks = getEmployeeProjectTaskViews(
+    demoEmployeeUser.employeeId,
+  ).filter((t) => t.status !== 'completed');
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8">
@@ -68,6 +72,26 @@ export function EmployeeDashboardPage() {
           value={String(summary.pendingTasks)}
           hint="Assigned by Admin"
           icon="Check"
+        />
+        <StatsCard
+          label="Project tasks due today"
+          value={String(
+            getTasksForEmployee(demoEmployeeUser.employeeId).filter(
+              (t) => t.dueDate === EMPLOYEE_DEMO_TODAY && t.status !== 'completed',
+            ).length,
+          )}
+          hint="Shared delivery model"
+          icon="Briefcase"
+        />
+        <StatsCard
+          label="Overdue project tasks"
+          value={String(
+            getTasksForEmployee(demoEmployeeUser.employeeId).filter(
+              (t) => t.dueDate < EMPLOYEE_DEMO_TODAY && t.status !== 'completed',
+            ).length,
+          )}
+          hint="Needs follow-up"
+          icon="Clock"
         />
         <StatsCard
           label="Conversions"
@@ -140,6 +164,43 @@ export function EmployeeDashboardPage() {
           )}
         </section>
       </div>
+
+      <section aria-label="Assigned project tasks" className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+            Assigned project tasks
+          </h2>
+          <Link
+            href="/employee/tasks"
+            className="text-sm font-medium text-uv-brand underline-offset-4 hover:underline"
+          >
+            Open tasks
+          </Link>
+        </div>
+        {projectTasks.length === 0 ? (
+          <p className="text-sm text-uv-foreground-muted">
+            No open project tasks.
+          </p>
+        ) : (
+          <ul className="space-y-2">
+            {projectTasks.slice(0, 4).map((task) => (
+              <li
+                key={task.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-uv-lg border border-uv-border px-3 py-2.5"
+              >
+                <div>
+                  <p className="font-medium">{task.title}</p>
+                  <p className="text-xs text-uv-foreground-muted">
+                    {task.projectTitle} · due {formatDisplayDate(task.deadline)}
+                    {task.requiredFollowUp ? ` · ${task.requiredFollowUp}` : ''}
+                  </p>
+                </div>
+                <StatusBadge status={task.priority} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <section aria-label="Conversion summary" className="space-y-3">
         <h2 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
