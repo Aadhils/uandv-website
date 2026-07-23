@@ -7,14 +7,12 @@ import { Process } from './process';
 import { Services } from './services';
 import { Technologies } from './technologies';
 import { WhyChoose } from './why-choose';
-import { PortfolioPreview } from '@/components/portfolio/portfolio-preview';
 
 export function LandingPage() {
   return (
     <div className="marketing-grain bg-uv-background text-uv-foreground">
       <Hero />
       <Services />
-      <PortfolioPreview />
       <WhyChoose />
       <Industries />
       <Process />
