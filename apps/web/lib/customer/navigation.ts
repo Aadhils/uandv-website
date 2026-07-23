@@ -21,6 +21,18 @@ export const customerRoutes: CustomerRouteMeta[] = [
     breadcrumb: 'Projects',
   },
   {
+    path: '/dashboard/business-advisor',
+    title: 'Business Advisor',
+    subtitle: 'AI requirement analyzer · rule-based demo',
+    breadcrumb: 'Business Advisor',
+  },
+  {
+    path: '/dashboard/business-advisor/result',
+    title: 'Requirement Analysis Report',
+    subtitle: 'Structured business requirement output',
+    breadcrumb: 'Analysis Result',
+  },
+  {
     path: '/dashboard/quotations',
     title: 'Quotations',
     subtitle: 'Your quotations only',
@@ -109,6 +121,7 @@ const customerNavItems: Array<{
 }> = [
   { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
   { label: 'My Projects', href: '/dashboard/projects', icon: 'Briefcase' },
+  { label: 'Business Advisor', href: '/dashboard/business-advisor', icon: 'Sparkles' },
   { label: 'Quotations', href: '/dashboard/quotations', icon: 'FileText' },
   { label: 'Payments', href: '/dashboard/payments', icon: 'Wallet' },
   { label: 'Agreements', href: '/dashboard/agreements', icon: 'FileText' },

@@ -99,6 +99,12 @@ export const adminRoutes: AdminRouteMeta[] = [
     breadcrumb: 'Templates',
   },
   {
+    path: '/admin/business-advisor',
+    title: 'AI Requirement Analysis',
+    subtitle: 'Review customer goal analyses · demo',
+    breadcrumb: 'AI Requirement Analysis',
+  },
+  {
     path: '/admin/work-updates',
     title: 'Work Update Center',
     subtitle: 'Push updates to customer dashboards',
@@ -225,6 +231,11 @@ const adminNavItems: Array<{ label: string; href: string; icon: IconName }> = [
   { label: 'Marketplace', href: '/admin/marketplace', icon: 'Briefcase' },
   { label: 'Assignment', href: '/admin/assignment', icon: 'Check' },
   { label: 'Templates', href: '/admin/templates', icon: 'Layers' },
+  {
+    label: 'AI Requirement Analysis',
+    href: '/admin/business-advisor',
+    icon: 'Sparkles',
+  },
   { label: 'Work Updates', href: '/admin/work-updates', icon: 'Sparkles' },
   { label: 'Support', href: '/admin/support', icon: 'MessageCircle' },
   { label: 'Documents', href: '/admin/documents', icon: 'Layers' },
@@ -337,6 +348,24 @@ export function getAdminRouteMeta(pathname: string): AdminRouteMeta {
       title: `Partner ${labels[segment] ?? 'Profile'}`,
       subtitle: 'Partner network detail',
       breadcrumb: labels[segment] ?? 'Profile',
+    };
+  }
+
+  if (pathname.match(/^\/admin\/business-advisor\/[^/]+\/project-preview$/)) {
+    return {
+      path: pathname,
+      title: 'Project Conversion Preview',
+      subtitle: 'Demo conversion from requirement analysis',
+      breadcrumb: 'Project Preview',
+    };
+  }
+
+  if (pathname.match(/^\/admin\/business-advisor\/[^/]+$/)) {
+    return {
+      path: pathname,
+      title: 'Analysis Review',
+      subtitle: 'Customer requirement analysis detail',
+      breadcrumb: 'Analysis',
     };
   }
 

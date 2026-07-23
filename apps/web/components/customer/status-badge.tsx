@@ -137,6 +137,8 @@ const statusVariantMap: Record<string, BadgeProps['variant']> = {
   pending_review: 'warning',
   not_eligible: 'secondary',
   converted: 'success',
+  reviewed: 'success',
+  ready: 'info',
   partial: 'warning',
   pending_approval: 'warning',
   disputed: 'error',
