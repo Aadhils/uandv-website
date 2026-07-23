@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { EnterpriseAppShell, buttonVariants, cn } from '@uandv/ui';
 
 import { Logo } from '@/components/brand/logo';
+import { BackToTop } from '@/components/shared/back-to-top';
 import {
   demoVendorUser,
   getVendorBreadcrumbs,
@@ -88,6 +89,7 @@ export function VendorShell({ children }: VendorShellProps) {
       }}
     >
       {children}
+      <BackToTop scrollRootSelector="#workspace-main" />
     </EnterpriseAppShell>
   );
 }

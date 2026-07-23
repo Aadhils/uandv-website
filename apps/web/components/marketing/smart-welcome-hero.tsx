@@ -23,6 +23,7 @@ import { DiscoveryWizard } from '@/components/discovery-wizard';
 import { trackEvent } from '@/lib/analytics';
 import {
   clearWizardSession,
+  getWizardGoalTitle,
   loadWizardSession,
   startWizardSession,
   subscribeWizardSession,
@@ -122,6 +123,7 @@ function JourneyCardButton({
 
 /**
  * Homepage Business Guide — goal cards launch a focused discovery wizard.
+ * Wizard opens only after an explicit card click or Resume — never on load.
  */
 export function SmartWelcomeHero() {
   const panelId = useId();
@@ -130,15 +132,20 @@ export function SmartWelcomeHero() {
   const wizardAnchorRef = useRef<HTMLDivElement | null>(null);
 
   const storedSession = useWizardSessionStore();
-  const [localSession, setLocalSession] = useState<WizardSession | null>(null);
-  const session = localSession ?? storedSession;
+  /** Active session only after the user explicitly starts or resumes. */
+  const [activeSession, setActiveSession] = useState<WizardSession | null>(
+    null,
+  );
 
-  const selectedGoalId = session?.goalId ?? null;
+  const selectedGoalId = activeSession?.goalId ?? null;
+  const showResume =
+    Boolean(storedSession) &&
+    !activeSession &&
+    storedSession?.status !== 'abandoned';
 
   const selectGoal = useCallback(
     (goalId: WizardGoalId, title: string) => {
-      const active = localSession ?? storedSession;
-      if (active?.goalId === goalId) {
+      if (activeSession?.goalId === goalId) {
         return;
       }
 
@@ -151,22 +158,29 @@ export function SmartWelcomeHero() {
       trackWizardEvent('wizard_started', { goal_id: goalId });
 
       const next = startWizardSession(goalId);
-      setLocalSession(next);
+      setActiveSession(next);
     },
-    [localSession, storedSession],
+    [activeSession],
   );
+
+  const resumeSession = useCallback(() => {
+    const existing = loadWizardSession();
+    if (!existing || existing.status === 'abandoned') return;
+    trackWizardEvent('wizard_resumed', { goal_id: existing.goalId });
+    setActiveSession(existing);
+  }, []);
 
   const clearGoal = useCallback(() => {
     clearWizardSession();
-    setLocalSession(null);
+    setActiveSession(null);
   }, []);
 
   const onSessionChange = useCallback((next: WizardSession) => {
-    setLocalSession(next);
+    setActiveSession(next);
   }, []);
 
   useEffect(() => {
-    if (!session?.goalId || !wizardAnchorRef.current) return;
+    if (!activeSession?.goalId || !wizardAnchorRef.current) return;
 
     const node = wizardAnchorRef.current;
     const prefersReduced = window.matchMedia(
@@ -181,13 +195,13 @@ export function SmartWelcomeHero() {
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [session?.goalId, isDesktop]);
+  }, [activeSession?.goalId, isDesktop]);
 
-  const wizard = session ? (
+  const wizard = activeSession ? (
     <div ref={wizardAnchorRef} className="w-full min-w-0 scroll-mt-24">
       <DiscoveryWizard
         id={panelId}
-        session={session}
+        session={activeSession}
         onSessionChange={onSessionChange}
         onChangeGoal={clearGoal}
         onExit={clearGoal}
@@ -204,6 +218,25 @@ export function SmartWelcomeHero() {
           icon: journey.icon,
         }))
       : WIZARD_GOALS;
+
+  const resumeLabel = storedSession
+    ? `Resume previous consultation (${getWizardGoalTitle(storedSession.goalId)})`
+    : 'Resume previous consultation';
+
+  const resumeControl = showResume ? (
+    <div className="mt-5 flex w-full min-w-0 justify-start">
+      <button
+        type="button"
+        onClick={resumeSession}
+        className={cn(
+          buttonVariants({ size: 'sm', variant: 'outline' }),
+          'max-w-full border-white/25 bg-white/5 text-white hover:bg-white/10',
+        )}
+      >
+        {resumeLabel}
+      </button>
+    </div>
+  ) : null;
 
   return (
     <section
@@ -277,6 +310,7 @@ export function SmartWelcomeHero() {
 
           {!isDesktop ? (
             <>
+              {resumeControl}
               <div
                 className="mt-5 flex w-full min-w-0 flex-col gap-3"
                 role="group"
@@ -309,6 +343,7 @@ export function SmartWelcomeHero() {
             </>
           ) : (
             <>
+              {resumeControl}
               <div
                 className="mt-5 grid w-full min-w-0 grid-cols-5 gap-3"
                 role="group"

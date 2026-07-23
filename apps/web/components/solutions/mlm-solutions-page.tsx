@@ -49,24 +49,22 @@ export function MlmSolutionsPage() {
                 design, validate, launch, optimize, and scale MLM companies with
                 technology, strategy, automation, and continuous consulting.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
                   href="#consultation"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Book Free MLM Consultation
                 </a>
-                <a
-                  href={siteConfig.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/demo/mlm"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
                     'justify-center',
                   )}
                 >
-                  WhatsApp
-                </a>
+                  View MLM Plan Live Demo
+                </Link>
               </div>
             </div>
 
@@ -466,24 +464,22 @@ export function MlmSolutionsPage() {
                   support — without fake promises.
                 </p>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col">
                 <Link
                   href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Book Consultation
                 </Link>
-                <a
-                  href={siteConfig.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/demo/mlm"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
                     'justify-center',
                   )}
                 >
-                  Chat on WhatsApp
-                </a>
+                  View MLM Plan Live Demo
+                </Link>
                 <a
                   href={siteConfig.whatsapp}
                   target="_blank"
@@ -493,7 +489,7 @@ export function MlmSolutionsPage() {
                     'justify-center',
                   )}
                 >
-                  Message Us
+                  Chat on WhatsApp
                 </a>
               </div>
             </div>

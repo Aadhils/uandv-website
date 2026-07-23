@@ -186,7 +186,7 @@ export function ServiceRequestSummaryCard({
   href: string;
 }) {
   return (
-    <li className="rounded-uv-xl border border-uv-border p-4">
+    <li className="flex h-full min-w-0 flex-col rounded-uv-xl border border-uv-border p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="font-mono text-xs text-uv-foreground-subtle">
@@ -209,7 +209,7 @@ export function ServiceRequestSummaryCard({
           </Badge>
         </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-auto pt-3">
         <Link href={href} className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}>
           Open
         </Link>

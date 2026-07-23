@@ -5,12 +5,14 @@ import * as React from 'react';
 
 import { Badge, StatsCard, buttonVariants, cn } from '@uandv/ui';
 
+import { ViewModeToggle } from '@/components/shared/view-mode-toggle';
 import {
   formatPartnerInr,
   getMarketplaceServices,
   getPartnerById,
   searchMarketplaceServices,
 } from '@/lib/partners';
+import { useViewMode, viewModeLayoutClass } from '@/lib/ui/use-view-mode';
 
 /**
  * Public Marketplace Listing — Sprint 3.1.1.
@@ -24,6 +26,7 @@ export function MarketplaceListingPage() {
   );
   const [query, setQuery] = React.useState('');
   const [category, setCategory] = React.useState<string>('all');
+  const [view, setView] = useViewMode('marketplace', 'list');
 
   const services = React.useMemo(
     () => searchMarketplaceServices(allServices, query, category),
@@ -77,46 +80,57 @@ export function MarketplaceListingPage() {
         />
       </section>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="sm:col-span-2">
-          <label htmlFor="public-marketplace-search" className="sr-only">
-            Search services
-          </label>
-          <input
-            id="public-marketplace-search"
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search catalog…"
-            className="flex h-10 w-full rounded-uv-lg border border-uv-border bg-uv-background px-3 text-sm uv-focus-ring"
-            autoComplete="off"
-          />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="sm:col-span-2">
+            <label htmlFor="public-marketplace-search" className="sr-only">
+              Search services
+            </label>
+            <input
+              id="public-marketplace-search"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search catalog…"
+              className="flex h-10 w-full rounded-uv-lg border border-uv-border bg-uv-background px-3 text-sm uv-focus-ring"
+              autoComplete="off"
+            />
+          </div>
+          <div>
+            <label htmlFor="public-marketplace-category" className="sr-only">
+              Filter by category
+            </label>
+            <select
+              id="public-marketplace-category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="flex h-10 w-full rounded-uv-lg border border-uv-border bg-uv-background px-3 text-sm uv-focus-ring"
+            >
+              <option value="all">All categories</option>
+              {categories.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div>
-          <label htmlFor="public-marketplace-category" className="sr-only">
-            Filter by category
-          </label>
-          <select
-            id="public-marketplace-category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="flex h-10 w-full rounded-uv-lg border border-uv-border bg-uv-background px-3 text-sm uv-focus-ring"
-          >
-            <option value="all">All categories</option>
-            {categories.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-        </div>
+        <ViewModeToggle
+          value={view}
+          onChange={setView}
+          label="Marketplace layout"
+        />
       </div>
 
-      <ul className="space-y-4">
+      <ul
+        className={
+          view === 'grid' ? viewModeLayoutClass.grid : viewModeLayoutClass.list
+        }
+      >
         {services.map((service) => (
           <li
             key={service.id}
-            className="rounded-uv-xl border border-uv-border p-4 sm:p-5"
+            className="flex h-full min-w-0 flex-col rounded-uv-xl border border-uv-border p-4 sm:p-5"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">

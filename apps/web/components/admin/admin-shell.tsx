@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { EnterpriseAppShell, buttonVariants, cn } from '@uandv/ui';
 
 import { Logo } from '@/components/brand/logo';
+import { BackToTop } from '@/components/shared/back-to-top';
 import {
   demoAdminUser,
   getAdminBreadcrumbs,
@@ -94,6 +95,7 @@ export function AdminShell({ children }: AdminShellProps) {
       }}
     >
       {children}
+      <BackToTop scrollRootSelector="#workspace-main" />
     </EnterpriseAppShell>
   );
 }

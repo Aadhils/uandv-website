@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 
 import {
   Button,
@@ -29,38 +29,62 @@ export function ServiceInquiryForm({
   compact = false,
 }: ServiceInquiryFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const sendingLock = useRef(false);
   const services = getAllServices();
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (sendingLock.current || isSending) return;
+
     const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    sendingLock.current = true;
+    setIsSending(true);
+
     const data = new FormData(form);
-    const name = String(data.get('name') ?? '');
-    const email = String(data.get('email') ?? '');
-    const company = String(data.get('company') ?? '');
+    const name = String(data.get('name') ?? '').trim();
+    const email = String(data.get('email') ?? '').trim();
+    const company = String(data.get('company') ?? '').trim();
     const interest = String(data.get('interest') ?? '');
-    const message = String(data.get('message') ?? '');
+    const message = String(data.get('message') ?? '').trim();
     const interestLabel =
       services.find((service) => service.slug === interest)?.title ?? interest;
 
     const subject = encodeURIComponent(
-      `U&V service inquiry — ${interestLabel}${company ? ` (${company})` : ''}`,
+      `U&V Service Inquiry – ${interestLabel}`,
     );
     const body = encodeURIComponent(
       [
+        'Hello U&V team,',
+        '',
+        'I would like to inquire about your services.',
+        '',
         `Name: ${name}`,
         `Email: ${email}`,
         `Company: ${company || '—'}`,
-        `Service: ${interestLabel}`,
+        `Service interest: ${interestLabel}`,
         '',
+        'Message:',
         message,
+        '',
+        'Sent from the U&V website inquiry form.',
       ].join('\n'),
     );
 
     window.location.assign(
       `mailto:${siteConfig.email}?subject=${subject}&body=${body}`,
     );
-    setSubmitted(true);
+
+    window.setTimeout(() => {
+      setSubmitted(true);
+      setIsSending(false);
+      sendingLock.current = false;
+    }, 350);
   };
 
   return (
@@ -72,18 +96,24 @@ export function ServiceInquiryForm({
       }
     >
       <Text variant="caption" className="mb-6 block text-uv-foreground-muted">
-        Form status: opens your email app to message{' '}
+        Your email app will open with the inquiry details. Messages are sent
+        from your device to{' '}
         <span className="font-medium text-uv-foreground">{siteConfig.email}</span>
-        . Server-side form backend is not connected yet.
+        — nothing is submitted to a U&amp;V server yet.
       </Text>
 
       {submitted ? (
-        <div className="space-y-3 py-6 text-center">
+        <div
+          className="space-y-3 py-6 text-center"
+          role="status"
+          aria-live="polite"
+        >
           <p className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
-            Opening your email app
+            Inquiry ready in your email app
           </p>
           <p className="text-sm text-uv-foreground-muted sm:text-base">
-            If it did not open, email{' '}
+            Your email app should open with a prefilled message. Send it from
+            there when you are ready. If it did not open, email{' '}
             <a
               href={`mailto:${siteConfig.email}`}
               className="text-uv-brand underline-offset-4 hover:underline"
@@ -107,7 +137,7 @@ export function ServiceInquiryForm({
             className="mt-2"
             onClick={() => setSubmitted(false)}
           >
-            Edit message
+            Edit inquiry
           </Button>
         </div>
       ) : (
@@ -143,9 +173,21 @@ export function ServiceInquiryForm({
               placeholder="Tell us about your goals, timeline, and any constraints."
             />
           </FormField>
-          <Button type="submit" size="lg" className="w-full sm:w-auto">
-            Continue in email app
-          </Button>
+          <div className="space-y-2">
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full sm:w-auto"
+              isLoading={isSending}
+              disabled={isSending}
+              aria-label="Send inquiry via your email app"
+            >
+              {isSending ? 'Preparing…' : 'Send Inquiry'}
+            </Button>
+            <p className="text-xs text-uv-foreground-muted sm:text-sm">
+              Your email app will open with the inquiry details.
+            </p>
+          </div>
         </Form>
       )}
     </div>

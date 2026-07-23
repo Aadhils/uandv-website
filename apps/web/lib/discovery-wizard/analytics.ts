@@ -22,6 +22,7 @@ export function trackWizardEvent(
   eventName:
     | 'goal_selected'
     | 'wizard_started'
+    | 'wizard_resumed'
     | 'step_completed'
     | 'wizard_abandoned'
     | 'wizard_completed'
