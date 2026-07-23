@@ -160,13 +160,13 @@ export function SmartWelcomeHero() {
 
         <div className="marketing-animate-in marketing-animate-in-delay-3 mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
           <a
-            href="/contact"
+            href="/signup"
             className={cn(
               buttonVariants({ size: 'lg' }),
               'w-full justify-center sm:w-auto',
             )}
           >
-            Start your project
+            Get Started
           </a>
           <a
             href={siteConfig.whatsapp}

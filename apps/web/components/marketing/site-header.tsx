@@ -40,39 +40,54 @@ export function SiteHeader() {
       actions={
         <>
           <ThemeToggle />
+          <Link
+            href="/login"
+            className={cn(
+              buttonVariants({ size: 'sm', variant: 'ghost' }),
+              'hidden md:inline-flex',
+            )}
+          >
+            Login
+          </Link>
           <a
             href={siteConfig.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
               buttonVariants({ size: 'sm', variant: 'outline' }),
-              'hidden lg:inline-flex',
+              'hidden xl:inline-flex',
             )}
           >
             WhatsApp
           </a>
           <Link
-            href="/contact"
+            href="/signup"
             className={cn(
               buttonVariants({ size: 'sm' }),
               'hidden sm:inline-flex',
             )}
           >
-            Get started
+            Get Started
           </Link>
         </>
       }
       mobileActions={
         <>
           <ThemeToggle />
-          <Link href="/contact" className={cn(buttonVariants({ size: 'md' }))}>
-            Get started
+          <Link
+            href="/login"
+            className={cn(buttonVariants({ size: 'md', variant: 'outline' }))}
+          >
+            Login
+          </Link>
+          <Link href="/signup" className={cn(buttonVariants({ size: 'md' }))}>
+            Get Started
           </Link>
           <a
             href={siteConfig.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(buttonVariants({ size: 'md', variant: 'outline' }))}
+            className={cn(buttonVariants({ size: 'md', variant: 'ghost' }))}
           >
             Chat on WhatsApp
           </a>

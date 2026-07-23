@@ -4,9 +4,12 @@ import type { ReactNode } from 'react';
 import { WorkspaceShell } from '@/components/workspace';
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
+  title: {
+    default: 'Customer Workspace',
+    template: '%s · Customer Workspace · U&V',
+  },
   description:
-    'U&V Business Workspace foundation — shared enterprise app shell for future Customer, Vendor, Partner, Employee, and Admin workspaces.',
+    'U&V Customer Workspace — projects, requests, agreements, payments, documents, and support foundation.',
   robots: {
     index: false,
     follow: false,
@@ -26,16 +29,7 @@ export default function DashboardGroupLayout({
       >
         Skip to workspace content
       </a>
-      <WorkspaceShell
-        title="Dashboard Overview"
-        subtitle="Universal Business Workspace · Foundation"
-        breadcrumbs={[
-          { label: 'Workspace', href: '/dashboard' },
-          { label: 'Dashboard' },
-        ]}
-      >
-        {children}
-      </WorkspaceShell>
+      <WorkspaceShell>{children}</WorkspaceShell>
     </>
   );
 }
