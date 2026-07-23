@@ -57,7 +57,7 @@ export function ServicesIndexPage() {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading

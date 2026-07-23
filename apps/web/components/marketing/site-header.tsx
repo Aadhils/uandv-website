@@ -24,7 +24,11 @@ export function SiteHeader() {
   return (
     <Navbar
       brand={
-        <Link href="/" className="uv-focus-ring rounded-uv-md" aria-label={siteConfig.name}>
+        <Link
+          href="/"
+          className="uv-focus-ring rounded-uv-md"
+          aria-label={`${siteConfig.name} home`}
+        >
           <Logo />
         </Link>
       }
@@ -49,10 +53,29 @@ export function SiteHeader() {
           </a>
           <Link
             href="/contact"
-            className={cn(buttonVariants({ size: 'sm' }), 'hidden sm:inline-flex')}
+            className={cn(
+              buttonVariants({ size: 'sm' }),
+              'hidden sm:inline-flex',
+            )}
           >
             Get started
           </Link>
+        </>
+      }
+      mobileActions={
+        <>
+          <ThemeToggle />
+          <Link href="/contact" className={cn(buttonVariants({ size: 'md' }))}>
+            Get started
+          </Link>
+          <a
+            href={siteConfig.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ size: 'md', variant: 'outline' }))}
+          >
+            Chat on WhatsApp
+          </a>
         </>
       }
     />

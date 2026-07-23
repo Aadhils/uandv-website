@@ -239,7 +239,7 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-12 sm:py-20 lg:py-24">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-14 xl:gap-16">
             <Reveal>
@@ -507,7 +507,7 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-12 sm:py-20 lg:py-24">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -549,7 +549,7 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section className="bg-uv-background-subtle py-12 sm:py-20 lg:py-24">
+      <section className="bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background px-5 py-8 sm:px-10 sm:py-14">
             <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">

@@ -12,18 +12,21 @@ const manrope = Manrope({
   variable: '--font-manrope',
   subsets: ['latin'],
   display: 'swap',
+  adjustFontFallback: true,
 });
 
 const syne = Syne({
   variable: '--font-syne',
   subsets: ['latin'],
   display: 'swap',
+  adjustFontFallback: true,
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
   display: 'swap',
+  adjustFontFallback: true,
 });
 
 /** GA4 Measurement ID — loads after hydration via @next/third-parties */
@@ -62,11 +65,20 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.headline}`,
     description: siteConfig.description,
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — ${siteConfig.tagline}`,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${siteConfig.name} — ${siteConfig.headline}`,
     description: siteConfig.description,
+    images: ['/twitter-image'],
   },
   robots: {
     index: true,

@@ -45,7 +45,7 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      className={cn('marketing-reveal', className)}
+      className={cn('marketing-reveal h-full', className)}
       style={delayMs ? { transitionDelay: `${delayMs}ms` } : undefined}
     >
       {children}

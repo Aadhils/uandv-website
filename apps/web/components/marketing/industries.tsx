@@ -7,7 +7,7 @@ export function Industries() {
   return (
     <section
       id="industries"
-      className="scroll-mt-20 border-b border-uv-border bg-uv-background py-20 sm:py-28"
+      className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>

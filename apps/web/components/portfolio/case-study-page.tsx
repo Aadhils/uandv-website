@@ -96,7 +96,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
 
       <section
         id="live-demo"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20"
+        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
@@ -193,7 +193,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
           <Reveal>
             <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
@@ -227,7 +227,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -239,7 +239,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -265,7 +265,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -291,7 +291,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -320,7 +320,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -344,7 +344,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -373,7 +373,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -408,7 +408,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -434,7 +434,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </div>
       </section>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-20">
+      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -466,7 +466,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
       </section>
 
       {relatedServices.length > 0 ? (
-        <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-20">
+        <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Reveal>
               <SectionHeading

@@ -16,6 +16,8 @@ export interface NavbarProps {
   brand: React.ReactNode;
   links?: NavLinkItem[];
   actions?: React.ReactNode;
+  /** Shown only inside the mobile drawer (use when desktop actions hide CTAs) */
+  mobileActions?: React.ReactNode;
   className?: string;
   sticky?: boolean;
 }
@@ -24,29 +26,81 @@ export function Navbar({
   brand,
   links = [],
   actions,
+  mobileActions,
   className,
   sticky = true,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  /** Stable id avoids rare SSR/client useId drift under nested providers */
   const menuId = 'uv-mobile-nav';
+  const toggleRef = React.useRef<HTMLButtonElement>(null);
+  const panelRef = React.useRef<HTMLDivElement>(null);
+
+  const closeMobile = React.useCallback(() => {
+    setMobileOpen(false);
+    window.requestAnimationFrame(() => toggleRef.current?.focus());
+  }, []);
+
+  React.useEffect(() => {
+    if (!mobileOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeMobile();
+        return;
+      }
+
+      if (event.key !== 'Tab' || !panelRef.current) return;
+
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const firstLink = panelRef.current?.querySelector<HTMLElement>('a[href], button');
+    firstLink?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [closeMobile, mobileOpen]);
+
+  const drawerActions = mobileActions ?? actions;
 
   return (
     <header
       className={cn(
-        'z-[1200] w-full border-b border-uv-nav-border bg-uv-nav backdrop-blur-md',
+        'z-[1200] w-full border-b border-uv-nav-border bg-uv-nav/95 backdrop-blur-md transition-shadow duration-200',
         sticky && 'sticky top-0',
         className,
       )}
     >
       <nav
-        className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+        className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
-        <div className="flex items-center gap-8">
+        <div className="flex min-w-0 items-center gap-6 lg:gap-8">
           <div className="shrink-0">{brand}</div>
           {links.length > 0 ? (
-            <ul className="hidden items-center gap-1 md:flex">
+            <ul className="hidden items-center gap-0.5 lg:flex">
               {links.map((link) => (
                 <li key={link.href}>
                   <NavLink href={link.href} active={link.active}>
@@ -58,24 +112,31 @@ export function Navbar({
           ) : null}
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">{actions}</div>
+        <div className="hidden items-center gap-2 lg:flex lg:gap-3">
+          {actions}
+        </div>
 
         <button
+          ref={toggleRef}
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-uv-lg text-uv-foreground hover:bg-uv-background-muted md:hidden uv-focus-ring"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg text-uv-foreground transition-colors hover:bg-uv-background-muted lg:hidden uv-focus-ring"
           aria-expanded={mobileOpen}
           aria-controls={menuId}
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           onClick={() => setMobileOpen((open) => !open)}
         >
-          <span className="sr-only">Toggle menu</span>
           <Icon name={mobileOpen ? 'X' : 'Menu'} size="md" />
         </button>
       </nav>
 
       {mobileOpen ? (
         <div
+          ref={panelRef}
           id={menuId}
-          className="border-t border-uv-border px-4 py-4 md:hidden"
+          className="border-t border-uv-border px-4 py-4 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
         >
           <ul className="flex flex-col gap-1">
             {links.map((link) => (
@@ -83,17 +144,17 @@ export function Navbar({
                 <NavLink
                   href={link.href}
                   active={link.active}
-                  className="block w-full"
-                  onClick={() => setMobileOpen(false)}
+                  className="min-h-11 w-full justify-start px-3 py-3 text-base"
+                  onClick={closeMobile}
                 >
                   {link.label}
                 </NavLink>
               </li>
             ))}
           </ul>
-          {actions ? (
-            <div className="mt-4 flex flex-col gap-2 border-t border-uv-border pt-4">
-              {actions}
+          {drawerActions ? (
+            <div className="mt-4 flex flex-col gap-2 border-t border-uv-border pt-4 [&_a]:w-full [&_a]:justify-center [&_button]:w-full">
+              {drawerActions}
             </div>
           ) : null}
         </div>
@@ -116,7 +177,7 @@ export function NavLink({
   return (
     <a
       className={cn(
-        'inline-flex items-center rounded-uv-md px-3 py-2 text-sm font-medium transition-colors uv-focus-ring',
+        'inline-flex items-center rounded-uv-md px-3 py-2 text-sm font-medium transition-colors duration-200 uv-focus-ring',
         active
           ? 'bg-uv-brand-muted text-uv-brand'
           : 'text-uv-foreground-muted hover:bg-uv-background-muted hover:text-uv-foreground',
@@ -191,7 +252,7 @@ export function Sidebar({
             aria-current={item.active ? 'page' : undefined}
             title={collapsed ? item.label : undefined}
             className={cn(
-              'flex items-center gap-3 rounded-uv-lg px-3 py-2.5 text-sm font-medium transition-colors uv-focus-ring',
+              'flex min-h-11 items-center gap-3 rounded-uv-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 uv-focus-ring',
               item.active
                 ? 'bg-uv-brand-muted text-uv-brand'
                 : 'text-uv-foreground-muted hover:bg-uv-background-muted hover:text-uv-foreground',

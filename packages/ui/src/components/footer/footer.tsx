@@ -53,7 +53,7 @@ export function Footer({
           <div className="space-y-4">
             <div className="text-xl font-bold text-white">{brand}</div>
             {description ? (
-              <p className="max-w-sm text-sm leading-relaxed text-uv-soft-violet/70">
+              <p className="max-w-sm text-sm leading-relaxed text-uv-soft-violet/85">
                 {description}
               </p>
             ) : null}
@@ -64,7 +64,7 @@ export function Footer({
                     <a
                       href={item.href}
                       aria-label={item.label}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-uv-lg text-uv-soft-violet/70 transition-colors hover:bg-uv-navy-blue hover:text-white uv-focus-ring"
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg text-uv-soft-violet/85 transition-colors duration-200 hover:bg-uv-navy-blue hover:text-white uv-focus-ring"
                     >
                       <Icon name={item.icon} size="md" />
                     </a>
@@ -86,7 +86,7 @@ export function Footer({
         </div>
 
         {bottom ? (
-          <div className="mt-12 border-t border-uv-navy-blue pt-8 text-sm text-uv-soft-violet/65">
+          <div className="mt-12 border-t border-uv-navy-blue pt-8 text-sm text-uv-soft-violet/80">
             {bottom}
           </div>
         ) : null}
@@ -121,7 +121,7 @@ export function FooterLink({
     <li>
       <a
         className={cn(
-          'rounded-sm text-sm text-uv-soft-violet/70 transition-colors hover:text-white uv-focus-ring',
+          'rounded-sm text-sm text-uv-soft-violet/85 transition-colors duration-200 hover:text-white uv-focus-ring',
           className,
         )}
         {...props}
