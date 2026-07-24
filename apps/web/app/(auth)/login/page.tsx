@@ -5,8 +5,7 @@ import { AuthFormCard, LoginForm } from '@/components/auth';
 
 export const metadata: Metadata = {
   title: 'Sign in',
-  description:
-    'Sign in to your U&V workspace. Demo frontend only — not production authentication.',
+  description: 'Sign in to your U&V customer workspace.',
   robots: { index: false, follow: false },
 };
 
@@ -14,29 +13,15 @@ export default function LoginPage() {
   return (
     <AuthFormCard
       title="Sign in"
-      description="Access your U&V Business Workspace with one identity."
+      description="Access your U&V customer workspace with your Clerk account."
       footer={
         <p>
-          Internal teams:{' '}
+          New here?{' '}
           <Link
-            href="/login/admin"
+            href="/signup"
             className="font-medium text-uv-brand underline-offset-4 hover:underline"
           >
-            Admin
-          </Link>
-          {' · '}
-          <Link
-            href="/login/employee"
-            className="font-medium text-uv-brand underline-offset-4 hover:underline"
-          >
-            Employee
-          </Link>
-          {' · '}
-          <Link
-            href="/login/vendor"
-            className="font-medium text-uv-brand underline-offset-4 hover:underline"
-          >
-            Vendor
+            Create an account
           </Link>
           {' · '}
           Need help?{' '}

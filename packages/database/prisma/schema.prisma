@@ -15,21 +15,43 @@ enum UserRole {
   SUPER_ADMIN
 }
 
-model User {
-  id        String    @id @default(cuid())
-  clerkId   String    @unique @map("clerk_id")
-  email     String    @unique
-  firstName String?   @map("first_name")
-  lastName  String?   @map("last_name")
-  avatarUrl String?   @map("avatar_url")
-  role      UserRole  @default(USER)
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+/// Public account types selectable at signup (never grant admin via signup).
+enum AccountType {
+  CUSTOMER
+  VENDOR
+  PARTNER
+}
 
-  auditLogs AuthAuditLog[]
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CLOSED
+}
+
+model User {
+  id          String      @id @default(cuid())
+  /// Clerk user id — canonical external identity (clerkUserId in product docs).
+  clerkId     String      @unique @map("clerk_id")
+  email       String      @unique
+  firstName   String?     @map("first_name")
+  lastName    String?     @map("last_name")
+  fullName    String?     @map("full_name")
+  mobile      String?
+  avatarUrl   String?     @map("avatar_url")
+  /// Internal platform role — never set from client signup forms.
+  role        UserRole    @default(USER)
+  accountType AccountType @default(CUSTOMER) @map("account_type")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  deletedAt   DateTime?   @map("deleted_at")
+
+  auditLogs       AuthAuditLog[]
+  customerProfile CustomerProfile?
+  enquiries       Enquiry[]
 
   @@index([role])
+  @@index([accountType])
   @@index([deletedAt])
   @@map("users")
 }
@@ -51,4 +73,43 @@ model AuthAuditLog {
   @@index([action])
   @@index([createdAt])
   @@map("auth_audit_logs")
+}
+
+model CustomerProfile {
+  id           String   @id @default(cuid())
+  userId       String   @unique @map("user_id")
+  companyName  String?  @map("company_name")
+  city         String?
+  state        String?
+  businessType String?  @map("business_type")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("customer_profiles")
+}
+
+model Enquiry {
+  id              String        @id @default(cuid())
+  reference       String        @unique
+  userId          String?       @map("user_id")
+  name            String
+  email           String
+  mobile          String?
+  company         String?
+  serviceInterest String        @map("service_interest")
+  message         String
+  source          String        @default("contact")
+  status          EnquiryStatus @default(NEW)
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@map("enquiries")
 }

@@ -1,48 +1,34 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { AuthFormCard, LoginForm } from '@/components/auth';
-import { WORKSPACE_ROLES } from '@/lib/auth';
+import { AuthFormCard } from '@/components/auth';
 
 export const metadata: Metadata = {
   title: 'Vendor sign in',
-  description:
-    'Vendor Workspace entry — same shared identity engine as customers, employees, and admins. Demo only.',
   robots: { index: false, follow: false },
 };
 
 export default function VendorLoginPage() {
   return (
     <AuthFormCard
-      title="Vendor sign in"
-      description="Enter the Vendor Workspace. Assigned work only — same identity engine, no separate vendor credential store."
+      title="Vendor workspace"
+      description="Vendor onboarding is under review after signup. Demo vendor login is disabled on production routes."
       footer={
         <p>
-          Other entries:{' '}
-          <Link
-            href="/login/admin"
-            className="font-medium text-uv-brand underline-offset-4 hover:underline"
-          >
-            Admin
+          <Link href="/signup" className="font-medium text-uv-brand underline-offset-4 hover:underline">
+            Apply as a vendor
           </Link>
           {' · '}
-          <Link
-            href="/login/employee"
-            className="font-medium text-uv-brand underline-offset-4 hover:underline"
-          >
-            Employee
-          </Link>
-          {' · '}
-          <Link
-            href="/login"
-            className="font-medium text-uv-brand underline-offset-4 hover:underline"
-          >
-            Customer
+          <Link href="/login" className="font-medium text-uv-brand underline-offset-4 hover:underline">
+            Customer sign in
           </Link>
         </p>
       }
     >
-      <LoginForm intendedRole={WORKSPACE_ROLES.VENDOR} />
+      <p className="text-sm text-uv-foreground-muted">
+        After approval, vendors will receive workspace access. Until then, use
+        the customer account path or contact U&amp;V.
+      </p>
     </AuthFormCard>
   );
 }

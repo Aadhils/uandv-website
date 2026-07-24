@@ -7,3 +7,6 @@ export { LoginForm } from './login-form';
 export { SignupForm } from './signup-form';
 export { ForgotPasswordForm } from './forgot-password-form';
 export { VerifyEmailForm } from './verify-email-form';
+export { ClerkSignOutButton } from './clerk-sign-out-button';
+export { DashboardAuthGate } from './dashboard-auth-gate';
+

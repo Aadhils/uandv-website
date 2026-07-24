@@ -129,6 +129,9 @@ importers:
       '@next/third-parties':
         specifier: 16.2.9
         version: 16.2.9(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
+      '@uandv/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@uandv/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -144,6 +147,12 @@ importers:
       resend:
         specifier: ^6.18.0
         version: 6.18.0
+      svix:
+        specifier: ^1.96.1
+        version: 1.96.1
+      zod:
+        specifier: ^3.25.76
+        version: 3.25.76
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4

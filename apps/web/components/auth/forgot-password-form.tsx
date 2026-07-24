@@ -1,87 +1,142 @@
 'use client';
 
+import { useSignIn } from '@clerk/nextjs';
 import Link from 'next/link';
 import * as React from 'react';
 
 import { Button, Form, FormField, Input } from '@uandv/ui';
 
-import {
-  hasFieldErrors,
-  validateForgotPassword,
-  type FieldErrors,
-} from '@/lib/auth';
+import { ClerkGate } from '@/components/auth/clerk-gate';
+import { PasswordField } from '@/components/auth/password-field';
 
 export function ForgotPasswordForm() {
-  const [errors, setErrors] = React.useState<FieldErrors>({});
-  const [submitted, setSubmitted] = React.useState(false);
-  const [identifier, setIdentifier] = React.useState('');
+  return (
+    <ClerkGate>
+      <ClerkForgotPasswordForm />
+    </ClerkGate>
+  );
+}
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+function ClerkForgotPasswordForm() {
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const [step, setStep] = React.useState<'request' | 'reset'>('request');
+  const [email, setEmail] = React.useState('');
+  const [code, setCode] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
+  const [message, setMessage] = React.useState<string | null>(null);
+  const [submitting, setSubmitting] = React.useState(false);
+
+  const onRequest = async (event: React.FormEvent) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const value = String(data.get('identifier') ?? '');
-
-    const nextErrors = validateForgotPassword({ identifier: value });
-    setErrors(nextErrors);
-    if (hasFieldErrors(nextErrors)) {
-      setSubmitted(false);
+    setError(null);
+    setMessage(null);
+    if (!isLoaded || !signIn) {
+      setError('Authentication is not configured.');
       return;
     }
-
-    setIdentifier(value.trim());
-    setSubmitted(true);
+    setSubmitting(true);
+    try {
+      await signIn.create({
+        strategy: 'reset_password_email_code',
+        identifier: email.trim(),
+      });
+      setStep('reset');
+      setMessage('We sent a reset code to your email.');
+    } catch {
+      setError('Unable to start password reset. Check the email and try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  if (submitted) {
+  const onReset = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    if (!isLoaded || !signIn) return;
+    setSubmitting(true);
+    try {
+      const result = await signIn.attemptFirstFactor({
+        strategy: 'reset_password_email_code',
+        code: code.trim(),
+        password,
+      });
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId });
+        setMessage('Password updated. You are signed in.');
+        return;
+      }
+      setError('Could not complete password reset.');
+    } catch {
+      setError('Invalid code or password. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (step === 'reset') {
     return (
-      <div className="space-y-4" role="status" aria-live="polite">
-        <p className="text-sm leading-relaxed text-uv-foreground">
-          If an account exists for{' '}
-          <span className="font-medium">{identifier}</span>, recovery
-          instructions would be sent. This is a{' '}
-          <span className="font-medium">demo placeholder</span> — no email or
-          SMS is sent yet.
+      <Form spacing="md" onSubmit={onReset} noValidate>
+        {message ? (
+          <p className="text-sm text-uv-foreground-muted">{message}</p>
+        ) : null}
+        <FormField label="Reset code" htmlFor="reset-code" required>
+          <Input
+            id="reset-code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            disabled={submitting}
+          />
+        </FormField>
+        <PasswordField
+          name="password"
+          id="reset-password"
+          label="New password"
+          autoComplete="new-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={submitting}
+        />
+        {error ? (
+          <p className="text-sm text-uv-error" role="alert">
+            {error}
+          </p>
+        ) : null}
+        <Button type="submit" className="w-full" disabled={submitting}>
+          {submitting ? 'Updating…' : 'Update password'}
+        </Button>
+        <p className="text-sm text-uv-foreground-muted">
+          <Link href="/login" className="text-uv-brand underline-offset-4 hover:underline">
+            Back to sign in
+          </Link>
         </p>
-        <Link
-          href="/login"
-          className="inline-flex text-sm font-medium text-uv-brand underline-offset-4 hover:underline"
-        >
-          Back to login
-        </Link>
-      </div>
+      </Form>
     );
   }
 
   return (
-    <Form spacing="md" onSubmit={onSubmit} noValidate>
-      <FormField
-        label="Email or mobile number"
-        htmlFor="forgot-identifier"
-        required
-        hint="We’ll show recovery instructions here. No message is sent in this demo."
-        error={errors.identifier}
-      >
+    <Form spacing="md" onSubmit={onRequest} noValidate>
+      <p className="text-sm text-uv-foreground-muted">
+        Enter the email on your account. Clerk will send a one-time reset code.
+      </p>
+      <FormField label="Email" htmlFor="forgot-email" required>
         <Input
-          name="identifier"
-          id="forgot-identifier"
-          type="text"
-          autoComplete="username"
-          placeholder="you@example.com or mobile"
+          id="forgot-email"
+          type="email"
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={submitting}
         />
       </FormField>
-
-      <Button type="submit" fullWidth>
-        Send recovery instructions
+      {error ? (
+        <p className="text-sm text-uv-error" role="alert">
+          {error}
+        </p>
+      ) : null}
+      <Button type="submit" className="w-full" disabled={submitting}>
+        {submitting ? 'Sending…' : 'Send reset code'}
       </Button>
-
-      <p className="text-center text-sm text-uv-foreground-muted">
-        <Link
-          href="/login"
-          className="font-medium text-uv-brand underline-offset-4 hover:underline"
-        >
-          Back to login
-        </Link>
-      </p>
     </Form>
   );
 }

@@ -1,32 +1,46 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
+import Link from 'next/link';
 
-import { AuthFormCard, VerifyEmailForm } from '@/components/auth';
+import { AuthFormCard } from '@/components/auth';
+import { buttonVariants, cn } from '@uandv/ui';
 
 export const metadata: Metadata = {
   title: 'Verify email',
   description:
-    'Enter your verification code. Demo OTP UI only — no email service connected.',
+    'Email verification is handled during Clerk signup. Use Create account or Sign in to continue.',
   robots: { index: false, follow: false },
 };
-
-function VerifyEmailFallback() {
-  return (
-    <p className="text-sm text-uv-foreground-muted" role="status">
-      Loading verification form…
-    </p>
-  );
-}
 
 export default function VerifyEmailPage() {
   return (
     <AuthFormCard
       title="Verify email"
-      description="Confirm your email with a 6-digit code to continue to your workspace."
+      description="Email verification happens during signup. Enter the code shown on the Create account screen after you register."
+      footer={
+        <div className="flex flex-wrap gap-3">
+          <Link href="/signup" className={cn(buttonVariants({ size: 'sm' }))}>
+            Create account
+          </Link>
+          <Link
+            href="/login"
+            className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
+          >
+            Sign in
+          </Link>
+        </div>
+      }
     >
-      <Suspense fallback={<VerifyEmailFallback />}>
-        <VerifyEmailForm />
-      </Suspense>
+      <p className="text-sm text-uv-foreground-muted">
+        If you already started signup, return to that tab to enter your
+        verification code. Password recovery uses the{' '}
+        <Link
+          href="/forgot-password"
+          className="font-medium text-uv-brand underline-offset-4 hover:underline"
+        >
+          Forgot password
+        </Link>{' '}
+        flow.
+      </p>
     </AuthFormCard>
   );
 }

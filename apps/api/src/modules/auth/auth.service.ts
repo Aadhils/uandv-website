@@ -38,6 +38,10 @@ export class AuthService {
   }
 
   async upsertUser(data: ClerkUserData): Promise<User> {
+    const fullName =
+      [data.firstName, data.lastName].filter(Boolean).join(' ').trim() ||
+      undefined;
+
     return this.prisma.user.upsert({
       where: { clerkId: data.clerkId },
       create: {
@@ -45,6 +49,7 @@ export class AuthService {
         email: data.email,
         firstName: data.firstName ?? undefined,
         lastName: data.lastName ?? undefined,
+        fullName,
         avatarUrl: data.avatarUrl ?? undefined,
         role: data.role,
       },
@@ -52,6 +57,7 @@ export class AuthService {
         email: data.email,
         firstName: data.firstName ?? undefined,
         lastName: data.lastName ?? undefined,
+        fullName,
         avatarUrl: data.avatarUrl ?? undefined,
         role: data.role,
         deletedAt: null,

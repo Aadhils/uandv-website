@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 import { AuthFormCard, SignupForm } from '@/components/auth';
 
 export const metadata: Metadata = {
   title: 'Create account',
   description:
-    'Create a U&V account as a Customer, Vendor, or Partner. Demo frontend only.',
+    'Create a U&V customer account with email verification via Clerk.',
   robots: { index: false, follow: false },
 };
 
@@ -13,7 +14,18 @@ export default function SignupPage() {
   return (
     <AuthFormCard
       title="Create account"
-      description="One identity for Customer, Vendor, and Partner workspaces. Employee and Admin roles come later."
+      description="Register as a Customer to access your live workspace. Vendor and Partner applications are accepted for review."
+      footer={
+        <p>
+          Already have an account?{' '}
+          <Link
+            href="/login"
+            className="font-medium text-uv-brand underline-offset-4 hover:underline"
+          >
+            Sign in
+          </Link>
+        </p>
+      }
     >
       <SignupForm />
     </AuthFormCard>

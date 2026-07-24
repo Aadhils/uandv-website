@@ -23,7 +23,6 @@ import { DiscoveryWizard } from '@/components/discovery-wizard';
 import { trackEvent } from '@/lib/analytics';
 import {
   clearWizardSession,
-  getWizardGoalTitle,
   loadWizardSession,
   startWizardSession,
   subscribeWizardSession,
@@ -219,9 +218,10 @@ export function SmartWelcomeHero() {
         }))
       : WIZARD_GOALS;
 
-  const resumeLabel = storedSession
-    ? `Continue My Business Journey (${getWizardGoalTitle(storedSession.goalId)})`
-    : 'Continue My Business Journey';
+  const resumeLabel =
+    Boolean(storedSession) && storedSession?.status !== 'abandoned'
+      ? 'Continue My Business Journey'
+      : 'Start with U&V';
 
   const resumeControl = showResume ? (
     <div className="mt-5 flex w-full min-w-0 justify-start">
@@ -291,7 +291,7 @@ export function SmartWelcomeHero() {
               'w-full max-w-full justify-center sm:w-auto',
             )}
           >
-            Start My Business Journey
+            Start with U&V
           </a>
         </div>
 

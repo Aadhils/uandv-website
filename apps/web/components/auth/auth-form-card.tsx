@@ -2,8 +2,6 @@ import type { ReactNode } from 'react';
 
 import { cn } from '@uandv/ui';
 
-import { AuthDemoBanner } from './auth-demo-banner';
-
 type AuthFormCardProps = {
   title: string;
   description?: string;
@@ -36,8 +34,6 @@ export function AuthFormCard({
           </p>
         ) : null}
       </div>
-
-      <AuthDemoBanner className="mb-6 rounded-uv-lg border border-uv-warning/30 bg-uv-warning-muted/40 px-3 py-3" />
 
       {children}
 

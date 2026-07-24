@@ -9,12 +9,12 @@ export type ContactPayload = {
   company?: string;
   interest?: string;
   message: string;
-  /** Sprint 1 journey lead context */
   visitorType?: string;
   journey?: string;
   partnerType?: string;
   preferredLanguage?: string;
   sourcePage?: string;
+  reference?: string;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -38,6 +38,18 @@ export function getResendFromAddress() {
   );
 }
 
+/** Team inbox — prefer CONTACT_TO_EMAIL, then public contact config. */
+export function getContactToEmails(): string[] {
+  const primary =
+    process.env.CONTACT_TO_EMAIL?.trim() ||
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ||
+    siteConfig.email;
+  const secondary =
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL_SECONDARY?.trim() ||
+    siteConfig.emailSecondary;
+  return Array.from(new Set([primary, secondary].filter(Boolean)));
+}
+
 export function escapeHtml(value: string) {
   return value
     .replaceAll('&', '&amp;')
@@ -49,6 +61,7 @@ export function escapeHtml(value: string) {
 
 export function buildEnquiryEmailHtml(payload: ContactPayload) {
   const rows = [
+    ['Reference', payload.reference || '—'],
     ['Name', payload.name],
     ['Email', payload.email],
     ['Phone', payload.phone || '—'],
@@ -69,7 +82,7 @@ export function buildEnquiryEmailHtml(payload: ContactPayload) {
   return `
     <div style="font-family:Arial,sans-serif;line-height:1.5;color:#0f172a;">
       <h2 style="margin:0 0 12px;font-size:20px;">New website enquiry</h2>
-      <p style="margin:0 0 16px;color:#475569;">Submitted via ${escapeHtml(siteConfig.url)}/contact</p>
+      <p style="margin:0 0 16px;color:#475569;">Submitted via ${escapeHtml(siteConfig.url)}</p>
       <table style="border-collapse:collapse;margin-bottom:16px;">${rows}</table>
       <p style="margin:0 0 8px;font-weight:600;">Message</p>
       <p style="margin:0;white-space:pre-wrap;">${escapeHtml(payload.message)}</p>
@@ -78,10 +91,15 @@ export function buildEnquiryEmailHtml(payload: ContactPayload) {
 }
 
 export function buildConfirmationEmailHtml(payload: ContactPayload) {
+  const referenceLine = payload.reference
+    ? `<p style="margin:0 0 12px;">Your enquiry reference is <strong>${escapeHtml(payload.reference)}</strong>.</p>`
+    : '';
+
   return `
     <div style="font-family:Arial,sans-serif;line-height:1.5;color:#0f172a;">
       <h2 style="margin:0 0 12px;font-size:20px;">Thank you, ${escapeHtml(payload.name)}.</h2>
       <p style="margin:0 0 12px;">We received your enquiry and will respond within 24 business hours.</p>
+      ${referenceLine}
       <p style="margin:0 0 12px;color:#475569;">If you need a faster reply, you can also message us on WhatsApp from our contact page.</p>
       <p style="margin:0;">— ${escapeHtml(siteConfig.legalName)}</p>
     </div>
