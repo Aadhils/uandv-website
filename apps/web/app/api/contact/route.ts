@@ -8,6 +8,8 @@ import {
   getContactNotificationEmail,
   getResendClient,
   getResendFromAddress,
+  getResendMailConfig,
+  serializeResendError,
   type ContactPayload,
 } from '@/lib/contact-email';
 import { prisma } from '@/lib/db';
@@ -144,33 +146,48 @@ export async function POST(request: Request) {
     );
   }
 
+  const mailConfig = getResendMailConfig();
   const from = getResendFromAddress();
   const teamInbox = getContactNotificationEmail();
 
+  const enquirySubject = `[${reference}] New enquiry from ${payload.name}${
+    payload.company ? ` — ${payload.company}` : ''
+  }`;
+  const enquiryHtml = buildEnquiryEmailHtml(payload);
+
+  const enquirySendPayload = {
+    from,
+    to: [teamInbox],
+    replyTo: payload.email,
+    subject: enquirySubject,
+    html: enquiryHtml,
+  };
+
   try {
-    console.info('[contact] sending enquiry email', {
-      from,
-      to: teamInbox,
+    console.info('[contact] resend enquiry request', {
+      envResendFromEmail: mailConfig.envResendFromEmail,
+      resolvedFrom: mailConfig.from,
+      to: mailConfig.to,
+      replyTo: payload.email,
       reference,
-      resendConfigured: Boolean(getResendClient()),
+      subject: enquirySubject,
+      htmlLength: enquiryHtml.length,
     });
 
-    const enquiry = await resend.emails.send({
-      from,
-      to: [teamInbox],
-      replyTo: payload.email,
-      subject: `[${reference}] New enquiry from ${payload.name}${
-        payload.company ? ` — ${payload.company}` : ''
-      }`,
-      html: buildEnquiryEmailHtml(payload),
-    });
+    const enquiry = await resend.emails.send(enquirySendPayload);
 
     if (enquiry.error) {
-      console.error(
-        '[contact] enquiry email failed',
-        formatResendError(enquiry.error),
-        enquiry.error,
-      );
+      console.error('[contact] enquiry email failed', {
+        summary: formatResendError(enquiry.error),
+        resendErrorBody: serializeResendError(enquiry.error),
+        request: {
+          from: enquirySendPayload.from,
+          to: enquirySendPayload.to,
+          replyTo: enquirySendPayload.replyTo,
+          subject: enquirySendPayload.subject,
+        },
+        envResendFromEmail: mailConfig.envResendFromEmail,
+      });
       return NextResponse.json(
         {
           ok: true,
@@ -184,38 +201,56 @@ export async function POST(request: Request) {
 
     console.info('[contact] enquiry email sent', {
       id: enquiry.data?.id,
+      from,
       to: teamInbox,
       reference,
+      resendResponse: enquiry.data,
     });
 
-    const confirmation = await resend.emails.send({
+    const confirmationSubject = `We received your enquiry ${reference} — ${siteConfig.name}`;
+    const confirmationHtml = buildConfirmationEmailHtml(payload);
+    const confirmationSendPayload = {
       from,
       to: [payload.email],
-      subject: `We received your enquiry ${reference} — ${siteConfig.name}`,
-      html: buildConfirmationEmailHtml(payload),
-    });
+      subject: confirmationSubject,
+      html: confirmationHtml,
+    };
+
+    const confirmation = await resend.emails.send(confirmationSendPayload);
 
     if (confirmation.error) {
-      console.error(
-        '[contact] confirmation email failed',
-        formatResendError(confirmation.error),
-        confirmation.error,
-      );
+      console.error('[contact] confirmation email failed', {
+        summary: formatResendError(confirmation.error),
+        resendErrorBody: serializeResendError(confirmation.error),
+        request: {
+          from: confirmationSendPayload.from,
+          to: confirmationSendPayload.to,
+          subject: confirmationSendPayload.subject,
+        },
+      });
     } else {
       console.info('[contact] confirmation email sent', {
         id: confirmation.data?.id,
+        from,
         to: payload.email,
         reference,
+        resendResponse: confirmation.data,
       });
     }
 
     return NextResponse.json({ ok: true, reference });
   } catch (error) {
-    console.error(
-      '[contact] unexpected send failure',
-      formatResendError(error),
-      error,
-    );
+    console.error('[contact] unexpected send failure', {
+      summary: formatResendError(error),
+      resendErrorBody: serializeResendError(error),
+      request: {
+        from: enquirySendPayload.from,
+        to: enquirySendPayload.to,
+        replyTo: enquirySendPayload.replyTo,
+        subject: enquirySendPayload.subject,
+      },
+      envResendFromEmail: mailConfig.envResendFromEmail,
+    });
     return NextResponse.json(
       {
         ok: true,
