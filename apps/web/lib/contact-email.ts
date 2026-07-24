@@ -18,36 +18,136 @@ export type ContactPayload = {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const FROM_WITH_NAME_RE = /^(.+?)\s*<([^>]+)>$/;
 
 export function isValidEmail(value: string) {
   return EMAIL_RE.test(value);
 }
 
+/** Trim and reject blank keys — empty string must not pass as configured. */
+export function getResendApiKey(): string | undefined {
+  const key = process.env.RESEND_API_KEY?.trim();
+  return key ? key : undefined;
+}
+
 export function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = getResendApiKey();
   if (!apiKey) {
     return null;
   }
   return new Resend(apiKey);
 }
 
-export function getResendFromAddress() {
-  return (
-    process.env.RESEND_FROM_EMAIL ??
-    `${siteConfig.legalName} <onboarding@resend.dev>`
+function getSiteMailDomain(): string {
+  try {
+    return new URL(siteConfig.url).hostname.replace(/^www\./i, '');
+  } catch {
+    return 'uandv.com';
+  }
+}
+
+/**
+ * RFC-safe From header — quote display names that contain &, commas, etc.
+ * Resend expects: `"U&V Technologies" <enquiries@uandv.com>`
+ */
+export function formatResendFromAddress(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed) return trimmed;
+
+  const bareEmail = trimmed.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    ? trimmed
+    : null;
+  if (bareEmail) {
+    return bareEmail;
+  }
+
+  const match = trimmed.match(FROM_WITH_NAME_RE);
+  if (!match) {
+    return trimmed;
+  }
+
+  let [, name, email] = match;
+  name = name.trim().replace(/^["']|["']$/g, '');
+  email = email.trim();
+
+  if (/[,;@<>()[\]\\.:]|&/.test(name) && !name.startsWith('"')) {
+    name = `"${name.replace(/"/g, '\\"')}"`;
+  }
+
+  return `${name} <${email}>`;
+}
+
+function defaultProductionFromAddress(): string {
+  const domain = getSiteMailDomain();
+  return formatResendFromAddress(
+    `"${siteConfig.legalName}" <enquiries@${domain}>`,
   );
 }
 
-/** Team inbox — prefer CONTACT_TO_EMAIL, then public contact config. */
-export function getContactToEmails(): string[] {
-  const primary =
+function defaultDevelopmentFromAddress(): string {
+  return formatResendFromAddress(
+    `"${siteConfig.legalName}" <onboarding@resend.dev>`,
+  );
+}
+
+/**
+ * Sender for Resend. In production, never use @resend.dev — it only delivers
+ * to the Resend account owner (403 for info@uandv.com and other recipients).
+ */
+export function getResendFromAddress(): string {
+  const configured = process.env.RESEND_FROM_EMAIL?.trim();
+  const fallback =
+    process.env.NODE_ENV === 'production'
+      ? defaultProductionFromAddress()
+      : defaultDevelopmentFromAddress();
+
+  let from = formatResendFromAddress(configured || fallback);
+
+  if (
+    process.env.NODE_ENV === 'production' &&
+    /@resend\.dev>/i.test(from)
+  ) {
+    const corrected = defaultProductionFromAddress();
+    console.warn(
+      '[contact-email] RESEND_FROM_EMAIL uses @resend.dev in production; using verified domain sender instead:',
+      corrected,
+    );
+    from = corrected;
+  }
+
+  return from;
+}
+
+/** Primary team inbox for new enquiry notifications. */
+export function getContactNotificationEmail(): string {
+  return (
     process.env.CONTACT_TO_EMAIL?.trim() ||
     process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ||
-    siteConfig.email;
+    siteConfig.email
+  );
+}
+
+/** Team inbox — notification address plus optional secondary copy. */
+export function getContactToEmails(): string[] {
+  const primary = getContactNotificationEmail();
   const secondary =
     process.env.NEXT_PUBLIC_CONTACT_EMAIL_SECONDARY?.trim() ||
     siteConfig.emailSecondary;
   return Array.from(new Set([primary, secondary].filter(Boolean)));
+}
+
+export function formatResendError(error: unknown): string {
+  if (!error || typeof error !== 'object') {
+    return String(error);
+  }
+  const record = error as {
+    message?: string;
+    name?: string;
+    statusCode?: number;
+  };
+  return [record.name, record.message, record.statusCode]
+    .filter((part) => part !== undefined && part !== '')
+    .join(' — ');
 }
 
 export function escapeHtml(value: string) {

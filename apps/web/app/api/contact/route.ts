@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server';
 import {
   buildConfirmationEmailHtml,
   buildEnquiryEmailHtml,
-  getContactToEmails,
+  formatResendError,
+  getContactNotificationEmail,
   getResendClient,
   getResendFromAddress,
   type ContactPayload,
@@ -144,12 +145,19 @@ export async function POST(request: Request) {
   }
 
   const from = getResendFromAddress();
-  const teamRecipients = getContactToEmails();
+  const teamInbox = getContactNotificationEmail();
 
   try {
+    console.info('[contact] sending enquiry email', {
+      from,
+      to: teamInbox,
+      reference,
+      resendConfigured: Boolean(getResendClient()),
+    });
+
     const enquiry = await resend.emails.send({
       from,
-      to: teamRecipients,
+      to: [teamInbox],
       replyTo: payload.email,
       subject: `[${reference}] New enquiry from ${payload.name}${
         payload.company ? ` — ${payload.company}` : ''
@@ -158,7 +166,11 @@ export async function POST(request: Request) {
     });
 
     if (enquiry.error) {
-      console.error('[contact] enquiry email failed', enquiry.error);
+      console.error(
+        '[contact] enquiry email failed',
+        formatResendError(enquiry.error),
+        enquiry.error,
+      );
       return NextResponse.json(
         {
           ok: true,
@@ -170,6 +182,12 @@ export async function POST(request: Request) {
       );
     }
 
+    console.info('[contact] enquiry email sent', {
+      id: enquiry.data?.id,
+      to: teamInbox,
+      reference,
+    });
+
     const confirmation = await resend.emails.send({
       from,
       to: [payload.email],
@@ -180,13 +198,24 @@ export async function POST(request: Request) {
     if (confirmation.error) {
       console.error(
         '[contact] confirmation email failed',
+        formatResendError(confirmation.error),
         confirmation.error,
       );
+    } else {
+      console.info('[contact] confirmation email sent', {
+        id: confirmation.data?.id,
+        to: payload.email,
+        reference,
+      });
     }
 
     return NextResponse.json({ ok: true, reference });
   } catch (error) {
-    console.error('[contact] unexpected send failure', error);
+    console.error(
+      '[contact] unexpected send failure',
+      formatResendError(error),
+      error,
+    );
     return NextResponse.json(
       {
         ok: true,
