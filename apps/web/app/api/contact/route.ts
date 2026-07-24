@@ -2,14 +2,13 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 import {
-  buildConfirmationEmailHtml,
-  buildEnquiryEmailHtml,
+  buildConfirmationSendPayload,
+  buildEnquirySendPayload,
   formatResendError,
-  getContactNotificationEmail,
   getResendClient,
-  getResendFromAddress,
   getResendMailConfig,
   serializeResendError,
+  serializeResendResponse,
   type ContactPayload,
 } from '@/lib/contact-email';
 import { prisma } from '@/lib/db';
@@ -19,7 +18,6 @@ import {
 } from '@/lib/enquiries/rate-limit';
 import { generateEnquiryReference } from '@/lib/enquiries/reference';
 import { enquiryPayloadSchema } from '@/lib/enquiries/schema';
-import { siteConfig } from '@/lib/site';
 
 export const runtime = 'nodejs';
 
@@ -147,46 +145,48 @@ export async function POST(request: Request) {
   }
 
   const mailConfig = getResendMailConfig();
-  const from = getResendFromAddress();
-  const teamInbox = getContactNotificationEmail();
+  const enquirySendPayload = buildEnquirySendPayload({ reference, payload });
 
-  const enquirySubject = `[${reference}] New enquiry from ${payload.name}${
-    payload.company ? ` — ${payload.company}` : ''
-  }`;
-  const enquiryHtml = buildEnquiryEmailHtml(payload);
+  console.info('[contact] resend mail config', {
+    RESEND_FROM_EMAIL: mailConfig.envResendFromEmail,
+    CONTACT_TO_EMAIL: mailConfig.envContactToEmail,
+    RESEND_MAIL_DOMAIN: mailConfig.envResendMailDomain,
+    verifiedDomain: mailConfig.verifiedDomain,
+    resolvedFrom: mailConfig.from,
+    resolvedTo: mailConfig.to,
+  });
 
-  const enquirySendPayload = {
-    from,
-    to: [teamInbox],
-    replyTo: payload.email,
-    subject: enquirySubject,
-    html: enquiryHtml,
-  };
+  console.info('[contact] resend enquiry request payload', {
+    from: enquirySendPayload.from,
+    to: enquirySendPayload.to,
+    replyTo: enquirySendPayload.replyTo ?? null,
+    subject: enquirySendPayload.subject,
+    htmlLength: enquirySendPayload.html.length,
+  });
 
   try {
-    console.info('[contact] resend enquiry request', {
-      envResendFromEmail: mailConfig.envResendFromEmail,
-      resolvedFrom: mailConfig.from,
-      to: mailConfig.to,
-      replyTo: payload.email,
-      reference,
-      subject: enquirySubject,
-      htmlLength: enquiryHtml.length,
-    });
-
     const enquiry = await resend.emails.send(enquirySendPayload);
+
+    console.info('[contact] resend enquiry full response', {
+      fullResponse: serializeResendResponse(enquiry),
+    });
 
     if (enquiry.error) {
       console.error('[contact] enquiry email failed', {
         summary: formatResendError(enquiry.error),
         resendErrorBody: serializeResendError(enquiry.error),
+        fullResponse: serializeResendResponse(enquiry),
         request: {
           from: enquirySendPayload.from,
           to: enquirySendPayload.to,
-          replyTo: enquirySendPayload.replyTo,
+          replyTo: enquirySendPayload.replyTo ?? null,
           subject: enquirySendPayload.subject,
         },
-        envResendFromEmail: mailConfig.envResendFromEmail,
+        env: {
+          RESEND_FROM_EMAIL: mailConfig.envResendFromEmail,
+          CONTACT_TO_EMAIL: mailConfig.envContactToEmail,
+          RESEND_MAIL_DOMAIN: mailConfig.envResendMailDomain,
+        },
       });
       return NextResponse.json(
         {
@@ -201,27 +201,27 @@ export async function POST(request: Request) {
 
     console.info('[contact] enquiry email sent', {
       id: enquiry.data?.id,
-      from,
-      to: teamInbox,
+      from: enquirySendPayload.from,
+      to: enquirySendPayload.to,
       reference,
-      resendResponse: enquiry.data,
     });
 
-    const confirmationSubject = `We received your enquiry ${reference} — ${siteConfig.name}`;
-    const confirmationHtml = buildConfirmationEmailHtml(payload);
-    const confirmationSendPayload = {
-      from,
-      to: [payload.email],
-      subject: confirmationSubject,
-      html: confirmationHtml,
-    };
+    const confirmationSendPayload = buildConfirmationSendPayload({
+      reference,
+      payload,
+    });
 
     const confirmation = await resend.emails.send(confirmationSendPayload);
+
+    console.info('[contact] resend confirmation full response', {
+      fullResponse: serializeResendResponse(confirmation),
+    });
 
     if (confirmation.error) {
       console.error('[contact] confirmation email failed', {
         summary: formatResendError(confirmation.error),
         resendErrorBody: serializeResendError(confirmation.error),
+        fullResponse: serializeResendResponse(confirmation),
         request: {
           from: confirmationSendPayload.from,
           to: confirmationSendPayload.to,
@@ -231,10 +231,9 @@ export async function POST(request: Request) {
     } else {
       console.info('[contact] confirmation email sent', {
         id: confirmation.data?.id,
-        from,
-        to: payload.email,
+        from: confirmationSendPayload.from,
+        to: confirmationSendPayload.to,
         reference,
-        resendResponse: confirmation.data,
       });
     }
 
@@ -246,10 +245,14 @@ export async function POST(request: Request) {
       request: {
         from: enquirySendPayload.from,
         to: enquirySendPayload.to,
-        replyTo: enquirySendPayload.replyTo,
+        replyTo: enquirySendPayload.replyTo ?? null,
         subject: enquirySendPayload.subject,
       },
-      envResendFromEmail: mailConfig.envResendFromEmail,
+      env: {
+        RESEND_FROM_EMAIL: mailConfig.envResendFromEmail,
+        CONTACT_TO_EMAIL: mailConfig.envContactToEmail,
+        RESEND_MAIL_DOMAIN: mailConfig.envResendMailDomain,
+      },
     });
     return NextResponse.json(
       {

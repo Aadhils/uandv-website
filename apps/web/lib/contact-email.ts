@@ -19,8 +19,9 @@ export type ContactPayload = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FROM_WITH_NAME_RE = /^(.+?)\s*<([^>]+)>$/;
-const VERIFIED_MAIL_DOMAIN = 'uandv.com';
-const DEFAULT_FROM_EMAIL = `enquiries@${VERIFIED_MAIL_DOMAIN}`;
+/** Must match the domain shown as Verified in Resend → Domains (override via RESEND_MAIL_DOMAIN). */
+const DEFAULT_MAIL_DOMAIN = 'uandv.com';
+const ALLOWED_FROM_LOCAL_PARTS = ['enquiries', 'info'] as const;
 
 export function isValidEmail(value: string) {
   return EMAIL_RE.test(value);
@@ -51,12 +52,16 @@ function stripEnvQuotes(value: string): string {
   return trimmed;
 }
 
-function getSiteMailDomain(): string {
-  try {
-    return new URL(siteConfig.url).hostname.replace(/^www\./i, '');
-  } catch {
-    return VERIFIED_MAIL_DOMAIN;
+/**
+ * Verified sending domain — must match Resend Domains exactly (e.g. uandv.com
+ * or send.uandv.com). Do not derive from NEXT_PUBLIC_SITE_URL.
+ */
+export function getVerifiedMailDomain(): string {
+  const configured = process.env.RESEND_MAIL_DOMAIN?.trim().toLowerCase();
+  if (configured) {
+    return configured.replace(/^www\./, '');
   }
+  return DEFAULT_MAIL_DOMAIN;
 }
 
 /** Pull the mailbox from `Name <email@domain>` or a bare address. */
@@ -75,90 +80,171 @@ export function extractEmailAddress(raw: string): string | null {
   return email && EMAIL_RE.test(email) ? email : null;
 }
 
-function isVerifiedDomainEmail(email: string, domain = getSiteMailDomain()): boolean {
-  const normalizedDomain = domain.toLowerCase();
-  return (
-    email.endsWith(`@${normalizedDomain}`) && !email.includes('@resend.dev')
-  );
+/** Normalize env values that may include display names or stray whitespace. */
+export function normalizeMailbox(raw: string | undefined | null): string | null {
+  if (!raw?.trim()) return null;
+  return extractEmailAddress(raw);
+}
+
+function isAllowedFromEmail(email: string): boolean {
+  const domain = getVerifiedMailDomain();
+  if (!email.endsWith(`@${domain}`)) return false;
+  if (email.includes('@resend.dev')) return false;
+  const local = email.split('@')[0];
+  return (ALLOWED_FROM_LOCAL_PARTS as readonly string[]).includes(local);
+}
+
+function defaultFromEmail(): string {
+  const domain = getVerifiedMailDomain();
+  const local =
+    process.env.RESEND_FROM_LOCAL_PART?.trim().toLowerCase() || 'enquiries';
+  if ((ALLOWED_FROM_LOCAL_PARTS as readonly string[]).includes(local)) {
+    return `${local}@${domain}`;
+  }
+  return `enquiries@${domain}`;
 }
 
 /**
- * Verified sender mailbox for Resend API.
- * Coerces sandbox / foreign domains to enquiries@uandv.com.
+ * Verified sender for Resend `from` — bare mailbox only (no display names).
+ * Allowed: enquiries@{domain} or info@{domain}.
  */
 export function getResendFromEmail(): string {
-  const domain = getSiteMailDomain();
-  const configuredRaw = process.env.RESEND_FROM_EMAIL?.trim();
-  const configuredEmail = configuredRaw
-    ? extractEmailAddress(configuredRaw)
-    : null;
+  const configuredRaw = process.env.RESEND_FROM_EMAIL?.trim() ?? null;
+  const configured = configuredRaw ? normalizeMailbox(configuredRaw) : null;
 
-  if (configuredEmail && isVerifiedDomainEmail(configuredEmail, domain)) {
-    return configuredEmail;
+  if (configured && isAllowedFromEmail(configured)) {
+    return configured;
   }
 
-  if (configuredEmail) {
-    console.warn(
-      '[contact-email] RESEND_FROM_EMAIL is not a verified domain sender; using default',
-      {
-        configured: configuredRaw,
-        parsed: configuredEmail,
-        domain,
-        defaultFrom: DEFAULT_FROM_EMAIL,
-      },
-    );
+  if (configured || configuredRaw) {
+    console.warn('[contact-email] RESEND_FROM_EMAIL invalid for verified domain; using default', {
+      envResendFromEmail: configuredRaw,
+      parsed: configured,
+      verifiedDomain: getVerifiedMailDomain(),
+      defaultFrom: defaultFromEmail(),
+    });
   }
 
-  return DEFAULT_FROM_EMAIL;
+  return defaultFromEmail();
 }
 
-/**
- * Resend `from` — bare verified mailbox (safest for validation).
- * Display names with `&` can trigger Resend validation_error 403.
- */
 export function getResendFromAddress(): string {
   return getResendFromEmail();
 }
 
+/** Primary team inbox for new enquiry notifications. */
+export function getContactNotificationEmail(): string {
+  const candidates = [
+    process.env.CONTACT_TO_EMAIL,
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL,
+    siteConfig.email,
+  ];
+
+  for (const candidate of candidates) {
+    const email = normalizeMailbox(candidate);
+    if (email) return email;
+  }
+
+  return `info@${getVerifiedMailDomain()}`;
+}
+
 export type ResendMailConfig = {
   envResendFromEmail: string | null;
+  envContactToEmail: string | null;
+  envResendMailDomain: string | null;
+  verifiedDomain: string;
   from: string;
   to: string;
-  domain: string;
 };
 
 export function getResendMailConfig(): ResendMailConfig {
   return {
     envResendFromEmail: process.env.RESEND_FROM_EMAIL?.trim() ?? null,
+    envContactToEmail: process.env.CONTACT_TO_EMAIL?.trim() ?? null,
+    envResendMailDomain: process.env.RESEND_MAIL_DOMAIN?.trim() ?? null,
+    verifiedDomain: getVerifiedMailDomain(),
     from: getResendFromEmail(),
     to: getContactNotificationEmail(),
-    domain: getSiteMailDomain(),
   };
 }
 
-/** Primary team inbox for new enquiry notifications. */
-export function getContactNotificationEmail(): string {
-  return (
-    process.env.CONTACT_TO_EMAIL?.trim() ||
-    process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ||
-    siteConfig.email
-  );
+export type ResendSendPayload = {
+  from: string;
+  to: string[];
+  replyTo?: string;
+  subject: string;
+  html: string;
+};
+
+export function buildEnquirySendPayload(input: {
+  reference: string;
+  payload: ContactPayload;
+}): ResendSendPayload {
+  const from = getResendFromEmail();
+  const to = getContactNotificationEmail();
+  const replyTo = normalizeMailbox(input.payload.email) ?? undefined;
+
+  const subject = `[${input.reference}] New enquiry from ${input.payload.name}${
+    input.payload.company ? ` - ${input.payload.company}` : ''
+  }`;
+
+  return {
+    from,
+    to: [to],
+    ...(replyTo ? { replyTo } : {}),
+    subject,
+    html: buildEnquiryEmailHtml(input.payload),
+  };
+}
+
+export function buildConfirmationSendPayload(input: {
+  reference: string;
+  payload: ContactPayload;
+}): ResendSendPayload {
+  const from = getResendFromEmail();
+  const to = normalizeMailbox(input.payload.email);
+  if (!to) {
+    throw new Error('Invalid customer email for confirmation.');
+  }
+
+  return {
+    from,
+    to: [to],
+    subject: `We received your enquiry ${input.reference} - ${siteConfig.name}`,
+    html: buildConfirmationEmailHtml(input.payload),
+  };
 }
 
 /** Team inbox — notification address plus optional secondary copy. */
 export function getContactToEmails(): string[] {
   const primary = getContactNotificationEmail();
-  const secondary =
+  const secondary = normalizeMailbox(
     process.env.NEXT_PUBLIC_CONTACT_EMAIL_SECONDARY?.trim() ||
-    siteConfig.emailSecondary;
-  return Array.from(new Set([primary, secondary].filter(Boolean)));
+      siteConfig.emailSecondary,
+  );
+  const emails = [primary];
+  if (secondary) {
+    emails.push(secondary);
+  }
+  return Array.from(new Set(emails));
 }
 
 export function serializeResendError(error: unknown): string {
   try {
-    return JSON.stringify(error);
+    return JSON.stringify(error, null, 2);
   } catch {
     return String(error);
+  }
+}
+
+export function serializeResendResponse(response: {
+  data: unknown;
+  error: unknown;
+}): string {
+  try {
+    return JSON.stringify(response, null, 2);
+  } catch {
+    return String(response);
   }
 }
 
