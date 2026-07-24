@@ -7,18 +7,15 @@ import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import {
   DEMO_PROJECT_LABEL,
-  getFeaturedCaseStudies,
   portfolioProcess,
   portfolioTechnologies,
 } from '@/lib/portfolio';
 import { siteConfig } from '@/lib/site';
 
-import { DemoProjectBadge, FeaturedProjectCard } from './portfolio-card';
+import { DemoProjectBadge } from './portfolio-card';
 import { PortfolioFilterGrid } from './portfolio-filter-grid';
 
 export function PortfolioIndexPage() {
-  const featured = getFeaturedCaseStudies(4);
-
   return (
     <div className="marketing-grain flex-1">
       <section className="relative overflow-hidden border-b border-uv-border bg-uv-background">
@@ -42,7 +39,7 @@ export function PortfolioIndexPage() {
               <p className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
                 Portfolio &amp; Demo Center
               </p>
-              <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
+              <h1 className="mt-4 break-words font-[family-name:var(--font-uv-display)] text-[1.75rem] font-bold tracking-tight text-uv-foreground sm:text-4xl md:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
                 Our Work Speaks for Itself
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-uv-foreground-muted sm:text-xl">
@@ -58,7 +55,7 @@ export function PortfolioIndexPage() {
                   href="#demos"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
-                  View Live Demo
+                  Browse demos
                 </a>
                 <Link
                   href="/contact"
@@ -113,7 +110,7 @@ export function PortfolioIndexPage() {
             <SectionHeading
               eyebrow="Portfolio categories & demo cards"
               title="Browse demos by product lane."
-              description="Filter by category. Each card includes an image placeholder, industry, technologies, Live Demo, and View Details."
+              description="Filter by category. Each card includes an image placeholder, industry, technologies, View Details, and Live Demo when an interactive demo exists."
             />
           </Reveal>
           <div className="mt-12">
@@ -123,30 +120,8 @@ export function PortfolioIndexPage() {
       </section>
 
       <section
-        id="featured"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Featured projects"
-              title="Large premium demos worth a closer look."
-              description="Highlighted product concepts that show depth across operations, growth, and AI."
-            />
-          </Reveal>
-          <div className="mt-14 space-y-8">
-            {featured.map((study, index) => (
-              <Reveal key={study.slug} delayMs={index * 60}>
-                <FeaturedProjectCard study={study} />
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
         id="technology"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
+        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
@@ -159,7 +134,7 @@ export function PortfolioIndexPage() {
           <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
             {portfolioTechnologies.map((tech, index) => (
               <Reveal key={tech.title} delayMs={Math.min(index * 25, 220)}>
-                <div className="group flex items-center gap-3 rounded-uv-xl border border-uv-border bg-uv-background-subtle px-4 py-4 transition-colors hover:border-uv-brand/40">
+                <div className="group flex items-center gap-3 rounded-uv-xl border border-uv-border bg-uv-background px-4 py-4 transition-colors hover:border-uv-brand/40">
                   <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand transition-transform duration-300 group-hover:-translate-y-0.5">
                     <Icon name={tech.icon} />
                   </div>
@@ -175,7 +150,7 @@ export function PortfolioIndexPage() {
 
       <section
         id="process"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
+        className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>

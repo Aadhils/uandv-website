@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Footer } from '@uandv/ui';
 
 import { Logo } from '@/components/brand/logo';
-import { siteConfig } from '@/lib/site';
+import { getMarketingSocialLinks, siteConfig } from '@/lib/site';
 
 export function SiteFooter() {
   return (
@@ -25,14 +25,20 @@ export function SiteFooter() {
             { label: 'Why U&V', href: '/why-uandv' },
             { label: 'Business Solutions', href: '/business-consulting' },
             { label: 'MLM Solutions', href: '/solutions/mlm-software' },
+            {
+              label: 'Digital Marketing',
+              href: '/solutions/digital-marketing',
+            },
           ],
         },
         {
           title: 'Engage',
           links: [
+            { label: 'Marketplace', href: '/marketplace' },
+            { label: 'Partners', href: '/partners' },
             { label: 'Technologies', href: '/#technologies' },
             { label: 'Outcomes', href: '/#outcomes' },
-            { label: 'FAQ', href: '/#faq' },
+            { label: 'FAQ', href: '/faq' },
             { label: 'Contact', href: '/contact' },
           ],
         },
@@ -44,23 +50,7 @@ export function SiteFooter() {
           ],
         },
       ]}
-      social={[
-        {
-          label: 'Email',
-          href: `mailto:${siteConfig.email}`,
-          icon: 'Mail',
-        },
-        {
-          label: 'WhatsApp',
-          href: siteConfig.whatsapp,
-          icon: 'MessageCircle',
-        },
-        {
-          label: 'LinkedIn',
-          href: siteConfig.linkedin,
-          icon: 'Linkedin',
-        },
-      ]}
+      social={getMarketingSocialLinks()}
       bottom={
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p>

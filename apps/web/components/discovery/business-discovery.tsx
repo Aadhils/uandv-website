@@ -225,7 +225,7 @@ export function BusinessDiscovery({
 
   return (
     <div
-      className="mt-6 rounded-uv-2xl border border-white/12 bg-black/25 p-5 shadow-[0_18px_50px_rgb(0_0_0_/_0.2)] sm:p-7"
+      className="mt-6 w-full min-w-0 max-w-full rounded-uv-2xl border border-white/12 bg-black/25 p-4 shadow-[0_18px_50px_rgb(0_0_0_/_0.2)] sm:p-7"
       aria-live="polite"
     >
       <div className="flex items-start justify-between gap-3">

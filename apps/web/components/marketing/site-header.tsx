@@ -26,7 +26,7 @@ export function SiteHeader() {
       brand={
         <Link
           href="/"
-          className="uv-focus-ring rounded-uv-md"
+          className="uv-focus-ring block max-w-full truncate rounded-uv-md"
           aria-label={`${siteConfig.name} home`}
         >
           <Logo />
@@ -40,42 +40,37 @@ export function SiteHeader() {
       actions={
         <>
           <ThemeToggle />
-          <a
-            href={siteConfig.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/login"
             className={cn(
-              buttonVariants({ size: 'sm', variant: 'outline' }),
+              buttonVariants({ size: 'sm', variant: 'ghost' }),
               'hidden lg:inline-flex',
             )}
           >
-            WhatsApp
-          </a>
+            Login
+          </Link>
           <Link
-            href="/contact"
+            href="/signup"
             className={cn(
               buttonVariants({ size: 'sm' }),
-              'hidden sm:inline-flex',
+              'hidden lg:inline-flex',
             )}
           >
-            Get started
+            Get Started
           </Link>
         </>
       }
       mobileActions={
         <>
-          <ThemeToggle />
-          <Link href="/contact" className={cn(buttonVariants({ size: 'md' }))}>
-            Get started
-          </Link>
-          <a
-            href={siteConfig.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/login"
             className={cn(buttonVariants({ size: 'md', variant: 'outline' }))}
           >
-            Chat on WhatsApp
-          </a>
+            Login
+          </Link>
+          <Link href="/signup" className={cn(buttonVariants({ size: 'md' }))}>
+            Get Started
+          </Link>
         </>
       }
     />

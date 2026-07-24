@@ -20,6 +20,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/node": "^20.17.24",
     "@uandv/config": "workspace:*",
     "typescript": "^5.8.2"
   }

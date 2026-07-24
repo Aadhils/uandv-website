@@ -30,6 +30,13 @@ import { formatLocation, siteConfig } from '@/lib/site';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
+type ContactResponse = {
+  ok?: boolean;
+  error?: string;
+  reference?: string;
+  warning?: string;
+};
+
 function buildPrefillMessage(input: {
   journeyTitle?: string;
   steps?: string;
@@ -59,6 +66,8 @@ export function ContactPage() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [reference, setReference] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
   const services = getAllServices();
 
   const leadContext = useMemo(() => {
@@ -138,10 +147,13 @@ export function ContactPage() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
+    if (status === 'submitting') return;
     const data = new FormData(form);
 
     setStatus('submitting');
     setErrorMessage(null);
+    setReference(null);
+    setWarning(null);
 
     try {
       const response = await fetch('/api/contact', {
@@ -159,12 +171,12 @@ export function ContactPage() {
           partnerType: String(data.get('partnerType') ?? ''),
           preferredLanguage: String(data.get('preferredLanguage') ?? ''),
           sourcePage: String(data.get('sourcePage') ?? ''),
+          source: 'contact',
+          website: String(data.get('website') ?? ''),
         }),
       });
 
-      const result = (await response.json().catch(() => null)) as
-        | { ok?: boolean; error?: string }
-        | null;
+      const result = (await response.json().catch(() => null)) as ContactResponse | null;
 
       if (!response.ok) {
         setStatus('error');
@@ -175,6 +187,8 @@ export function ContactPage() {
         return;
       }
 
+      setReference(result?.reference ?? null);
+      setWarning(result?.warning ?? null);
       setStatus('success');
       form.reset();
     } catch {
@@ -377,20 +391,50 @@ export function ContactPage() {
                       <Icon name="Check" size="md" />
                     </div>
                     <p className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
-                      Thank you! Your enquiry has been received. We&apos;ll
-                      contact you soon.
+                      Thank you. Your enquiry has been received.
+                      {reference ? (
+                        <>
+                          {' '}
+                          Reference: <span className="text-uv-brand">{reference}</span>
+                        </>
+                      ) : null}
                     </p>
+                    {warning ? (
+                      <p className="text-sm text-uv-foreground-muted">{warning}</p>
+                    ) : (
+                      <p className="text-sm text-uv-foreground-muted">
+                        We&apos;ll contact you within 24 business hours.
+                      </p>
+                    )}
                     <Button
                       type="button"
                       variant="outline"
                       className="mt-2"
-                      onClick={() => setStatus('idle')}
+                      onClick={() => {
+                        setStatus('idle');
+                        setReference(null);
+                        setWarning(null);
+                      }}
                     >
                       Send another message
                     </Button>
                   </div>
                 ) : (
-                  <Form onSubmit={onSubmit} className="mt-6 sm:mt-8">
+                  <Form onSubmit={onSubmit} className="relative mt-6 sm:mt-8">
+                    {/* Honeypot — leave empty */}
+                    <div
+                      className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+                      aria-hidden
+                    >
+                      <label htmlFor="contact-website">Website</label>
+                      <input
+                        id="contact-website"
+                        name="website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
+                    </div>
                     <input
                       type="hidden"
                       name="visitorType"

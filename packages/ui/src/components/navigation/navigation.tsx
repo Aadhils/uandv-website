@@ -88,7 +88,7 @@ export function Navbar({
   return (
     <header
       className={cn(
-        'z-[1200] w-full border-b border-uv-nav-border bg-uv-nav/95 backdrop-blur-md transition-shadow duration-200',
+        'z-[1200] w-full max-w-full overflow-x-clip border-b border-uv-nav-border bg-uv-nav/95 backdrop-blur-md transition-shadow duration-200',
         sticky && 'sticky top-0',
         className,
       )}
@@ -97,8 +97,8 @@ export function Navbar({
         className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
-        <div className="flex min-w-0 items-center gap-6 lg:gap-8">
-          <div className="shrink-0">{brand}</div>
+        <div className="flex min-w-0 flex-1 items-center gap-4 lg:gap-8">
+          <div className="min-w-0 shrink">{brand}</div>
           {links.length > 0 ? (
             <ul className="hidden items-center gap-0.5 lg:flex">
               {links.map((link) => (
@@ -112,21 +112,20 @@ export function Navbar({
           ) : null}
         </div>
 
-        <div className="hidden items-center gap-2 lg:flex lg:gap-3">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:gap-3">
           {actions}
+          <button
+            ref={toggleRef}
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg text-uv-foreground transition-colors hover:bg-uv-background-muted lg:hidden uv-focus-ring"
+            aria-expanded={mobileOpen}
+            aria-controls={menuId}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMobileOpen((open) => !open)}
+          >
+            <Icon name={mobileOpen ? 'X' : 'Menu'} size="md" />
+          </button>
         </div>
-
-        <button
-          ref={toggleRef}
-          type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg text-uv-foreground transition-colors hover:bg-uv-background-muted lg:hidden uv-focus-ring"
-          aria-expanded={mobileOpen}
-          aria-controls={menuId}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          onClick={() => setMobileOpen((open) => !open)}
-        >
-          <Icon name={mobileOpen ? 'X' : 'Menu'} size="md" />
-        </button>
       </nav>
 
       {mobileOpen ? (

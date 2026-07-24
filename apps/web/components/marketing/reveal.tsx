@@ -35,7 +35,7 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' },
+      { threshold: 0.05, rootMargin: '0px 0px 10% 0px' },
     );
 
     observer.observe(node);
@@ -45,7 +45,7 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      className={cn('marketing-reveal h-full', className)}
+      className={cn('marketing-reveal min-w-0', className)}
       style={delayMs ? { transitionDelay: `${delayMs}ms` } : undefined}
     >
       {children}

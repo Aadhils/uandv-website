@@ -20,18 +20,18 @@ export function WhyChoose() {
             />
           </Reveal>
 
-          <div className="space-y-0 divide-y divide-uv-border border-y border-uv-border">
+          <div className="min-w-0 space-y-0 divide-y divide-uv-border border-y border-uv-border">
             {whyChoose.map((reason, index) => (
               <Reveal key={reason.title} delayMs={index * 70}>
-                <div className="grid gap-3 py-7 sm:grid-cols-[auto_1fr] sm:gap-8">
+                <div className="grid gap-3 py-7 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-8">
                   <span className="font-[family-name:var(--font-uv-display)] text-sm font-semibold text-uv-brand">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <div>
-                    <h3 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+                  <div className="min-w-0">
+                    <h3 className="break-words font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
                       {reason.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                    <p className="mt-2 break-words text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                       {reason.description}
                     </p>
                   </div>

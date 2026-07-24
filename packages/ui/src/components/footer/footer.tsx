@@ -59,17 +59,27 @@ export function Footer({
             ) : null}
             {social.length > 0 ? (
               <ul className="flex flex-wrap gap-2 pt-2">
-                {social.map((item) => (
-                  <li key={`${item.label}-${item.href}`}>
-                    <a
-                      href={item.href}
-                      aria-label={item.label}
-                      className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg text-uv-soft-violet/85 transition-colors duration-200 hover:bg-uv-navy-blue hover:text-white uv-focus-ring"
-                    >
-                      <Icon name={item.icon} size="md" />
-                    </a>
-                  </li>
-                ))}
+                {social.map((item) => {
+                  const isMailto = item.href.startsWith('mailto:');
+                  return (
+                    <li key={`${item.label}-${item.href}`}>
+                      <a
+                        href={item.href}
+                        aria-label={item.label}
+                        title={item.label}
+                        {...(isMailto
+                          ? {}
+                          : {
+                              target: '_blank',
+                              rel: 'noopener noreferrer',
+                            })}
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg text-uv-soft-violet/85 transition-colors duration-200 hover:bg-uv-navy-blue hover:text-white uv-focus-ring"
+                      >
+                        <Icon name={item.icon} size="md" />
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             ) : null}
           </div>

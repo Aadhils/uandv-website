@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
+import { BackToTop } from '@/components/shared/back-to-top';
 
 export default function MarketingLayout({
   children,
@@ -17,10 +18,11 @@ export default function MarketingLayout({
         Skip to main content
       </a>
       <SiteHeader />
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="min-w-0 flex-1 overflow-x-clip pb-20">
         {children}
       </main>
       <SiteFooter />
+      <BackToTop className="bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] z-40" />
     </>
   );
 }

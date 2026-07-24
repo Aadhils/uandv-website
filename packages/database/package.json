@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./dist/index.js",
+      "default": "./src/index.ts"
     }
   },
   "scripts": {
@@ -25,6 +27,7 @@
     "@prisma/client": "^6.5.0"
   },
   "devDependencies": {
+    "@types/node": "^20.17.24",
     "@uandv/config": "workspace:*",
     "prisma": "^6.5.0",
     "typescript": "^5.8.2"

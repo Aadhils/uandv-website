@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 
 import {
   Button,
@@ -13,54 +13,85 @@ import {
 } from '@uandv/ui';
 
 import { getAllServices } from '@/lib/services';
-import { siteConfig } from '@/lib/site';
 
 type ServiceInquiryFormProps = {
   defaultServiceSlug?: string;
   compact?: boolean;
 };
 
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+
 /**
- * Safe client-side inquiry: opens the visitor's email app (mailto).
- * Server-side form backend is not connected yet.
+ * Service enquiry — posts to /api/contact (Resend + PostgreSQL).
  */
 export function ServiceInquiryForm({
   defaultServiceSlug,
   compact = false,
 }: ServiceInquiryFormProps) {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [reference, setReference] = useState<string | null>(null);
+  const sendingLock = useRef(false);
   const services = getAllServices();
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (sendingLock.current || status === 'submitting') return;
+
     const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    sendingLock.current = true;
+    setStatus('submitting');
+    setErrorMessage(null);
+    setReference(null);
+
     const data = new FormData(form);
-    const name = String(data.get('name') ?? '');
-    const email = String(data.get('email') ?? '');
-    const company = String(data.get('company') ?? '');
-    const interest = String(data.get('interest') ?? '');
-    const message = String(data.get('message') ?? '');
-    const interestLabel =
-      services.find((service) => service.slug === interest)?.title ?? interest;
 
-    const subject = encodeURIComponent(
-      `U&V service inquiry — ${interestLabel}${company ? ` (${company})` : ''}`,
-    );
-    const body = encodeURIComponent(
-      [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Company: ${company || '—'}`,
-        `Service: ${interestLabel}`,
-        '',
-        message,
-      ].join('\n'),
-    );
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: String(data.get('name') ?? ''),
+          email: String(data.get('email') ?? ''),
+          company: String(data.get('company') ?? ''),
+          interest: String(data.get('interest') ?? ''),
+          message: String(data.get('message') ?? ''),
+          source: 'service-inquiry',
+          sourcePage:
+            typeof window !== 'undefined' ? window.location.pathname : '/services',
+          website: String(data.get('website') ?? ''),
+        }),
+      });
 
-    window.location.assign(
-      `mailto:${siteConfig.email}?subject=${subject}&body=${body}`,
-    );
-    setSubmitted(true);
+      const result = (await response.json().catch(() => null)) as {
+        ok?: boolean;
+        error?: string;
+        reference?: string;
+      } | null;
+
+      if (!response.ok) {
+        setStatus('error');
+        setErrorMessage(
+          result?.error ??
+            'We could not send your enquiry. Please try again shortly.',
+        );
+        return;
+      }
+
+      setReference(result?.reference ?? null);
+      setStatus('success');
+      form.reset();
+    } catch {
+      setStatus('error');
+      setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      sendingLock.current = false;
+    }
   };
 
   return (
@@ -72,62 +103,80 @@ export function ServiceInquiryForm({
       }
     >
       <Text variant="caption" className="mb-6 block text-uv-foreground-muted">
-        Form status: opens your email app to message{' '}
-        <span className="font-medium text-uv-foreground">{siteConfig.email}</span>
-        . Server-side form backend is not connected yet.
+        Send a service enquiry directly to the U&amp;V team. You will receive a
+        confirmation email and a reference ID.
       </Text>
 
-      {submitted ? (
-        <div className="space-y-3 py-6 text-center">
-          <p className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
-            Opening your email app
-          </p>
-          <p className="text-sm text-uv-foreground-muted sm:text-base">
-            If it did not open, email{' '}
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="text-uv-brand underline-offset-4 hover:underline"
-            >
-              {siteConfig.email}
-            </a>{' '}
-            or{' '}
-            <a
-              href={siteConfig.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-uv-brand underline-offset-4 hover:underline"
-            >
-              message us on WhatsApp
-            </a>
-            .
+      {status === 'success' ? (
+        <div
+          className="space-y-3 rounded-uv-xl border border-uv-brand/25 bg-uv-brand-muted/40 px-4 py-6 text-center"
+          role="status"
+        >
+          <p className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+            Thank you. Your enquiry has been received.
+            {reference ? (
+              <>
+                {' '}
+                Reference: <span className="text-uv-brand">{reference}</span>
+              </>
+            ) : null}
           </p>
           <Button
             type="button"
             variant="outline"
-            className="mt-2"
-            onClick={() => setSubmitted(false)}
+            onClick={() => {
+              setStatus('idle');
+              setReference(null);
+            }}
           >
-            Edit message
+            Send another enquiry
           </Button>
         </div>
       ) : (
-        <Form onSubmit={onSubmit}>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <FormField label="Name" required>
-              <Input name="name" autoComplete="name" required />
-            </FormField>
-            <FormField label="Email" required>
-              <Input name="email" type="email" autoComplete="email" required />
-            </FormField>
+        <Form onSubmit={onSubmit} className="relative">
+          <div
+            className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+            aria-hidden
+          >
+            <label htmlFor="service-website">Website</label>
+            <input
+              id="service-website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+            />
           </div>
+          <FormField label="Name" required>
+            <Input
+              name="name"
+              required
+              autoComplete="name"
+              disabled={status === 'submitting'}
+            />
+          </FormField>
+          <FormField label="Email" required>
+            <Input
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              disabled={status === 'submitting'}
+            />
+          </FormField>
           <FormField label="Company">
-            <Input name="company" autoComplete="organization" />
+            <Input
+              name="company"
+              autoComplete="organization"
+              disabled={status === 'submitting'}
+            />
           </FormField>
           <FormField label="Service interest" required>
             <Select
               name="interest"
-              defaultValue={defaultServiceSlug ?? services[0]?.slug}
               required
+              defaultValue={defaultServiceSlug || services[0]?.slug}
+              disabled={status === 'submitting'}
             >
               {services.map((service) => (
                 <option key={service.slug} value={service.slug}>
@@ -140,11 +189,19 @@ export function ServiceInquiryForm({
             <Textarea
               name="message"
               required
-              placeholder="Tell us about your goals, timeline, and any constraints."
+              rows={4}
+              disabled={status === 'submitting'}
             />
           </FormField>
-          <Button type="submit" size="lg" className="w-full sm:w-auto">
-            Continue in email app
+
+          {status === 'error' && errorMessage ? (
+            <p className="text-sm text-uv-error" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
+
+          <Button type="submit" disabled={status === 'submitting'}>
+            {status === 'submitting' ? 'Sending…' : 'Send enquiry'}
           </Button>
         </Form>
       )}

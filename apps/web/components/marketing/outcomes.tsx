@@ -7,7 +7,7 @@ export function Outcomes() {
   return (
     <section
       id="outcomes"
-      className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
+      className="scroll-mt-20 bg-uv-background-subtle py-16 sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -20,12 +20,12 @@ export function Outcomes() {
 
         <div className="mt-14 grid gap-10 lg:grid-cols-3">
           {outcomes.map((item, index) => (
-            <Reveal key={item.title} delayMs={index * 80}>
-              <article className="flex h-full flex-col border-l-2 border-uv-brand/50 pl-6">
-                <h3 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
+            <Reveal key={item.title} delayMs={index * 80} className="h-full">
+              <article className="flex h-full min-w-0 flex-col border-l-2 border-uv-brand/50 pl-6">
+                <h3 className="break-words font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                <p className="mt-3 break-words text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                   {item.description}
                 </p>
               </article>

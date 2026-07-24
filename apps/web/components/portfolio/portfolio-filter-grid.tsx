@@ -23,11 +23,11 @@ export function PortfolioFilterGrid() {
   }, [category, studies]);
 
   return (
-    <div>
+    <div className="min-w-0">
       <div
         role="group"
         aria-label="Filter demos by category"
-        className="flex flex-wrap gap-2"
+        className="flex min-w-0 flex-wrap gap-2"
       >
         {portfolioCategories.map((item) => {
           const active = category === item;
@@ -56,9 +56,9 @@ export function PortfolioFilterGrid() {
           : `Showing ${filtered.length} demo${filtered.length === 1 ? '' : 's'} in ${category}.`}
       </p>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filtered.map((study, index) => (
-          <Reveal key={study.slug} delayMs={Math.min(index * 35, 280)}>
+          <Reveal key={study.slug} delayMs={Math.min(index * 35, 280)} className="h-full">
             <PortfolioCard study={study} />
           </Reveal>
         ))}

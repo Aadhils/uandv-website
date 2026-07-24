@@ -5,6 +5,7 @@ import { Icon, buttonVariants, cn } from '@uandv/ui';
 import { ServiceIllustration } from '@/components/services/service-illustration';
 import {
   DEMO_PROJECT_LABEL,
+  getValidatedLiveDemoHref,
   type CaseStudy,
 } from '@/lib/portfolio';
 
@@ -50,6 +51,42 @@ export function DemoImagePlaceholder({
   );
 }
 
+function PortfolioCardActions({ study }: { study: CaseStudy }) {
+  const demoHref = getValidatedLiveDemoHref(study.liveDemoHref);
+
+  return (
+    <div
+      className={cn(
+        'mt-5 flex flex-col gap-2',
+        demoHref ? 'sm:flex-row' : 'sm:flex-row sm:justify-start',
+      )}
+    >
+      {demoHref ? (
+        <Link
+          href={demoHref}
+          className={cn(
+            buttonVariants({ size: 'sm' }),
+            'justify-center sm:flex-1',
+          )}
+        >
+          Live Demo
+        </Link>
+      ) : null}
+      <Link
+        href={`/portfolio/${study.slug}`}
+        className={cn(
+          buttonVariants({ size: 'sm', variant: 'outline' }),
+          'justify-center',
+          demoHref ? 'sm:flex-1' : 'w-full sm:w-auto',
+        )}
+      >
+        View Details
+        <Icon name="ArrowRight" size="sm" />
+      </Link>
+    </div>
+  );
+}
+
 export function PortfolioCard({
   study,
   className,
@@ -60,20 +97,20 @@ export function PortfolioCard({
   return (
     <article
       className={cn(
-        'group flex h-full flex-col overflow-hidden rounded-uv-xl border border-uv-border bg-uv-background transition-colors hover:border-uv-brand/40',
+        'group flex h-full min-w-0 flex-col overflow-hidden rounded-uv-xl border border-uv-border bg-uv-background transition-colors hover:border-uv-brand/40',
         className,
       )}
     >
       <DemoImagePlaceholder study={study} />
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
         <p className="text-xs font-medium uppercase tracking-[0.14em] text-uv-brand">
           {study.industry}
         </p>
-        <h3 className="mt-2 font-[family-name:var(--font-uv-display)] text-lg font-semibold tracking-tight text-uv-foreground">
+        <h3 className="mt-2 break-words font-[family-name:var(--font-uv-display)] text-lg font-semibold tracking-tight text-uv-foreground">
           {study.title}
         </h3>
-        <p className="mt-3 flex-1 text-sm leading-relaxed text-uv-foreground-muted">
+        <p className="mt-3 flex-1 break-words text-sm leading-relaxed text-uv-foreground-muted">
           {study.summary}
         </p>
         <ul className="mt-4 flex flex-wrap gap-2">
@@ -86,27 +123,7 @@ export function PortfolioCard({
             </li>
           ))}
         </ul>
-        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-          <Link
-            href={study.liveDemoHref ?? `/portfolio/${study.slug}#live-demo`}
-            className={cn(
-              buttonVariants({ size: 'sm' }),
-              'justify-center sm:flex-1',
-            )}
-          >
-            Live Demo
-          </Link>
-          <Link
-            href={`/portfolio/${study.slug}`}
-            className={cn(
-              buttonVariants({ size: 'sm', variant: 'outline' }),
-              'justify-center sm:flex-1',
-            )}
-          >
-            View Details
-            <Icon name="ArrowRight" size="sm" />
-          </Link>
-        </div>
+        <PortfolioCardActions study={study} />
       </div>
     </article>
   );
@@ -119,24 +136,29 @@ export function FeaturedProjectCard({
   study: CaseStudy;
   className?: string;
 }) {
+  const demoHref = getValidatedLiveDemoHref(study.liveDemoHref);
+
   return (
     <article
       className={cn(
-        'group overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background transition-colors hover:border-uv-brand/40',
+        'group min-w-0 overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background transition-colors hover:border-uv-brand/40',
         className,
       )}
     >
       <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
-        <DemoImagePlaceholder study={study} className="min-h-[220px] border-b lg:border-b-0 lg:border-r" />
-        <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+        <DemoImagePlaceholder
+          study={study}
+          className="min-h-[200px] border-b lg:border-b-0 lg:border-r"
+        />
+        <div className="flex min-w-0 flex-col justify-center p-6 sm:p-8 lg:p-10">
           <DemoProjectBadge />
           <p className="mt-4 text-xs font-medium uppercase tracking-[0.14em] text-uv-brand">
             {study.category} · {study.industry}
           </p>
-          <h3 className="mt-3 font-[family-name:var(--font-uv-display)] text-2xl font-bold tracking-tight text-uv-foreground sm:text-3xl">
+          <h3 className="mt-3 break-words font-[family-name:var(--font-uv-display)] text-2xl font-bold tracking-tight text-uv-foreground sm:text-3xl">
             {study.title}
           </h3>
-          <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted">
+          <p className="mt-4 break-words text-base leading-relaxed text-uv-foreground-muted">
             {study.summary}
           </p>
           <ul className="mt-5 flex flex-wrap gap-2">
@@ -149,18 +171,26 @@ export function FeaturedProjectCard({
               </li>
             ))}
           </ul>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href={study.liveDemoHref ?? `/portfolio/${study.slug}#live-demo`}
-              className={cn(buttonVariants({ size: 'md' }), 'justify-center')}
-            >
-              Live Demo
-            </Link>
+          <div
+            className={cn(
+              'mt-8 flex flex-col gap-3',
+              demoHref ? 'sm:flex-row' : 'sm:flex-row sm:justify-start',
+            )}
+          >
+            {demoHref ? (
+              <Link
+                href={demoHref}
+                className={cn(buttonVariants({ size: 'md' }), 'justify-center')}
+              >
+                Live Demo
+              </Link>
+            ) : null}
             <Link
               href={`/portfolio/${study.slug}`}
               className={cn(
                 buttonVariants({ size: 'md', variant: 'outline' }),
                 'justify-center',
+                demoHref ? undefined : 'w-full sm:w-auto',
               )}
             >
               View Details

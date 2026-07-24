@@ -16,7 +16,7 @@ const sizeClasses = {
   sm: 'text-lg',
   md: 'text-xl',
   lg: 'text-2xl',
-  hero: 'text-4xl sm:text-5xl md:text-6xl',
+  hero: 'text-[2rem] leading-none sm:text-5xl md:text-6xl',
 } as const;
 
 /** Temporary text logo until an official logo file is provided. */

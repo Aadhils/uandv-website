@@ -1,6 +1,6 @@
 {
   "name": "@uandv/web",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
@@ -14,11 +14,14 @@
     "@clerk/nextjs": "^6.12.5",
     "@microsoft/clarity": "^1.0.2",
     "@next/third-parties": "16.2.9",
+    "@uandv/database": "workspace:*",
     "@uandv/ui": "workspace:*",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "resend": "^6.18.0"
+    "resend": "^6.18.0",
+    "svix": "^1.96.1",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

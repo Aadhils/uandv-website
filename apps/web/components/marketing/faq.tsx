@@ -24,8 +24,8 @@ export function Faq() {
           {faqs.map((faq, index) => (
             <Reveal key={faq.question} delayMs={index * 40}>
               <details className="group py-5">
-                <summary className="flex min-h-11 cursor-pointer items-start justify-between gap-4 rounded-uv-md text-left uv-focus-ring">
-                  <span className="font-[family-name:var(--font-uv-display)] text-base font-semibold leading-snug text-uv-foreground sm:text-lg">
+                <summary className="flex min-h-11 cursor-pointer items-start justify-between gap-3 rounded-uv-md text-left uv-focus-ring sm:gap-4">
+                  <span className="min-w-0 break-words font-[family-name:var(--font-uv-display)] text-base font-semibold leading-snug text-uv-foreground sm:text-lg">
                     {faq.question}
                   </span>
                   <Icon
@@ -34,7 +34,7 @@ export function Faq() {
                     className="faq-chevron mt-1 shrink-0 text-uv-foreground-muted transition-transform duration-200"
                   />
                 </summary>
-                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                <p className="mt-3 max-w-2xl break-words text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                   {faq.answer}
                 </p>
               </details>
