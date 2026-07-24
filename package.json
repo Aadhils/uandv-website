@@ -12,7 +12,7 @@
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
-    "postinstall": "pnpm db:generate",
+    "postinstall": "pnpm --filter @uandv/database build",
     "db:generate": "pnpm --filter @uandv/database db:generate",
     "db:migrate": "pnpm --filter @uandv/database db:migrate",
     "db:migrate:deploy": "pnpm --filter @uandv/database db:migrate:deploy",
