@@ -191,7 +191,7 @@ export function AdminServiceRequestDetailPage({
       <section className="space-y-3">
         <h2 className="font-semibold">Recommended partners</h2>
         <div className="grid gap-3 lg:grid-cols-3">
-          {request.matchResults.slice(0, 3).map((match) => (
+          {(request.matchResults ?? []).slice(0, 3).map((match) => (
             <MatchBreakdownCard key={match.partnerId} match={match} />
           ))}
         </div>
@@ -199,7 +199,7 @@ export function AdminServiceRequestDetailPage({
 
       <section className="space-y-3">
         <h2 className="font-semibold">Compare top matches</h2>
-        <PartnerComparePanel matches={request.matchResults.slice(0, 3)} />
+        <PartnerComparePanel matches={(request.matchResults ?? []).slice(0, 3)} />
       </section>
 
       <section className="space-y-2">

@@ -15,11 +15,11 @@ import type { ServiceRequestStatus } from './types';
 import { SERVICE_REQUEST_STATUS_LABELS } from './types';
 
 export function serviceRequestStatusLabel(status: ServiceRequestStatus): string {
-  return SERVICE_REQUEST_STATUS_LABELS[status];
+  return SERVICE_REQUEST_STATUS_LABELS[status] ?? String(status).replaceAll('_', ' ');
 }
 
 export function partnerCategoryLabel(category: PartnerCategory): string {
-  return PARTNER_CATEGORY_LABELS[category];
+  return PARTNER_CATEGORY_LABELS[category] ?? String(category);
 }
 
 export function formatBudgetRange(min: number, max: number): string {
@@ -28,5 +28,7 @@ export function formatBudgetRange(min: number, max: number): string {
     currency: 'INR',
     maximumFractionDigits: 0,
   });
-  return `${fmt.format(min)} – ${fmt.format(max)}`;
+  const safeMin = Number.isFinite(min) ? min : 0;
+  const safeMax = Number.isFinite(max) ? max : 0;
+  return `${fmt.format(safeMin)} – ${fmt.format(safeMax)}`;
 }

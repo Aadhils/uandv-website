@@ -28,7 +28,31 @@ type ServiceRequestRuntimeStore = {
 
 const listeners = new Set<() => void>();
 
+/**
+ * useSyncExternalStore requires referentially stable snapshots.
+ * Returning a fresh array from getSnapshot every call causes infinite
+ * re-renders (and a blank "couldn't load" page) in production.
+ */
+let listCache: ServiceRequest[] | null = null;
+const customerListCache = new Map<string, ServiceRequest[]>();
+const partnerListCache = new Map<string, ServiceRequest[]>();
+const opportunityCache = new Map<string, ServiceRequest[]>();
+const eventsCache = new Map<string, ServiceRequestEvent[]>();
+const visibleEventsCache = new Map<string, ServiceRequestEvent[]>();
+const byIdCache = new Map<string, ServiceRequest | null>();
+
+function clearSnapshotCaches() {
+  listCache = null;
+  customerListCache.clear();
+  partnerListCache.clear();
+  opportunityCache.clear();
+  eventsCache.clear();
+  visibleEventsCache.clear();
+  byIdCache.clear();
+}
+
 function notify() {
+  clearSnapshotCaches();
   for (const listener of listeners) listener();
 }
 
@@ -38,6 +62,25 @@ function canUseStorage() {
 
 function emptyStore(): ServiceRequestRuntimeStore {
   return { requests: [], events: [], overrides: {} };
+}
+
+function normalizeRequest(request: ServiceRequest): ServiceRequest {
+  return {
+    ...request,
+    createdAt:
+      typeof request.createdAt === 'string' && request.createdAt
+        ? request.createdAt
+        : '1970-01-01',
+    recommendedPartnerIds: Array.isArray(request.recommendedPartnerIds)
+      ? request.recommendedPartnerIds
+      : [],
+    matchResults: Array.isArray(request.matchResults) ? request.matchResults : [],
+    requiredDocuments: Array.isArray(request.requiredDocuments)
+      ? request.requiredDocuments
+      : [],
+    budgetMinInr: Number(request.budgetMinInr) || 0,
+    budgetMaxInr: Number(request.budgetMaxInr) || 0,
+  };
 }
 
 export function loadServiceRequestRuntime(): ServiceRequestRuntimeStore {
@@ -73,9 +116,19 @@ function saveStore(store: ServiceRequestRuntimeStore): void {
 }
 
 export function subscribeServiceRequests(listener: () => void): () => void {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
   listeners.add(listener);
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === SERVICE_REQUESTS_RUNTIME_KEY || event.key === null) {
+      notify();
+    }
+  };
+  window.addEventListener('storage', onStorage);
   return () => {
     listeners.delete(listener);
+    window.removeEventListener('storage', onStorage);
   };
 }
 
@@ -100,32 +153,75 @@ function pushEvent(
   };
 }
 
-export function listServiceRequests(): ServiceRequest[] {
+function computeServiceRequests(): ServiceRequest[] {
   const store = loadServiceRequestRuntime();
   const seed = demoServiceMarketplaceRequests.map((req) => {
     const override = store.overrides[req.id];
-    return override ? { ...req, ...override } : req;
+    return normalizeRequest(override ? { ...req, ...override } : req);
   });
   const seedIds = new Set(seed.map((r) => r.id));
-  const runtimeOnly = store.requests.filter((r) => !seedIds.has(r.id));
+  const runtimeOnly = store.requests
+    .filter((r) => r && typeof r.id === 'string' && !seedIds.has(r.id))
+    .map((r) => normalizeRequest(r));
   return [...runtimeOnly, ...seed].sort((a, b) =>
     b.createdAt.localeCompare(a.createdAt),
   );
 }
 
+export function listServiceRequests(): ServiceRequest[] {
+  if (listCache) return listCache;
+  listCache = computeServiceRequests();
+  return listCache;
+}
+
 export function getServiceRequestById(id: string): ServiceRequest | undefined {
-  return listServiceRequests().find((r) => r.id === id);
+  if (byIdCache.has(id)) {
+    return byIdCache.get(id) ?? undefined;
+  }
+  const found = listServiceRequests().find((r) => r.id === id) ?? null;
+  byIdCache.set(id, found);
+  return found ?? undefined;
 }
 
 export function listServiceRequestEvents(
   requestId: string,
 ): ServiceRequestEvent[] {
+  const cached = eventsCache.get(requestId);
+  if (cached) return cached;
   const store = loadServiceRequestRuntime();
   const seed = demoServiceRequestEvents.filter((e) => e.requestId === requestId);
   const runtime = store.events.filter((e) => e.requestId === requestId);
-  return [...runtime, ...seed].sort((a, b) =>
-    b.occurredAt.localeCompare(a.occurredAt),
+  const next = [...runtime, ...seed].sort((a, b) =>
+    String(b.occurredAt ?? '').localeCompare(String(a.occurredAt ?? '')),
   );
+  eventsCache.set(requestId, next);
+  return next;
+}
+
+export function listCustomerVisibleEvents(
+  requestId: string,
+): ServiceRequestEvent[] {
+  const key = `customer:${requestId}`;
+  const cached = visibleEventsCache.get(key);
+  if (cached) return cached;
+  const next = listServiceRequestEvents(requestId).filter(
+    (event) => event.customerVisible,
+  );
+  visibleEventsCache.set(key, next);
+  return next;
+}
+
+export function listPartnerVisibleEvents(
+  requestId: string,
+): ServiceRequestEvent[] {
+  const key = `partner:${requestId}`;
+  const cached = visibleEventsCache.get(key);
+  if (cached) return cached;
+  const next = listServiceRequestEvents(requestId).filter(
+    (event) => event.partnerVisible,
+  );
+  visibleEventsCache.set(key, next);
+  return next;
 }
 
 function upsertRequest(request: ServiceRequest): void {
@@ -409,28 +505,45 @@ export function refreshRequestMatches(requestId: string): ServiceRequest | null 
 }
 
 export function getRequestsForCustomer(customerId: string): ServiceRequest[] {
-  return listServiceRequests().filter((r) => r.customerId === customerId);
+  const cached = customerListCache.get(customerId);
+  if (cached) return cached;
+  const next = listServiceRequests().filter((r) => r.customerId === customerId);
+  customerListCache.set(customerId, next);
+  return next;
 }
 
 export function getRequestsForPartner(partnerId: string): ServiceRequest[] {
-  return listServiceRequests().filter(
+  const cached = partnerListCache.get(partnerId);
+  if (cached) return cached;
+  const next = listServiceRequests().filter(
     (r) =>
       r.assignedPartnerId === partnerId ||
       r.recommendedPartnerIds.includes(partnerId),
   );
+  partnerListCache.set(partnerId, next);
+  return next;
 }
 
 export function getPartnerOpportunities(partnerId: string): ServiceRequest[] {
-  return listServiceRequests().filter(
+  const cached = opportunityCache.get(partnerId);
+  if (cached) return cached;
+  const next = listServiceRequests().filter(
     (r) =>
       (r.assignedPartnerId === partnerId &&
-        ['assigned', 'reassigned', 'partner_accepted', 'in_progress', 'awaiting_customer', 'delivered'].includes(
-          r.status,
-        )) ||
+        [
+          'assigned',
+          'reassigned',
+          'partner_accepted',
+          'in_progress',
+          'awaiting_customer',
+          'delivered',
+        ].includes(r.status)) ||
       (r.recommendedPartnerIds.includes(partnerId) &&
         ['recommended', 'new'].includes(r.status) &&
         !r.assignedPartnerId),
   );
+  opportunityCache.set(partnerId, next);
+  return next;
 }
 
 export function getRequestsForVendor(vendorId: string): ServiceRequest[] {

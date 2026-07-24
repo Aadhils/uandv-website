@@ -55,10 +55,11 @@ export function AdminServiceRequestMatchPage({
     );
   }
 
+  const matches = request.matchResults ?? [];
   const compareSource: PartnerMatchResult[] =
     selected.length > 0
-      ? request.matchResults.filter((m) => selected.includes(m.partnerId))
-      : request.matchResults.slice(0, 3);
+      ? matches.filter((m) => selected.includes(m.partnerId))
+      : matches.slice(0, 3);
 
   const toggle = (id: string) => {
     setSelected((prev) =>
@@ -105,7 +106,7 @@ export function AdminServiceRequestMatchPage({
       </div>
 
       <section className="grid gap-3 lg:grid-cols-3">
-        {request.matchResults.slice(0, 3).map((match) => (
+        {matches.slice(0, 3).map((match) => (
           <div key={match.partnerId} className="space-y-2">
             <label className="flex items-center gap-2 text-sm">
               <Checkbox

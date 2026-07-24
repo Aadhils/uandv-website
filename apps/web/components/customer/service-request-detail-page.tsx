@@ -15,7 +15,7 @@ import {
   customerApproveRequest,
   formatBudgetRange,
   getServiceRequestById,
-  listServiceRequestEvents,
+  listCustomerVisibleEvents,
   partnerCategoryLabel,
   serviceRequestStatusLabel,
   subscribeServiceRequests,
@@ -37,8 +37,8 @@ export function CustomerServiceRequestDetailPage({
   const request = useRequest(requestId);
   const events = useSyncExternalStore(
     subscribeServiceRequests,
-    () => listServiceRequestEvents(requestId).filter((e) => e.customerVisible),
-    () => listServiceRequestEvents(requestId).filter((e) => e.customerVisible),
+    () => listCustomerVisibleEvents(requestId),
+    () => listCustomerVisibleEvents(requestId),
   );
 
   if (!request) {
@@ -52,7 +52,7 @@ export function CustomerServiceRequestDetailPage({
     );
   }
 
-  const topMatches = request.matchResults.slice(0, 3);
+  const topMatches = (request.matchResults ?? []).slice(0, 3);
 
   return (
     <div className="mx-auto flex w-full min-w-0 max-w-6xl flex-col gap-8">

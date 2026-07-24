@@ -27,12 +27,15 @@ function clamp(n: number, min = 0, max = 100): number {
 }
 
 function locationScore(partner: Partner, city: string, state: string): number {
-  const cityMatch = partner.city.toLowerCase() === city.trim().toLowerCase();
+  const partnerCity = String(partner.city ?? '').toLowerCase();
+  const partnerState = String(partner.state ?? '').toLowerCase();
+  const partnerArea = String(partner.serviceArea ?? '').toLowerCase();
+  const cityMatch = partnerCity === city.trim().toLowerCase();
   const stateMatch =
-    partner.state.toLowerCase().includes(state.trim().toLowerCase()) ||
-    partner.serviceArea.toLowerCase().includes(state.trim().toLowerCase());
-  const areaRemote = partner.serviceArea.toLowerCase().includes('remote') ||
-    partner.serviceArea.toLowerCase().includes('pan india');
+    partnerState.includes(state.trim().toLowerCase()) ||
+    partnerArea.includes(state.trim().toLowerCase());
+  const areaRemote =
+    partnerArea.includes('remote') || partnerArea.includes('pan india');
   if (cityMatch) return 100;
   if (stateMatch) return 78;
   if (areaRemote) return 62;
@@ -83,7 +86,7 @@ function serviceScore(
   else score -= 30;
 
   if (skillsHint?.length) {
-    const hay = partner.skills.map((s) => s.toLowerCase()).join(' ');
+    const hay = (partner.skills ?? []).map((s) => s.toLowerCase()).join(' ');
     const hits = skillsHint.filter((s) =>
       hay.includes(s.toLowerCase()),
     ).length;
