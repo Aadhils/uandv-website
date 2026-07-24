@@ -15,6 +15,12 @@ type Listener = () => void;
 const latestListeners = new Set<Listener>();
 const reviewListeners = new Set<Listener>();
 
+/**
+ * Cached for useSyncExternalStore — getSnapshot must return a stable
+ * reference between store updates or production infinite-loops the page.
+ */
+let latestCache: BusinessAnalysis | null | undefined;
+
 function emit(listeners: Set<Listener>): void {
   for (const listener of listeners) {
     listener();
@@ -22,9 +28,20 @@ function emit(listeners: Set<Listener>): void {
 }
 
 export function subscribeLatestAnalysis(listener: Listener): () => void {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
   latestListeners.add(listener);
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY || event.key === null) {
+      latestCache = undefined;
+      emit(latestListeners);
+    }
+  };
+  window.addEventListener('storage', onStorage);
   return () => {
     latestListeners.delete(listener);
+    window.removeEventListener('storage', onStorage);
   };
 }
 
@@ -233,18 +250,24 @@ export function analyzeBusinessRequirement(
 export function saveLatestAnalysis(analysis: BusinessAnalysis): void {
   if (typeof window === 'undefined') return;
   window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(analysis));
+  latestCache = analysis;
   emit(latestListeners);
 }
 
 export function loadLatestAnalysis(): BusinessAnalysis | null {
   if (typeof window === 'undefined') return null;
+  if (latestCache !== undefined) return latestCache;
   const raw = window.sessionStorage.getItem(STORAGE_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as BusinessAnalysis;
-  } catch {
+  if (!raw) {
+    latestCache = null;
     return null;
   }
+  try {
+    latestCache = JSON.parse(raw) as BusinessAnalysis;
+  } catch {
+    latestCache = null;
+  }
+  return latestCache;
 }
 
 export type ReviewPatch = {

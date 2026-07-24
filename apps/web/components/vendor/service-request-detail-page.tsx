@@ -10,7 +10,7 @@ import { VENDOR_DEMO_ID } from '@/lib/vendor/demo-data';
 import {
   formatBudgetRange,
   getServiceRequestById,
-  listServiceRequestEvents,
+  listPartnerVisibleEvents,
   partnerRespondToRequest,
   serviceRequestStatusLabel,
   subscribeServiceRequests,
@@ -34,10 +34,8 @@ export function VendorServiceRequestDetailPage({
   const [message, setMessage] = useState<string | null>(null);
   const events = useSyncExternalStore(
     subscribeServiceRequests,
-    () =>
-      listServiceRequestEvents(requestId).filter((e) => e.partnerVisible),
-    () =>
-      listServiceRequestEvents(requestId).filter((e) => e.partnerVisible),
+    () => listPartnerVisibleEvents(requestId),
+    () => listPartnerVisibleEvents(requestId),
   );
 
   if (!request) {

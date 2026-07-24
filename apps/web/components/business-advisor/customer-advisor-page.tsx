@@ -83,28 +83,35 @@ export function CustomerBusinessAdvisorPage() {
   };
 
   const onAnalyze = () => {
+    if (loading) return;
     setLoading(true);
     setFormError(null);
     setSuccess(false);
 
     window.setTimeout(() => {
-      const result = analyzeBusinessRequirement(form, {
-        id: `ba-live-${Date.now()}`,
-        customerId: 'cus-001',
-        customerName: 'Priya Sharma',
-      });
+      try {
+        const result = analyzeBusinessRequirement(form, {
+          id: `ba-live-${Date.now()}`,
+          customerId: 'cus-001',
+          customerName: 'Priya Sharma',
+        });
 
-      if (!result.ok) {
-        setFieldErrors(result.fieldErrors);
-        setFormError(result.error);
+        if (!result.ok) {
+          setFieldErrors(result.fieldErrors);
+          setFormError(result.error);
+          return;
+        }
+
+        saveLatestAnalysis(result.analysis);
+        setSuccess(true);
+        router.push('/dashboard/business-advisor/result');
+      } catch {
+        setFormError(
+          'Analysis failed unexpectedly. Try again or load a demo example.',
+        );
+      } finally {
         setLoading(false);
-        return;
       }
-
-      saveLatestAnalysis(result.analysis);
-      setSuccess(true);
-      setLoading(false);
-      router.push('/dashboard/business-advisor/result');
     }, 650);
   };
 

@@ -31,6 +31,8 @@ export function VendorShell({ children }: VendorShellProps) {
 
   return (
     <EnterpriseAppShell
+      activePathname={pathname}
+      linkComponent={Link}
       brand={
         <Link
           href="/vendor"

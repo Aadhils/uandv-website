@@ -31,6 +31,8 @@ export function AdminShell({ children }: AdminShellProps) {
 
   return (
     <EnterpriseAppShell
+      activePathname={pathname}
+      linkComponent={Link}
       brand={
         <Link
           href="/admin"

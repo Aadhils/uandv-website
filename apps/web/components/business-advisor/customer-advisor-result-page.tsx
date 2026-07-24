@@ -20,7 +20,7 @@ export function CustomerBusinessAdvisorResultPage() {
   );
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8">
+    <div className="relative z-0 mx-auto flex max-w-6xl flex-col gap-8">
       <CustomerPageHeader
         title="Requirement Analysis Report"
         description="Structured output from the rule-based Business Advisor engine."

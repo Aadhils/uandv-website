@@ -60,12 +60,18 @@ export function AnalysisReport({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           label="Category"
-          value={BUSINESS_CATEGORY_LABELS[analysis.businessCategory]}
+          value={
+            BUSINESS_CATEGORY_LABELS[analysis.businessCategory] ??
+            String(analysis.businessCategory ?? '—')
+          }
           icon="Briefcase"
         />
         <StatsCard
           label="Stage"
-          value={BUSINESS_STAGE_LABELS[analysis.businessStage]}
+          value={
+            BUSINESS_STAGE_LABELS[analysis.businessStage] ??
+            String(analysis.businessStage ?? '—')
+          }
           icon="Workflow"
         />
         <StatsCard
