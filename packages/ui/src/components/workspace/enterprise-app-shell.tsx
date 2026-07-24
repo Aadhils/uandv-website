@@ -7,6 +7,7 @@ import { Icon } from '../icon';
 import {
   WorkspaceSidebar,
   type WorkspaceNavSection,
+  type WorkspaceSidebarProps,
 } from './workspace-sidebar';
 import {
   WorkspaceTopNav,
@@ -22,6 +23,10 @@ export type EnterpriseAppShellProps = {
   topNav: Omit<WorkspaceTopNavProps, 'onMenuClick'>;
   children: React.ReactNode;
   className?: string;
+  /** Current pathname — closes mobile drawer on route change */
+  activePathname?: string;
+  /** Optional link component (e.g. next/link) for client-side navigation */
+  linkComponent?: WorkspaceSidebarProps['linkComponent'];
 };
 
 /**
@@ -36,12 +41,26 @@ export function EnterpriseAppShell({
   topNav,
   children,
   className,
+  activePathname,
+  linkComponent,
 }: EnterpriseAppShellProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [collapsed, setCollapsed] = React.useState(false);
 
+  const closeMobile = React.useCallback(() => setMobileOpen(false), []);
+
+  // Always close the drawer when the route changes so a leftover backdrop
+  // cannot block sidebar / content clicks after form submits or navigation.
   React.useEffect(() => {
-    if (!mobileOpen) return;
+    setMobileOpen(false);
+    document.body.style.overflow = '';
+  }, [activePathname]);
+
+  React.useEffect(() => {
+    if (!mobileOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -49,22 +68,29 @@ export function EnterpriseAppShell({
       }
     };
 
-    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      // Always unlock scroll — never restore a prior "hidden" that would
+      // leave the sidebar / page unclickable after profile save / nav.
+      document.body.style.overflow = '';
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [mobileOpen]);
 
-  const closeMobile = React.useCallback(() => setMobileOpen(false), []);
+  // Hard cleanup if the shell unmounts while the drawer was open.
+  React.useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   const sidebar = (
     <WorkspaceSidebar
       brand={collapsed && !mobileOpen ? (brandCollapsed ?? brand) : brand}
       sections={navSections}
+      linkComponent={linkComponent}
       footer={
         <div className="space-y-2">
           {(!collapsed || mobileOpen) && sidebarFooter ? sidebarFooter : null}
@@ -116,6 +142,7 @@ export function EnterpriseAppShell({
               sections={navSections}
               footer={sidebarFooter}
               collapsed={false}
+              linkComponent={linkComponent}
               onNavigate={closeMobile}
               className="w-full"
             />
@@ -130,7 +157,7 @@ export function EnterpriseAppShell({
         />
         <main
           id="workspace-main"
-          className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8"
+          className="relative z-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8"
         >
           {children}
         </main>

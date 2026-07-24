@@ -31,6 +31,8 @@ export function EmployeeShell({ children }: EmployeeShellProps) {
 
   return (
     <EnterpriseAppShell
+      activePathname={pathname}
+      linkComponent={Link}
       brand={
         <Link
           href="/employee"

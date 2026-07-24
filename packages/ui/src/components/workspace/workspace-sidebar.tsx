@@ -17,6 +17,15 @@ export type WorkspaceNavSection = {
   items: WorkspaceNavItem[];
 };
 
+type SidebarLinkProps = {
+  href: string;
+  className?: string;
+  title?: string;
+  'aria-current'?: 'page' | undefined;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  children: React.ReactNode;
+};
+
 export type WorkspaceSidebarProps = {
   brand: React.ReactNode;
   sections: WorkspaceNavSection[];
@@ -25,6 +34,11 @@ export type WorkspaceSidebarProps = {
   className?: string;
   /** Called when a nav link is activated (e.g. close mobile drawer) */
   onNavigate?: () => void;
+  /**
+   * Optional link component (e.g. next/link). Must accept `href` + anchor props.
+   * Defaults to a native `<a>` for package isolation.
+   */
+  linkComponent?: React.ElementType<SidebarLinkProps>;
 };
 
 /**
@@ -37,7 +51,10 @@ export function WorkspaceSidebar({
   collapsed = false,
   className,
   onNavigate,
+  linkComponent,
 }: WorkspaceSidebarProps) {
+  const LinkComponent = linkComponent ?? 'a';
+
   return (
     <aside
       className={cn(
@@ -97,7 +114,7 @@ export function WorkspaceSidebar({
                         {content}
                       </span>
                     ) : (
-                      <a
+                      <LinkComponent
                         href={item.href}
                         aria-current={item.active ? 'page' : undefined}
                         title={collapsed ? item.label : undefined}
@@ -105,7 +122,7 @@ export function WorkspaceSidebar({
                         onClick={onNavigate}
                       >
                         {content}
-                      </a>
+                      </LinkComponent>
                     )}
                   </li>
                 );

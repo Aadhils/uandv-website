@@ -15,15 +15,17 @@ type ProfileState = {
   businessType: string;
 };
 
+const emptyForm: ProfileState = {
+  fullName: '',
+  mobile: '',
+  companyName: '',
+  city: '',
+  state: '',
+  businessType: '',
+};
+
 export function LiveCustomerProfilePage() {
-  const [form, setForm] = useState<ProfileState>({
-    fullName: '',
-    mobile: '',
-    companyName: '',
-    city: '',
-    state: '',
-    businessType: '',
-  });
+  const [form, setForm] = useState<ProfileState>(emptyForm);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -36,23 +38,24 @@ export function LiveCustomerProfilePage() {
         const res = await fetch('/api/me/profile');
         if (!res.ok) throw new Error('Failed to load profile');
         const data = (await res.json()) as {
-          user: { fullName: string; mobile?: string };
-          profile: {
-            companyName: string;
-            city: string;
-            state: string;
-            businessType: string;
-          };
+          user?: { fullName?: string | null; mobile?: string | null };
+          profile?: {
+            companyName?: string | null;
+            city?: string | null;
+            state?: string | null;
+            businessType?: string | null;
+          } | null;
         };
         if (cancelled) return;
         setForm({
-          fullName: data.user.fullName || '',
-          mobile: data.user.mobile || '',
-          companyName: data.profile.companyName || '',
-          city: data.profile.city || '',
-          state: data.profile.state || '',
-          businessType: data.profile.businessType || '',
+          fullName: data.user?.fullName || '',
+          mobile: data.user?.mobile || '',
+          companyName: data.profile?.companyName || '',
+          city: data.profile?.city || '',
+          state: data.profile?.state || '',
+          businessType: data.profile?.businessType || '',
         });
+        setError(null);
       } catch {
         if (!cancelled) setError('Unable to load your profile.');
       } finally {
@@ -66,9 +69,13 @@ export function LiveCustomerProfilePage() {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    event.stopPropagation();
+    if (saving) return;
+
     setSaving(true);
     setMessage(null);
     setError(null);
+
     try {
       const res = await fetch('/api/me/profile', {
         method: 'PATCH',
@@ -86,21 +93,31 @@ export function LiveCustomerProfilePage() {
     } catch {
       setError('Network error while saving profile.');
     } finally {
+      // Always clear pending UI so navigation stays clickable.
       setSaving(false);
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+      }
     }
   };
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-8">
+    <div className="relative z-0 mx-auto flex max-w-2xl flex-col gap-8">
       <CustomerPageHeader
         title="Your profile"
         description="Update the details our team uses when following up on your enquiries."
       />
 
       {loading ? (
-        <p className="text-sm text-uv-foreground-muted">Loading profile…</p>
+        <p className="text-sm text-uv-foreground-muted" role="status">
+          Loading profile…
+        </p>
       ) : (
-        <Form onSubmit={onSubmit} className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">
+        <Form
+          onSubmit={onSubmit}
+          className="relative z-0 rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6"
+          aria-busy={saving}
+        >
           <FormField label="Full name" required>
             <Input
               value={form.fullName}
@@ -163,7 +180,7 @@ export function LiveCustomerProfilePage() {
             </p>
           ) : null}
 
-          <Button type="submit" disabled={saving}>
+          <Button type="submit" disabled={saving} isLoading={saving}>
             {saving ? 'Saving…' : 'Save profile'}
           </Button>
         </Form>

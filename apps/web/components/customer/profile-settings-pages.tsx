@@ -86,9 +86,19 @@ export function CustomerProfilePage() {
 export function CustomerSettingsPage() {
   const profile = demoCustomerProfile;
   const [saved, setSaved] = React.useState(false);
+  const [emailUpdates, setEmailUpdates] = React.useState(
+    Boolean(profile.emailUpdates),
+  );
+  const [smsUpdates, setSmsUpdates] = React.useState(Boolean(profile.smsUpdates));
+  const [whatsappUpdates, setWhatsappUpdates] = React.useState(
+    Boolean(profile.whatsappUpdates),
+  );
+  const [language, setLanguage] = React.useState(
+    profile.preferredLanguage || 'English',
+  );
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-8">
+    <div className="relative z-0 mx-auto flex max-w-3xl flex-col gap-8">
       <CustomerPageHeader
         title="Settings"
         description="Communication preferences, language, and security placeholders."
@@ -101,17 +111,20 @@ export function CustomerSettingsPage() {
         <CardContent className="space-y-3">
           <Checkbox
             id="pref-email"
-            defaultChecked={profile.emailUpdates}
+            checked={emailUpdates}
+            onChange={(event) => setEmailUpdates(event.currentTarget.checked)}
             label="Email updates"
           />
           <Checkbox
             id="pref-sms"
-            defaultChecked={profile.smsUpdates}
+            checked={smsUpdates}
+            onChange={(event) => setSmsUpdates(event.currentTarget.checked)}
             label="SMS updates"
           />
           <Checkbox
             id="pref-wa"
-            defaultChecked={profile.whatsappUpdates}
+            checked={whatsappUpdates}
+            onChange={(event) => setWhatsappUpdates(event.currentTarget.checked)}
             label="WhatsApp updates"
           />
         </CardContent>
@@ -123,7 +136,11 @@ export function CustomerSettingsPage() {
         </CardHeader>
         <CardContent>
           <FormField label="Preferred language" htmlFor="settings-language">
-            <Select id="settings-language" defaultValue={profile.preferredLanguage}>
+            <Select
+              id="settings-language"
+              value={language}
+              onChange={(event) => setLanguage(event.currentTarget.value)}
+            >
               <option value="English">English</option>
               <option value="Tamil">Tamil</option>
               <option value="Hindi">Hindi</option>
@@ -164,7 +181,12 @@ export function CustomerSettingsPage() {
         </CardContent>
       </Card>
 
-      <Button type="button" onClick={() => setSaved(true)}>
+      <Button
+        type="button"
+        onClick={() => {
+          setSaved(true);
+        }}
+      >
         Save settings (demo)
       </Button>
       {saved ? (

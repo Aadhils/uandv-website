@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type { ComponentProps } from 'react';
 
 import { EnterpriseAppShell, buttonVariants, cn } from '@uandv/ui';
 
@@ -19,6 +20,19 @@ type WorkspaceShellProps = {
   children: React.ReactNode;
 };
 
+/** Next.js Link adapter for the shared UI sidebar (keeps client navigation). */
+function WorkspaceNavLink({
+  href,
+  children,
+  ...props
+}: ComponentProps<'a'> & { href: string }) {
+  return (
+    <Link href={href} {...props}>
+      {children}
+    </Link>
+  );
+}
+
 /**
  * Customer Workspace shell — reuses Enterprise App Shell with customer nav.
  */
@@ -30,6 +44,8 @@ export function WorkspaceShell({ children }: WorkspaceShellProps) {
 
   return (
     <EnterpriseAppShell
+      activePathname={pathname}
+      linkComponent={WorkspaceNavLink}
       brand={
         <Link
           href="/dashboard"
