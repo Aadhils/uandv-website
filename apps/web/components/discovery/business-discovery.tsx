@@ -20,7 +20,7 @@ import {
   type DiscoveryQuestionId,
 } from '@/lib/discovery';
 import { buildContactHref } from '@/lib/journey-lead';
-import { siteConfig } from '@/lib/site';
+import { buildWhatsAppUrl, siteConfig } from '@/lib/site';
 
 type DiscoveryPhase = 'bridge' | 'questions' | 'summary';
 
@@ -192,17 +192,13 @@ export function BusinessDiscovery({
 
   const whatsappHref = useMemo(() => {
     if (!summary) return siteConfig.whatsapp;
-    const text = encodeURIComponent(
+    return buildWhatsAppUrl(
       [
         'Hi U&V — I shared my business story with you.',
         '',
         buildRoadmapText(summary, copy),
       ].join('\n'),
     );
-    const base = siteConfig.whatsapp.includes('?')
-      ? `${siteConfig.whatsapp}&text=${text}`
-      : `${siteConfig.whatsapp}?text=${text}`;
-    return base;
   }, [copy, summary]);
 
   const consultationHref = buildContactHref({

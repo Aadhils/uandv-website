@@ -25,6 +25,10 @@ import {
   guideLanguageEnglishLabels,
   isGuideLanguage,
 } from '@/lib/business-guide';
+import {
+  buildContactEnquiryWhatsAppUrl,
+  type ContactEnquiryHandoff,
+} from '@/lib/contact-whatsapp';
 import { getAllServices } from '@/lib/services';
 import { formatLocation, siteConfig } from '@/lib/site';
 
@@ -34,7 +38,6 @@ type ContactResponse = {
   ok?: boolean;
   error?: string;
   reference?: string;
-  warning?: string;
 };
 
 function buildPrefillMessage(input: {
@@ -67,7 +70,8 @@ export function ContactPage() {
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
-  const [warning, setWarning] = useState<string | null>(null);
+  const [submittedEnquiry, setSubmittedEnquiry] =
+    useState<ContactEnquiryHandoff | null>(null);
   const services = getAllServices();
 
   const leadContext = useMemo(() => {
@@ -144,6 +148,11 @@ export function ContactPage() {
     };
   }, [searchParams, services]);
 
+  const whatsappHandoffHref = useMemo(() => {
+    if (!submittedEnquiry) return null;
+    return buildContactEnquiryWhatsAppUrl(submittedEnquiry);
+  }, [submittedEnquiry]);
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -153,7 +162,7 @@ export function ContactPage() {
     setStatus('submitting');
     setErrorMessage(null);
     setReference(null);
-    setWarning(null);
+    setSubmittedEnquiry(null);
 
     try {
       const response = await fetch('/api/contact', {
@@ -187,8 +196,19 @@ export function ContactPage() {
         return;
       }
 
-      setReference(result?.reference ?? null);
-      setWarning(result?.warning ?? null);
+      const enquiryReference = result?.reference ?? '';
+      setReference(enquiryReference || null);
+      if (enquiryReference) {
+        setSubmittedEnquiry({
+          reference: enquiryReference,
+          name: String(data.get('name') ?? ''),
+          email: String(data.get('email') ?? ''),
+          phone: String(data.get('phone') ?? ''),
+          company: String(data.get('company') ?? ''),
+          interest: String(data.get('interest') ?? ''),
+          message: String(data.get('message') ?? ''),
+        });
+      }
       setStatus('success');
       form.reset();
     } catch {
@@ -399,13 +419,23 @@ export function ContactPage() {
                         </>
                       ) : null}
                     </p>
-                    {warning ? (
-                      <p className="text-sm text-uv-foreground-muted">{warning}</p>
-                    ) : (
-                      <p className="text-sm text-uv-foreground-muted">
-                        We&apos;ll contact you within 24 business hours.
-                      </p>
-                    )}
+                    <p className="text-sm text-uv-foreground-muted">
+                      We&apos;ll contact you within 24 business hours. You can
+                      also send your enquiry details on WhatsApp below.
+                    </p>
+                    {whatsappHandoffHref ? (
+                      <a
+                        href={whatsappHandoffHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(
+                          buttonVariants({ size: 'lg' }),
+                          'mt-2 w-full justify-center sm:w-auto',
+                        )}
+                      >
+                        Send enquiry on WhatsApp
+                      </a>
+                    ) : null}
                     <Button
                       type="button"
                       variant="outline"
@@ -413,7 +443,7 @@ export function ContactPage() {
                       onClick={() => {
                         setStatus('idle');
                         setReference(null);
-                        setWarning(null);
+                        setSubmittedEnquiry(null);
                       }}
                     >
                       Send another message

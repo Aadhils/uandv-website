@@ -1,5 +1,29 @@
 import type { IconName } from '@uandv/ui';
 
+export const WHATSAPP_NUMBER = '919688884554';
+
+export const DEFAULT_WHATSAPP_MESSAGE = [
+  'Hello U&V Team,',
+  'I would like to know more about your software and business solutions.',
+  'Please contact me.',
+].join('\n');
+
+/** wa.me base URL without query — env may include legacy `?text` which we strip. */
+export function getWhatsAppBaseUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim();
+  if (configured) {
+    return configured.split('?')[0] ?? `https://wa.me/${WHATSAPP_NUMBER}`;
+  }
+  return `https://wa.me/${WHATSAPP_NUMBER}`;
+}
+
+/** Deep link for WhatsApp app and WhatsApp Web with optional pre-filled message. */
+export function buildWhatsAppUrl(
+  message: string = DEFAULT_WHATSAPP_MESSAGE,
+): string {
+  return `${getWhatsAppBaseUrl()}?text=${encodeURIComponent(message)}`;
+}
+
 export const siteConfig = {
   name: 'U&V',
   legalName: 'U&V Technologies',
@@ -20,10 +44,8 @@ export const siteConfig = {
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'info@uandv.com',
   emailSecondary:
     process.env.NEXT_PUBLIC_CONTACT_EMAIL_SECONDARY ?? 'uandv.com@gmail.com',
-  /** WhatsApp deep link — do not display phone digits on the Contact page */
-  whatsapp:
-    process.env.NEXT_PUBLIC_WHATSAPP_URL ??
-    'https://wa.me/919688884554',
+  /** WhatsApp deep link with default greeting — do not display phone digits on the Contact page */
+  whatsapp: buildWhatsAppUrl(),
   linkedin:
     process.env.NEXT_PUBLIC_LINKEDIN_URL ??
     'https://linkedin.com/company/UandVi',

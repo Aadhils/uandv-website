@@ -188,15 +188,7 @@ export async function POST(request: Request) {
           RESEND_MAIL_DOMAIN: mailConfig.envResendMailDomain,
         },
       });
-      return NextResponse.json(
-        {
-          ok: true,
-          reference,
-          warning:
-            'Your enquiry was saved. Email delivery is temporarily unavailable — our team will still follow up.',
-        },
-        { status: 200 },
-      );
+      return NextResponse.json({ ok: true, reference }, { status: 200 });
     }
 
     console.info('[contact] enquiry email sent', {
@@ -254,14 +246,6 @@ export async function POST(request: Request) {
         RESEND_MAIL_DOMAIN: mailConfig.envResendMailDomain,
       },
     });
-    return NextResponse.json(
-      {
-        ok: true,
-        reference,
-        warning:
-          'Your enquiry was saved. Email delivery is temporarily unavailable — our team will still follow up.',
-      },
-      { status: 200 },
-    );
+    return NextResponse.json({ ok: true, reference }, { status: 200 });
   }
 }
