@@ -5,41 +5,59 @@ import { Footer } from '@uandv/ui';
 import { Logo } from '@/components/brand/logo';
 import { getMarketingSocialLinks, siteConfig } from '@/lib/site';
 
+const launchSocialPlatforms = new Set([
+  'Facebook',
+  'YouTube',
+  'LinkedIn',
+  'X / Twitter',
+]);
+
 export function SiteFooter() {
+  const social = getMarketingSocialLinks().filter((link) =>
+    launchSocialPlatforms.has(link.label),
+  );
+
   return (
     <Footer
+      className="relative border-t border-uv-brand/20 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-uv-brand/50 before:to-transparent"
       brand={<Logo invert className="text-white" />}
       description={
         <>
-          {siteConfig.footerDescription[0]}
+          Your Business Growth Partner.
           <br />
-          {siteConfig.footerDescription[1]}
+          Everything your business needs under one roof.
         </>
       }
       columns={[
         {
           title: 'Company',
           links: [
-            { label: 'Services', href: '/services' },
-            { label: 'Portfolio', href: '/portfolio' },
             { label: 'Why U&V', href: '/why-uandv' },
+            { label: 'Services', href: '/services' },
             { label: 'Business Solutions', href: '/business' },
-            { label: 'MLM Solutions', href: '/solutions/mlm-software' },
+            { label: 'Portfolio', href: '/portfolio' },
+          ],
+        },
+        {
+          title: 'Solutions',
+          links: [
+            { label: 'MLM Software', href: '/solutions/mlm-software' },
             {
               label: 'Digital Marketing',
               href: '/solutions/digital-marketing',
             },
+            {
+              label: 'Startup Support',
+              href: '/services/startup-business-consulting',
+            },
           ],
         },
         {
-          title: 'Engage',
+          title: 'Contact',
           links: [
-            { label: 'Marketplace', href: '/marketplace' },
-            { label: 'Partners', href: '/partners' },
-            { label: 'Technologies', href: '/#technologies' },
-            { label: 'Outcomes', href: '/#outcomes' },
-            { label: 'FAQ', href: '/faq' },
-            { label: 'Contact', href: '/contact' },
+            { label: siteConfig.email, href: `mailto:${siteConfig.email}` },
+            { label: 'WhatsApp', href: siteConfig.whatsapp },
+            { label: 'Contact page', href: '/contact' },
           ],
         },
         {
@@ -50,7 +68,7 @@ export function SiteFooter() {
           ],
         },
       ]}
-      social={getMarketingSocialLinks()}
+      social={social}
       bottom={
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p>

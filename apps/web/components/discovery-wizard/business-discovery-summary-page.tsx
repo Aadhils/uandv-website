@@ -132,7 +132,7 @@ export function BusinessDiscoverySummaryPage() {
           </div>
         ) : null}
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link
             href="/business-discovery/advisor"
             className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
@@ -140,22 +140,13 @@ export function BusinessDiscoverySummaryPage() {
             Open AI Business Advisor
           </Link>
           <Link
-            href="/dashboard"
+            href="/contact"
             className={cn(
               buttonVariants({ size: 'lg', variant: 'outline' }),
               'justify-center border-white/40 bg-transparent text-white hover:bg-white/10',
             )}
           >
-            Open Business OS Dashboard
-          </Link>
-          <Link
-            href="/dashboard/service-requests"
-            className={cn(
-              buttonVariants({ size: 'lg', variant: 'outline' }),
-              'justify-center border-white/40 bg-transparent text-white hover:bg-white/10',
-            )}
-          >
-            Create service request
+            Start your project
           </Link>
           <Link
             href="/business-discovery"

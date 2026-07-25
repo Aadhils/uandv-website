@@ -41,35 +41,38 @@ export function SiteHeader() {
         <>
           <ThemeToggle />
           <Link
-            href="/login"
+            href="/contact"
             className={cn(
-              buttonVariants({ size: 'sm', variant: 'ghost' }),
+              buttonVariants({ size: 'sm', variant: 'outline' }),
               'hidden lg:inline-flex',
             )}
           >
-            Login
+            Contact
           </Link>
           <Link
-            href="/signup"
-            className={cn(
-              buttonVariants({ size: 'sm' }),
-              'hidden lg:inline-flex',
-            )}
+            href="/contact"
+            className={cn(buttonVariants({ size: 'sm' }), 'hidden lg:inline-flex')}
           >
-            Get Started
+            Start Your Project
           </Link>
         </>
       }
       mobileActions={
         <>
           <Link
-            href="/login"
-            className={cn(buttonVariants({ size: 'md', variant: 'outline' }))}
+            href="/contact"
+            className={cn(buttonVariants({ size: 'md' }), 'w-full justify-center')}
           >
-            Login
+            Start Your Project
           </Link>
-          <Link href="/signup" className={cn(buttonVariants({ size: 'md' }))}>
-            Get Started
+          <Link
+            href="/contact"
+            className={cn(
+              buttonVariants({ size: 'md', variant: 'outline' }),
+              'w-full justify-center',
+            )}
+          >
+            Contact
           </Link>
         </>
       }
