@@ -1,1 +1,1 @@
-export { SmartWelcomeHero as Hero } from './smart-welcome-hero';
+export { LaunchHero as Hero } from './launch-hero';
