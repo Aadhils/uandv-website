@@ -51,6 +51,7 @@ export function isQuotationExpiredByDate(
 export const QUOTATION_TIMELINE_ACTIONS = {
   CREATED: 'created',
   UPDATED: 'updated',
+  PREVIEWED: 'previewed',
   SENT: 'sent',
   VIEWED: 'viewed',
   ACCEPTED: 'accepted',

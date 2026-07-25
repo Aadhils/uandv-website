@@ -5,6 +5,8 @@ import {
   getResendFromEmail,
 } from '@/lib/contact-email';
 import { formatInr, formatQuotationDate } from '@/lib/quotations/format';
+import { quotationPdfFilename } from '@/lib/quotations/pdf';
+import { buildPublicQuotationUrl } from '@/lib/quotations/token';
 import { siteConfig } from '@/lib/site';
 
 export type QuotationEmailQuotation = {
@@ -15,6 +17,8 @@ export type QuotationEmailQuotation = {
   grandTotal: string;
   validityDate: Date;
   quotationId: string;
+  publicToken: string;
+  pdfBuffer?: Buffer;
 };
 
 function dashboardQuotationUrl(quotationId: string): string {
@@ -31,7 +35,8 @@ export async function sendQuotationToCustomerEmail(
     return { sent: false };
   }
 
-  const viewUrl = dashboardQuotationUrl(quotation.quotationId);
+  const publicUrl = buildPublicQuotationUrl(quotation.publicToken);
+  const dashboardUrl = dashboardQuotationUrl(quotation.quotationId);
   const html = `
     <div style="font-family:Arial,sans-serif;line-height:1.6;color:#0f172a;max-width:640px;">
       <h2 style="margin:0 0 12px;font-size:22px;">Your quotation from ${escapeHtml(siteConfig.name)}</h2>
@@ -41,9 +46,10 @@ export async function sendQuotationToCustomerEmail(
         <tr><td style="padding:4px 16px 4px 0;color:#64748b;">Amount</td><td><strong>${escapeHtml(formatInr(quotation.grandTotal))}</strong></td></tr>
         <tr><td style="padding:4px 16px 4px 0;color:#64748b;">Valid until</td><td>${escapeHtml(formatQuotationDate(quotation.validityDate))}</td></tr>
       </table>
-      <p style="margin:0 0 20px;">Sign in to your customer workspace to review, accept, or reject this quotation.</p>
-      <p style="margin:0 0 24px;"><a href="${escapeHtml(viewUrl)}" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600;">View quotation</a></p>
-      <p style="margin:0;color:#64748b;font-size:14px;">If the button does not work, copy this link: ${escapeHtml(viewUrl)}</p>
+      <p style="margin:0 0 20px;">Review the attached PDF quotation and accept or reject online — no login required.</p>
+      <p style="margin:0 0 24px;"><a href="${escapeHtml(publicUrl)}" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600;">Review quotation</a></p>
+      <p style="margin:0 0 12px;color:#64748b;font-size:14px;">If the button does not work, copy this secure link: ${escapeHtml(publicUrl)}</p>
+      <p style="margin:0;color:#64748b;font-size:13px;">Signed-in customers can also view this quotation at ${escapeHtml(dashboardUrl)}</p>
       <p style="margin:24px 0 0;">— ${escapeHtml(siteConfig.legalName)}</p>
     </div>
   `;
@@ -53,6 +59,14 @@ export async function sendQuotationToCustomerEmail(
     to: [quotation.customerEmail],
     subject: `Quotation ${quotation.quotationNumber} from ${siteConfig.name}`,
     html,
+    attachments: quotation.pdfBuffer
+      ? [
+          {
+            filename: quotationPdfFilename(quotation.quotationNumber),
+            content: quotation.pdfBuffer,
+          },
+        ]
+      : undefined,
   });
 
   return { sent: true };

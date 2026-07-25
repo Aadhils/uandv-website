@@ -17,6 +17,7 @@ import {
   mapQuotationListRow,
 } from '@/lib/quotations/mapper';
 import { generateQuotationNumber } from '@/lib/quotations/number';
+import { generateQuotationPdfBuffer } from '@/lib/quotations/pdf';
 import type { QuotationUpsertInput } from '@/lib/quotations/schema';
 import {
   assertQuotationTransition,
@@ -26,6 +27,7 @@ import {
   isQuotationRespondable,
   QUOTATION_TIMELINE_ACTIONS,
 } from '@/lib/quotations/status';
+import { generateQuotationPublicToken } from '@/lib/quotations/token';
 import { prisma } from '@/lib/db';
 
 const quotationInclude = {
@@ -199,6 +201,7 @@ export async function createQuotation(
     const quotation = await tx.quotation.create({
       data: {
         quotationNumber,
+        publicToken: generateQuotationPublicToken(),
         leadId: input.leadId ?? null,
         customerId,
         customerEmail: normalizeEmail(input.customerEmail),
@@ -349,11 +352,13 @@ export async function sendQuotation(
   await sendQuotationToCustomerEmail({
     quotationId: quotation.id,
     quotationNumber: quotation.quotationNumber,
+    publicToken: quotation.publicToken,
     title: quotation.title,
     customerName: quotation.customerName,
     customerEmail: quotation.customerEmail,
     grandTotal: quotation.grandTotal.toString(),
     validityDate: quotation.validityDate,
+    pdfBuffer: await generateQuotationPdfBuffer(mapQuotationForAdmin(quotation)),
   });
 
   return mapQuotationForAdmin(quotation);
@@ -631,4 +636,184 @@ export async function getLatestCustomerQuotationSummary(
     pending,
     total: rows.length,
   };
+}
+
+export async function getAdminQuotationPdfBuffer(id: string): Promise<Buffer> {
+  const quotation = await getAdminQuotationById(id);
+  if (!quotation) {
+    throw new Error('NOT_FOUND');
+  }
+  return generateQuotationPdfBuffer(quotation);
+}
+
+export async function recordAdminQuotationPreview(
+  id: string,
+  actor: Pick<User, 'id' | 'fullName' | 'email'>,
+) {
+  const existing = await prisma.quotation.findUnique({ where: { id } });
+  if (!existing) throw new Error('NOT_FOUND');
+
+  await prisma.quotationTimelineEvent.create({
+    data: {
+      quotationId: id,
+      action: QUOTATION_TIMELINE_ACTIONS.PREVIEWED,
+      actorType: 'ADMIN',
+      actorId: actor.id,
+      actorLabel: actor.fullName || actor.email,
+    },
+  });
+
+  return { ok: true };
+}
+
+export async function getPublicQuotationByToken(publicToken: string) {
+  const quotation = await prisma.quotation.findUnique({
+    where: { publicToken },
+    include: quotationInclude,
+  });
+  if (!quotation) return null;
+  if (quotation.status === 'DRAFT' || quotation.status === 'CANCELLED') {
+    return null;
+  }
+
+  const status = await expireQuotationIfNeeded(quotation);
+  if (status !== quotation.status) {
+    const refreshed = await prisma.quotation.findUnique({
+      where: { publicToken },
+      include: quotationInclude,
+    });
+    if (!refreshed) return null;
+    return mapQuotationForCustomer(refreshed);
+  }
+
+  return mapQuotationForCustomer(quotation);
+}
+
+export async function recordPublicQuotationView(publicToken: string) {
+  const quotation = await prisma.quotation.findUnique({ where: { publicToken } });
+  if (!quotation) throw new Error('NOT_FOUND');
+  if (quotation.status === 'DRAFT' || quotation.status === 'CANCELLED') {
+    throw new Error('FORBIDDEN');
+  }
+
+  let status = await expireQuotationIfNeeded(quotation);
+  if (status === 'EXPIRED') return { recorded: false, status };
+
+  if (quotation.status === 'SENT' && !quotation.viewedAt) {
+    await prisma.$transaction(async (tx) => {
+      await tx.quotation.update({
+        where: { id: quotation.id },
+        data: {
+          status: 'VIEWED',
+          viewedAt: new Date(),
+        },
+      });
+      await appendTimeline(tx, {
+        quotationId: quotation.id,
+        action: QUOTATION_TIMELINE_ACTIONS.VIEWED,
+        actorType: 'CUSTOMER',
+        actorLabel: quotation.customerName,
+      });
+    });
+    return { recorded: true, status: 'VIEWED' as const };
+  }
+
+  return { recorded: false, status: quotation.status };
+}
+
+export async function acceptPublicQuotation(publicToken: string) {
+  const quotation = await prisma.quotation.findUnique({ where: { publicToken } });
+  if (!quotation) throw new Error('NOT_FOUND');
+  if (quotation.status === 'DRAFT' || quotation.status === 'CANCELLED') {
+    throw new Error('FORBIDDEN');
+  }
+
+  const status = await expireQuotationIfNeeded(quotation);
+  if (status === 'EXPIRED') throw new Error('EXPIRED');
+  if (!isQuotationRespondable(quotation.status)) throw new Error('INVALID_STATUS');
+  assertQuotationTransition(quotation.status, 'ACCEPTED');
+
+  const updated = await prisma.$transaction(async (tx) => {
+    const current = await tx.quotation.findUnique({ where: { publicToken } });
+    if (!current || !isQuotationRespondable(current.status)) {
+      throw new Error('INVALID_STATUS');
+    }
+
+    const row = await tx.quotation.update({
+      where: { id: current.id },
+      data: {
+        status: 'ACCEPTED',
+        acceptedAt: new Date(),
+      },
+      include: quotationInclude,
+    });
+
+    await appendTimeline(tx, {
+      quotationId: current.id,
+      action: QUOTATION_TIMELINE_ACTIONS.ACCEPTED,
+      actorType: 'CUSTOMER',
+      actorLabel: quotation.customerName,
+    });
+
+    return row;
+  });
+
+  await notifyAdminQuotationResponseEmail({
+    quotationNumber: updated.quotationNumber,
+    customerName: updated.customerName,
+    customerEmail: updated.customerEmail,
+    action: 'accepted',
+  });
+
+  return mapQuotationForCustomer(updated);
+}
+
+export async function rejectPublicQuotation(publicToken: string, reason: string) {
+  const quotation = await prisma.quotation.findUnique({ where: { publicToken } });
+  if (!quotation) throw new Error('NOT_FOUND');
+  if (quotation.status === 'DRAFT' || quotation.status === 'CANCELLED') {
+    throw new Error('FORBIDDEN');
+  }
+
+  const status = await expireQuotationIfNeeded(quotation);
+  if (status === 'EXPIRED') throw new Error('EXPIRED');
+  if (!isQuotationRespondable(quotation.status)) throw new Error('INVALID_STATUS');
+  assertQuotationTransition(quotation.status, 'REJECTED');
+
+  const updated = await prisma.$transaction(async (tx) => {
+    const current = await tx.quotation.findUnique({ where: { publicToken } });
+    if (!current || !isQuotationRespondable(current.status)) {
+      throw new Error('INVALID_STATUS');
+    }
+
+    const row = await tx.quotation.update({
+      where: { id: current.id },
+      data: {
+        status: 'REJECTED',
+        rejectedAt: new Date(),
+        rejectionReason: reason,
+      },
+      include: quotationInclude,
+    });
+
+    await appendTimeline(tx, {
+      quotationId: current.id,
+      action: QUOTATION_TIMELINE_ACTIONS.REJECTED,
+      actorType: 'CUSTOMER',
+      actorLabel: quotation.customerName,
+      note: reason,
+    });
+
+    return row;
+  });
+
+  await notifyAdminQuotationResponseEmail({
+    quotationNumber: updated.quotationNumber,
+    customerName: updated.customerName,
+    customerEmail: updated.customerEmail,
+    action: 'rejected',
+    reason,
+  });
+
+  return mapQuotationForCustomer(updated);
 }

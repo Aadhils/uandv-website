@@ -84,8 +84,23 @@ export function AdminQuotationDetailPage({
                 {busy === 'cancel' ? 'Cancelling…' : 'Cancel'}
               </Button>
             ) : null}
-            <Button size="sm" variant="outline" onClick={() => window.print()}>
-              Print / PDF
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                window.open(`/api/admin/quotations/${quotation.id}/pdf?preview=1`, '_blank', 'noopener,noreferrer');
+              }}
+            >
+              Preview PDF
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                window.location.href = `/api/admin/quotations/${quotation.id}/pdf`;
+              }}
+            >
+              Download PDF
             </Button>
           </div>
         }
@@ -116,6 +131,14 @@ export function AdminQuotationDetailPage({
           <div>
             <dt className="text-xs uppercase text-uv-foreground-subtle">Valid until</dt>
             <dd className="mt-1 text-sm">{formatQuotationDate(quotation.validityDate)}</dd>
+          </div>
+          <div className="sm:col-span-2">
+            <dt className="text-xs uppercase text-uv-foreground-subtle">Customer link</dt>
+            <dd className="mt-1 break-all text-sm">
+              <a href={quotation.publicUrl} className="text-uv-brand hover:underline" target="_blank" rel="noreferrer">
+                {quotation.publicUrl}
+              </a>
+            </dd>
           </div>
           <div>
             <dt className="text-xs uppercase text-uv-foreground-subtle">Lead reference</dt>

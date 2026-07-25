@@ -179,6 +179,7 @@ model QuotationNumberSequence {
 model Quotation {
   id                 String                  @id @default(cuid())
   quotationNumber    String                  @unique @map("quotation_number")
+  publicToken        String                  @unique @map("public_token")
   leadId             String?                 @map("lead_id")
   customerId         String?                 @map("customer_id")
   customerEmail      String                  @map("customer_email")

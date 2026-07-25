@@ -32,5 +32,5 @@ export async function generateQuotationNumber(
     nextNumber = updated.lastNumber;
   }
 
-  return `UV-QTN-${year}-${String(nextNumber).padStart(4, '0')}`;
+  return `UVQ-${year}-${String(nextNumber).padStart(6, '0')}`;
 }

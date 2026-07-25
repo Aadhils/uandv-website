@@ -5,6 +5,7 @@ import type {
 } from '@uandv/database';
 
 import { toMoney } from '@/lib/quotations/money';
+import { buildPublicQuotationUrl } from '@/lib/quotations/token';
 
 export type QuotationItemDto = {
   id: string;
@@ -66,6 +67,8 @@ export type QuotationDto = {
 
 export type AdminQuotationDto = QuotationDto & {
   internalNotes: string | null;
+  publicToken: string;
+  publicUrl: string;
 };
 
 function formatDbAmount(value: unknown): string {
@@ -158,6 +161,8 @@ export function mapQuotationForAdmin(
   return {
     ...mapQuotationForCustomer(quotation),
     internalNotes: quotation.internalNotes,
+    publicToken: quotation.publicToken,
+    publicUrl: buildPublicQuotationUrl(quotation.publicToken),
   };
 }
 
