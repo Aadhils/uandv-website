@@ -111,7 +111,7 @@ function mapTimeline(event: QuotationTimelineEvent): QuotationTimelineDto {
 export function mapQuotationForCustomer(
   quotation: Quotation & {
     items: QuotationItem[];
-    timeline?: QuotationTimelineEvent[];
+    timelineEvents?: QuotationTimelineEvent[];
   },
 ): QuotationDto {
   return {
@@ -148,14 +148,14 @@ export function mapQuotationForCustomer(
     rejectedAt: quotation.rejectedAt?.toISOString() ?? null,
     rejectionReason: quotation.rejectionReason,
     items: quotation.items.map(mapItem),
-    timeline: quotation.timeline?.map(mapTimeline),
+    timeline: quotation.timelineEvents?.map(mapTimeline),
   };
 }
 
 export function mapQuotationForAdmin(
   quotation: Quotation & {
     items: QuotationItem[];
-    timeline?: QuotationTimelineEvent[];
+    timelineEvents?: QuotationTimelineEvent[];
   },
 ): AdminQuotationDto {
   return {
