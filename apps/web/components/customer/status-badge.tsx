@@ -40,6 +40,7 @@ const statusVariantMap: Record<string, BadgeProps['variant']> = {
   inactive: 'secondary',
   invited: 'warning',
   sent: 'info',
+  viewed: 'info',
   scheduled: 'warning',
   none: 'secondary',
   new: 'info',

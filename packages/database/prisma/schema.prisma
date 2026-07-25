@@ -33,6 +33,34 @@ enum EnquiryStatus {
   LOST
 }
 
+enum QuotationStatus {
+  DRAFT
+  SENT
+  VIEWED
+  ACCEPTED
+  REJECTED
+  EXPIRED
+  CANCELLED
+}
+
+enum QuotationDiscountType {
+  NONE
+  PERCENTAGE
+  FIXED
+}
+
+enum QuotationTaxType {
+  NONE
+  GST
+  CUSTOM
+}
+
+enum QuotationTimelineActorType {
+  ADMIN
+  CUSTOMER
+  SYSTEM
+}
+
 model User {
   id          String      @id @default(cuid())
   /// Clerk user id — canonical external identity (clerkUserId in product docs).
@@ -53,6 +81,8 @@ model User {
   auditLogs       AuthAuditLog[]
   customerProfile CustomerProfile?
   enquiries       Enquiry[]
+  quotationsCreated Quotation[] @relation("QuotationCreatedBy")
+  quotationsAsCustomer Quotation[] @relation("QuotationCustomer")
 
   @@index([role])
   @@index([accountType])
@@ -113,6 +143,7 @@ model Enquiry {
 
   user           User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
   timelineEvents EnquiryTimelineEvent[]
+  quotations     Quotation[]
 
   @@index([userId])
   @@index([email])
@@ -136,4 +167,96 @@ model EnquiryTimelineEvent {
 
   @@index([enquiryId, createdAt])
   @@map("enquiry_timeline_events")
+}
+
+model QuotationNumberSequence {
+  year       Int @id
+  lastNumber Int @default(0) @map("last_number")
+
+  @@map("quotation_number_sequences")
+}
+
+model Quotation {
+  id                 String                  @id @default(cuid())
+  quotationNumber    String                  @unique @map("quotation_number")
+  leadId             String?                 @map("lead_id")
+  customerId         String?                 @map("customer_id")
+  customerEmail      String                  @map("customer_email")
+  customerName       String                  @map("customer_name")
+  customerPhone      String?                 @map("customer_phone")
+  customerCompany    String?                 @map("customer_company")
+  serviceInterest    String?                 @map("service_interest")
+  leadReference      String?                 @map("lead_reference")
+  title              String
+  introduction       String?                 @db.Text
+  currency           String                  @default("INR")
+  subtotal           Decimal                 @db.Decimal(14, 2)
+  discountType       QuotationDiscountType   @default(NONE) @map("discount_type")
+  discountValue      Decimal                 @default(0) @map("discount_value") @db.Decimal(14, 2)
+  discountAmount     Decimal                 @default(0) @map("discount_amount") @db.Decimal(14, 2)
+  taxType            QuotationTaxType        @default(GST) @map("tax_type")
+  taxRate            Decimal                 @default(0) @map("tax_rate") @db.Decimal(5, 2)
+  taxAmount          Decimal                 @default(0) @map("tax_amount") @db.Decimal(14, 2)
+  grandTotal         Decimal                 @map("grand_total") @db.Decimal(14, 2)
+  validityDate       DateTime                @map("validity_date")
+  status             QuotationStatus         @default(DRAFT)
+  internalNotes      String?                 @map("internal_notes") @db.Text
+  customerNotes      String?                 @map("customer_notes") @db.Text
+  termsAndConditions String?                 @map("terms_and_conditions") @db.Text
+  createdById        String                  @map("created_by_id")
+  createdAt          DateTime                @default(now()) @map("created_at")
+  updatedAt          DateTime                @updatedAt @map("updated_at")
+  sentAt             DateTime?               @map("sent_at")
+  viewedAt           DateTime?               @map("viewed_at")
+  acceptedAt         DateTime?               @map("accepted_at")
+  rejectedAt         DateTime?               @map("rejected_at")
+  rejectionReason    String?                 @map("rejection_reason") @db.Text
+
+  lead         Enquiry?                  @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  customer     User?                     @relation("QuotationCustomer", fields: [customerId], references: [id], onDelete: SetNull)
+  createdBy    User                      @relation("QuotationCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  items        QuotationItem[]
+  timelineEvents QuotationTimelineEvent[]
+
+  @@index([leadId])
+  @@index([customerId])
+  @@index([customerEmail])
+  @@index([status])
+  @@index([createdAt])
+  @@index([validityDate])
+  @@map("quotations")
+}
+
+model QuotationItem {
+  id          String   @id @default(cuid())
+  quotationId String   @map("quotation_id")
+  description String   @db.Text
+  quantity    Decimal  @db.Decimal(14, 4)
+  unit        String   @default("unit")
+  unitPrice   Decimal  @map("unit_price") @db.Decimal(14, 2)
+  discount    Decimal  @default(0) @db.Decimal(14, 2)
+  taxRate     Decimal  @default(0) @map("tax_rate") @db.Decimal(5, 2)
+  lineTotal   Decimal  @map("line_total") @db.Decimal(14, 2)
+  sortOrder   Int      @default(0) @map("sort_order")
+
+  quotation Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+
+  @@index([quotationId, sortOrder])
+  @@map("quotation_items")
+}
+
+model QuotationTimelineEvent {
+  id          String                     @id @default(cuid())
+  quotationId String                     @map("quotation_id")
+  action      String
+  actorType   QuotationTimelineActorType @map("actor_type")
+  actorId     String?                    @map("actor_id")
+  actorLabel  String?                    @map("actor_label")
+  note        String?                    @db.Text
+  createdAt   DateTime                   @default(now()) @map("created_at")
+
+  quotation Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+
+  @@index([quotationId, createdAt])
+  @@map("quotation_timeline_events")
 }

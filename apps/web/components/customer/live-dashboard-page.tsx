@@ -7,7 +7,8 @@ import { buttonVariants, cn } from '@uandv/ui';
 import { CustomerPageHeader } from '@/components/customer/page-header';
 import { dashboardGreetingName, ensureDbUser } from '@/lib/auth/server-user';
 import { prisma } from '@/lib/db';
-import { getEnquiryStatusLabel } from '@/lib/enquiries/status';
+import { getLatestCustomerQuotationSummary } from '@/lib/quotations/service';
+import { formatInr, formatQuotationDate } from '@/lib/quotations/format';
 
 export async function LiveCustomerDashboardPage() {
   // Caller already confirmed server userId when possible. Never redirect to /login
@@ -52,6 +53,8 @@ export async function LiveCustomerDashboardPage() {
     orderBy: { createdAt: 'desc' },
     take: 20,
   });
+
+  const quotationSummary = await getLatestCustomerQuotationSummary(user);
 
   const clerkUser = await currentUser();
   const greetingName = dashboardGreetingName(user, clerkUser?.username);
@@ -135,6 +138,45 @@ export async function LiveCustomerDashboardPage() {
             </dd>
           </div>
         </dl>
+      </section>
+
+      <section className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
+            Quotations
+          </h2>
+          <Link
+            href="/dashboard/quotations"
+            className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
+          >
+            View all
+          </Link>
+        </div>
+        {quotationSummary.pending ? (
+          <div className="mt-4 rounded-uv-xl border border-uv-warning/30 bg-uv-warning/5 p-4">
+            <p className="text-sm font-medium text-uv-foreground">
+              Action required: {quotationSummary.pending.quotationNumber}
+            </p>
+            <p className="mt-1 text-sm text-uv-foreground-muted">
+              {quotationSummary.pending.title} · {formatInr(quotationSummary.pending.grandTotal)} · valid until{' '}
+              {formatQuotationDate(quotationSummary.pending.validityDate)}
+            </p>
+            <Link
+              href={`/dashboard/quotations/${quotationSummary.pending.id}`}
+              className={cn(buttonVariants({ size: 'sm' }), 'mt-3 inline-flex')}
+            >
+              Review quotation
+            </Link>
+          </div>
+        ) : quotationSummary.latest ? (
+          <p className="mt-4 text-sm text-uv-foreground-muted">
+            Latest: {quotationSummary.latest.quotationNumber} ({quotationSummary.latest.status.toLowerCase()})
+          </p>
+        ) : (
+          <p className="mt-4 text-sm text-uv-foreground-muted">
+            No quotations yet. When U&V sends a proposal, it will appear here.
+          </p>
+        )}
       </section>
 
       <section className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">

@@ -46,8 +46,14 @@ export const adminRoutes: AdminRouteMeta[] = [
   {
     path: '/admin/quotations',
     title: 'Quotation Management',
-    subtitle: 'Quotes linked to customers and projects',
+    subtitle: 'Create and track customer quotations from CRM leads',
     breadcrumb: 'Quotations',
+  },
+  {
+    path: '/admin/quotations/new',
+    title: 'New quotation',
+    subtitle: 'Draft a quotation for a customer',
+    breadcrumb: 'New',
   },
   {
     path: '/admin/agreements',
@@ -240,7 +246,7 @@ export const adminNavConfig: NavItemConfig[] = [
   { label: 'Lead Management', href: '/admin/leads/list', icon: 'ClipboardList', enabled: true },
   { label: 'Projects', href: '/admin/projects', icon: 'Briefcase', enabled: false, status: 'coming_soon' },
   { label: 'Timeline', href: '/admin/timeline', icon: 'Workflow', enabled: false, status: 'coming_soon' },
-  { label: 'Quotations', href: '/admin/quotations', icon: 'FileText', enabled: false, status: 'coming_soon' },
+  { label: 'Quotations', href: '/admin/quotations', icon: 'FileText', enabled: true },
   { label: 'Agreements', href: '/admin/agreements', icon: 'Layers', enabled: false, status: 'coming_soon' },
   { label: 'Payments', href: '/admin/payments', icon: 'Wallet', enabled: false, status: 'coming_soon' },
   { label: 'Expenses', href: '/admin/expenses', icon: 'CircleAlert', enabled: false, status: 'coming_soon' },

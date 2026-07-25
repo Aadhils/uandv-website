@@ -96,12 +96,20 @@ export function EnquiryDetailPage({ enquiry: initial }: EnquiryDetailPageProps) 
         title={enquiry.reference}
         description={`${enquiry.name} · ${enquiry.serviceLabel}`}
         actions={
-          <Link
-            href="/admin/leads/list"
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
-          >
-            Back to leads
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`/admin/quotations/new?leadId=${enquiry.id}`}
+              className={cn(buttonVariants({ size: 'sm' }))}
+            >
+              Create quotation
+            </Link>
+            <Link
+              href="/admin/leads/list"
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+            >
+              Back to leads
+            </Link>
+          </div>
         }
       />
 

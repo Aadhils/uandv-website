@@ -136,7 +136,7 @@ export const customerNavConfig: NavItemConfig[] = [
   { label: 'My Projects', href: '/dashboard/projects', icon: 'Briefcase', enabled: false, status: 'coming_soon' },
   { label: 'Service Requests', href: '/dashboard/service-requests', icon: 'ClipboardList', enabled: false, status: 'in_development' },
   { label: 'Business Advisor', href: '/dashboard/business-advisor', icon: 'Sparkles', enabled: true },
-  { label: 'Quotations', href: '/dashboard/quotations', icon: 'FileText', enabled: false, status: 'coming_soon' },
+  { label: 'Quotations', href: '/dashboard/quotations', icon: 'FileText', enabled: true },
   { label: 'Payments', href: '/dashboard/payments', icon: 'Wallet', enabled: true },
   { label: 'Agreements', href: '/dashboard/agreements', icon: 'FileText', enabled: false, status: 'coming_soon' },
   { label: 'Documents', href: '/dashboard/documents', icon: 'Layers', enabled: false, status: 'coming_soon' },
