@@ -285,13 +285,13 @@ export function SmartWelcomeHero() {
 
         <div className="marketing-animate-in marketing-animate-in-delay-3 mt-8 flex w-full min-w-0 flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
           <a
-            href="/signup"
+            href="/contact"
             className={cn(
               buttonVariants({ size: 'lg' }),
               'w-full max-w-full justify-center sm:w-auto',
             )}
           >
-            Start with U&V
+            Start Your Project
           </a>
         </div>
 
