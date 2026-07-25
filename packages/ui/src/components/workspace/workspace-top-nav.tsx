@@ -16,11 +16,14 @@ export type WorkspaceTopNavProps = {
   onMenuClick?: () => void;
   searchPlaceholder?: string;
   actions?: React.ReactNode;
+  /** @deprecated Use userMenu for authenticated identity + profile actions. */
   user?: {
     name: string;
     role?: string;
     avatarUrl?: string;
   };
+  userMenu?: React.ReactNode;
+  userLoading?: boolean;
   className?: string;
 };
 
@@ -35,6 +38,8 @@ export function WorkspaceTopNav({
   searchPlaceholder = 'Search workspace…',
   actions,
   user,
+  userMenu,
+  userLoading = false,
   className,
 }: WorkspaceTopNavProps) {
   const hasBreadcrumbs = Boolean(breadcrumbs && breadcrumbs.length > 0);
@@ -107,10 +112,23 @@ export function WorkspaceTopNav({
             <Icon name="Bell" size="md" />
             <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-uv-brand" aria-hidden />
           </button>
-          {user ? (
+          {userMenu ? (
+            userMenu
+          ) : userLoading ? (
             <div
               className="ml-1 flex items-center gap-2 border-l border-uv-border pl-2 sm:pl-3"
-              aria-label={`Signed in as ${user.name} (placeholder)`}
+              aria-hidden
+            >
+              <div className="h-8 w-8 animate-pulse rounded-full bg-uv-background-muted" />
+              <div className="hidden min-w-0 space-y-1 lg:block">
+                <div className="h-3.5 w-24 animate-pulse rounded bg-uv-background-muted" />
+                <div className="h-3 w-16 animate-pulse rounded bg-uv-background-muted" />
+              </div>
+            </div>
+          ) : user ? (
+            <div
+              className="ml-1 flex items-center gap-2 border-l border-uv-border pl-2 sm:pl-3"
+              aria-label={`Signed in as ${user.name}`}
             >
               <Avatar
                 size="sm"

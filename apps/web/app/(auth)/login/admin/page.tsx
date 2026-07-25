@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { AuthFormCard } from '@/components/auth';
+import { AuthFormCard, LoginForm } from '@/components/auth';
 
 export const metadata: Metadata = {
   title: 'Admin sign in',
@@ -11,20 +11,20 @@ export const metadata: Metadata = {
 export default function AdminLoginPage() {
   return (
     <AuthFormCard
-      title="Admin workspace"
-      description="Demo admin login is disabled on production routes. Admin access will use Clerk organization roles in a later sprint."
+      title="Admin sign in"
+      description="Sign in with your U&V admin account to access the operations workspace."
       footer={
         <p>
-          <Link href="/login" className="font-medium text-uv-brand underline-offset-4 hover:underline">
+          <Link
+            href="/login"
+            className="font-medium text-uv-brand underline-offset-4 hover:underline"
+          >
             Customer sign in
           </Link>
         </p>
       }
     >
-      <p className="text-sm text-uv-foreground-muted">
-        Product demos under <code className="text-xs">/demo/*</code> keep their
-        own mock authentication.
-      </p>
+      <LoginForm redirectTo="/admin" />
     </AuthFormCard>
   );
 }

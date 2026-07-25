@@ -6,21 +6,23 @@ import type { ComponentProps } from 'react';
 
 import { EnterpriseAppShell, buttonVariants, cn } from '@uandv/ui';
 
+import { ClerkSignOutButton } from '@/components/auth/clerk-sign-out-button';
 import { Logo } from '@/components/brand/logo';
 import { BackToTop } from '@/components/shared/back-to-top';
+import { WorkspaceUserIdentity } from '@/components/workspace/workspace-user-identity';
 import {
-  demoCustomerProfile,
   getCustomerBreadcrumbs,
   getCustomerNavSections,
   getCustomerRouteMeta,
 } from '@/lib/customer';
+import type { WorkspaceUserDisplay } from '@/lib/auth/workspace-user';
 import { siteConfig } from '@/lib/site';
 
 type WorkspaceShellProps = {
   children: React.ReactNode;
+  user?: WorkspaceUserDisplay | null;
 };
 
-/** Next.js Link adapter for the shared UI sidebar (keeps client navigation). */
 function WorkspaceNavLink({
   href,
   children,
@@ -36,7 +38,7 @@ function WorkspaceNavLink({
 /**
  * Customer Workspace shell — reuses Enterprise App Shell with customer nav.
  */
-export function WorkspaceShell({ children }: WorkspaceShellProps) {
+export function WorkspaceShell({ children, user }: WorkspaceShellProps) {
   const pathname = usePathname();
   const navSections = getCustomerNavSections(pathname);
   const meta = getCustomerRouteMeta(pathname);
@@ -67,9 +69,12 @@ export function WorkspaceShell({ children }: WorkspaceShellProps) {
       navSections={navSections}
       sidebarFooter={
         <div className="space-y-2">
-          <p className="px-3 text-xs font-medium uppercase tracking-wide text-uv-foreground-subtle">
-            Customer Workspace
-          </p>
+          <ClerkSignOutButton
+            redirectUrl="/login"
+            label="Sign out"
+            fullWidth
+            className="justify-start px-3 text-uv-foreground-muted hover:text-uv-error"
+          />
           <Link
             href="/"
             className={cn(
@@ -85,10 +90,13 @@ export function WorkspaceShell({ children }: WorkspaceShellProps) {
         title: meta.title,
         subtitle: meta.subtitle,
         breadcrumbs,
-        user: {
-          name: demoCustomerProfile.fullName,
-          role: 'Customer · Demo',
-        },
+        userMenu: (
+          <WorkspaceUserIdentity
+            user={user}
+            signOutRedirectUrl="/login"
+            profileHref="/dashboard/profile"
+          />
+        ),
       }}
     >
       {children}

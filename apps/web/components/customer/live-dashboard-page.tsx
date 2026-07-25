@@ -1,12 +1,11 @@
 import Link from 'next/link';
-import { UserButton } from '@clerk/nextjs';
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 import { buttonVariants, cn } from '@uandv/ui';
 
 import { CustomerPageHeader } from '@/components/customer/page-header';
-import { displayName, ensureDbUser } from '@/lib/auth/server-user';
+import { dashboardGreetingName, ensureDbUser } from '@/lib/auth/server-user';
 import { prisma } from '@/lib/db';
 import { getEnquiryStatusLabel } from '@/lib/enquiries/status';
 
@@ -54,16 +53,17 @@ export async function LiveCustomerDashboardPage() {
     take: 20,
   });
 
-  const name = displayName(user);
+  const clerkUser = await currentUser();
+  const greetingName = dashboardGreetingName(user, clerkUser?.username);
+  const name = user.fullName?.trim() || greetingName;
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 lg:gap-10">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <CustomerPageHeader
-          title={`Welcome, ${name.split(' ')[0]}`}
+          title={`Welcome, ${greetingName}`}
           description="Your live U&V customer workspace — profile and enquiries from real submissions."
         />
-        <UserButton afterSignOutUrl="/" />
       </div>
 
       <section className="grid gap-4 rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:grid-cols-3 sm:p-6">

@@ -2,11 +2,8 @@ import { auth } from '@clerk/nextjs/server';
 import type { User } from '@uandv/database';
 import { redirect } from 'next/navigation';
 
+import { isAdminRole } from '@/lib/auth/db-roles';
 import { displayName, requireDbUser } from '@/lib/auth/server-user';
-
-export function isAdminRole(role: User['role']): boolean {
-  return role === 'ADMIN' || role === 'SUPER_ADMIN';
-}
 
 type RequireAdminOptions = {
   /** Path to return to after sign-in (must start with /). */
@@ -18,7 +15,7 @@ function loginRedirect(path: string, authError?: string): never {
   if (authError) {
     params.set('auth_error', authError);
   }
-  redirect(`/login?${params.toString()}`);
+  redirect(`/login/admin?${params.toString()}`);
 }
 
 function forbiddenRedirect(): never {
@@ -73,3 +70,5 @@ export async function requireAdminUserApi(): Promise<User> {
 export function getAdminActorLabel(user: User): string {
   return displayName(user);
 }
+
+export { isAdminRole } from '@/lib/auth/db-roles';

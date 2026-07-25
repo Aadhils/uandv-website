@@ -1,6 +1,8 @@
 import { Badge, SectionHeader, cn } from '@uandv/ui';
 import type { ReactNode } from 'react';
 
+import { DevDataBadge } from '@/components/shared/dev-data-badge';
+
 type AdminPageHeaderProps = {
   title: string;
   description: string;
@@ -15,12 +17,12 @@ export function AdminPageHeader({
   description,
   actions,
   className,
-  badge = 'demo',
+  badge = 'none',
 }: AdminPageHeaderProps) {
   return (
     <div className={cn('space-y-3', className)}>
       {badge === 'demo' ? (
-        <Badge variant="warning">Demo data · Admin Workspace</Badge>
+        <DevDataBadge label="Demo data · Admin Workspace" />
       ) : null}
       {badge === 'live' ? (
         <Badge variant="success">Live enquiries · Admin CRM</Badge>

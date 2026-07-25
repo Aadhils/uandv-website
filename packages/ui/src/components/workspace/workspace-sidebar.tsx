@@ -9,6 +9,8 @@ export type WorkspaceNavItem = {
   icon?: IconName;
   active?: boolean;
   disabled?: boolean;
+  /** Shown beside disabled items, e.g. "Coming soon". */
+  statusLabel?: string;
 };
 
 export type WorkspaceNavSection = {
@@ -83,13 +85,39 @@ export function WorkspaceSidebar({
             ) : null}
             <ul className="space-y-0.5">
               {section.items.map((item) => {
+                const statusTitle = item.statusLabel
+                  ? `${item.label} — ${item.statusLabel}`
+                  : item.label;
+
                 const content = (
                   <>
-                    {item.icon ? (
+                    {item.disabled ? (
+                      <Icon
+                        name="Lock"
+                        size="md"
+                        className="shrink-0 opacity-50"
+                      />
+                    ) : item.icon ? (
                       <Icon name={item.icon} size="md" className="shrink-0" />
                     ) : null}
                     {!collapsed ? (
-                      <span className="truncate">{item.label}</span>
+                      <span className="flex min-w-0 flex-1 items-center gap-2">
+                        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                          <span
+                            className={cn(
+                              'truncate',
+                              item.disabled && 'text-uv-foreground-subtle',
+                            )}
+                          >
+                            {item.label}
+                          </span>
+                          {item.disabled && item.statusLabel ? (
+                            <span className="inline-flex w-fit rounded-uv-md border border-uv-border bg-uv-background-muted px-1.5 py-0.5 text-[10px] font-medium text-uv-foreground-subtle">
+                              {item.statusLabel}
+                            </span>
+                          ) : null}
+                        </span>
+                      </span>
                     ) : null}
                   </>
                 );
@@ -98,8 +126,10 @@ export function WorkspaceSidebar({
                   'flex min-h-11 w-full items-center gap-3 rounded-uv-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 uv-focus-ring',
                   item.active
                     ? 'bg-uv-brand-muted text-uv-brand'
-                    : 'text-uv-foreground-muted hover:bg-uv-background-muted hover:text-uv-foreground',
-                  item.disabled && 'pointer-events-none opacity-50',
+                    : item.disabled
+                      ? 'cursor-not-allowed text-uv-foreground-subtle'
+                      : 'text-uv-foreground-muted hover:bg-uv-background-muted hover:text-uv-foreground',
+                  item.disabled && 'pointer-events-none select-none opacity-70',
                   collapsed && 'justify-center px-2',
                 );
 
@@ -108,7 +138,7 @@ export function WorkspaceSidebar({
                     {item.disabled ? (
                       <span
                         className={itemClassName}
-                        title={collapsed ? item.label : undefined}
+                        title={collapsed ? statusTitle : statusTitle}
                         aria-disabled="true"
                       >
                         {content}

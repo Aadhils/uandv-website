@@ -1,4 +1,9 @@
-import type { BreadcrumbItem, IconName, WorkspaceNavSection } from '@uandv/ui';
+import type { BreadcrumbItem, WorkspaceNavSection } from '@uandv/ui';
+
+import {
+  mapNavConfigToItems,
+  type NavItemConfig,
+} from '@/lib/workspace/nav-config';
 
 export type CustomerRouteMeta = {
   path: string;
@@ -125,26 +130,22 @@ export const customerRoutes: CustomerRouteMeta[] = [
   },
 ];
 
-/** Primary Customer Business Workspace sidebar (Sprint 3.0.5). */
-const customerNavItems: Array<{
-  label: string;
-  href: string;
-  icon: IconName;
-}> = [
-  { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
-  { label: 'My Projects', href: '/dashboard/projects', icon: 'Briefcase' },
-  { label: 'Service Requests', href: '/dashboard/service-requests', icon: 'ClipboardList' },
-  { label: 'Business Advisor', href: '/dashboard/business-advisor', icon: 'Sparkles' },
-  { label: 'Quotations', href: '/dashboard/quotations', icon: 'FileText' },
-  { label: 'Payments', href: '/dashboard/payments', icon: 'Wallet' },
-  { label: 'Agreements', href: '/dashboard/agreements', icon: 'FileText' },
-  { label: 'Documents', href: '/dashboard/documents', icon: 'Layers' },
-  { label: 'Timeline', href: '/dashboard/timeline', icon: 'Workflow' },
-  { label: 'My Assets', href: '/dashboard/assets', icon: 'Package' },
-  { label: 'Support', href: '/dashboard/support', icon: 'MessageCircle' },
-  { label: 'Notifications', href: '/dashboard/notifications', icon: 'Bell' },
-  { label: 'Profile', href: '/dashboard/profile', icon: 'User' },
-  { label: 'Settings', href: '/dashboard/settings', icon: 'Settings' },
+/** Primary Customer Business Workspace sidebar — centralized enable/disable. */
+export const customerNavConfig: NavItemConfig[] = [
+  { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard', enabled: true },
+  { label: 'My Projects', href: '/dashboard/projects', icon: 'Briefcase', enabled: false, status: 'coming_soon' },
+  { label: 'Service Requests', href: '/dashboard/service-requests', icon: 'ClipboardList', enabled: false, status: 'in_development' },
+  { label: 'Business Advisor', href: '/dashboard/business-advisor', icon: 'Sparkles', enabled: true },
+  { label: 'Quotations', href: '/dashboard/quotations', icon: 'FileText', enabled: false, status: 'coming_soon' },
+  { label: 'Payments', href: '/dashboard/payments', icon: 'Wallet', enabled: true },
+  { label: 'Agreements', href: '/dashboard/agreements', icon: 'FileText', enabled: false, status: 'coming_soon' },
+  { label: 'Documents', href: '/dashboard/documents', icon: 'Layers', enabled: false, status: 'coming_soon' },
+  { label: 'Timeline', href: '/dashboard/timeline', icon: 'Workflow', enabled: false, status: 'coming_soon' },
+  { label: 'My Assets', href: '/dashboard/assets', icon: 'Package', enabled: false, status: 'coming_soon' },
+  { label: 'Support', href: '/dashboard/support', icon: 'MessageCircle', enabled: false, status: 'coming_soon' },
+  { label: 'Notifications', href: '/dashboard/notifications', icon: 'Bell', enabled: false, status: 'coming_soon' },
+  { label: 'Profile', href: '/dashboard/profile', icon: 'User', enabled: true },
+  { label: 'Settings', href: '/dashboard/settings', icon: 'Settings', enabled: false, status: 'coming_soon' },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {
@@ -161,10 +162,7 @@ export function getCustomerNavSections(
     {
       id: 'customer-workspace',
       title: 'Customer Workspace',
-      items: customerNavItems.map((item) => ({
-        ...item,
-        active: isNavActive(pathname, item.href),
-      })),
+      items: mapNavConfigToItems(customerNavConfig, pathname, isNavActive),
     },
   ];
 }

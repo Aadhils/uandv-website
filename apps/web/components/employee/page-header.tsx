@@ -1,5 +1,7 @@
-import { Badge, SectionHeader, cn } from '@uandv/ui';
+import { SectionHeader, cn } from '@uandv/ui';
 import type { ReactNode } from 'react';
+
+import { DevDataBadge } from '@/components/shared/dev-data-badge';
 
 type EmployeePageHeaderProps = {
   title: string;
@@ -16,7 +18,7 @@ export function EmployeePageHeader({
 }: EmployeePageHeaderProps) {
   return (
     <div className={cn('space-y-3', className)}>
-      <Badge variant="warning">Demo data · Employee Workspace</Badge>
+      <DevDataBadge label="Demo data · Employee Workspace" />
       <SectionHeader title={title} description={description} actions={actions} />
     </div>
   );

@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { redirect } from 'next/navigation';
 
+import { AdminAccessDeniedPage } from '@/components/admin/admin-access-denied-page';
 import { AdminShell } from '@/components/admin';
+import { getAdminWorkspaceGate } from '@/lib/auth/admin-workspace-gate';
 
 export const metadata: Metadata = {
   title: {
@@ -9,15 +12,25 @@ export const metadata: Metadata = {
     template: '%s · Admin Workspace · U&V',
   },
   description:
-    'U&V Admin Workspace foundation — customers, projects, payments, support, and reports. Demo UI only.',
+    'U&V Admin Workspace — operations, lead management, and customer administration.',
   robots: { index: false, follow: false },
 };
 
-export default function AdminGroupLayout({
+export default async function AdminGroupLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const gate = await getAdminWorkspaceGate();
+
+  if (gate.kind === 'unauthenticated') {
+    redirect('/login/admin?redirect_url=%2Fadmin');
+  }
+
+  if (gate.kind === 'forbidden') {
+    return <AdminAccessDeniedPage user={gate.userDisplay} />;
+  }
+
   return (
     <>
       <a
@@ -26,7 +39,7 @@ export default function AdminGroupLayout({
       >
         Skip to admin content
       </a>
-      <AdminShell>{children}</AdminShell>
+      <AdminShell user={gate.userDisplay}>{children}</AdminShell>
     </>
   );
 }

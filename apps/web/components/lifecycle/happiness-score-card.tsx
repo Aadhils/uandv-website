@@ -1,5 +1,6 @@
 import { Badge } from '@uandv/ui';
 
+import { DevDataBadge } from '@/components/shared/dev-data-badge';
 import { ProgressBar } from '@/components/lifecycle/progress-bar';
 import type { CustomerHappinessScore } from '@/lib/lifecycle';
 
@@ -31,7 +32,7 @@ export function HappinessScoreCard({ score }: HappinessScoreCardProps) {
           <p className="mt-1 text-sm text-uv-foreground-muted">{score.summary}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="warning">Demo data</Badge>
+          <DevDataBadge label="Demo data" />
           <Badge variant="outline">{trendLabel}</Badge>
         </div>
       </div>

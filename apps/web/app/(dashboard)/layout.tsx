@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 import { WorkspaceShell } from '@/components/workspace';
+import { getWorkspaceUserDisplay } from '@/lib/auth/workspace-user';
 
 export const metadata: Metadata = {
   title: {
@@ -16,11 +17,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DashboardGroupLayout({
+export default async function DashboardGroupLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const user = await getWorkspaceUserDisplay();
+
   return (
     <>
       <a
@@ -29,7 +32,7 @@ export default function DashboardGroupLayout({
       >
         Skip to workspace content
       </a>
-      <WorkspaceShell>{children}</WorkspaceShell>
+      <WorkspaceShell user={user}>{children}</WorkspaceShell>
     </>
   );
 }

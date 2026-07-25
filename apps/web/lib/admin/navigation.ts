@@ -1,4 +1,9 @@
-import type { BreadcrumbItem, IconName, WorkspaceNavSection } from '@uandv/ui';
+import type { BreadcrumbItem, WorkspaceNavSection } from '@uandv/ui';
+
+import {
+  mapNavConfigToItems,
+  type NavItemConfig,
+} from '@/lib/workspace/nav-config';
 
 export type AdminRouteMeta = {
   path: string;
@@ -227,51 +232,48 @@ export const adminRoutes: AdminRouteMeta[] = [
   },
 ];
 
-const adminNavItems: Array<{ label: string; href: string; icon: IconName }> = [
-  { label: 'Dashboard', href: '/admin', icon: 'LayoutDashboard' },
-  { label: 'Business', href: '/admin/business', icon: 'Sparkles' },
-  { label: 'Customers', href: '/admin/customers', icon: 'Users' },
-  { label: 'Lead Management', href: '/admin/leads/list', icon: 'ClipboardList' },
-  { label: 'Projects', href: '/admin/projects', icon: 'Briefcase' },
-  { label: 'Timeline', href: '/admin/timeline', icon: 'Workflow' },
-  { label: 'Quotations', href: '/admin/quotations', icon: 'FileText' },
-  { label: 'Agreements', href: '/admin/agreements', icon: 'Layers' },
-  { label: 'Payments', href: '/admin/payments', icon: 'Wallet' },
-  { label: 'Expenses', href: '/admin/expenses', icon: 'CircleAlert' },
-  { label: 'Settlements', href: '/admin/settlements', icon: 'Package' },
-  { label: 'Profit', href: '/admin/profit', icon: 'TrendingUp' },
-  { label: 'Partners', href: '/admin/partners', icon: 'Users' },
-  { label: 'Partner Approvals', href: '/admin/partners/approvals', icon: 'Clock' },
-  { label: 'Marketplace', href: '/admin/marketplace', icon: 'Briefcase' },
-  { label: 'Assignment', href: '/admin/assignment', icon: 'Check' },
-  { label: 'Service Requests', href: '/admin/service-requests', icon: 'ClipboardList' },
-  { label: 'Templates', href: '/admin/templates', icon: 'Layers' },
-  {
-    label: 'AI Requirement Analysis',
-    href: '/admin/business-advisor',
-    icon: 'Sparkles',
-  },
-  { label: 'Work Updates', href: '/admin/work-updates', icon: 'Sparkles' },
-  { label: 'Support', href: '/admin/support', icon: 'MessageCircle' },
-  { label: 'Documents', href: '/admin/documents', icon: 'Layers' },
-  { label: 'Notifications', href: '/admin/notifications', icon: 'Bell' },
-  { label: 'Reports', href: '/admin/reports', icon: 'TrendingUp' },
+/** Admin Workspace sidebar — centralized enable/disable. */
+export const adminNavConfig: NavItemConfig[] = [
+  { label: 'Dashboard', href: '/admin', icon: 'LayoutDashboard', enabled: true },
+  { label: 'Business', href: '/admin/business', icon: 'Sparkles', enabled: false, status: 'coming_soon' },
+  { label: 'Customers', href: '/admin/customers', icon: 'Users', enabled: false, status: 'coming_soon' },
+  { label: 'Lead Management', href: '/admin/leads/list', icon: 'ClipboardList', enabled: true },
+  { label: 'Projects', href: '/admin/projects', icon: 'Briefcase', enabled: false, status: 'coming_soon' },
+  { label: 'Timeline', href: '/admin/timeline', icon: 'Workflow', enabled: false, status: 'coming_soon' },
+  { label: 'Quotations', href: '/admin/quotations', icon: 'FileText', enabled: false, status: 'coming_soon' },
+  { label: 'Agreements', href: '/admin/agreements', icon: 'Layers', enabled: false, status: 'coming_soon' },
+  { label: 'Payments', href: '/admin/payments', icon: 'Wallet', enabled: false, status: 'coming_soon' },
+  { label: 'Expenses', href: '/admin/expenses', icon: 'CircleAlert', enabled: false, status: 'coming_soon' },
+  { label: 'Settlements', href: '/admin/settlements', icon: 'Package', enabled: false, status: 'coming_soon' },
+  { label: 'Profit', href: '/admin/profit', icon: 'TrendingUp', enabled: false, status: 'coming_soon' },
+  { label: 'Partners', href: '/admin/partners', icon: 'Users', enabled: false, status: 'coming_soon' },
+  { label: 'Partner Approvals', href: '/admin/partners/approvals', icon: 'Clock', enabled: false, status: 'in_development' },
+  { label: 'Marketplace', href: '/admin/marketplace', icon: 'Briefcase', enabled: false, status: 'coming_soon' },
+  { label: 'Assignment', href: '/admin/assignment', icon: 'Check', enabled: false, status: 'coming_soon' },
+  { label: 'Service Requests', href: '/admin/service-requests', icon: 'ClipboardList', enabled: false, status: 'in_development' },
+  { label: 'Templates', href: '/admin/templates', icon: 'Layers', enabled: false, status: 'coming_soon' },
+  { label: 'AI Requirement Analysis', href: '/admin/business-advisor', icon: 'Sparkles', enabled: false, status: 'in_development' },
+  { label: 'Work Updates', href: '/admin/work-updates', icon: 'Sparkles', enabled: false, status: 'coming_soon' },
+  { label: 'Support', href: '/admin/support', icon: 'MessageCircle', enabled: false, status: 'coming_soon' },
+  { label: 'Documents', href: '/admin/documents', icon: 'Layers', enabled: false, status: 'coming_soon' },
+  { label: 'Notifications', href: '/admin/notifications', icon: 'Bell', enabled: false, status: 'coming_soon' },
+  { label: 'Reports', href: '/admin/reports', icon: 'TrendingUp', enabled: false, status: 'coming_soon' },
 ];
 
-const crmNavItems: Array<{ label: string; href: string; icon: IconName }> = [
-  { label: 'Lead Dashboard', href: '/admin/leads', icon: 'LayoutDashboard' },
-  { label: 'Lead List', href: '/admin/leads/list', icon: 'ClipboardList' },
-  { label: 'Follow-ups', href: '/admin/leads/follow-ups', icon: 'Calendar' },
-  { label: 'Overdue', href: '/admin/leads/overdue', icon: 'Clock' },
-  { label: 'Follow-up History', href: '/admin/leads/follow-up-history', icon: 'FileText' },
-  { label: 'Communications', href: '/admin/leads/communications', icon: 'Phone' },
-  { label: 'Pipeline', href: '/admin/leads/pipeline', icon: 'Workflow' },
-  { label: 'Newsletter', href: '/admin/leads/newsletter', icon: 'Megaphone' },
-  { label: 'Assignments', href: '/admin/leads/assignments', icon: 'Users' },
-  { label: 'Lead Scores', href: '/admin/leads/scores', icon: 'TrendingUp' },
-  { label: 'CRM Reports', href: '/admin/leads/crm-reports', icon: 'TrendingUp' },
-  { label: 'Employees', href: '/admin/employees', icon: 'Users' },
-  { label: 'Permissions', href: '/admin/employees/permissions', icon: 'Settings' },
+export const adminCrmNavConfig: NavItemConfig[] = [
+  { label: 'Lead Dashboard', href: '/admin/leads', icon: 'LayoutDashboard', enabled: false, status: 'in_development' },
+  { label: 'Lead List', href: '/admin/leads/list', icon: 'ClipboardList', enabled: true },
+  { label: 'Follow-ups', href: '/admin/leads/follow-ups', icon: 'Calendar', enabled: false, status: 'in_development' },
+  { label: 'Overdue', href: '/admin/leads/overdue', icon: 'Clock', enabled: false, status: 'in_development' },
+  { label: 'Follow-up History', href: '/admin/leads/follow-up-history', icon: 'FileText', enabled: false, status: 'in_development' },
+  { label: 'Communications', href: '/admin/leads/communications', icon: 'Phone', enabled: false, status: 'in_development' },
+  { label: 'Pipeline', href: '/admin/leads/pipeline', icon: 'Workflow', enabled: false, status: 'in_development' },
+  { label: 'Newsletter', href: '/admin/leads/newsletter', icon: 'Megaphone', enabled: false, status: 'in_development' },
+  { label: 'Assignments', href: '/admin/leads/assignments', icon: 'Users', enabled: false, status: 'in_development' },
+  { label: 'Lead Scores', href: '/admin/leads/scores', icon: 'TrendingUp', enabled: false, status: 'in_development' },
+  { label: 'CRM Reports', href: '/admin/leads/crm-reports', icon: 'TrendingUp', enabled: false, status: 'in_development' },
+  { label: 'Employees', href: '/admin/employees', icon: 'Users', enabled: false, status: 'coming_soon' },
+  { label: 'Permissions', href: '/admin/employees/permissions', icon: 'Settings', enabled: false, status: 'coming_soon' },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {
@@ -286,18 +288,12 @@ export function getAdminNavSections(pathname: string): WorkspaceNavSection[] {
     {
       id: 'admin-workspace',
       title: 'Admin Workspace',
-      items: adminNavItems.map((item) => ({
-        ...item,
-        active: isNavActive(pathname, item.href),
-      })),
+      items: mapNavConfigToItems(adminNavConfig, pathname, isNavActive),
     },
     {
       id: 'crm-workspace',
       title: 'Lead Management & CRM',
-      items: crmNavItems.map((item) => ({
-        ...item,
-        active: isNavActive(pathname, item.href),
-      })),
+      items: mapNavConfigToItems(adminCrmNavConfig, pathname, isNavActive),
     },
   ];
 }

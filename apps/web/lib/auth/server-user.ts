@@ -109,4 +109,25 @@ export async function requireDbUser(): Promise<User> {
   return user;
 }
 
+export function dashboardGreetingName(
+  user: {
+    fullName?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+  },
+  clerkUsername?: string | null,
+): string {
+  if (user.fullName?.trim()) {
+    return user.fullName.trim();
+  }
+  if (clerkUsername?.trim()) {
+    return clerkUsername.trim();
+  }
+  const first = user.firstName?.trim();
+  if (first) {
+    return first;
+  }
+  return 'there';
+}
+
 export { displayName, parseAccountType };

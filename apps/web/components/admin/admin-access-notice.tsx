@@ -32,7 +32,7 @@ function AdminAccessNoticeInner() {
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
         <Link
-          href="/login?redirect_url=%2Fadmin%2Fleads%2Flist"
+          href="/login/admin?redirect_url=%2Fadmin%2Fleads%2Flist"
           className={cn(buttonVariants({ variant: 'primary', size: 'sm' }))}
         >
           Sign in as admin
