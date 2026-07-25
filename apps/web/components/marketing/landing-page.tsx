@@ -1,3 +1,4 @@
+import { LaunchCustomerJourney } from './launch-customer-journey';
 import { LaunchFinalCta } from './launch-final-cta';
 import { Hero } from './hero';
 import { LaunchIndustrySolutions } from './launch-industry-solutions';
@@ -14,6 +15,7 @@ export function LandingPage() {
       <Hero />
       <LaunchStats />
       <LaunchTrust />
+      <LaunchCustomerJourney />
       <LaunchServices />
       <LaunchIndustrySolutions />
       <LaunchProcess />

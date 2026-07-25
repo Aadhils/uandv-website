@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { buttonVariants, cn, Icon } from '@uandv/ui';
 
+import { launchImages } from '@/lib/launch-images';
 import { siteConfig } from '@/lib/site';
 
 export function LaunchHero() {
@@ -13,7 +14,7 @@ export function LaunchHero() {
     >
       <div className="absolute inset-0" aria-hidden>
         <Image
-          src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2400&q=80"
+          src={launchImages.hero}
           alt=""
           fill
           priority
@@ -24,15 +25,9 @@ export function LaunchHero() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#08152F] via-[#08152F]/88 to-[#102A56]/60" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#08152F]/96 via-[#3B1C78]/50 to-transparent" />
         <div className="marketing-hero-grid absolute inset-0 opacity-50" />
-        <div
-          className="marketing-orb marketing-pulse-glow -left-24 top-20 h-72 w-72 bg-[#7c3aed]/40"
-        />
-        <div
-          className="marketing-orb marketing-float-delayed right-0 top-1/4 h-80 w-80 bg-[#102A56]/50"
-        />
-        <div
-          className="marketing-orb marketing-float bottom-0 left-1/3 h-64 w-64 bg-[#6d28d9]/30"
-        />
+        <div className="marketing-orb marketing-pulse-glow -left-24 top-20 h-72 w-72 bg-[#7c3aed]/40" />
+        <div className="marketing-orb marketing-float-delayed right-0 top-1/4 h-80 w-80 bg-[#102A56]/50" />
+        <div className="marketing-orb marketing-float bottom-0 left-1/3 h-64 w-64 bg-[#6d28d9]/30" />
       </div>
 
       <div className="relative mx-auto grid w-full min-w-0 max-w-7xl gap-10 px-4 pb-20 pt-28 sm:px-6 sm:pb-24 sm:pt-32 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-12 lg:px-8 lg:pb-28 lg:pt-36">
@@ -53,9 +48,8 @@ export function LaunchHero() {
           </h1>
 
           <p className="marketing-animate-in marketing-animate-in-delay-2 mt-6 max-w-2xl break-words text-base leading-relaxed text-[#EDE9FE]/95 sm:text-lg">
-            From business idea and branding to software, automation, marketing, and
-            long-term growth — U&V helps businesses launch, operate, and scale as
-            your technology and growth partner.
+            International-quality software, branding, and growth services for
+            startups, SMEs, and enterprises — from first idea to long-term scale.
           </p>
 
           <div className="marketing-animate-in marketing-animate-in-delay-3 mt-9 flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -92,8 +86,8 @@ export function LaunchHero() {
           </div>
         </div>
 
-        <div className="marketing-animate-in marketing-animate-in-delay-3 hidden min-w-0 lg:block">
-          <div className="marketing-glass-dark marketing-gradient-border relative rounded-uv-2xl p-6">
+        <div className="marketing-animate-in marketing-animate-in-delay-3 min-w-0">
+          <div className="marketing-glass-dark marketing-gradient-border relative rounded-uv-2xl p-5 sm:p-6">
             <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#C4B5FD]">
               Your growth partner
             </p>
@@ -113,13 +107,13 @@ export function LaunchHero() {
             </ul>
             <div className="mt-6 grid grid-cols-2 gap-3 border-t border-white/10 pt-6">
               <div className="rounded-uv-lg bg-white/5 p-3 text-center">
-                <p className="font-[family-name:var(--font-uv-display)] text-2xl font-bold text-white">
+                <p className="font-[family-name:var(--font-uv-display)] text-xl font-bold text-white sm:text-2xl">
                   Since {siteConfig.founded}
                 </p>
                 <p className="mt-1 text-xs text-[#C4B5FD]">Tamil Nadu, India</p>
               </div>
               <div className="rounded-uv-lg bg-white/5 p-3 text-center">
-                <p className="font-[family-name:var(--font-uv-display)] text-2xl font-bold text-white">
+                <p className="font-[family-name:var(--font-uv-display)] text-xl font-bold text-white sm:text-2xl">
                   15+
                 </p>
                 <p className="mt-1 text-xs text-[#C4B5FD]">Service capabilities</p>
