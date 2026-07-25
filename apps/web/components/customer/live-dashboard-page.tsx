@@ -9,6 +9,7 @@ import { dashboardGreetingName, ensureDbUser } from '@/lib/auth/server-user';
 import { prisma } from '@/lib/db';
 import { getLatestCustomerQuotationSummary } from '@/lib/quotations/service';
 import { formatInr, formatQuotationDate } from '@/lib/quotations/format';
+import { getEnquiryStatusLabel } from '@/lib/enquiries/status';
 
 export async function LiveCustomerDashboardPage() {
   // Caller already confirmed server userId when possible. Never redirect to /login
