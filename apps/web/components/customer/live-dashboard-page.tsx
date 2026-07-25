@@ -1,28 +1,15 @@
 import Link from 'next/link';
-import { UserButton } from '@clerk/nextjs';
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 import { buttonVariants, cn } from '@uandv/ui';
 
 import { CustomerPageHeader } from '@/components/customer/page-header';
-import { displayName, ensureDbUser } from '@/lib/auth/server-user';
+import { dashboardGreetingName, ensureDbUser } from '@/lib/auth/server-user';
 import { prisma } from '@/lib/db';
-
-function statusLabel(status: string) {
-  switch (status) {
-    case 'NEW':
-      return 'New';
-    case 'CONTACTED':
-      return 'Contacted';
-    case 'QUALIFIED':
-      return 'Qualified';
-    case 'CLOSED':
-      return 'Closed';
-    default:
-      return status;
-  }
-}
+import { getLatestCustomerQuotationSummary } from '@/lib/quotations/service';
+import { formatInr, formatQuotationDate } from '@/lib/quotations/format';
+import { getEnquiryStatusLabel } from '@/lib/enquiries/status';
 
 export async function LiveCustomerDashboardPage() {
   // Caller already confirmed server userId when possible. Never redirect to /login
@@ -68,16 +55,19 @@ export async function LiveCustomerDashboardPage() {
     take: 20,
   });
 
-  const name = displayName(user);
+  const quotationSummary = await getLatestCustomerQuotationSummary(user);
+
+  const clerkUser = await currentUser();
+  const greetingName = dashboardGreetingName(user, clerkUser?.username);
+  const name = user.fullName?.trim() || greetingName;
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 lg:gap-10">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <CustomerPageHeader
-          title={`Welcome, ${name.split(' ')[0]}`}
+          title={`Welcome, ${greetingName}`}
           description="Your live U&V customer workspace — profile and enquiries from real submissions."
         />
-        <UserButton afterSignOutUrl="/" />
       </div>
 
       <section className="grid gap-4 rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:grid-cols-3 sm:p-6">
@@ -154,6 +144,45 @@ export async function LiveCustomerDashboardPage() {
       <section className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
+            Quotations
+          </h2>
+          <Link
+            href="/dashboard/quotations"
+            className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
+          >
+            View all
+          </Link>
+        </div>
+        {quotationSummary.pending ? (
+          <div className="mt-4 rounded-uv-xl border border-uv-warning/30 bg-uv-warning/5 p-4">
+            <p className="text-sm font-medium text-uv-foreground">
+              Action required: {quotationSummary.pending.quotationNumber}
+            </p>
+            <p className="mt-1 text-sm text-uv-foreground-muted">
+              {quotationSummary.pending.title} · {formatInr(quotationSummary.pending.grandTotal)} · valid until{' '}
+              {formatQuotationDate(quotationSummary.pending.validityDate)}
+            </p>
+            <Link
+              href={`/dashboard/quotations/${quotationSummary.pending.id}`}
+              className={cn(buttonVariants({ size: 'sm' }), 'mt-3 inline-flex')}
+            >
+              Review quotation
+            </Link>
+          </div>
+        ) : quotationSummary.latest ? (
+          <p className="mt-4 text-sm text-uv-foreground-muted">
+            Latest: {quotationSummary.latest.quotationNumber} ({quotationSummary.latest.status.toLowerCase()})
+          </p>
+        ) : (
+          <p className="mt-4 text-sm text-uv-foreground-muted">
+            No quotations yet. When U&V sends a proposal, it will appear here.
+          </p>
+        )}
+      </section>
+
+      <section className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
             My enquiries
           </h2>
           <Link href="/contact" className={cn(buttonVariants({ size: 'sm' }))}>
@@ -188,7 +217,7 @@ export async function LiveCustomerDashboardPage() {
                   </p>
                 </div>
                 <span className="inline-flex shrink-0 rounded-uv-full border border-uv-border bg-uv-background-subtle px-3 py-1 text-xs font-medium text-uv-foreground">
-                  {statusLabel(enquiry.status)}
+                  {getEnquiryStatusLabel(enquiry.status)}
                 </span>
               </li>
             ))}

@@ -17,13 +17,13 @@ export const metadata: Metadata = {
     'U&V business solutions framework',
   ],
   alternates: {
-    canonical: '/business-consulting',
+    canonical: '/business',
   },
   openGraph: {
     title: 'We Don’t Just Build Software. We Build Businesses. | U&V',
     description:
       'From idea to global growth, U&V partners with you in technology, strategy, automation, and continuous innovation.',
-    url: `${siteConfig.url}/business-consulting`,
+    url: `${siteConfig.url}/business`,
     siteName: siteConfig.name,
     locale: siteConfig.locale,
     type: 'website',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BusinessConsultingRoute() {
+export default function BusinessRoute() {
   return (
     <>
       <JsonLd
@@ -45,10 +45,10 @@ export default function BusinessConsultingRoute() {
           title: 'Business Solutions Framework | U&V',
           description:
             'U&V business solutions framework covering discovery, architecture, development, launch, and continuous growth partnership.',
-          path: '/business-consulting',
+          path: '/business',
           breadcrumbs: [
             { name: 'Home', path: '/' },
-            { name: 'Business Solutions', path: '/business-consulting' },
+            { name: 'Business Solutions', path: '/business' },
           ],
         }}
       />

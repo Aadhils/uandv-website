@@ -34,7 +34,7 @@ export default function LoginPage() {
         </p>
       }
     >
-      <LoginForm />
+      <LoginForm authMode="customer" redirectTo="/dashboard" />
     </AuthFormCard>
   );
 }

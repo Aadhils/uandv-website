@@ -1,4 +1,5 @@
 export { AdminShell } from './admin-shell';
+export { AdminAccessDeniedPage } from './admin-access-denied-page';
 export { AdminPageHeader } from './page-header';
 export { AdminDashboardPage } from './dashboard-page';
 export { AdminCustomersPage } from './customers-page';

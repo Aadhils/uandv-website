@@ -1,6 +1,7 @@
 import { auth, currentUser } from '@clerk/nextjs/server';
 import type { AccountType, User } from '@uandv/database';
 
+import { mapClerkRole } from '@/lib/auth/clerk-role';
 import { prisma } from '@/lib/db';
 
 function displayName(input: {
@@ -54,6 +55,7 @@ export async function ensureDbUser(): Promise<User | null> {
     clerkUser.unsafeMetadata?.accountType ??
       clerkUser.publicMetadata?.accountType,
   );
+  const clerkRole = mapClerkRole(clerkUser.publicMetadata);
 
   const user = await prisma.user.upsert({
     where: { clerkId: userId },
@@ -66,6 +68,7 @@ export async function ensureDbUser(): Promise<User | null> {
       mobile: mobile ?? undefined,
       avatarUrl: clerkUser.imageUrl ?? undefined,
       accountType,
+      role: clerkRole ?? 'USER',
       customerProfile:
         accountType === 'CUSTOMER'
           ? {
@@ -80,6 +83,8 @@ export async function ensureDbUser(): Promise<User | null> {
       fullName: fullName ?? undefined,
       mobile: mobile ?? undefined,
       avatarUrl: clerkUser.imageUrl ?? undefined,
+      // Role from Clerk public metadata only — never from signup client metadata.
+      ...(clerkRole ? { role: clerkRole } : {}),
       // Do not overwrite accountType from client on every visit after create
       deletedAt: null,
     },
@@ -102,6 +107,27 @@ export async function requireDbUser(): Promise<User> {
     throw new Error('UNAUTHORIZED');
   }
   return user;
+}
+
+export function dashboardGreetingName(
+  user: {
+    fullName?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+  },
+  clerkUsername?: string | null,
+): string {
+  if (user.fullName?.trim()) {
+    return user.fullName.trim();
+  }
+  if (clerkUsername?.trim()) {
+    return clerkUsername.trim();
+  }
+  const first = user.firstName?.trim();
+  if (first) {
+    return first;
+  }
+  return 'there';
 }
 
 export { displayName, parseAccountType };

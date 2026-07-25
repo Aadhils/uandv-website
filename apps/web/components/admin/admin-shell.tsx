@@ -5,25 +5,27 @@ import { usePathname } from 'next/navigation';
 
 import { EnterpriseAppShell, buttonVariants, cn } from '@uandv/ui';
 
+import { ClerkSignOutButton } from '@/components/auth/clerk-sign-out-button';
 import { Logo } from '@/components/brand/logo';
 import { BackToTop } from '@/components/shared/back-to-top';
+import { WorkspaceUserIdentity } from '@/components/workspace/workspace-user-identity';
 import {
-  demoAdminUser,
   getAdminBreadcrumbs,
   getAdminNavSections,
   getAdminRouteMeta,
 } from '@/lib/admin';
+import type { WorkspaceUserDisplay } from '@/lib/auth/workspace-user';
 import { siteConfig } from '@/lib/site';
 
 type AdminShellProps = {
   children: React.ReactNode;
+  user?: WorkspaceUserDisplay | null;
 };
 
 /**
  * Admin Workspace shell — Enterprise App Shell + admin navigation.
- * Demo UI only; no elevated production permissions.
  */
-export function AdminShell({ children }: AdminShellProps) {
+export function AdminShell({ children, user }: AdminShellProps) {
   const pathname = usePathname();
   const navSections = getAdminNavSections(pathname);
   const meta = getAdminRouteMeta(pathname);
@@ -54,9 +56,12 @@ export function AdminShell({ children }: AdminShellProps) {
       navSections={navSections}
       sidebarFooter={
         <div className="space-y-2">
-          <p className="px-3 text-xs font-medium uppercase tracking-wide text-uv-foreground-subtle">
-            Admin Workspace
-          </p>
+          <ClerkSignOutButton
+            redirectUrl="/login/admin"
+            label="Sign out"
+            fullWidth
+            className="justify-start px-3 text-uv-foreground-muted hover:text-uv-error"
+          />
           <Link
             href="/dashboard"
             className={cn(
@@ -65,15 +70,6 @@ export function AdminShell({ children }: AdminShellProps) {
             )}
           >
             Customer workspace
-          </Link>
-          <Link
-            href="/employee"
-            className={cn(
-              buttonVariants({ variant: 'ghost', size: 'sm', fullWidth: true }),
-              'justify-start text-uv-foreground-muted',
-            )}
-          >
-            Employee workspace
           </Link>
           <Link
             href="/"
@@ -90,10 +86,12 @@ export function AdminShell({ children }: AdminShellProps) {
         title: meta.title,
         subtitle: meta.subtitle,
         breadcrumbs,
-        user: {
-          name: demoAdminUser.name,
-          role: demoAdminUser.role,
-        },
+        userMenu: (
+          <WorkspaceUserIdentity
+            user={user}
+            signOutRedirectUrl="/login/admin"
+          />
+        ),
       }}
     >
       {children}

@@ -1,5 +1,4 @@
-import { Badge } from '@uandv/ui';
-
+import { DevDataBadge } from '@/components/shared/dev-data-badge';
 import { ProgressBar } from '@/components/lifecycle/progress-bar';
 import type { BusinessHealthScore } from '@/lib/customer';
 
@@ -39,7 +38,7 @@ export function BusinessHealthSection({ health }: BusinessHealthSectionProps) {
             Snapshot of delivery, payments, docs, support, and renewals.
           </p>
         </div>
-        <Badge variant="warning">Demo data</Badge>
+        <DevDataBadge label="Demo data" />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,11rem)_1fr] lg:items-center">

@@ -5,17 +5,30 @@ const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim();
 const secretKey = process.env.CLERK_SECRET_KEY?.trim();
 const secretLooksValid = Boolean(secretKey && secretKey.startsWith('sk_'));
 
-const isProtectedRoute = createRouteMatcher([
+const isCustomerProtectedRoute = createRouteMatcher([
   '/dashboard(.*)',
   '/api/me(.*)',
 ]);
 
-const isAuthRoute = createRouteMatcher([
-  '/login(.*)',
+const isAdminProtectedRoute = createRouteMatcher([
+  '/admin(.*)',
+  '/api/admin(.*)',
+]);
+
+const isCustomerAuthRoute = createRouteMatcher([
+  '/login',
   '/signup',
   '/forgot-password(.*)',
   '/verify-email(.*)',
 ]);
+
+const isAdminAuthRoute = createRouteMatcher(['/login/admin']);
+
+function withNoStore(response: NextResponse): NextResponse {
+  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  response.headers.set('Pragma', 'no-cache');
+  return response;
+}
 
 const middleware = publishableKey
   ? clerkMiddleware(async (auth, request) => {
@@ -23,7 +36,6 @@ const middleware = publishableKey
       const path = request.nextUrl.pathname;
       const redirectParam = request.nextUrl.searchParams.get('redirect_url');
 
-      // Temporary diagnostics for redirect-loop debugging
       console.log('[uv-auth:middleware]', {
         pathname: path,
         userId: userId ?? null,
@@ -32,27 +44,38 @@ const middleware = publishableKey
         redirect_url: redirectParam,
       });
 
-      // Signed-out users → /login (only when the server can verify sessions).
-      // If CLERK_SECRET_KEY is invalid, auth() never returns userId even when the
-      // browser has a Clerk session — forcing /login causes an infinite loop.
-      if (isProtectedRoute(request) && !userId) {
+      const isProtected =
+        isCustomerProtectedRoute(request) || isAdminProtectedRoute(request);
+
+      if (isProtected && !userId) {
         if (!secretLooksValid) {
           console.warn(
             '[uv-auth:middleware] CLERK_SECRET_KEY is missing or not an sk_ key; allowing protected route through to avoid redirect loop',
             path,
           );
-          return NextResponse.next();
+          return withNoStore(NextResponse.next());
         }
 
-        const login = new URL('/login', request.url);
-        // Preserve redirect_url only for signed-out users
+        const loginPath = isAdminProtectedRoute(request) ? '/login/admin' : '/login';
+        const login = new URL(loginPath, request.url);
         login.searchParams.set('redirect_url', path);
         return NextResponse.redirect(login);
       }
 
-      // Signed-in users leave auth pages (except vendor/partner pending).
-      // Never send them back to /login.
-      if (isAuthRoute(request) && userId && path !== '/signup/pending') {
+      if (isAdminAuthRoute(request) && userId) {
+        const safeRedirect =
+          redirectParam &&
+          redirectParam.startsWith('/') &&
+          !redirectParam.startsWith('//') &&
+          !redirectParam.startsWith('/login')
+            ? redirectParam
+            : '/admin';
+
+        console.log('[uv-auth:middleware] signed-in on admin login →', safeRedirect);
+        return NextResponse.redirect(new URL(safeRedirect, request.url));
+      }
+
+      if (isCustomerAuthRoute(request) && userId && path !== '/signup/pending') {
         const safeRedirect =
           redirectParam &&
           redirectParam.startsWith('/') &&
@@ -61,8 +84,12 @@ const middleware = publishableKey
             ? redirectParam
             : '/dashboard';
 
-        console.log('[uv-auth:middleware] signed-in on auth route →', safeRedirect);
+        console.log('[uv-auth:middleware] signed-in on customer auth route →', safeRedirect);
         return NextResponse.redirect(new URL(safeRedirect, request.url));
+      }
+
+      if (isProtected) {
+        return withNoStore(NextResponse.next());
       }
 
       return NextResponse.next();
@@ -72,9 +99,14 @@ const middleware = publishableKey
       console.warn('[uv-auth:middleware] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY missing');
       if (
         url.pathname.startsWith('/dashboard') ||
-        url.pathname.startsWith('/api/me')
+        url.pathname.startsWith('/api/me') ||
+        url.pathname.startsWith('/admin') ||
+        url.pathname.startsWith('/api/admin')
       ) {
-        const login = new URL('/login', url.origin);
+        const loginPath = url.pathname.startsWith('/admin')
+          ? '/login/admin'
+          : '/login';
+        const login = new URL(loginPath, url.origin);
         login.searchParams.set('redirect_url', url.pathname);
         return NextResponse.redirect(login);
       }

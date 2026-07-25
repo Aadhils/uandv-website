@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 
 import { prisma } from '@/lib/db';
+import { applyCustomerPasswordOnlyPolicy } from '@/lib/auth/clerk-customer-auth-policy';
+import { isAdminRole } from '@/lib/auth/db-roles';
+import { mapClerkRole } from '@/lib/auth/clerk-role';
 
 export const runtime = 'nodejs';
 
@@ -79,6 +82,7 @@ export async function POST(request: Request) {
           event.data.unsafe_metadata?.accountType ??
             event.data.public_metadata?.accountType,
         );
+        const clerkRole = mapClerkRole(event.data.public_metadata);
 
         const user = await prisma.user.upsert({
           where: { clerkId: event.data.id },
@@ -90,6 +94,7 @@ export async function POST(request: Request) {
             fullName,
             avatarUrl: event.data.image_url ?? undefined,
             accountType,
+            role: clerkRole ?? 'USER',
             customerProfile:
               accountType === 'CUSTOMER' ? { create: {} } : undefined,
           },
@@ -99,6 +104,7 @@ export async function POST(request: Request) {
             lastName,
             fullName,
             avatarUrl: event.data.image_url ?? undefined,
+            ...(clerkRole ? { role: clerkRole } : {}),
             // accountType is set only on create — never trust later client metadata changes
             deletedAt: null,
           },
@@ -110,6 +116,16 @@ export async function POST(request: Request) {
             create: { userId: user.id },
             update: {},
           });
+        }
+
+        if (event.type === 'user.created' && !(clerkRole && isAdminRole(clerkRole))) {
+          try {
+            await applyCustomerPasswordOnlyPolicy(event.data.id, {
+              publicMetadata: event.data.public_metadata,
+            });
+          } catch (policyError) {
+            console.error('[clerk-webhook] customer auth policy failed', policyError);
+          }
         }
 
         await prisma.authAuditLog.create({

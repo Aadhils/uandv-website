@@ -1,9 +1,14 @@
 import { Badge } from '@uandv/ui';
 
 import { AUTH_DEMO_NOTICE } from '@/lib/auth';
+import { showDevUILabels } from '@/lib/env/dev-ui';
 
 /** Clearly labels demo auth surfaces as non-production. */
 export function AuthDemoBanner({ className }: { className?: string }) {
+  if (!showDevUILabels()) {
+    return null;
+  }
+
   return (
     <div
       className={className}

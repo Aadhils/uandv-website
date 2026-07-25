@@ -74,7 +74,7 @@ export const siteConfig = {
  * Contact lives in the footer only.
  */
 export const marketingNav = [
-  { label: 'Business Solutions', href: '/business-consulting' },
+  { label: 'Business Solutions', href: '/business' },
   { label: 'Services', href: '/services' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Why U&V', href: '/why-uandv' },

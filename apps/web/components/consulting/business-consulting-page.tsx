@@ -46,12 +46,12 @@ export function BusinessConsultingPage() {
               technology, strategy, automation, and continuous innovation.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#consultation"
+              <Link
+                href="/contact"
                 className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
               >
                 Book a Free Business Consultation
-              </a>
+              </Link>
               <a
                 href={siteConfig.whatsapp}
                 target="_blank"

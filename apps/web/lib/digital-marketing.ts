@@ -160,6 +160,6 @@ export const digitalMarketingIntegrations = [
     title: 'Business consulting',
     description:
       'Growth decisions stay connected to offer design, operations, and longer-term business planning.',
-    href: '/business-consulting',
+    href: '/business',
   },
 ] as const;

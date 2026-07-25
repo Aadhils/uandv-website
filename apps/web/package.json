@@ -8,6 +8,7 @@
     "start": "next start --port 3000",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
     "validate:schema": "tsx --tsconfig tsconfig.json scripts/validate-json-ld.ts"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "@uandv/database": "workspace:*",
     "@uandv/ui": "workspace:*",
     "next": "16.2.9",
+    "pdfkit": "^0.17.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "resend": "^6.18.0",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pdfkit": "^0.13.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@uandv/config": "workspace:*",
@@ -33,6 +36,7 @@
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   }
 }

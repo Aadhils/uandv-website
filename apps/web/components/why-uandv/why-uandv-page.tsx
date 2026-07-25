@@ -45,12 +45,12 @@ export function WhyUandvPage() {
                 long-term partnership under one roof.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#start"
+                <Link
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Start Your Project
-                </a>
+                </Link>
                 <a
                   href={siteConfig.whatsapp}
                   target="_blank"

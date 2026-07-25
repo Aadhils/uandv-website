@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { Badge, SectionHeader, cn } from '@uandv/ui';
+import { SectionHeader, cn } from '@uandv/ui';
+
+import { DevDataBadge } from '@/components/shared/dev-data-badge';
 
 type CustomerPageHeaderProps = {
   title: string;
@@ -17,7 +19,7 @@ export function CustomerPageHeader({
 }: CustomerPageHeaderProps) {
   return (
     <div className={cn('space-y-3', className)}>
-      <Badge variant="secondary">Demo data · Customer Workspace</Badge>
+      <DevDataBadge label="Demo data · Customer Workspace" variant="secondary" />
       <SectionHeader title={title} description={description} actions={actions} />
     </div>
   );

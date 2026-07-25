@@ -41,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...portfolio,
     {
-      url: `${siteConfig.url}/business-consulting`,
+      url: `${siteConfig.url}/business`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 0.85,

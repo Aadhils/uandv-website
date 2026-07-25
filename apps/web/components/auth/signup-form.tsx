@@ -119,6 +119,8 @@ function ClerkSignupForm() {
   const [submitting, setSubmitting] = React.useState(false);
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState('');
+  const [infoMessage, setInfoMessage] = React.useState<string | null>(null);
+  const [resending, setResending] = React.useState(false);
 
   const finishSignup = async (
     sessionId: string | null | undefined,
@@ -300,6 +302,20 @@ function ClerkSignupForm() {
     }
   };
 
+  const onResendVerification = async () => {
+    if (!isLoaded || !signUp) return;
+    setResending(true);
+    setFormError(null);
+    try {
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+      setInfoMessage('Verification email sent. Check your inbox.');
+    } catch (error) {
+      setFormError(clerkErrorMessage(error, 'Unable to resend verification email.'));
+    } finally {
+      setResending(false);
+    }
+  };
+
   if (pendingVerification) {
     return (
       <Form spacing="md" onSubmit={onVerify} noValidate>
@@ -325,8 +341,23 @@ function ClerkSignupForm() {
             {formError}
           </p>
         ) : null}
+        {infoMessage && !formError ? (
+          <p className="text-sm text-uv-foreground-muted" role="status">
+            {infoMessage}
+          </p>
+        ) : null}
         <Button type="submit" size="lg" className="w-full" disabled={submitting}>
           {submitting ? 'Verifying…' : 'Verify email'}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="w-full"
+          disabled={resending || submitting}
+          onClick={onResendVerification}
+        >
+          {resending ? 'Sending…' : 'Resend verification email'}
         </Button>
       </Form>
     );
