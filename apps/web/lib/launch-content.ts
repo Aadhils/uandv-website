@@ -53,6 +53,52 @@ export const launchPartnerVoices = [
   },
 ] as const;
 
+/** Client-facing journey — what business owners experience working with U&V. */
+export const launchCustomerJourney = [
+  {
+    step: '01',
+    title: 'Share your vision',
+    description:
+      'Tell us about your business idea, goals, and constraints through our contact form or consultation call.',
+    icon: 'MessageCircle' as const,
+  },
+  {
+    step: '02',
+    title: 'Receive a clear roadmap',
+    description:
+      'We recommend practical next steps across consulting, design, technology, and growth — scoped to your stage.',
+    icon: 'ClipboardList' as const,
+  },
+  {
+    step: '03',
+    title: 'Align on brand and experience',
+    description:
+      'Identity, UX, and solution architecture are shaped together before development begins.',
+    icon: 'Palette' as const,
+  },
+  {
+    step: '04',
+    title: 'Build with transparency',
+    description:
+      'Websites, apps, and software are delivered with regular updates and production-quality engineering.',
+    icon: 'Code2' as const,
+  },
+  {
+    step: '05',
+    title: 'Launch with confidence',
+    description:
+      'Go live with deployment support, training, and a handoff plan your team can operate.',
+    icon: 'Rocket' as const,
+  },
+  {
+    step: '06',
+    title: 'Grow with ongoing support',
+    description:
+      'Marketing, automation, and iteration continue as your long-term technology partner.',
+    icon: 'TrendingUp' as const,
+  },
+] as const;
+
 export const launchTrustReasons = [
   {
     title: 'End-to-end business and technology support',

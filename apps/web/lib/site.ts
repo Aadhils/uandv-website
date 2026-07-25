@@ -36,7 +36,7 @@ export const siteConfig = {
   ] as const,
   headline: 'Your Business Growth Partner',
   description:
-    'U&V helps startups, SMEs, and enterprises launch, operate, and scale — from business idea and branding to software, automation, marketing, and long-term growth.',
+    'U&V delivers international-quality software, branding, and growth services for startups, SMEs, and enterprises — from business idea to long-term scale.',
   mission:
     'Follow dreams globally. We understand your business, the market you compete in, and the systems you need to grow with confidence.',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://uandv.com',
