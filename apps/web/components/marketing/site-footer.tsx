@@ -23,7 +23,7 @@ export function SiteFooter() {
             { label: 'Services', href: '/services' },
             { label: 'Portfolio', href: '/portfolio' },
             { label: 'Why U&V', href: '/why-uandv' },
-            { label: 'Business Solutions', href: '/business-consulting' },
+            { label: 'Business Solutions', href: '/business' },
             { label: 'MLM Solutions', href: '/solutions/mlm-software' },
             {
               label: 'Digital Marketing',

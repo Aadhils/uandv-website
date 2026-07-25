@@ -28,7 +28,7 @@ export function DigitalMarketingSolutionsPage() {
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Solutions', href: '/business-consulting' },
+              { label: 'Solutions', href: '/business' },
               { label: 'Digital Marketing' },
             ]}
           />
@@ -85,7 +85,7 @@ export function DigitalMarketingSolutionsPage() {
                 </li>
               </ul>
               <Link
-                href="/business-consulting"
+                href="/business"
                 className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-uv-brand"
               >
                 See business solutions

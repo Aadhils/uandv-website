@@ -15,6 +15,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/business-consulting',
+        destination: '/business',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

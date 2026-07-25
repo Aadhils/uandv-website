@@ -50,12 +50,12 @@ export function MlmSolutionsPage() {
                 technology, strategy, automation, and continuous consulting.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a
-                  href="#consultation"
+                <Link
+                  href="/contact"
                   className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
                 >
                   Book Free MLM Consultation
-                </a>
+                </Link>
                 <Link
                   href="/demo/mlm"
                   className={cn(
@@ -89,7 +89,7 @@ export function MlmSolutionsPage() {
                 </li>
               </ul>
               <Link
-                href="/business-consulting"
+                href="/business"
                 className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-uv-brand"
               >
                 See business solutions

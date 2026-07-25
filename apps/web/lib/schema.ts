@@ -77,7 +77,7 @@ export const schemaServices = [
   },
   {
     name: 'Business Solutions',
-    path: '/business-consulting',
+    path: '/business',
     description:
       'End-to-end business solutions spanning strategy, technology, automation, and long-term growth partnership.',
   },

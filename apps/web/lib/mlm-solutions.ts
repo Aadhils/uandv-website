@@ -147,7 +147,7 @@ export const mlmGrowthServices = [
   { title: 'AI Automation', href: '/services/ai-automation', icon: 'Bot' as IconName },
   { title: 'CRM', href: '/services/crm-software', icon: 'Users' as IconName },
   { title: 'ERP', href: '/services/erp-software', icon: 'Layers' as IconName },
-  { title: 'Training', href: '/business-consulting', icon: 'Rocket' as IconName },
+  { title: 'Training', href: '/business', icon: 'Rocket' as IconName },
 ];
 
 export const mlmPartnershipTimeline = [
