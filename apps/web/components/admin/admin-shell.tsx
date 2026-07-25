@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { EnterpriseAppShell, buttonVariants, cn } from '@uandv/ui';
 
 import { Logo } from '@/components/brand/logo';
+import { AdminAccessNotice } from '@/components/admin/admin-access-notice';
 import { BackToTop } from '@/components/shared/back-to-top';
 import {
   demoAdminUser,
@@ -96,6 +97,7 @@ export function AdminShell({ children }: AdminShellProps) {
         },
       }}
     >
+      <AdminAccessNotice />
       {children}
       <BackToTop scrollRootSelector="#workspace-main" />
     </EnterpriseAppShell>

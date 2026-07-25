@@ -1,5 +1,6 @@
 export { LeadDashboardPage } from './lead-dashboard-page';
 export { LeadListPage } from './lead-list-page';
+export { EnquiryDetailPage } from './enquiry-detail-page';
 export { LeadFollowUpsPage } from './lead-follow-ups-page';
 export { LeadCommunicationsPage } from './lead-communications-page';
 export { LeadPipelinePage } from './lead-pipeline-page';

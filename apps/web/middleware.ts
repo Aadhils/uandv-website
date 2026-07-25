@@ -8,6 +8,8 @@ const secretLooksValid = Boolean(secretKey && secretKey.startsWith('sk_'));
 const isProtectedRoute = createRouteMatcher([
   '/dashboard(.*)',
   '/api/me(.*)',
+  '/admin/leads/(.*)',
+  '/api/admin(.*)',
 ]);
 
 const isAuthRoute = createRouteMatcher([

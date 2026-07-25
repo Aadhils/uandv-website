@@ -25,8 +25,12 @@ enum AccountType {
 enum EnquiryStatus {
   NEW
   CONTACTED
-  QUALIFIED
-  CLOSED
+  PROPOSAL_SENT
+  NEGOTIATION
+  PAYMENT_RECEIVED
+  PROJECT_STARTED
+  COMPLETED
+  LOST
 }
 
 model User {
@@ -102,14 +106,34 @@ model Enquiry {
   message         String
   source          String        @default("contact")
   status          EnquiryStatus @default(NEW)
+  internalNotes   String?       @map("internal_notes") @db.Text
+  followUpDate    DateTime?     @map("follow_up_date")
   createdAt       DateTime      @default(now()) @map("created_at")
   updatedAt       DateTime      @updatedAt @map("updated_at")
 
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user           User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  timelineEvents EnquiryTimelineEvent[]
 
   @@index([userId])
   @@index([email])
   @@index([status])
   @@index([createdAt])
+  @@index([serviceInterest])
+  @@index([followUpDate])
   @@map("enquiries")
+}
+
+model EnquiryTimelineEvent {
+  id         String   @id @default(cuid())
+  enquiryId  String   @map("enquiry_id")
+  type       String
+  title      String
+  body       String?  @db.Text
+  actorLabel String?  @map("actor_label")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  enquiry Enquiry @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+
+  @@index([enquiryId, createdAt])
+  @@map("enquiry_timeline_events")
 }

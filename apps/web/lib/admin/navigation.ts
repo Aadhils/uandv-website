@@ -155,9 +155,9 @@ export const adminRoutes: AdminRouteMeta[] = [
   },
   {
     path: '/admin/leads/list',
-    title: 'Lead List',
-    subtitle: 'All leads and enquiry details',
-    breadcrumb: 'Lead List',
+    title: 'Lead Management',
+    subtitle: 'Live enquiries from website submissions',
+    breadcrumb: 'Lead Management',
   },
   {
     path: '/admin/leads/follow-ups',
@@ -231,6 +231,7 @@ const adminNavItems: Array<{ label: string; href: string; icon: IconName }> = [
   { label: 'Dashboard', href: '/admin', icon: 'LayoutDashboard' },
   { label: 'Business', href: '/admin/business', icon: 'Sparkles' },
   { label: 'Customers', href: '/admin/customers', icon: 'Users' },
+  { label: 'Lead Management', href: '/admin/leads/list', icon: 'ClipboardList' },
   { label: 'Projects', href: '/admin/projects', icon: 'Briefcase' },
   { label: 'Timeline', href: '/admin/timeline', icon: 'Workflow' },
   { label: 'Quotations', href: '/admin/quotations', icon: 'FileText' },
@@ -383,6 +384,15 @@ export function getAdminRouteMeta(pathname: string): AdminRouteMeta {
     };
   }
 
+  if (pathname.match(/^\/admin\/leads\/[^/]+$/) && pathname !== '/admin/leads/list') {
+    return {
+      path: pathname,
+      title: 'Lead Detail',
+      subtitle: 'Customer enquiry and follow-up',
+      breadcrumb: 'Lead',
+    };
+  }
+
   const nested = [...adminRoutes]
     .filter((route) => route.path !== '/admin')
     .sort((a, b) => b.path.length - a.path.length)
@@ -461,6 +471,14 @@ export function getAdminBreadcrumbs(pathname: string): BreadcrumbItem[] {
         { label: 'Admin', href: '/admin' },
         { label: 'CRM' },
         { label: 'Lead Dashboard' },
+      ];
+    }
+    if (pathname.startsWith('/admin/leads/') && pathname !== '/admin/leads/list') {
+      const enquiryId = pathname.split('/')[3];
+      return [
+        { label: 'Admin', href: '/admin' },
+        { label: 'Lead Management', href: '/admin/leads/list' },
+        { label: enquiryId ?? 'Lead' },
       ];
     }
     return [

@@ -8,21 +8,7 @@ import { buttonVariants, cn } from '@uandv/ui';
 import { CustomerPageHeader } from '@/components/customer/page-header';
 import { displayName, ensureDbUser } from '@/lib/auth/server-user';
 import { prisma } from '@/lib/db';
-
-function statusLabel(status: string) {
-  switch (status) {
-    case 'NEW':
-      return 'New';
-    case 'CONTACTED':
-      return 'Contacted';
-    case 'QUALIFIED':
-      return 'Qualified';
-    case 'CLOSED':
-      return 'Closed';
-    default:
-      return status;
-  }
-}
+import { getEnquiryStatusLabel } from '@/lib/enquiries/status';
 
 export async function LiveCustomerDashboardPage() {
   // Caller already confirmed server userId when possible. Never redirect to /login
@@ -188,7 +174,7 @@ export async function LiveCustomerDashboardPage() {
                   </p>
                 </div>
                 <span className="inline-flex shrink-0 rounded-uv-full border border-uv-border bg-uv-background-subtle px-3 py-1 text-xs font-medium text-uv-foreground">
-                  {statusLabel(enquiry.status)}
+                  {getEnquiryStatusLabel(enquiry.status)}
                 </span>
               </li>
             ))}

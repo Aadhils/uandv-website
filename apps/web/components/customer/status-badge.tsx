@@ -53,6 +53,8 @@ const statusVariantMap: Record<string, BadgeProps['variant']> = {
   lost: 'error',
   meeting_scheduled: 'warning',
   proposal_sent: 'default',
+  payment_received: 'success',
+  project_started: 'info',
   follow_up_later: 'secondary',
   website: 'secondary',
   whatsapp: 'success',
