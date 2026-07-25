@@ -28,11 +28,17 @@ import {
   validateLogin,
   type FieldErrors,
 } from '@/lib/auth';
+import {
+  runCustomerPasswordSignIn,
+  type LoginAuthMode,
+} from '@/lib/auth/clerk-customer-sign-in';
 
 export type LoginFormProps = {
   /** Ignored for production Clerk login — kept for route compatibility. */
   intendedRole?: string;
   redirectTo?: string;
+  /** Customer = email/password only. Admin keeps MFA and verification steps. */
+  authMode?: LoginAuthMode;
 };
 
 type LoginStep = 'credentials' | 'email_verify' | 'second_factor';
@@ -65,7 +71,7 @@ export function LoginForm(props: LoginFormProps) {
   );
 }
 
-function ClerkLoginForm({ redirectTo }: LoginFormProps) {
+function ClerkLoginForm({ redirectTo, authMode = 'customer' }: LoginFormProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -84,7 +90,9 @@ function ClerkLoginForm({ redirectTo }: LoginFormProps) {
   const redirectedRef = React.useRef(false);
 
   const destination = safeRedirectPath(
-    redirectTo || searchParams.get('redirect_url'),
+    authMode === 'customer'
+      ? redirectTo || searchParams.get('redirect_url') || '/dashboard'
+      : redirectTo || searchParams.get('redirect_url'),
   );
   const sessionVerifyError = searchParams.get('auth_error') === 'session_verify';
 
@@ -168,6 +176,13 @@ function ClerkLoginForm({ redirectTo }: LoginFormProps) {
     }
 
     if (status === 'needs_second_factor') {
+      if (authMode === 'customer') {
+        setStep('credentials');
+        setFormError(
+          'Additional verification is still required for this account. Please try again in a moment.',
+        );
+        return;
+      }
       setStep('second_factor');
       setFormError(null);
       setInfoMessage('Enter the verification code from your authenticator app.');
@@ -175,6 +190,14 @@ function ClerkLoginForm({ redirectTo }: LoginFormProps) {
     }
 
     if (status === 'needs_first_factor' && signIn) {
+      if (authMode === 'customer') {
+        setStep('credentials');
+        setFormError(
+          'We could not complete sign-in with email and password only. Please try again.',
+        );
+        return;
+      }
+
       const factors = signIn.supportedFirstFactors ?? [];
       const emailFactor = factors.find((factor) => factor.strategy === 'email_code');
 
@@ -241,31 +264,44 @@ function ClerkLoginForm({ redirectTo }: LoginFormProps) {
     setSubmitting(true);
 
     try {
-      const created = await signIn.create({
-        identifier: nextIdentifier.trim(),
-      });
+      let result;
 
-      logAuthEvent('login:create', {
-        status: normalizeSignInStatus(created.status),
-        maskedIdentifier: maskIdentifier(nextIdentifier),
-      });
-
-      let result = created;
-
-      if (result.status === 'needs_first_factor') {
-        const factors = signIn.supportedFirstFactors ?? [];
-        const supportsPassword = factors.some(
-          (factor) => factor.strategy === 'password',
+      if (authMode === 'customer') {
+        result = await runCustomerPasswordSignIn(
+          signIn,
+          nextIdentifier.trim(),
+          password,
         );
+        logAuthEvent('login:customer_password', {
+          status: normalizeSignInStatus(result.status),
+        });
+      } else {
+        const created = await signIn.create({
+          identifier: nextIdentifier.trim(),
+        });
 
-        if (supportsPassword) {
-          result = await signIn.attemptFirstFactor({
-            strategy: 'password',
-            password,
-          });
-          logAuthEvent('login:password_factor', {
-            status: normalizeSignInStatus(result.status),
-          });
+        logAuthEvent('login:create', {
+          status: normalizeSignInStatus(created.status),
+          maskedIdentifier: maskIdentifier(nextIdentifier),
+        });
+
+        result = created;
+
+        if (result.status === 'needs_first_factor') {
+          const factors = signIn.supportedFirstFactors ?? [];
+          const supportsPassword = factors.some(
+            (factor) => factor.strategy === 'password',
+          );
+
+          if (supportsPassword) {
+            result = await signIn.attemptFirstFactor({
+              strategy: 'password',
+              password,
+            });
+            logAuthEvent('login:password_factor', {
+              status: normalizeSignInStatus(result.status),
+            });
+          }
         }
       }
 

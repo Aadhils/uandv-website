@@ -24,7 +24,7 @@ export default function AdminLoginPage() {
         </p>
       }
     >
-      <LoginForm redirectTo="/admin" />
+      <LoginForm redirectTo="/admin" authMode="admin" />
     </AuthFormCard>
   );
 }
