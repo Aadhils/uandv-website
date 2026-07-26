@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Navbar, ThemeToggle, buttonVariants, cn } from '@uandv/ui';
+import { Navbar, ThemeToggle } from '@uandv/ui';
 
 import { Logo } from '@/components/brand/logo';
 import { marketingNav, siteConfig } from '@/lib/site';
@@ -23,6 +23,8 @@ export function SiteHeader() {
 
   return (
     <Navbar
+      centeredLinks
+      linkComponent={Link}
       brand={
         <Link
           href="/"
@@ -37,45 +39,8 @@ export function SiteHeader() {
         href: item.href,
         active: isNavActive(pathname, item.href),
       }))}
-      actions={
-        <>
-          <ThemeToggle />
-          <Link
-            href="/contact"
-            className={cn(
-              buttonVariants({ size: 'sm', variant: 'outline' }),
-              'hidden lg:inline-flex',
-            )}
-          >
-            Contact
-          </Link>
-          <Link
-            href="/contact"
-            className={cn(buttonVariants({ size: 'sm' }), 'hidden lg:inline-flex')}
-          >
-            Start Your Project
-          </Link>
-        </>
-      }
-      mobileActions={
-        <>
-          <Link
-            href="/contact"
-            className={cn(buttonVariants({ size: 'md' }), 'w-full justify-center')}
-          >
-            Start Your Project
-          </Link>
-          <Link
-            href="/contact"
-            className={cn(
-              buttonVariants({ size: 'md', variant: 'outline' }),
-              'w-full justify-center',
-            )}
-          >
-            Contact
-          </Link>
-        </>
-      }
+      actions={<ThemeToggle />}
+      mobileActions={null}
     />
   );
 }

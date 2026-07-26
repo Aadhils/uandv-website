@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { buttonVariants, cn, Icon } from '@uandv/ui';
 
 import { launchImages } from '@/lib/launch-images';
-import { siteConfig } from '@/lib/site';
+import { contactInquiryHref, siteConfig } from '@/lib/site';
 
 export function LaunchHero() {
   return (
@@ -54,7 +54,7 @@ export function LaunchHero() {
 
           <div className="marketing-animate-in marketing-animate-in-delay-3 mt-9 flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <Link
-              href="/contact"
+              href={contactInquiryHref}
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'w-full justify-center shadow-[0_8px_32px_rgb(124_58_237_/_0.35)] sm:w-auto',
@@ -63,7 +63,7 @@ export function LaunchHero() {
               Start Your Project
             </Link>
             <Link
-              href="/contact"
+              href={contactInquiryHref}
               className={cn(
                 buttonVariants({ size: 'lg', variant: 'outline' }),
                 'w-full justify-center border-white/35 bg-white/5 text-white backdrop-blur-sm hover:bg-white/10 sm:w-auto',

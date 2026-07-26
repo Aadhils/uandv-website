@@ -29,7 +29,7 @@ export function MlmDemoShell({ children }: { children: ReactNode }) {
             U&amp;V MLM Software Demo — interactive mock data, no live backend
           </p>
           <Link
-            href="/solutions/mlm-software"
+            href="/mlm"
             className="shrink-0 underline-offset-4 hover:underline"
           >
             About this product

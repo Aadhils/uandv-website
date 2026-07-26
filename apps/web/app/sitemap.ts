@@ -41,7 +41,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...portfolio,
     {
-      url: `${siteConfig.url}/business`,
+      url: `${siteConfig.url}/business-solutions`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${siteConfig.url}/digital-marketing`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${siteConfig.url}/mlm`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.95,
+    },
+    {
+      url: `${siteConfig.url}/startup`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 0.85,
@@ -59,10 +77,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${siteConfig.url}/solutions/mlm-software`,
+      url: `${siteConfig.url}/fintech`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.95,
+      priority: 0.9,
     },
     {
       url: `${siteConfig.url}/legal/privacy`,

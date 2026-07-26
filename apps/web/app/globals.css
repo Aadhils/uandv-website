@@ -8,6 +8,18 @@
   --font-uv-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-uv-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
   --font-uv-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Dark cinematic hero palette */
+  --uv-hero-bg: #08152f;
+  --uv-hero-accent: #c4b5fd;
+  --uv-hero-muted: #ede9fe;
+  --uv-hero-glow: rgb(124 58 237 / 0.35);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Landing atmosphere */
@@ -98,8 +110,7 @@
 }
 
 /*
- * Opacity-only reveal. Avoid translateY here — shifting invisible siblings
- * visually overlaps adjacent cards/sections on narrow viewports.
+ * Opacity-only reveal (legacy). Prefer marketing-reveal-* variants below.
  */
 .marketing-reveal {
   opacity: 0;
@@ -108,6 +119,59 @@
 
 .marketing-reveal.is-visible {
   opacity: 1;
+}
+
+/* Premium scroll reveals — fade, translate, scale, blur */
+.marketing-reveal-base {
+  contain: layout style paint;
+}
+
+.marketing-reveal-base:not(.is-visible) {
+  will-change: opacity, transform;
+}
+
+.marketing-reveal-fade,
+.marketing-reveal-up,
+.marketing-reveal-scale,
+.marketing-reveal-blur,
+.marketing-reveal-up-blur {
+  opacity: 0;
+  transition:
+    opacity 900ms cubic-bezier(0.2, 0, 0, 1),
+    transform 900ms cubic-bezier(0.2, 0, 0, 1),
+    filter 900ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.marketing-reveal-fade {
+  transform: none;
+}
+
+.marketing-reveal-up {
+  transform: translateY(24px);
+}
+
+.marketing-reveal-scale {
+  transform: scale(0.97);
+}
+
+.marketing-reveal-blur {
+  filter: blur(8px);
+  transform: none;
+}
+
+.marketing-reveal-up-blur {
+  transform: translateY(16px);
+  filter: blur(4px);
+}
+
+.marketing-reveal-fade.is-visible,
+.marketing-reveal-up.is-visible,
+.marketing-reveal-scale.is-visible,
+.marketing-reveal-blur.is-visible,
+.marketing-reveal-up-blur.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
 }
 
 /* Premium launch — glass, gradients, ambient motion */
@@ -204,19 +268,6 @@
   animation: marketing-pulse-glow 6s ease-in-out infinite;
 }
 
-.marketing-reveal-up {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 700ms cubic-bezier(0.2, 0, 0, 1),
-    transform 700ms cubic-bezier(0.2, 0, 0, 1);
-}
-
-.marketing-reveal-up.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .marketing-card-lift {
   transition:
     transform 320ms cubic-bezier(0.2, 0, 0, 1),
@@ -229,21 +280,413 @@
   box-shadow: 0 16px 40px rgb(16 42 86 / 0.12);
 }
 
+.marketing-card-premium {
+  transition:
+    transform 360ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 360ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 360ms ease,
+    background-color 360ms ease;
+}
+
+.marketing-card-premium:hover {
+  transform: translateY(-5px);
+  border-color: rgb(124 58 237 / 0.32);
+  box-shadow:
+    0 20px 48px rgb(124 58 237 / 0.1),
+    0 8px 24px rgb(16 42 86 / 0.08);
+}
+
+.marketing-icon-glow {
+  transition:
+    transform 360ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 360ms cubic-bezier(0.2, 0, 0, 1),
+    background-color 360ms ease,
+    color 360ms ease;
+}
+
+.group:hover .marketing-icon-glow {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 0 22px rgb(124 58 237 / 0.32);
+}
+
+/* Cinematic hero layers */
+@keyframes marketing-gradient-shift {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate3d(2%, -1%, 0) scale(1.04);
+  }
+}
+
+@keyframes marketing-light-sweep {
+  0%,
+  100% {
+    transform: translateX(-30%) rotate(-8deg);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateX(30%) rotate(-8deg);
+    opacity: 0.45;
+  }
+}
+
+@keyframes marketing-particle-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate3d(6px, -10px, 0);
+    opacity: 0.55;
+  }
+}
+
+.marketing-hero-gradient-shift {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgb(124 58 237 / 0.35), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 80% 20%, rgb(59 28 120 / 0.4), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 80%, rgb(16 42 86 / 0.5), transparent 45%);
+  animation: marketing-gradient-shift 14s ease-in-out infinite;
+}
+
+.marketing-hero-light-beam {
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 45%;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgb(196 181 253 / 0.08) 45%,
+    rgb(167 139 250 / 0.14) 50%,
+    rgb(196 181 253 / 0.08) 55%,
+    transparent 100%
+  );
+  animation: marketing-light-sweep 18s ease-in-out infinite;
+}
+
+.marketing-hero-vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, rgb(8 21 47 / 0.35) 100%);
+}
+
+.marketing-hero-particles {
+  overflow: hidden;
+}
+
+.marketing-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: rgb(196 181 253 / 0.7);
+  box-shadow: 0 0 8px rgb(167 139 250 / 0.5);
+  animation: marketing-particle-drift 8s ease-in-out infinite;
+}
+
+.marketing-particle:nth-child(1) { left: 8%; top: 18%; animation-delay: 0s; animation-duration: 7s; }
+.marketing-particle:nth-child(2) { left: 22%; top: 42%; animation-delay: 0.8s; animation-duration: 9s; }
+.marketing-particle:nth-child(3) { left: 38%; top: 12%; animation-delay: 1.6s; animation-duration: 8s; }
+.marketing-particle:nth-child(4) { left: 55%; top: 28%; animation-delay: 0.4s; animation-duration: 10s; }
+.marketing-particle:nth-child(5) { left: 72%; top: 15%; animation-delay: 2s; animation-duration: 7.5s; }
+.marketing-particle:nth-child(6) { left: 88%; top: 35%; animation-delay: 1.2s; animation-duration: 9.5s; }
+.marketing-particle:nth-child(7) { left: 15%; top: 65%; animation-delay: 2.4s; animation-duration: 8.5s; }
+.marketing-particle:nth-child(8) { left: 48%; top: 58%; animation-delay: 0.6s; animation-duration: 11s; }
+.marketing-particle:nth-child(9) { left: 65%; top: 72%; animation-delay: 1.8s; animation-duration: 7s; }
+.marketing-particle:nth-child(10) { left: 82%; top: 55%; animation-delay: 3s; animation-duration: 9s; }
+.marketing-particle:nth-child(11) { left: 5%; top: 38%; animation-delay: 1s; animation-duration: 10s; }
+.marketing-particle:nth-child(12) { left: 30%; top: 78%; animation-delay: 2.2s; animation-duration: 8s; }
+.marketing-particle:nth-child(13) { left: 92%; top: 68%; animation-delay: 0.2s; animation-duration: 9s; }
+.marketing-particle:nth-child(14) { left: 42%; top: 45%; animation-delay: 1.4s; animation-duration: 7.5s; }
+.marketing-particle:nth-child(15) { left: 58%; top: 88%; animation-delay: 2.6s; animation-duration: 10s; }
+.marketing-particle:nth-child(16) { left: 75%; top: 42%; animation-delay: 0.9s; animation-duration: 8.5s; }
+.marketing-particle:nth-child(17) { left: 12%; top: 52%; animation-delay: 1.7s; animation-duration: 9s; }
+.marketing-particle:nth-child(18) { left: 35%; top: 22%; animation-delay: 2.8s; animation-duration: 7s; }
+.marketing-particle:nth-child(19) { left: 68%; top: 62%; animation-delay: 0.5s; animation-duration: 11s; }
+.marketing-particle:nth-child(20) { left: 95%; top: 22%; animation-delay: 1.9s; animation-duration: 8s; }
+
+/* Floating technology chips */
+@keyframes marketing-tech-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+.marketing-tech-cloud {
+  position: relative;
+}
+
+.marketing-tech-cloud::before {
+  content: '';
+  position: absolute;
+  inset: 10% 5%;
+  background: radial-gradient(ellipse at center, rgb(124 58 237 / 0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.marketing-tech-chip {
+  animation: marketing-tech-float 7s ease-in-out infinite;
+  transition:
+    transform 320ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 320ms ease,
+    box-shadow 320ms ease,
+    color 320ms ease;
+}
+
+.marketing-tech-chip:nth-child(odd) {
+  animation-duration: 6.5s;
+}
+
+.marketing-tech-chip:nth-child(3n) {
+  animation-delay: 1.2s;
+}
+
+.marketing-tech-chip:nth-child(4n) {
+  animation-delay: 0.6s;
+}
+
+.marketing-tech-chip:hover {
+  animation-play-state: paused;
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgb(124 58 237 / 0.45);
+  color: var(--uv-brand);
+  box-shadow: 0 0 20px rgb(124 58 237 / 0.2);
+}
+
+/* Homepage ambient layers */
+.marketing-page-ambient {
+  position: relative;
+}
+
+.marketing-page-ambient::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 10% 20%, rgb(124 58 237 / 0.04), transparent 35%),
+    radial-gradient(circle at 90% 10%, rgb(196 181 253 / 0.08), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgb(16 42 86 / 0.03), transparent 40%);
+}
+
+.marketing-section-ambient {
+  position: relative;
+}
+
+.marketing-section-ambient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at top right, rgb(124 58 237 / 0.04), transparent 55%);
+  opacity: 0.8;
+}
+
+/* Light premium marketing content pages */
+.marketing-content-hero {
+  position: relative;
+  background-color: var(--uv-background);
+}
+
+.marketing-content-hero-cinematic {
+  isolation: isolate;
+}
+
+.marketing-content-hero-glow {
+  background:
+    radial-gradient(ellipse 72% 55% at 12% 18%, rgb(124 58 237 / 0.09), transparent 58%),
+    radial-gradient(ellipse 65% 48% at 88% 12%, rgb(56 189 248 / 0.07), transparent 52%),
+    radial-gradient(ellipse 55% 42% at 48% 100%, rgb(16 42 86 / 0.05), transparent 48%);
+}
+
+.marketing-content-hero-beam {
+  background: linear-gradient(
+    108deg,
+    transparent 38%,
+    rgb(196 181 253 / 0.06) 48%,
+    rgb(167 139 250 / 0.09) 50%,
+    rgb(196 181 253 / 0.06) 52%,
+    transparent 62%
+  );
+  animation: marketing-light-sweep 24s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketing-content-hero-beam {
+    animation: none !important;
+    opacity: 0.5;
+  }
+}
+
+/* Dark hero utility tokens (Tailwind-friendly) */
+.text-uv-hero-accent {
+  color: var(--uv-hero-accent);
+}
+
+.text-uv-hero-muted {
+  color: var(--uv-hero-muted);
+}
+
+.bg-uv-hero {
+  background-color: var(--uv-hero-bg);
+}
+
+/* Legal / long-form prose */
+.prose-uv {
+  color: var(--uv-foreground-muted);
+  line-height: 1.75;
+  max-width: 65ch;
+}
+
+.prose-uv h1,
+.prose-uv h2,
+.prose-uv h3 {
+  color: var(--uv-foreground);
+  font-family: var(--font-uv-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-uv p {
+  margin-bottom: 1rem;
+}
+
+.prose-uv a {
+  color: var(--uv-brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Premium footer */
+.marketing-footer-glow {
+  position: relative;
+}
+
+.marketing-footer-glow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(124 58 237 / 0.55),
+    rgb(196 181 253 / 0.35),
+    transparent
+  );
+  box-shadow: 0 0 24px rgb(124 58 237 / 0.25);
+}
+
+@keyframes marketing-logo-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 0 rgb(124 58 237 / 0));
+  }
+  50% {
+    opacity: 0.92;
+    filter: drop-shadow(0 0 12px rgb(124 58 237 / 0.35));
+  }
+}
+
+.marketing-logo-breathe {
+  animation: marketing-logo-breathe 5s ease-in-out infinite;
+}
+
+.marketing-footer-premium ul.flex.gap-2 a {
+  transition:
+    transform 280ms cubic-bezier(0.2, 0, 0, 1),
+    background-color 280ms ease,
+    color 280ms ease,
+    box-shadow 280ms ease;
+}
+
+.marketing-footer-premium ul.flex.gap-2 a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgb(124 58 237 / 0.35);
+}
+
+/* Header nav micro-interaction */
+header nav[aria-label='Main navigation'] ul a {
+  position: relative;
+}
+
+header nav[aria-label='Main navigation'] ul a::after {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.35rem;
+  height: 2px;
+  border-radius: 9999px;
+  background: var(--uv-brand);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 320ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+header nav[aria-label='Main navigation'] ul a:hover::after,
+header nav[aria-label='Main navigation'] ul a[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+/* Premium CTA buttons on marketing pages */
+.marketing-btn-glow {
+  transition:
+    transform 280ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 280ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.marketing-btn-glow:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgb(124 58 237 / 0.28);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marketing-animate-in,
   .marketing-hero-media,
   .marketing-reveal,
+  .marketing-reveal-base,
+  .marketing-reveal-fade,
+  .marketing-reveal-up,
+  .marketing-reveal-scale,
+  .marketing-reveal-blur,
+  .marketing-reveal-up-blur,
   .marketing-reveal-up,
   .marketing-float,
   .marketing-float-delayed,
-  .marketing-pulse-glow {
+  .marketing-pulse-glow,
+  .marketing-hero-gradient-shift,
+  .marketing-hero-light-beam,
+  .marketing-particle,
+  .marketing-tech-chip,
+  .marketing-logo-breathe {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
 
-  .marketing-card-lift:hover {
+  .marketing-card-lift:hover,
+  .marketing-card-premium:hover,
+  .marketing-tech-chip:hover,
+  .marketing-btn-glow:hover,
+  .marketing-footer-premium ul.flex.gap-2 a:hover {
     transform: none;
   }
 }

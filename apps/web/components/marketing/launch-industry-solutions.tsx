@@ -6,6 +6,7 @@ import {
   industryAccentClasses,
   launchIndustrySolutions,
 } from '@/lib/launch-content';
+import { contactInquiryHref } from '@/lib/site';
 
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
@@ -68,7 +69,7 @@ export function LaunchIndustrySolutions() {
 
         <Reveal delayMs={100}>
           <div className="mt-10 text-center">
-            <Link href="/contact" className={cn(buttonVariants({ size: 'lg' }))}>
+            <Link href={contactInquiryHref} className={cn(buttonVariants({ size: 'lg' }))}>
               Discuss your idea
             </Link>
           </div>

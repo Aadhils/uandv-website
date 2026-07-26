@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import {
@@ -17,6 +17,21 @@ import {
 } from '@uandv/ui';
 
 import { Reveal } from '@/components/marketing/reveal';
+import {
+  MarketingContentPage,
+  MarketingPageHero,
+  MarketingPageHeroInner,
+} from '@/components/marketing/marketing-page-hero';
+import {
+  MarketingCardTitle,
+  MarketingCtaPanel,
+  MarketingEyebrow,
+  MarketingHeroTitle,
+  MarketingLead,
+  MarketingPageContainer,
+  MarketingSection,
+  MarketingSectionTitle,
+} from '@/components/marketing/marketing-primitives';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import {
@@ -29,6 +44,14 @@ import {
   buildContactEnquiryWhatsAppUrl,
   type ContactEnquiryHandoff,
 } from '@/lib/contact-whatsapp';
+import {
+  contactChannels,
+  contactEnquirySteps,
+  contactFormCopy,
+  contactPositioning,
+  contactSuccessCopy,
+  contactTrustPoints,
+} from '@/lib/contact';
 import { getAllServices } from '@/lib/services';
 import { formatLocation, siteConfig } from '@/lib/site';
 
@@ -73,6 +96,21 @@ export function ContactPage() {
   const [submittedEnquiry, setSubmittedEnquiry] =
     useState<ContactEnquiryHandoff | null>(null);
   const services = getAllServices();
+
+  useEffect(() => {
+    const scrollToInquiryForm = () => {
+      if (window.location.hash !== '#inquiry-form') return;
+      const formSection = document.getElementById('inquiry-form');
+      if (!formSection) return;
+      window.requestAnimationFrame(() => {
+        formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    };
+
+    scrollToInquiryForm();
+    window.addEventListener('hashchange', scrollToInquiryForm);
+    return () => window.removeEventListener('hashchange', scrollToInquiryForm);
+  }, []);
 
   const leadContext = useMemo(() => {
     const journeyId = searchParams.get('journey') ?? '';
@@ -157,6 +195,12 @@ export function ContactPage() {
     event.preventDefault();
     const form = event.currentTarget;
     if (status === 'submitting') return;
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
     const data = new FormData(form);
 
     setStatus('submitting');
@@ -220,18 +264,9 @@ export function ContactPage() {
   };
 
   return (
-    <div className="marketing-grain flex-1">
-      <section className="relative overflow-hidden border-b border-uv-border bg-uv-background">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-70"
-          aria-hidden
-        >
-          <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-uv-brand/10 blur-3xl" />
-          <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-uv-brand/5 blur-3xl" />
-          <div className="marketing-hero-grid absolute inset-0 opacity-40" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-6 sm:pb-16 sm:pt-10 lg:px-8">
+    <MarketingContentPage>
+      <MarketingPageHero>
+        <MarketingPageHeroInner className="pb-12 sm:pb-16">
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -240,16 +275,13 @@ export function ContactPage() {
           />
 
           <div className="mt-8 max-w-3xl sm:mt-10">
-            <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-              Contact
-            </p>
-            <h1 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:mt-4 sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
-              Tell us what you are building.
-            </h1>
-            <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:mt-6 sm:text-xl">
-              Share your goals and we will recommend the right next step —
-              planning, product, AI, or growth.
-            </p>
+            <MarketingEyebrow>{contactPositioning.eyebrow}</MarketingEyebrow>
+            <MarketingHeroTitle className="mt-3 sm:mt-4">
+              {contactPositioning.headline}
+            </MarketingHeroTitle>
+            <MarketingLead className="mt-4 sm:mt-6">
+              {contactPositioning.subheadline}
+            </MarketingLead>
             {leadContext.hasJourney ? (
               <p className="mt-4 rounded-uv-lg border border-uv-brand/20 bg-uv-brand-muted/40 px-4 py-3 text-sm text-uv-foreground sm:text-base">
                 Business guide:{' '}
@@ -266,21 +298,35 @@ export function ContactPage() {
                 </span>
               </p>
             ) : null}
-            <p className="mt-4 text-sm font-medium text-uv-brand sm:text-base">
-              Response within 24 business hours.
+            <ul className="mt-6 flex flex-wrap gap-2 sm:mt-8">
+              {contactTrustPoints.map((point) => (
+                <li
+                  key={point}
+                  className="rounded-uv-full border border-uv-border bg-uv-background/80 px-3 py-1.5 text-xs font-medium text-uv-foreground sm:text-sm"
+                >
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-sm font-medium text-uv-brand sm:mt-6 sm:text-base">
+              {contactPositioning.responseTime}
             </p>
           </div>
-        </div>
-      </section>
+        </MarketingPageHeroInner>
+      </MarketingPageHero>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection
+        id="inquiry-form"
+        tone="subtle"
+        className="scroll-mt-24"
+      >
+        <MarketingPageContainer>
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-14 xl:gap-16">
             <Reveal>
               <SectionHeading
-                eyebrow="Reach us"
-                title="Direct channels for a faster start."
-                description="Prefer email, WhatsApp, or the form — we respond during business hours with clear next steps."
+                eyebrow="Contact details"
+                title={contactChannels.heading}
+                description={contactChannels.description}
               />
               <dl className="mt-8 space-y-5 text-sm sm:mt-10 sm:space-y-6 sm:text-base">
                 <div className="flex gap-3">
@@ -394,16 +440,42 @@ export function ContactPage() {
 
             <Reveal delayMs={100}>
               <div className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-8">
-                <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
-                  Send a message
-                </h2>
-                <p className="mt-2 text-sm text-uv-foreground-muted">
-                  Response within 24 business hours.
+                <MarketingSectionTitle className="text-xl sm:text-2xl">
+                  {contactFormCopy.title}
+                </MarketingSectionTitle>
+                <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                  {contactFormCopy.description}
                 </p>
+
+                <div className="mt-6 rounded-uv-xl border border-uv-border/80 bg-uv-background-subtle p-5 sm:mt-8 sm:p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand">
+                    What happens next
+                  </p>
+                  <ol className="mt-4 space-y-4">
+                    {contactEnquirySteps.map((step, index) => (
+                      <li key={step.title} className="flex gap-3 sm:gap-4">
+                        <span
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-uv-brand/30 bg-uv-brand-muted text-xs font-semibold text-uv-brand sm:h-9 sm:w-9 sm:text-sm"
+                          aria-hidden
+                        >
+                          {index + 1}
+                        </span>
+                        <div className="min-w-0 pt-0.5">
+                          <MarketingCardTitle className="text-sm sm:text-base">
+                            {step.title}
+                          </MarketingCardTitle>
+                          <p className="mt-1 text-sm leading-relaxed text-uv-foreground-muted">
+                            {step.description}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
 
                 {status === 'success' ? (
                   <div
-                    className="mt-8 space-y-4 rounded-uv-xl border border-uv-brand/25 bg-uv-brand-muted/40 px-5 py-8 text-center"
+                    className="mt-8 space-y-4 rounded-uv-xl border border-uv-brand/25 bg-uv-brand-muted/40 px-5 py-8 text-center sm:mt-10"
                     role="status"
                     aria-live="polite"
                   >
@@ -411,17 +483,21 @@ export function ContactPage() {
                       <Icon name="Check" size="md" />
                     </div>
                     <p className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
-                      Thank you. Your enquiry has been received.
+                      {contactSuccessCopy.title}
                       {reference ? (
                         <>
                           {' '}
-                          Reference: <span className="text-uv-brand">{reference}</span>
+                          <span className="block mt-2 text-base font-medium text-uv-foreground-muted sm:text-lg">
+                            Reference:{' '}
+                            <span className="font-semibold text-uv-brand">
+                              {reference}
+                            </span>
+                          </span>
                         </>
                       ) : null}
                     </p>
-                    <p className="text-sm text-uv-foreground-muted">
-                      We&apos;ll contact you within 24 business hours. You can
-                      also send your enquiry details on WhatsApp below.
+                    <p className="mx-auto max-w-md text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                      {contactSuccessCopy.body}
                     </p>
                     {whatsappHandoffHref ? (
                       <a
@@ -433,7 +509,7 @@ export function ContactPage() {
                           'mt-2 w-full justify-center sm:w-auto',
                         )}
                       >
-                        Send enquiry on WhatsApp
+                        {contactSuccessCopy.whatsappCta}
                       </a>
                     ) : null}
                     <Button
@@ -446,11 +522,18 @@ export function ContactPage() {
                         setSubmittedEnquiry(null);
                       }}
                     >
-                      Send another message
+                      {contactSuccessCopy.anotherMessage}
                     </Button>
                   </div>
                 ) : (
-                  <Form onSubmit={onSubmit} className="relative mt-6 sm:mt-8">
+                  <Form
+                    onSubmit={onSubmit}
+                    className="relative mt-8 sm:mt-10"
+                    aria-label="Business enquiry form"
+                  >
+                    <p className="mb-5 text-xs text-uv-foreground-muted sm:mb-6 sm:text-sm">
+                      {contactFormCopy.requiredNote}
+                    </p>
                     {/* Honeypot — leave empty */}
                     <div
                       className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
@@ -499,6 +582,7 @@ export function ContactPage() {
                           name="name"
                           autoComplete="name"
                           required
+                          aria-required="true"
                           disabled={status === 'submitting'}
                         />
                       </FormField>
@@ -508,11 +592,15 @@ export function ContactPage() {
                           type="email"
                           autoComplete="email"
                           required
+                          aria-required="true"
                           disabled={status === 'submitting'}
                         />
                       </FormField>
                     </div>
-                    <FormField label="Phone">
+                    <FormField
+                      label="Phone"
+                      hint={contactFormCopy.phoneHint}
+                    >
                       <Input
                         name="phone"
                         type="tel"
@@ -521,18 +609,20 @@ export function ContactPage() {
                         disabled={status === 'submitting'}
                       />
                     </FormField>
-                    <FormField label="Company (Optional)">
+                    <FormField label="Company" hint="Optional">
                       <Input
                         name="company"
                         autoComplete="organization"
                         disabled={status === 'submitting'}
                       />
                     </FormField>
-                    <FormField label="I need help with">
+                    <FormField label="I need help with" required>
                       <Select
                         key={leadContext.interest}
                         name="interest"
                         defaultValue={leadContext.interest}
+                        required
+                        aria-required="true"
                         disabled={status === 'submitting'}
                       >
                         {services.map((service) => (
@@ -542,12 +632,17 @@ export function ContactPage() {
                         ))}
                       </Select>
                     </FormField>
-                    <FormField label="Message" required>
+                    <FormField
+                      label="Message"
+                      required
+                      hint={contactFormCopy.messageHint}
+                    >
                       <Textarea
                         key={leadContext.message || 'empty-message'}
                         name="message"
                         required
-                        rows={leadContext.hasJourney ? 8 : 5}
+                        aria-required="true"
+                        rows={leadContext.hasJourney ? 8 : 6}
                         defaultValue={leadContext.message}
                         placeholder="Tell us about your business and what you want to achieve."
                         disabled={status === 'submitting'}
@@ -558,31 +653,37 @@ export function ContactPage() {
                       <div
                         className="rounded-uv-lg border border-uv-error/30 bg-uv-error/5 px-4 py-3 text-sm text-uv-error"
                         role="alert"
+                        aria-live="assertive"
                       >
                         {errorMessage}
                       </div>
                     ) : null}
 
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                      disabled={status === 'submitting'}
-                    >
-                      {status === 'submitting'
-                        ? 'Sending…'
-                        : 'Send enquiry'}
-                    </Button>
+                    <div className="flex flex-col gap-2 pt-1">
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full sm:w-auto"
+                        disabled={status === 'submitting'}
+                      >
+                        {status === 'submitting'
+                          ? contactFormCopy.submitSending
+                          : contactFormCopy.submitIdle}
+                      </Button>
+                      <p className="text-xs text-uv-foreground-muted sm:text-sm">
+                        {contactFormCopy.submitHint}
+                      </p>
+                    </div>
                   </Form>
                 )}
               </div>
             </Reveal>
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Location"
@@ -620,23 +721,22 @@ export function ContactPage() {
               </div>
             </div>
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background px-5 py-8 sm:px-10 sm:py-14">
+      <MarketingSection tone="subtle" className="border-b-0">
+        <MarketingPageContainer>
+          <MarketingCtaPanel className="bg-uv-background sm:py-14">
             <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
-                <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                  Ready when you are
-                </p>
-                <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-2xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
-                  Start your project with U&V.
-                </h2>
+                <MarketingEyebrow>Prefer a direct conversation?</MarketingEyebrow>
+                <MarketingSectionTitle className="mt-3">
+                  WhatsApp works too — same honest, practical follow-up.
+                </MarketingSectionTitle>
                 <p className="mt-3 text-base leading-relaxed text-uv-foreground-muted sm:mt-4 sm:text-lg">
-                  Prefer WhatsApp? Message us directly and we will recommend a
-                  clear next step.
+                  Message us on WhatsApp during business hours. We will listen,
+                  ask the right questions, and recommend next steps without
+                  pressure to buy.
                 </p>
               </div>
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:flex-col xl:flex-row">
@@ -646,7 +746,7 @@ export function ContactPage() {
                   rel="noopener noreferrer"
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'w-full justify-center sm:w-auto',
+                    'marketing-btn-glow w-full justify-center sm:w-auto',
                   )}
                 >
                   Chat on WhatsApp
@@ -662,9 +762,9 @@ export function ContactPage() {
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </div>
+          </MarketingCtaPanel>
+        </MarketingPageContainer>
+      </MarketingSection>
+    </MarketingContentPage>
   );
 }

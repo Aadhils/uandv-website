@@ -40,5 +40,5 @@ export function buildContactHref(context: JourneyLeadContext) {
       }
     }
   }
-  return `/contact?${params.toString()}`;
+  return `/contact?${params.toString()}#inquiry-form`;
 }

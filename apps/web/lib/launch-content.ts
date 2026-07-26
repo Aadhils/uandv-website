@@ -211,7 +211,7 @@ export const launchIndustrySolutions: IndustrySolutionCard[] = [
     title: 'MLM Software',
     description: 'Genealogy, payouts, and distributor portals built for compliance-ready growth.',
     icon: 'Network',
-    href: '/solutions/mlm-software',
+    href: '/mlm',
     accent: 'violet',
   },
   {
@@ -267,14 +267,14 @@ export const launchIndustrySolutions: IndustrySolutionCard[] = [
     title: 'Financial Services',
     description: 'Secure workflows for advisors, clients, and operations teams.',
     icon: 'Wallet',
-    href: '/business',
+    href: '/business-solutions',
     accent: 'navy',
   },
   {
     title: 'Startup & SME Solutions',
     description: 'Launch-ready technology stacks for founders and growing teams.',
     icon: 'Building2',
-    href: '/business',
+    href: '/business-solutions',
     accent: 'fuchsia',
   },
 ];

@@ -2,6 +2,8 @@ import Link from 'next/link';
 
 import { buttonVariants, cn } from '@uandv/ui';
 
+import { contactInquiryHref } from '@/lib/site';
+
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
 
@@ -22,7 +24,7 @@ export function Contact() {
                 description="Share your goals and we will recommend the right next step — planning, product, AI, or growth."
               />
               <Link
-                href="/contact"
+                href={contactInquiryHref}
                 className={cn(
                   buttonVariants({ size: 'lg' }),
                   'w-full justify-center sm:w-auto',

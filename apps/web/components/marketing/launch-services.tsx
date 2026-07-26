@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Icon, buttonVariants, cn } from '@uandv/ui';
 
 import { launchPrimaryServices } from '@/lib/launch-content';
+import { contactInquiryHref } from '@/lib/site';
 
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
@@ -55,7 +56,7 @@ export function LaunchServices() {
             >
               View all services
             </Link>
-            <Link href="/contact" className={cn(buttonVariants({ size: 'md' }))}>
+            <Link href={contactInquiryHref} className={cn(buttonVariants({ size: 'md' }))}>
               Discuss your project
             </Link>
           </div>

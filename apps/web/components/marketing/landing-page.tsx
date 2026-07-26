@@ -1,27 +1,19 @@
-import { LaunchCustomerJourney } from './launch-customer-journey';
-import { LaunchFinalCta } from './launch-final-cta';
+import { BusinessEcosystem } from './business-ecosystem';
+import { FeaturedIndustries } from './featured-industries';
 import { Hero } from './hero';
-import { LaunchIndustrySolutions } from './launch-industry-solutions';
-import { LaunchPartnerVoices } from './launch-partner-voices';
-import { LaunchPortfolioShowcase } from './launch-portfolio-showcase';
-import { LaunchProcess } from './launch-process';
-import { LaunchServices } from './launch-services';
-import { LaunchStats } from './launch-stats';
-import { LaunchTrust } from './launch-trust';
+import { Process } from './process';
+import { Technologies } from './technologies';
+import { WhyChoose } from './why-choose';
 
 export function LandingPage() {
   return (
-    <div className="marketing-grain w-full max-w-full overflow-x-clip bg-uv-background text-uv-foreground">
+    <div className="marketing-grain marketing-page-ambient relative w-full max-w-full overflow-x-clip bg-uv-background text-uv-foreground">
       <Hero />
-      <LaunchStats />
-      <LaunchTrust />
-      <LaunchCustomerJourney />
-      <LaunchServices />
-      <LaunchIndustrySolutions />
-      <LaunchProcess />
-      <LaunchPartnerVoices />
-      <LaunchPortfolioShowcase />
-      <LaunchFinalCta />
+      <WhyChoose />
+      <BusinessEcosystem />
+      <FeaturedIndustries />
+      <Process />
+      <Technologies />
     </div>
   );
 }

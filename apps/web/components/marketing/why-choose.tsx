@@ -1,46 +1,49 @@
 import { whyChoose } from '@/lib/content';
-import { siteConfig } from '@/lib/site';
+import { homepageWhyChooseCount } from '@/lib/homepage-featured';
 
+import { MarketingButtonLink, MarketingPageContainer, MarketingSection } from './marketing-primitives';
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
 
 export function WhyChoose() {
+  const reasons = whyChoose.slice(0, homepageWhyChooseCount);
+
   return (
-    <section
-      id="why"
-      className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-          <Reveal>
+    <MarketingSection id="why" tone="subtle" className="marketing-section-ambient">
+      <MarketingPageContainer>
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-14">
+          <Reveal variant="up-blur">
             <SectionHeading
               eyebrow="Why choose U&V"
-              title="Follow dreams globally — with a partner that stays practical."
-              description={siteConfig.mission}
+              title="A business growth partner — not just a project vendor."
+              description="We coordinate strategy, branding, technology, and growth under one roof — so you have clarity, capability, and a partner who stays after launch."
             />
+            <div className="mt-8">
+              <MarketingButtonLink href="/why-uandv" variant="outline" size="md">
+                Learn why U&V
+              </MarketingButtonLink>
+            </div>
           </Reveal>
 
-          <div className="min-w-0 space-y-0 divide-y divide-uv-border border-y border-uv-border">
-            {whyChoose.map((reason, index) => (
-              <Reveal key={reason.title} delayMs={index * 70}>
-                <div className="grid gap-3 py-7 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-8">
+          <div className="min-w-0 space-y-4">
+            {reasons.map((reason, index) => (
+              <Reveal key={reason.title} delayMs={index * 80} variant="scale">
+                <article className="marketing-glass marketing-card-lift marketing-card-premium marketing-gradient-border rounded-uv-2xl p-5 sm:p-6">
                   <span className="font-[family-name:var(--font-uv-display)] text-sm font-semibold text-uv-brand">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <div className="min-w-0">
-                    <h3 className="break-words font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
-                      {reason.title}
-                    </h3>
-                    <p className="mt-2 break-words text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
-                      {reason.description}
-                    </p>
-                  </div>
-                </div>
+                  <h3 className="mt-3 font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+                    {reason.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                    {reason.description}
+                  </p>
+                </article>
               </Reveal>
             ))}
           </div>
         </div>
-      </div>
-    </section>
+      </MarketingPageContainer>
+    </MarketingSection>
   );
 }

@@ -1510,21 +1510,21 @@ export const serviceCatalog: ServiceDefinition[] = [
   },
   {
     slug: 'startup-business-consulting',
-    title: 'Startup Business Consulting',
-    shortTitle: 'Startup consulting',
-    tagline: 'Clarity from idea to operating company.',
+    title: 'Startup Growth Partner',
+    shortTitle: 'Startup support',
+    tagline: 'From first idea to launch — and beyond.',
     summary:
-      'Business planning and founder consulting to validate direction, prioritize milestones, and prepare for build and launch.',
+      'Planning, branding, product, marketing, and long-term growth support for founders who need clarity, structure, and a partner beyond code.',
     overview: [
-      'Many startups struggle not from lack of effort, but from unclear sequencing — what to build first, who to sell to, and which decisions can wait.',
-      'We help founders turn ideas into practical business plans, milestone maps, and technology/growth priorities that match their stage.',
+      'Many founders have a strong idea but feel overwhelmed by what to do first — validation, registration, branding, product, marketing, and launch all compete for attention.',
+      'U&V helps you sequence those decisions practically, then delivers branding, websites, apps, automation, and marketing when you are ready to build.',
     ],
     icon: 'Rocket',
     illustration: 'consulting',
     seo: {
-      title: 'Startup Business Consulting & Planning | U&V',
+      title: 'Startup Growth Partner | U&V',
       description:
-        'U&V provides startup business consulting — planning, prioritization, and go-to-market clarity for founders ready to build.',
+        'U&V helps founders with idea validation, business planning, registration, branding, websites, apps, AI, marketing, launch support, and long-term growth.',
       keywords: [
         'startup consulting India',
         'business planning',

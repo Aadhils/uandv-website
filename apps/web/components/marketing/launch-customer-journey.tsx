@@ -5,6 +5,7 @@ import { Icon, buttonVariants, cn } from '@uandv/ui';
 
 import { launchCustomerJourney } from '@/lib/launch-content';
 import { launchImages } from '@/lib/launch-images';
+import { contactInquiryHref } from '@/lib/site';
 
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
@@ -56,7 +57,7 @@ export function LaunchCustomerJourney() {
 
             <Reveal delayMs={120}>
               <div className="mt-8">
-                <Link href="/contact" className={cn(buttonVariants({ size: 'lg' }))}>
+                <Link href={contactInquiryHref} className={cn(buttonVariants({ size: 'lg' }))}>
                   Start your journey
                 </Link>
               </div>

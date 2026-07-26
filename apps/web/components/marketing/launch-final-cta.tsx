@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { buttonVariants, cn, Icon } from '@uandv/ui';
 
-import { siteConfig } from '@/lib/site';
+import { contactInquiryHref, siteConfig } from '@/lib/site';
 
 import { Reveal } from './reveal';
 
@@ -33,7 +33,7 @@ export function LaunchFinalCta() {
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
               <Link
-                href="/contact"
+                href={contactInquiryHref}
                 className={cn(
                   buttonVariants({ size: 'lg' }),
                   'w-full shadow-[0_8px_32px_rgb(124_58_237_/_0.35)] sm:w-auto',
@@ -42,7 +42,7 @@ export function LaunchFinalCta() {
                 Start Your Project
               </Link>
               <Link
-                href="/contact"
+                href={contactInquiryHref}
                 className={cn(
                   buttonVariants({ size: 'lg', variant: 'outline' }),
                   'w-full border-white/35 bg-white/5 text-white hover:bg-white/10 sm:w-auto',

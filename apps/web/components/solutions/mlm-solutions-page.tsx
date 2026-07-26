@@ -1,8 +1,27 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
-import { Icon, buttonVariants, cn } from '@uandv/ui';
+import { Icon } from '@uandv/ui';
 
 import { Reveal } from '@/components/marketing/reveal';
+import {
+  MarketingContentPage,
+  MarketingPageHero,
+  MarketingPageHeroInner,
+} from '@/components/marketing/marketing-page-hero';
+import {
+  MarketingButtonLink,
+  MarketingCard,
+  MarketingCardTitle,
+  MarketingCtaPanel,
+  MarketingEyebrow,
+  MarketingHeroActions,
+  MarketingHeroTitle,
+  MarketingLead,
+  MarketingPageContainer,
+  MarketingSection,
+  MarketingSectionTitle,
+} from '@/components/marketing/marketing-primitives';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import {
@@ -15,110 +34,115 @@ import {
   mlmWhyUandv,
   softwareModules,
 } from '@/lib/mlm-solutions';
-import { siteConfig } from '@/lib/site';
+import { contactInquiryHref, siteConfig } from '@/lib/site';
+
+function StoryLabel({ children }: { children: ReactNode }) {
+  return (
+    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand">
+      {children}
+    </p>
+  );
+}
 
 export function MlmSolutionsPage() {
   return (
-    <div className="marketing-grain flex-1">
-      <section className="relative overflow-hidden border-b border-uv-border bg-uv-background">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute -left-20 top-0 h-80 w-80 rounded-full bg-uv-brand/15 blur-3xl" />
-          <div className="absolute right-0 top-24 h-96 w-96 rounded-full bg-uv-brand/10 blur-3xl" />
-          <div className="marketing-hero-grid absolute inset-0 opacity-50" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 sm:pb-24 sm:pt-10 lg:px-8">
+    <MarketingContentPage>
+      <MarketingPageHero>
+        <MarketingPageHeroInner>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Solutions', href: '/solutions/mlm-software' },
+              { label: 'MLM', href: '/mlm' },
               { label: 'MLM Software' },
             ]}
           />
 
           <div className="mt-10 grid items-end gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="max-w-3xl">
-              <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                Flagship industry solution
+              <MarketingEyebrow>MLM Business Technology Partner</MarketingEyebrow>
+              <MarketingHeroTitle className="mt-4">
+                Build a reliable, scalable MLM platform — not just buy software
+              </MarketingHeroTitle>
+              <MarketingLead className="mt-6">
+                U&amp;V helps network marketing companies choose sustainable
+                compensation plans, design secure architecture, automate
+                operations, and grow with a long-term partner who understands
+                MLM beyond templates.
+              </MarketingLead>
+              <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
+                Honest consultation. No income guarantees. No fast-money
+                promises. Compliance-minded guidance — not legal representation.
               </p>
-              <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl lg:text-[3.2rem] lg:leading-[1.1]">
-                Enterprise MLM Software &amp; Business Growth Solutions
-              </h1>
-              <p className="mt-6 text-lg leading-relaxed text-uv-foreground-muted sm:text-xl">
-                We don&apos;t just develop MLM software. We help businesses
-                design, validate, launch, optimize, and scale MLM companies with
-                technology, strategy, automation, and continuous consulting.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
-                >
-                  Book Free MLM Consultation
-                </Link>
-                <Link
-                  href="/demo/mlm"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center border-uv-brand/55 bg-uv-brand/15 text-uv-brand shadow-none',
-                    'hover:border-uv-brand hover:bg-uv-brand/25 hover:text-uv-brand',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-uv-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-uv-background',
-                  )}
-                >
-                  View MLM Plan Live Demo
-                </Link>
-              </div>
+              <MarketingHeroActions>
+                <MarketingButtonLink href={contactInquiryHref}>
+                  Book a Free MLM Platform Consultation
+                </MarketingButtonLink>
+                <MarketingButtonLink href="/demo/mlm" variant="outline">
+                  Explore live demo
+                </MarketingButtonLink>
+              </MarketingHeroActions>
             </div>
 
-            <div className="rounded-uv-2xl border border-uv-border bg-uv-background-subtle p-6 sm:p-8">
-              <p className="text-sm font-medium text-uv-brand">
-                Long-term MLM Business Growth Partner
-              </p>
-              <ul className="mt-5 space-y-4 text-sm leading-relaxed text-uv-foreground-muted">
-                <li className="flex gap-3">
-                  <Icon name="Check" className="mt-0.5 text-uv-brand" />
-                  <span>Consult before you encode irreversible plan rules.</span>
-                </li>
-                <li className="flex gap-3">
-                  <Icon name="Check" className="mt-0.5 text-uv-brand" />
-                  <span>Build platforms members and admins can actually operate.</span>
-                </li>
-                <li className="flex gap-3">
-                  <Icon name="Check" className="mt-0.5 text-uv-brand" />
-                  <span>Stay supported through launch, optimization, and scale.</span>
-                </li>
-              </ul>
-              <Link
-                href="/business"
-                className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-uv-brand"
-              >
-                See business solutions
-                <Icon name="ArrowRight" size="sm" />
-              </Link>
-            </div>
+            <Reveal delayMs={80}>
+              <MarketingCard premium className="sm:p-8">
+                <p className="text-sm font-medium text-uv-brand">
+                  What we help you get right
+                </p>
+                <ul className="mt-5 space-y-4 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                  <li className="flex gap-3">
+                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
+                    <span>
+                      Compensation plan selection and validation before code is
+                      locked in.
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
+                    <span>
+                      Scalable architecture, security, automation, and
+                      transparent payouts.
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
+                    <span>
+                      Long-term partnership through launch, optimization, and
+                      growth.
+                    </span>
+                  </li>
+                </ul>
+                <Link
+                  href="/business-solutions"
+                  className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-uv-brand uv-focus-ring"
+                >
+                  See full business solutions
+                  <Icon name="ArrowRight" size="sm" />
+                </Link>
+              </MarketingCard>
+            </Reveal>
           </div>
-        </div>
-      </section>
+        </MarketingPageHeroInner>
+      </MarketingPageHero>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle" aria-label="Why U and V for MLM">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Why U&V for MLM?"
-              title="Support from first idea through global expansion."
-              description="U&V is built as a long-term technology and business growth partner for network marketing companies — not a one-time template seller."
+              eyebrow="Beyond software vendors"
+              title="MLM businesses need stability, transparency, and a partner who stays."
+              description="We work with founders who want a legally structured, operationally sound platform — not hype, shortcuts, or disposable templates."
             />
           </Reveal>
-          <div className="mt-14 grid gap-8 md:grid-cols-2">
+          <div className="mt-12 grid gap-8 sm:mt-16 md:grid-cols-2">
             {mlmWhyUandv.map((item, index) => (
               <Reveal key={item.title} delayMs={index * 50}>
                 <article className="border-t border-uv-border pt-6">
                   <p className="text-sm font-medium text-uv-brand">
                     {String(index + 1).padStart(2, '0')}
                   </p>
-                  <h3 className="mt-3 font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="mt-3">
                     {item.title}
-                  </h3>
+                  </MarketingCardTitle>
                   <p className="mt-3 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     {item.description}
                   </p>
@@ -126,63 +150,68 @@ export function MlmSolutionsPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
-        id="consulting"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection id="consulting" tone="default" aria-label="MLM consulting">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="MLM business consulting"
-              title="Validate the business before you scale the software."
-              description="Strong MLM platforms start with clear economics, plan logic, and operating risk — then technology encodes what already makes sense."
+              eyebrow="Consult before you build"
+              title="Validate the business and compensation plan before you scale software."
+              description="Strong platforms start with clear economics, explainable rules, and operational discipline — then technology encodes what already makes sense."
             />
           </Reveal>
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {mlmConsulting.map((item, index) => (
-              <Reveal key={item.title} delayMs={index * 30}>
-                <article className="h-full rounded-uv-xl border border-uv-border bg-uv-background-subtle p-5">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
+              <Reveal key={item.title} delayMs={index * 30} className="h-full">
+                <article className="marketing-card-lift flex h-full min-h-[15rem] flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-5 sm:p-6">
+                  <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                     <Icon name={item.icon} size="md" />
                   </div>
-                  <h3 className="mt-4 font-[family-name:var(--font-uv-display)] text-base font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="mt-4 text-base sm:text-lg">
                     {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
-                    {item.description}
-                  </p>
+                  </MarketingCardTitle>
+                  <div className="mt-3 flex flex-1 flex-col gap-3">
+                    <div>
+                      <StoryLabel>The challenge</StoryLabel>
+                      <p className="mt-1.5 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                        {item.problem}
+                      </p>
+                    </div>
+                    <div>
+                      <StoryLabel>How U&amp;V helps</StoryLabel>
+                      <p className="mt-1.5 text-sm leading-relaxed text-uv-foreground sm:text-base">
+                        {item.outcome}
+                      </p>
+                    </div>
+                  </div>
                 </article>
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
-        id="compensation-plans"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection id="compensation-plans" tone="subtle" aria-label="Compensation plans">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Compensation plans"
-              title="Plan types we can implement and customize."
-              description="Each model fits different growth strategies. We help you choose — or design — the structure your economics can sustain."
+              title="Choose and implement the plan your economics can sustain."
+              description="We help you compare models, document rules clearly, and engineer calculations members and admins can trust — including hybrid and custom designs."
             />
           </Reveal>
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {compensationPlans.map((plan, index) => (
-              <Reveal key={plan.title} delayMs={index * 25}>
-                <article className="flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background p-5 transition-colors hover:border-uv-brand/35">
-                  <h3 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+              <Reveal key={plan.title} delayMs={index * 25} className="h-full">
+                <article className="marketing-card-lift flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background p-5 transition-colors hover:border-uv-brand/35">
+                  <MarketingCardTitle className="text-base sm:text-lg">
                     {plan.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-uv-foreground-muted">
+                  </MarketingCardTitle>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     <span className="font-medium text-uv-foreground">
-                      Works best for:{' '}
+                      Often suited when:{' '}
                     </span>
                     {plan.bestFor}
                   </p>
@@ -190,150 +219,145 @@ export function MlmSolutionsPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default" aria-label="Custom compensation design">
+        <MarketingPageContainer>
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
             <Reveal>
-              <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                Custom compensation design
-              </p>
-              <h2 className="mt-4 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl lg:text-5xl">
-                Your Business.
-                <br />
-                Your Rules.
-                <br />
-                Your Compensation Plan.
-              </h2>
+              <MarketingEyebrow>Custom compensation design</MarketingEyebrow>
+              <MarketingSectionTitle className="mt-4">
+                Plans engineered for clarity, auditability, and scale
+              </MarketingSectionTitle>
             </Reveal>
             <Reveal delayMs={80}>
               <div className="space-y-5 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
                 <p>
-                  U&amp;V builds completely customized MLM systems when your
-                  product, ranks, payout policies, or market strategy do not fit
-                  a standard template.
+                  When your products, ranks, or payout policies do not fit a
+                  standard template, U&amp;V designs bespoke systems — documented,
+                  tested, and operable.
                 </p>
                 <p>
-                  We document the rules, validate sample trees, design admin
-                  controls, and engineer the commission engine so your plan stays
-                  explainable as the network grows.
+                  We validate sample genealogies, model edge cases, and build
+                  admin controls so your plan stays explainable as the network
+                  grows.
                 </p>
                 <p>
-                  Custom does not mean chaotic — it means precise, tested, and
-                  operable.
+                  Custom means precise and maintainable — not chaotic, opaque, or
+                  impossible to support.
                 </p>
               </div>
             </Reveal>
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
-        id="modules"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection id="modules" tone="subtle" aria-label="Software modules">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Software modules"
-              title="Enterprise-ready building blocks for network operations."
-              description="Compose the platform around member experience, payout integrity, communications, and leadership visibility."
+              eyebrow="Platform modules"
+              title="Secure, scalable building blocks for network operations."
+              description="Compose member experience, payout integrity, compliance workflows, and leadership visibility — with architecture that can grow with your organisation."
             />
           </Reveal>
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {softwareModules.map((module, index) => (
-              <Reveal key={module.title} delayMs={index * 20}>
-                <article className="rounded-uv-xl border border-uv-border bg-uv-background p-5">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
+              <Reveal key={module.title} delayMs={index * 20} className="h-full">
+                <article className="marketing-card-lift flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background p-5 sm:p-6">
+                  <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                     <Icon name={module.icon} size="md" />
                   </div>
-                  <h3 className="mt-4 font-[family-name:var(--font-uv-display)] text-base font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="mt-4 text-base sm:text-lg">
                     {module.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
+                  </MarketingCardTitle>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     {module.description}
                   </p>
                 </article>
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default" aria-label="Growth services">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Business growth services"
-              title="Technology and growth under one accountable partner."
-              description="Pair the MLM platform with the brand, apps, and acquisition systems needed to launch and expand."
+              eyebrow="Connected growth services"
+              title="Technology and business growth under one accountable partner."
+              description="Pair the MLM platform with branding, apps, marketing, and operations systems — coordinated instead of fragmented."
             />
           </Reveal>
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:grid-cols-3">
             {mlmGrowthServices.map((service, index) => (
-              <Reveal key={service.title} delayMs={index * 25}>
+              <Reveal key={service.title} delayMs={index * 25} className="h-full">
                 <Link
                   href={service.href}
-                  className="group flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-5 transition-colors hover:border-uv-brand/40 uv-focus-ring"
+                  className="marketing-card-lift group flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-5 sm:p-6 transition-colors hover:border-uv-brand/40 uv-focus-ring"
                 >
                   <Icon
                     name={service.icon}
                     className="text-uv-brand transition-transform duration-300 group-hover:-translate-y-0.5"
                   />
-                  <h3 className="mt-4 font-[family-name:var(--font-uv-display)] text-base font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="mt-4 text-base sm:text-lg">
                     {service.title}
-                  </h3>
+                  </MarketingCardTitle>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                    {service.description}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-uv-brand">
+                    Learn more
+                    <Icon name="ArrowRight" size="sm" />
+                  </span>
                 </Link>
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle" aria-label="Partnership timeline">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="U&V growth partnership"
-              title="A clear path from consult to scale."
-              description="We stay with you through the full lifecycle — so launch is a beginning, not a handoff cliff."
+              eyebrow="Long-term partnership"
+              title="A clear path from consultation to sustainable scale."
+              description="Launch is a milestone — not a handoff. We stay with you through stabilization, optimization, and expansion when the business is ready."
             />
           </Reveal>
-          <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+          <ol className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 xl:grid-cols-7">
             {mlmPartnershipTimeline.map((step, index) => (
-              <Reveal key={step.title} delayMs={index * 30}>
-                <li className="h-full rounded-uv-xl border border-uv-border bg-uv-background p-4">
+              <Reveal key={step.title} delayMs={index * 30} className="h-full">
+                <li className="flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background p-4 sm:p-5">
                   <p className="font-[family-name:var(--font-uv-display)] text-2xl font-bold text-uv-brand/30">
                     {String(index + 1).padStart(2, '0')}
                   </p>
-                  <h3 className="mt-3 font-[family-name:var(--font-uv-display)] text-base font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="mt-3 text-base sm:text-lg">
                     {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
+                  </MarketingCardTitle>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     {step.description}
                   </p>
                 </li>
               </Reveal>
             ))}
           </ol>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
-        id="faq"
-        className="marketing-faq scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection id="faq" tone="default" className="marketing-faq" aria-label="FAQ">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="FAQ"
-              title="Professional questions about MLM platforms and partnership."
-              description="Straight answers for founders evaluating software, compensation design, and long-term support."
+              title="Straight answers for founders evaluating MLM platforms."
+              description="Compensation design, compliance readiness, security, migrations, and what happens after launch."
             />
           </Reveal>
-          <div className="mx-auto mt-12 max-w-3xl divide-y divide-uv-border border-y border-uv-border">
+          <div className="mx-auto mt-12 max-w-3xl divide-y divide-uv-border border-y border-uv-border sm:mt-16">
             {mlmFaqs.map((faq, index) => (
               <Reveal key={faq.question} delayMs={Math.min(index * 20, 200)}>
                 <details className="group py-5">
@@ -354,24 +378,20 @@ export function MlmSolutionsPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
-        id="success-roadmap"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection id="success-roadmap" tone="subtle" aria-label="Partnership journey">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="U&V MLM Success Roadmap™"
-              title="Your Journey with U&V"
-              description="From idea to global MLM business — every stage guided by U&V."
+              eyebrow="Partnership journey"
+              title="From plan decisions to a platform you can operate and scale."
+              description="Ten stages we commonly guide — adapted to your model, markets, and readiness. No guaranteed outcomes; disciplined execution."
             />
           </Reveal>
 
-          {/* Mobile: vertical timeline */}
-          <ol className="relative mt-14 space-y-0 lg:hidden">
+          <ol className="relative mt-12 space-y-0 sm:mt-16 lg:hidden">
             <div
               className="absolute bottom-2 left-[15px] top-2 w-px bg-uv-border"
               aria-hidden
@@ -382,10 +402,10 @@ export function MlmSolutionsPage() {
                   {stage.step}
                 </div>
                 <div className="min-w-0 flex-1 pt-0.5">
-                  <h3 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="text-lg">
                     {stage.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
+                  </MarketingCardTitle>
+                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     {stage.description}
                   </p>
                   {index < mlmSuccessRoadmap.length - 1 ? (
@@ -398,8 +418,7 @@ export function MlmSolutionsPage() {
             ))}
           </ol>
 
-          {/* Desktop: horizontal roadmap in two rows */}
-          <div className="mt-14 hidden lg:block">
+          <div className="mt-12 hidden sm:mt-16 lg:block">
             <ol className="grid grid-cols-5 gap-x-4 gap-y-10">
               {mlmSuccessRoadmap.map((stage, index) => {
                 const isRowEnd = (index + 1) % 5 === 0;
@@ -416,10 +435,10 @@ export function MlmSolutionsPage() {
                       <p className="font-[family-name:var(--font-uv-display)] text-2xl font-bold tracking-tight text-uv-brand/35">
                         {stage.step}
                       </p>
-                      <h3 className="mt-3 font-[family-name:var(--font-uv-display)] text-base font-semibold text-uv-foreground">
+                      <MarketingCardTitle className="mt-3 text-base sm:text-lg">
                         {stage.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
+                      </MarketingCardTitle>
+                      <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                         {stage.description}
                       </p>
                     </article>
@@ -438,68 +457,51 @@ export function MlmSolutionsPage() {
           </div>
 
           <Reveal>
-            <p className="mx-auto mt-14 max-w-2xl text-center font-[family-name:var(--font-uv-display)] text-xl font-semibold tracking-tight text-uv-foreground sm:text-2xl">
-              We don&apos;t disappear after deployment.
-              <br className="hidden sm:block" /> We grow with your business.
+            <p className="mx-auto mt-12 max-w-2xl text-center font-[family-name:var(--font-uv-display)] text-xl font-semibold leading-snug tracking-tight text-uv-foreground sm:mt-16 sm:text-2xl">
+              We do not disappear after deployment.
+              <br className="hidden sm:block" /> We grow with your business —
+              responsibly.
             </p>
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
-        id="consultation"
-        className="scroll-mt-20 bg-uv-background py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background-subtle px-6 py-10 sm:px-10 sm:py-14">
+      <MarketingSection id="consultation" tone="default" className="border-b-0" aria-label="Free consultation">
+        <MarketingPageContainer>
+          <MarketingCtaPanel className="sm:py-14">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
-                <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                  Final CTA
-                </p>
-                <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
-                  Let&apos;s Build Your MLM Business Together.
-                </h2>
+                <MarketingEyebrow>Free consultation</MarketingEyebrow>
+                <MarketingSectionTitle className="mt-3">
+                  Let&apos;s discuss the right MLM platform for your business.
+                </MarketingSectionTitle>
                 <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Share your model, plan draft, and goals. We will recommend a
-                  practical path across consulting, platform design, and growth
-                  support — without fake promises.
+                  Share your compensation draft, markets, and operational goals.
+                  We will recommend a practical path across consulting,
+                  architecture, and build — with honest scope, no income
+                  promises, and no fabricated case studies.
                 </p>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col">
-                <Link
-                  href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
-                >
-                  Book Consultation
-                </Link>
-                <Link
-                  href="/demo/mlm"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center border-uv-brand/55 bg-uv-brand/15 text-uv-brand shadow-none',
-                    'hover:border-uv-brand hover:bg-uv-brand/25 hover:text-uv-brand',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-uv-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-uv-background',
-                  )}
-                >
-                  View MLM Plan Live Demo
-                </Link>
-                <a
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col xl:flex-row">
+                <MarketingButtonLink href={contactInquiryHref}>
+                  Book a Free MLM Platform Consultation
+                </MarketingButtonLink>
+                <MarketingButtonLink href="/demo/mlm" variant="outline">
+                  Explore live demo
+                </MarketingButtonLink>
+                <MarketingButtonLink
                   href={siteConfig.whatsapp}
+                  variant="outline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'secondary' }),
-                    'justify-center',
-                  )}
                 >
                   Chat on WhatsApp
-                </a>
+                </MarketingButtonLink>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </div>
+          </MarketingCtaPanel>
+        </MarketingPageContainer>
+      </MarketingSection>
+    </MarketingContentPage>
   );
 }

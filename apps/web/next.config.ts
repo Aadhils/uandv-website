@@ -19,7 +19,27 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/business-consulting',
-        destination: '/business',
+        destination: '/business-solutions',
+        permanent: true,
+      },
+      {
+        source: '/business',
+        destination: '/business-solutions',
+        permanent: true,
+      },
+      {
+        source: '/solutions/digital-marketing',
+        destination: '/digital-marketing',
+        permanent: true,
+      },
+      {
+        source: '/solutions/mlm-software',
+        destination: '/mlm',
+        permanent: true,
+      },
+      {
+        source: '/services/startup-business-consulting',
+        destination: '/startup',
         permanent: true,
       },
     ];

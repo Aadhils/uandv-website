@@ -38,7 +38,7 @@ export const siteConfig = {
   description:
     'U&V delivers international-quality software, branding, and growth services for startups, SMEs, and enterprises — from business idea to long-term scale.',
   mission:
-    'Follow dreams globally. We understand your business, the market you compete in, and the systems you need to grow with confidence.',
+    'We understand your business, the market you compete in, and the systems you need to grow — with honest guidance and accountable delivery.',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://uandv.com',
   locale: 'en_IN',
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'info@uandv.com',
@@ -69,20 +69,22 @@ export const siteConfig = {
   hours: 'Mon–Sat, 10:00–19:00 IST',
 } as const;
 
+/** Canonical destination for public enquiry and consultation CTAs. */
+export const contactInquiryHref = '/contact#inquiry-form' as const;
+
 /**
  * Header + mobile marketing navigation (single source of truth).
- * Contact lives in the footer only.
+ * Logo links home — no separate Home item. Contact lives in the footer only.
  */
 export const marketingNav = [
-  { label: 'Home', href: '/' },
-  { label: 'Business Solutions', href: '/business' },
+  { label: 'Business Solutions', href: '/business-solutions' },
+  { label: 'Why U&V', href: '/why-uandv' },
   { label: 'Services', href: '/services' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Why U&V', href: '/why-uandv' },
-  { label: 'Digital Marketing', href: '/solutions/digital-marketing' },
-  { label: 'MLM', href: '/solutions/mlm-software' },
-  { label: 'FAQ', href: '/faq' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Digital Marketing', href: '/digital-marketing' },
+  { label: 'MLM', href: '/mlm' },
+  { label: 'FinTech', href: '/fintech' },
+  { label: 'Startup', href: '/startup' },
 ] as const;
 
 export type MarketingSocialLink = {

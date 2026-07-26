@@ -12,12 +12,20 @@ export interface NavLinkItem {
   icon?: IconName;
 }
 
+export type NavLinkRendererProps = NavLinkProps & {
+  href: string;
+};
+
 export interface NavbarProps {
   brand: React.ReactNode;
   links?: NavLinkItem[];
   actions?: React.ReactNode;
   /** Shown only inside the mobile drawer (use when desktop actions hide CTAs) */
   mobileActions?: React.ReactNode;
+  /** Center nav links between brand and actions on large screens */
+  centeredLinks?: boolean;
+  /** Optional client router link (e.g. Next.js Link) for SPA navigation */
+  linkComponent?: React.ComponentType<NavLinkRendererProps>;
   className?: string;
   sticky?: boolean;
 }
@@ -27,6 +35,8 @@ export function Navbar({
   links = [],
   actions,
   mobileActions,
+  centeredLinks = false,
+  linkComponent: LinkComponent,
   className,
   sticky = true,
 }: NavbarProps) {
@@ -83,7 +93,7 @@ export function Navbar({
     };
   }, [closeMobile, mobileOpen]);
 
-  const drawerActions = mobileActions ?? actions;
+  const drawerActions = mobileActions !== undefined ? mobileActions : actions;
 
   return (
     <header
@@ -94,16 +104,27 @@ export function Navbar({
       )}
     >
       <nav
-        className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
+        className={cn(
+          'relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8',
+        )}
         aria-label="Main navigation"
       >
-        <div className="flex min-w-0 flex-1 items-center gap-4 lg:gap-8">
+        <div
+          className={cn(
+            'relative z-30 flex min-w-0 items-center gap-4 lg:gap-8',
+            centeredLinks ? 'shrink-0' : 'flex-1',
+          )}
+        >
           <div className="min-w-0 shrink">{brand}</div>
-          {links.length > 0 ? (
+          {links.length > 0 && !centeredLinks ? (
             <ul className="hidden items-center gap-0.5 lg:flex">
               {links.map((link) => (
                 <li key={link.href}>
-                  <NavLink href={link.href} active={link.active}>
+                  <NavLink
+                    href={link.href}
+                    active={link.active}
+                    linkComponent={LinkComponent}
+                  >
                     {link.label}
                   </NavLink>
                 </li>
@@ -112,7 +133,28 @@ export function Navbar({
           ) : null}
         </div>
 
-        <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:gap-3">
+        {links.length > 0 && centeredLinks ? (
+          <ul className="pointer-events-none absolute left-1/2 top-1/2 z-40 hidden max-w-[min(100%,52rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-0.5 lg:flex xl:gap-1">
+            {links.map((link) => (
+              <li key={link.href} className="pointer-events-auto shrink-0">
+                <NavLink
+                  href={link.href}
+                  active={link.active}
+                  linkComponent={LinkComponent}
+                  className="px-2.5 xl:px-3"
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+
+        <div
+          className={cn(
+            'relative z-30 ml-auto flex shrink-0 items-center gap-1 sm:gap-2 lg:gap-3',
+          )}
+        >
           {actions}
           <button
             ref={toggleRef}
@@ -143,6 +185,7 @@ export function Navbar({
                 <NavLink
                   href={link.href}
                   active={link.active}
+                  linkComponent={LinkComponent}
                   className="min-h-11 w-full justify-start px-3 py-3 text-base"
                   onClick={closeMobile}
                 >
@@ -171,17 +214,37 @@ export function NavLink({
   className,
   active = false,
   children,
+  linkComponent: LinkComponent,
+  href,
   ...props
-}: NavLinkProps) {
+}: NavLinkProps & {
+  linkComponent?: React.ComponentType<NavLinkRendererProps>;
+}) {
+  const classes = cn(
+    'inline-flex items-center rounded-uv-md px-3 py-2 text-sm font-medium transition-colors duration-200 uv-focus-ring',
+    active
+      ? 'bg-uv-brand-muted text-uv-brand'
+      : 'text-uv-foreground-muted hover:bg-uv-background-muted hover:text-uv-foreground',
+    className,
+  );
+
+  if (LinkComponent && href) {
+    return (
+      <LinkComponent
+        href={href}
+        className={classes}
+        aria-current={active ? 'page' : undefined}
+        {...props}
+      >
+        {children}
+      </LinkComponent>
+    );
+  }
+
   return (
     <a
-      className={cn(
-        'inline-flex items-center rounded-uv-md px-3 py-2 text-sm font-medium transition-colors duration-200 uv-focus-ring',
-        active
-          ? 'bg-uv-brand-muted text-uv-brand'
-          : 'text-uv-foreground-muted hover:bg-uv-background-muted hover:text-uv-foreground',
-        className,
-      )}
+      href={href}
+      className={classes}
       aria-current={active ? 'page' : undefined}
       {...props}
     >

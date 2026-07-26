@@ -12,6 +12,7 @@ import {
   loadWizardSession,
   subscribeWizardSession,
 } from '@/lib/discovery-wizard';
+import { contactInquiryHref } from '@/lib/site';
 
 function useWizardSession() {
   return useSyncExternalStore(
@@ -140,7 +141,7 @@ export function BusinessDiscoverySummaryPage() {
             Open AI Business Advisor
           </Link>
           <Link
-            href="/contact"
+            href={contactInquiryHref}
             className={cn(
               buttonVariants({ size: 'lg', variant: 'outline' }),
               'justify-center border-white/40 bg-transparent text-white hover:bg-white/10',
