@@ -1,36 +1,35 @@
 import { technologies } from '@/lib/content';
 
+import { MarketingPageContainer, MarketingSection } from './marketing-primitives';
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
 
 export function Technologies() {
   return (
-    <section
-      id="technologies"
-      className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Reveal>
+    <MarketingSection id="technologies" tone="default" className="marketing-section-ambient">
+      <MarketingPageContainer className="relative">
+        <Reveal variant="up-blur">
           <SectionHeading
-            eyebrow="Technologies"
-            title="Modern tools. Production standards."
-            description="We build with proven, maintainable technology so your product stays fast, secure, and ready to grow."
+            eyebrow="Technology foundation"
+            title="Modern tools. Built for your business — not for show."
+            description="We use proven, maintainable technology to deliver software, platforms, and automation you can rely on as you grow."
           />
         </Reveal>
 
-        <Reveal delayMs={100}>
-          <ul className="mt-12 flex flex-wrap gap-3">
-            {technologies.map((tech) => (
-              <li
-                key={tech}
-                className="rounded-uv-lg border border-uv-border bg-uv-background-subtle px-4 py-2.5 text-sm font-medium text-uv-foreground transition-colors duration-200 hover:border-uv-brand/40 hover:text-uv-brand"
-              >
-                {tech}
+        <div className="marketing-tech-cloud relative mt-12 sm:mt-16">
+          <ul className="relative flex flex-wrap gap-3">
+            {technologies.map((tech, index) => (
+              <li key={tech}>
+                <Reveal delayMs={index * 40} variant="scale">
+                  <span className="marketing-glass marketing-tech-chip inline-block rounded-uv-lg border border-uv-border/80 px-4 py-2.5 text-sm font-medium text-uv-foreground">
+                    {tech}
+                  </span>
+                </Reveal>
               </li>
             ))}
           </ul>
-        </Reveal>
-      </div>
-    </section>
+        </div>
+      </MarketingPageContainer>
+    </MarketingSection>
   );
 }

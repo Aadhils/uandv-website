@@ -2,39 +2,39 @@ import type { IconName } from '@uandv/ui';
 
 export const whyCorePrinciples = [
   {
-    title: 'Business First',
+    title: 'Your business comes first',
     description:
-      'Technology follows strategy. We start with your market, model, and goals so every build decision serves the business.',
+      'We start with your market, customers, and goals — so every recommendation serves growth you can measure, not a feature list.',
     icon: 'Briefcase' as IconName,
   },
   {
-    title: 'Technology Driven',
+    title: 'Built to last',
     description:
-      'Modern architectures, clean engineering, and production-minded delivery across web, mobile, cloud, and integrations.',
+      'What we deliver is meant to run your business day after day — reliable, maintainable, and ready for the pressure of real operations.',
     icon: 'Code2' as IconName,
   },
   {
-    title: 'AI Powered',
+    title: 'Less busywork, more focus',
     description:
-      'Practical AI for automation, insights, and product experiences — applied where it creates measurable operating value.',
+      'We apply automation and AI only where it saves your team time, reduces errors, and improves how work actually gets done.',
     icon: 'Sparkles' as IconName,
   },
   {
-    title: 'Transparent Communication',
+    title: 'Honest, direct communication',
     description:
-      'Clear scopes, honest timelines, and direct updates. You always know what is happening and why.',
+      'Clear scopes, realistic timelines, and straight answers. You always know what is happening, what it costs, and why.',
     icon: 'MessageCircle' as IconName,
   },
   {
-    title: 'Long-term Partnership',
+    title: 'We stay after go-live',
     description:
-      'Launch is a milestone, not an exit. We stay for optimization, support, and the next stage of growth.',
+      'Launch is a milestone, not goodbye. We remain your partner for support, improvement, and the next stage of growth.',
     icon: 'Users' as IconName,
   },
   {
-    title: 'Continuous Innovation',
+    title: 'Built to evolve with you',
     description:
-      'Markets change. We keep refining products, workflows, and capabilities so your systems stay competitive.',
+      'As your business changes, we help refine products, processes, and capabilities — so you are not starting from scratch every year.',
     icon: 'Rocket' as IconName,
   },
 ];
@@ -75,58 +75,66 @@ export const whyTechnologies = [
 
 export const whyWorkflow = [
   {
-    title: 'Discover',
-    description: 'Understand goals, constraints, users, and success criteria.',
+    title: 'Listen first',
+    description:
+      'Understand your goals, pressures, and what success should feel like for you and your team.',
   },
   {
-    title: 'Plan',
-    description: 'Shape scope, architecture options, milestones, and risks.',
+    title: 'Plan with clarity',
+    description:
+      'Agree on priorities, milestones, and trade-offs — so there are no surprises mid-project.',
   },
   {
-    title: 'Design',
-    description: 'Define experience, information architecture, and system design.',
+    title: 'Design for real people',
+    description:
+      'Shape experiences your customers and staff can actually use — not interfaces that look good only in a demo.',
   },
   {
-    title: 'Develop',
-    description: 'Build production-quality software with clear ownership.',
+    title: 'Build with care',
+    description:
+      'Deliver working systems with clear ownership, visible progress, and quality you can depend on.',
   },
   {
-    title: 'Test',
-    description: 'Validate quality, edge cases, security, and readiness.',
+    title: 'Test before you trust it',
+    description:
+      'Validate in real scenarios so launch day is confident — not a gamble your team has to recover from.',
   },
   {
-    title: 'Deploy',
-    description: 'Ship with controlled rollout, documentation, and go-live support.',
+    title: 'Go live together',
+    description:
+      'Roll out with training and support so your people are ready — not left figuring it out alone.',
   },
   {
-    title: 'Support',
-    description: 'Stabilize adoption and keep operations running smoothly.',
+    title: 'Stay when it matters',
+    description:
+      'Stabilise adoption, fix friction early, and keep operations running smoothly after launch.',
   },
   {
-    title: 'Grow',
-    description: 'Optimize, automate, expand, and evolve the product over time.',
+    title: 'Keep improving',
+    description:
+      'Optimise, automate, and expand as your business grows — with a partner who already knows your story.',
   },
 ];
 
 export const whyClientsStay = [
   {
-    title: 'We stay after delivery',
+    title: 'We do not walk away after delivery',
     description:
-      'Deployment is not the end of the relationship. We continue as a technology and business partner through the next decisions.',
+      'Too many vendors disappear once the invoice is paid. We stay as your technology and growth partner for what comes next.',
   },
   {
-    title: 'Optimize what you launched',
+    title: 'Make what you launched work harder',
     description:
-      'We refine performance, usability, workflows, and reliability so the product gets stronger in real use.',
+      'We refine speed, usability, and daily workflows so the investment pays off in real use — not shelfware.',
   },
   {
-    title: 'Scale with intention',
+    title: 'Grow at the right pace',
     description:
-      'When you expand markets, teams, or product lines, we help sequence architecture, features, and growth systems.',
+      'When you enter new markets, hire more people, or add product lines, we help you scale without chaos.',
   },
   {
-    title: 'Automate and improve continuously',
+    title: 'Keep getting better over time',
     description:
-      'From AI-assisted operations to process automation and new capabilities — improvement is ongoing, not one-off.',
+      'From smarter follow-up to process automation — improvement is ongoing, because your business does not stand still.',
   },
 ];

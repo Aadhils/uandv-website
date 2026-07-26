@@ -1,6 +1,16 @@
 import type { Metadata } from 'next';
 
 import { Faq } from '@/components/marketing/faq';
+import {
+  MarketingContentPage,
+  MarketingPageHero,
+  MarketingPageHeroInner,
+} from '@/components/marketing/marketing-page-hero';
+import {
+  MarketingEyebrow,
+  MarketingHeroTitle,
+  MarketingLead,
+} from '@/components/marketing/marketing-primitives';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import { siteConfig } from '@/lib/site';
 
@@ -23,16 +33,28 @@ export const metadata: Metadata = {
 
 export default function FaqPage() {
   return (
-    <div className="marketing-grain flex-1">
-      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'FAQ' },
-          ]}
-        />
-      </div>
+    <MarketingContentPage>
+      <MarketingPageHero>
+        <MarketingPageHeroInner className="pb-10 sm:pb-12">
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'FAQ' },
+            ]}
+          />
+          <div className="mt-8 max-w-3xl sm:mt-10">
+            <MarketingEyebrow>FAQ</MarketingEyebrow>
+            <MarketingHeroTitle className="mt-3 sm:mt-4">
+              Answers before you reach out.
+            </MarketingHeroTitle>
+            <MarketingLead className="mt-4 sm:mt-6">
+              Clear expectations on how U&V works, what we deliver, and how to
+              get started.
+            </MarketingLead>
+          </div>
+        </MarketingPageHeroInner>
+      </MarketingPageHero>
       <Faq />
-    </div>
+    </MarketingContentPage>
   );
 }

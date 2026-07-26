@@ -1,8 +1,24 @@
-import Link from 'next/link';
-
-import { Icon, buttonVariants, cn } from '@uandv/ui';
+import { Icon } from '@uandv/ui';
 
 import { Reveal } from '@/components/marketing/reveal';
+import {
+  MarketingContentPage,
+  MarketingPageHero,
+  MarketingPageHeroInner,
+} from '@/components/marketing/marketing-page-hero';
+import {
+  MarketingButtonLink,
+  MarketingCard,
+  MarketingCardTitle,
+  MarketingCtaPanel,
+  MarketingEyebrow,
+  MarketingHeroActions,
+  MarketingHeroTitle,
+  MarketingLead,
+  MarketingPageContainer,
+  MarketingSection,
+  MarketingSectionTitle,
+} from '@/components/marketing/marketing-primitives';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import {
@@ -12,19 +28,13 @@ import {
   whyTechnologies,
   whyWorkflow,
 } from '@/lib/why-uandv';
-import { siteConfig } from '@/lib/site';
+import { contactInquiryHref, siteConfig } from '@/lib/site';
 
 export function WhyUandvPage() {
   return (
-    <div className="marketing-grain flex-1">
-      <section className="relative overflow-hidden border-b border-uv-border bg-uv-background">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute -left-20 top-0 h-80 w-80 rounded-full bg-uv-brand/15 blur-3xl" />
-          <div className="absolute right-0 top-24 h-96 w-96 rounded-full bg-uv-navy/10 blur-3xl" />
-          <div className="marketing-hero-grid absolute inset-0 opacity-50" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 sm:pb-24 sm:pt-10 lg:px-8">
+    <MarketingContentPage>
+      <MarketingPageHero>
+        <MarketingPageHeroInner>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -34,93 +44,92 @@ export function WhyUandvPage() {
 
           <div className="mt-10 grid items-end gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="max-w-3xl">
-              <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                U&V Enterprise Authority
+              <MarketingEyebrow>Your Business Growth Partner</MarketingEyebrow>
+              <MarketingHeroTitle className="mt-4">
+                Why business owners trust U&amp;V with their growth
+              </MarketingHeroTitle>
+              <MarketingLead className="mt-6">
+                Choosing a partner is a business decision — not a software
+                shopping exercise. U&amp;V combines honest advice, coordinated
+                delivery, and long-term support so you can grow with confidence,
+                not confusion.
+              </MarketingLead>
+              <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
+                No pressure tactics. No inflated promises.
+                Response within 24 business hours.
               </p>
-              <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
-                Why Businesses Choose U&amp;V
-              </h1>
-              <p className="mt-6 text-lg leading-relaxed text-uv-foreground-muted sm:text-xl">
-                We combine technology, strategy, automation, branding, and
-                long-term partnership under one roof.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
-                >
-                  Start Your Project
-                </Link>
-                <a
+              <MarketingHeroActions>
+                <MarketingButtonLink href={contactInquiryHref}>
+                  Book a Free Consultation
+                </MarketingButtonLink>
+                <MarketingButtonLink
                   href={siteConfig.whatsapp}
+                  variant="outline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
-                  )}
                 >
                   Chat on WhatsApp
-                </a>
-              </div>
+                </MarketingButtonLink>
+              </MarketingHeroActions>
             </div>
 
             <Reveal delayMs={80}>
-              <div className="rounded-uv-2xl border border-uv-border bg-uv-background-subtle p-6 sm:p-8">
+              <MarketingCard premium className="sm:p-8">
                 <p className="text-sm font-medium text-uv-brand">
-                  Long-term technology &amp; business partner
+                  What sets U&amp;V apart
                 </p>
-                <ul className="mt-5 space-y-4 text-sm leading-relaxed text-uv-foreground-muted">
+                <ul className="mt-5 space-y-4 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                   <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 text-uv-brand" />
+                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
                     <span>
-                      Strategy and software decisions made together — not in
-                      isolation.
+                      We advise on what your business needs — not what is easiest
+                      to sell.
                     </span>
                   </li>
                   <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 text-uv-brand" />
+                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
                     <span>
-                      Delivery with the discipline to support, optimize, and
-                      scale after launch.
+                      One accountable partner from planning through launch and
+                      beyond.
                     </span>
                   </li>
                   <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 text-uv-brand" />
+                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
                     <span>
-                      One accountable partner across product, AI, branding, and
-                      growth systems.
+                      We stay when the hard part begins — adoption, improvement,
+                      and growth.
                     </span>
                   </li>
                 </ul>
-              </div>
+              </MarketingCard>
             </Reveal>
           </div>
-        </div>
-      </section>
+        </MarketingPageHeroInner>
+      </MarketingPageHero>
 
-      <section
+      <MarketingSection
         id="principles"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
+        tone="subtle"
+        aria-label="Core principles"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Core principles"
-              title="How U&V works when the stakes are real."
-              description="These principles guide every engagement — from first conversation to continuous improvement."
+              eyebrow="How we earn your trust"
+              title="Principles we hold ourselves to — on every engagement."
+              description="These are not slogans on a wall. They are how we show up when your revenue, reputation, and team are on the line."
             />
           </Reveal>
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {whyCorePrinciples.map((principle, index) => (
               <Reveal key={principle.title} delayMs={index * 40}>
                 <article className="group h-full rounded-uv-2xl border border-uv-border bg-uv-background p-6 transition-colors hover:border-uv-brand/40">
                   <div className="inline-flex h-11 w-11 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand transition-transform duration-300 group-hover:-translate-y-0.5">
                     <Icon name={principle.icon} />
                   </div>
-                  <h3 className="mt-5 font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="mt-5">
                     {principle.title}
-                  </h3>
+                  </MarketingCardTitle>
                   <p className="mt-3 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     {principle.description}
                   </p>
@@ -128,22 +137,23 @@ export function WhyUandvPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
+      <MarketingSection
         id="industries"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
+        tone="default"
+        aria-label="Industries we serve"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Industries we serve"
-              title="Domain fluency across modern operating businesses."
-              description="We apply product, platform, and growth thinking to industries where software must match real operational complexity."
+              eyebrow="Businesses we understand"
+              title="Experience across industries where operations matter."
+              description="Whether you run a clinic, a network, a store, or a growing team — we learn how your business works before we recommend anything."
             />
           </Reveal>
-          <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {whyIndustries.map((industry, index) => (
               <Reveal key={industry.title} delayMs={Math.min(index * 25, 250)}>
                 <div className="group flex h-full flex-col items-center rounded-uv-xl border border-uv-border bg-uv-background-subtle px-4 py-6 text-center transition-colors hover:border-uv-brand/40 hover:bg-uv-background">
@@ -157,22 +167,23 @@ export function WhyUandvPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
+      <MarketingSection
         id="technology"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
+        tone="subtle"
+        aria-label="Technology foundations"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Technology expertise"
-              title="Modern stack. Enterprise discipline."
-              description="We select technologies for reliability, speed of delivery, and long-term maintainability — not trend chasing."
+              eyebrow="Behind the scenes"
+              title="Reliable foundations you do not have to worry about."
+              description="You should not need to choose between tools — that is our job. We use proven, maintainable technology so your systems stay fast, secure, and ready to grow."
             />
           </Reveal>
-          <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {whyTechnologies.map((tech, index) => (
               <Reveal key={tech.title} delayMs={Math.min(index * 25, 250)}>
                 <div className="group flex h-full items-center gap-3 rounded-uv-xl border border-uv-border bg-uv-background px-4 py-4 transition-colors hover:border-uv-brand/40">
@@ -186,23 +197,24 @@ export function WhyUandvPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
+      <MarketingSection
         id="workflow"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
+        tone="default"
+        aria-label="How we work with you"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Development workflow"
-              title="A clear path from discovery to growth."
-              description="Structured delivery with room for judgment — so quality and momentum stay aligned."
+              eyebrow="How we work with you"
+              title="A clear path — with room for honest conversation."
+              description="You always know what stage we are in, what happens next, and where your input matters. No black boxes. No disappearing acts."
             />
           </Reveal>
 
-          <ol className="relative mt-14 space-y-0 md:hidden">
+          <ol className="relative mt-12 space-y-0 sm:mt-16 md:hidden">
             <div
               className="absolute bottom-2 left-[15px] top-2 w-px bg-uv-border"
               aria-hidden
@@ -213,10 +225,10 @@ export function WhyUandvPage() {
                   {String(index + 1).padStart(2, '0')}
                 </div>
                 <div className="min-w-0 flex-1 pt-0.5">
-                  <h3 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
+                  <MarketingCardTitle className="text-lg">
                     {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
+                  </MarketingCardTitle>
+                  <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     {step.description}
                   </p>
                 </div>
@@ -224,7 +236,7 @@ export function WhyUandvPage() {
             ))}
           </ol>
 
-          <ol className="mt-14 hidden gap-4 md:grid md:grid-cols-4">
+          <ol className="mt-12 hidden gap-4 sm:mt-16 md:grid md:grid-cols-4">
             {whyWorkflow.map((step, index) => (
               <Reveal key={step.title} delayMs={index * 35}>
                 <li className="relative h-full">
@@ -238,10 +250,10 @@ export function WhyUandvPage() {
                     <p className="font-[family-name:var(--font-uv-display)] text-2xl font-bold tracking-tight text-uv-brand/35">
                       {String(index + 1).padStart(2, '0')}
                     </p>
-                    <h3 className="mt-3 font-[family-name:var(--font-uv-display)] text-base font-semibold text-uv-foreground">
+                    <MarketingCardTitle className="mt-3 text-base sm:text-lg">
                       {step.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
+                    </MarketingCardTitle>
+                    <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                       {step.description}
                     </p>
                   </article>
@@ -249,22 +261,23 @@ export function WhyUandvPage() {
               </Reveal>
             ))}
           </ol>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
+      <MarketingSection
         id="stay"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
+        tone="subtle"
+        aria-label="Why clients stay with U and V"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
-              eyebrow="Why clients stay with U&V"
-              title="We don't disappear after delivery."
-              description="We help optimize, scale, automate, and continuously improve — so your systems and business keep moving forward together."
+              eyebrow="Why clients stay"
+              title="The relationship does not end at launch."
+              description="The businesses that thrive are the ones with a partner who keeps showing up — to fix friction, improve results, and plan the next chapter."
             />
           </Reveal>
-          <div className="mt-14 grid gap-4 lg:grid-cols-2">
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:gap-6 lg:grid-cols-2">
             {whyClientsStay.map((item, index) => (
               <Reveal key={item.title} delayMs={index * 50}>
                 <article className="h-full rounded-uv-2xl border border-uv-border bg-uv-background p-6 sm:p-8">
@@ -273,9 +286,9 @@ export function WhyUandvPage() {
                       <Icon name="Check" />
                     </div>
                     <div>
-                      <h3 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
+                      <MarketingCardTitle>
                         {item.title}
-                      </h3>
+                      </MarketingCardTitle>
                       <p className="mt-3 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                         {item.description}
                       </p>
@@ -286,57 +299,46 @@ export function WhyUandvPage() {
             ))}
           </div>
           <Reveal>
-            <p className="mx-auto mt-12 max-w-2xl text-center font-[family-name:var(--font-uv-display)] text-xl font-semibold tracking-tight text-uv-foreground sm:text-2xl">
-              Software is the beginning.
-              <br className="hidden sm:block" /> Partnership is the advantage.
+            <p className="mx-auto mt-12 max-w-2xl text-center font-[family-name:var(--font-uv-display)] text-xl font-semibold leading-snug tracking-tight text-uv-foreground sm:mt-16 sm:text-2xl">
+              Anyone can promise a project.
+              <br className="hidden sm:block" /> We show up for the business behind it.
             </p>
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section
-        id="start"
-        className="scroll-mt-20 bg-uv-background py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background-subtle px-6 py-10 sm:px-10 sm:py-14">
+      <MarketingSection id="start" tone="default" className="border-b-0">
+        <MarketingPageContainer>
+          <MarketingCtaPanel className="sm:py-14">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
-                <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                  Final CTA
-                </p>
-                <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
-                  Let&apos;s Build Something Extraordinary Together.
-                </h2>
+                <MarketingEyebrow>Start a conversation</MarketingEyebrow>
+                <MarketingSectionTitle className="mt-3">
+                  Ready to see if U&amp;V is the right partner for you?
+                </MarketingSectionTitle>
                 <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Share what you are building. We will recommend a practical next
-                  step across consulting, product, AI, or growth — as a long-term
-                  partner, not a one-time vendor.
+                  Tell us where you are today and what you are trying to achieve.
+                  We will give you an honest view of the next step — even if that
+                  means waiting, starting smaller, or pointing you elsewhere.
                 </p>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link
-                  href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
-                >
-                  Start Your Project
-                </Link>
-                <a
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+                <MarketingButtonLink href={contactInquiryHref}>
+                  Book a Free Consultation
+                </MarketingButtonLink>
+                <MarketingButtonLink
                   href={siteConfig.whatsapp}
+                  variant="outline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
-                  )}
                 >
                   Chat on WhatsApp
-                </a>
+                </MarketingButtonLink>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </div>
+          </MarketingCtaPanel>
+        </MarketingPageContainer>
+      </MarketingSection>
+    </MarketingContentPage>
   );
 }

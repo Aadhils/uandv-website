@@ -2,68 +2,75 @@ import type { IconName } from '@uandv/ui';
 
 export const mlmWhyUandv = [
   {
-    title: 'From idea to expansion',
+    title: 'A technology partner — not a template seller',
     description:
-      'U&V supports MLM founders across planning, plan design, platform build, launch readiness, and ongoing optimization — not just a one-time software install.',
+      'U&V supports MLM founders across plan decisions, platform design, launch readiness, and long-term operations — not a one-time software install and goodbye.',
   },
   {
-    title: 'Compensation clarity first',
+    title: 'Compensation clarity before code',
     description:
-      'We help you validate how earnings should work before encoding fragile rules into software that becomes expensive to undo.',
+      'We help you validate how earnings should work before rules are locked into software that becomes expensive and risky to change later.',
   },
   {
-    title: 'Technology with operating judgment',
+    title: 'Built for how networks actually run',
     description:
-      'Member experience, admin controls, payouts, KYC, and reporting are designed around how network businesses actually run day to day.',
+      'Member experience, admin controls, payouts, KYC, and reporting are designed around daily operations — transparency, audits, and support load included.',
   },
   {
-    title: 'Long-term growth partnership',
+    title: 'Partnership after launch',
     description:
-      'After launch we continue as a consulting and technology partner for adoption, automation, marketing systems, and scale planning.',
+      'We stay involved for stabilization, automation, compliance-minded improvements, and scaling decisions as your organisation grows.',
   },
 ];
 
 export const mlmConsulting = [
   {
-    title: 'Business Model Analysis',
-    description:
-      'Clarify product economics, distributor roles, acquisition paths, and what the company must get right before software decisions.',
+    title: 'Business model analysis',
+    problem: 'The model is unclear before anyone talks about software.',
+    outcome:
+      'Clarify product economics, distributor roles, and acquisition paths so technology follows sound business decisions.',
     icon: 'Search' as IconName,
   },
   {
-    title: 'Compensation Plan Review',
-    description:
-      'Pressure-test plan logic for clarity, sustainability, and explainability so members and admins can trust calculations.',
+    title: 'Compensation plan review',
+    problem: 'Plan logic is hard to explain — or hard to sustain as volume grows.',
+    outcome:
+      'Pressure-test earnings rules for clarity, fairness, and explainability members and admins can trust.',
     icon: 'Network' as IconName,
   },
   {
-    title: 'Risk Analysis',
-    description:
-      'Surface operational, payout, and adoption risks early — including edge cases that break poorly designed commission engines.',
+    title: 'Risk analysis',
+    problem: 'Edge cases and payout scenarios are not understood before launch.',
+    outcome:
+      'Surface operational, fraud, and commission-engine risks early — before they become public disputes.',
     icon: 'CircleAlert' as IconName,
   },
   {
-    title: 'Profitability Analysis',
-    description:
-      'Examine contribution margins, payout load, and unit economics so growth plans stay financially coherent.',
+    title: 'Profitability analysis',
+    problem: 'Growth plans outpace what the economics can support.',
+    outcome:
+      'Examine margins, payout load, and unit economics so expansion stays financially coherent.',
     icon: 'Layers' as IconName,
   },
   {
-    title: 'Growth Strategy',
-    description:
-      'Sequence launch markets, onboarding, training, and digital channels so expansion is deliberate instead of chaotic.',
+    title: 'Growth sequencing',
+    problem: 'Launch and expansion feel chaotic without a deliberate order of operations.',
+    outcome:
+      'Sequence markets, onboarding, training, and channels so scale is controlled — not rushed.',
     icon: 'Rocket' as IconName,
   },
   {
-    title: 'Fraud Prevention',
-    description:
-      'Design controls for duplicate accounts, abnormal activity patterns, and payout anomalies with practical admin workflows.',
+    title: 'Fraud prevention design',
+    problem: 'Duplicate accounts and abnormal patterns threaten payout integrity.',
+    outcome:
+      'Practical controls and admin workflows to detect issues before they spread.',
     icon: 'Eye' as IconName,
   },
   {
-    title: 'Legal Readiness Guidance',
-    description:
-      'Help founders prepare documentation, disclosures, and operating checklists. We provide practical readiness support — not legal representation.',
+    title: 'Legal readiness guidance',
+    problem: 'Founders are unsure what documentation and disclosures they need before operating.',
+    outcome:
+      'Practical readiness checklists and operating discipline — we support preparation, not legal representation.',
     icon: 'Briefcase' as IconName,
   },
 ];
@@ -72,172 +79,285 @@ export const compensationPlans = [
   {
     title: 'Binary',
     bestFor:
-      'Teams that want dual-leg structures with pairing dynamics and strong volume focus.',
+      'Dual-leg structures where pairing dynamics and volume rules need careful documentation.',
   },
   {
     title: 'Referral',
     bestFor:
-      'Simple direct-sponsor models where clarity and fast onboarding matter more than deep depth complexity.',
+      'Direct-sponsor models prioritising clarity and straightforward onboarding.',
   },
   {
     title: 'Unilevel',
     bestFor:
-      'Organizations that reward multiple levels of depth with relatively straightforward lineage rules.',
+      'Organisations rewarding multiple depth levels with relatively transparent lineage rules.',
   },
   {
     title: 'Matrix',
     bestFor:
-      'Plans that need fixed-width/depth structures and predictable placement behavior.',
+      'Fixed-width or depth structures needing predictable placement behaviour.',
   },
   {
     title: 'Board',
     bestFor:
-      'Cycle-based advancement models where members progress through board stages over time.',
+      'Cycle-based advancement where members progress through defined board stages.',
   },
   {
     title: 'Generation',
     bestFor:
-      'Leadership-oriented plans that reward generational breakthroughs and deeper organizational strength.',
+      'Leadership-focused plans rewarding generational depth with strong governance needs.',
   },
   {
     title: 'Hybrid',
     bestFor:
-      'Businesses combining multiple plan mechanics when one pure model cannot express the strategy.',
+      'Models combining mechanics when a single standard plan cannot express the strategy safely.',
   },
   {
     title: 'Australian X-Up',
     bestFor:
-      'Referral-driven structures with forced/pass-up mechanics that need careful rule documentation.',
+      'Referral structures with pass-up mechanics that require rigorous rule documentation.',
   },
   {
     title: 'Monoline',
     bestFor:
-      'Single-line growth models that prioritize simplicity and sequential placement logic.',
+      'Single-line placement models prioritising simplicity and sequential logic.',
   },
   {
-    title: 'Custom Compensation Plan',
+    title: 'Custom plan',
     bestFor:
-      'Founders with unique product economics, ranks, or payout policies that standard templates cannot cover.',
+      'Unique ranks, products, or payout policies that need bespoke — but tested — engineering.',
   },
 ];
 
 export const softwareModules = [
-  { title: 'Member Panel', description: 'Self-serve views for profile, team, earnings, and announcements.', icon: 'Users' as IconName },
-  { title: 'Admin Panel', description: 'Operational controls for members, plans, support, and configuration.', icon: 'Settings' as IconName },
-  { title: 'E-Wallet', description: 'Balances, transfers, and withdrawal requests with approval workflows.', icon: 'Wallet' as IconName },
-  { title: 'Income Engine', description: 'Rank, bonus, and income event processing aligned to plan rules.', icon: 'Sparkles' as IconName },
-  { title: 'Commission Engine', description: 'Auditable commission calculations with history for investigations.', icon: 'Workflow' as IconName },
-  { title: 'KYC', description: 'Verification steps and document status tracking for member readiness.', icon: 'Check' as IconName },
-  { title: 'Payment Gateway', description: 'Deposit and payout integrations suited to your operating markets.', icon: 'CreditCard' as IconName },
-  { title: 'SMS', description: 'Transactional alerts for critical account and payout events.', icon: 'MessageCircle' as IconName },
-  { title: 'WhatsApp', description: 'Member and ops communication hooks for markets where WhatsApp is primary.', icon: 'Phone' as IconName },
-  { title: 'Notifications', description: 'In-app and push-ready alerts for actions that need attention.', icon: 'Bell' as IconName },
-  { title: 'Reports', description: 'Operational exports for payouts, genealogy, and support audits.', icon: 'FileText' as IconName },
-  { title: 'Analytics', description: 'Growth and activity visibility for leadership decision-making.', icon: 'Search' as IconName },
-  { title: 'AI Dashboard', description: 'Practical AI-assisted insights for anomalies, summaries, and ops support.', icon: 'Bot' as IconName },
+  {
+    title: 'Member panel',
+    description:
+      'Self-serve views for profile, team, earnings history, and announcements — built for transparency.',
+    icon: 'Users' as IconName,
+  },
+  {
+    title: 'Admin panel',
+    description:
+      'Operational control for members, plans, support queues, and configuration without fragile workarounds.',
+    icon: 'Settings' as IconName,
+  },
+  {
+    title: 'E-wallet',
+    description:
+      'Balances, transfers, and withdrawal requests with approval workflows finance teams can govern.',
+    icon: 'Wallet' as IconName,
+  },
+  {
+    title: 'Income engine',
+    description:
+      'Rank, bonus, and income events processed consistently against documented plan rules.',
+    icon: 'Sparkles' as IconName,
+  },
+  {
+    title: 'Commission engine',
+    description:
+      'Auditable calculations and history so disputes can be investigated with evidence.',
+    icon: 'Workflow' as IconName,
+  },
+  {
+    title: 'KYC',
+    description:
+      'Verification steps and document status so onboarding and withdrawals follow your policy.',
+    icon: 'Check' as IconName,
+  },
+  {
+    title: 'Payment gateway',
+    description:
+      'Deposit and payout integrations planned around your markets and settlement needs.',
+    icon: 'CreditCard' as IconName,
+  },
+  {
+    title: 'SMS alerts',
+    description:
+      'Transactional messages for critical account and payout events members must not miss.',
+    icon: 'MessageCircle' as IconName,
+  },
+  {
+    title: 'WhatsApp',
+    description:
+      'Communication hooks for markets where WhatsApp is part of legitimate member updates.',
+    icon: 'Phone' as IconName,
+  },
+  {
+    title: 'Notifications',
+    description:
+      'In-app alerts for actions requiring attention — reducing support confusion.',
+    icon: 'Bell' as IconName,
+  },
+  {
+    title: 'Reports',
+    description:
+      'Exports for payouts, genealogy, and audits leadership and finance can rely on.',
+    icon: 'FileText' as IconName,
+  },
+  {
+    title: 'Analytics',
+    description:
+      'Activity and growth visibility for leadership decisions — without vanity metrics.',
+    icon: 'Search' as IconName,
+  },
+  {
+    title: 'AI-assisted insights',
+    description:
+      'Practical support for anomaly detection, summaries, and ops efficiency — with human oversight.',
+    icon: 'Bot' as IconName,
+  },
 ];
 
 export const mlmGrowthServices = [
-  { title: 'Website', href: '/services/website-development', icon: 'Globe' as IconName },
-  { title: 'Android App', href: '/services/mobile-app-development', icon: 'Smartphone' as IconName },
-  { title: 'iOS App', href: '/services/mobile-app-development', icon: 'Smartphone' as IconName },
-  { title: 'Branding', href: '/services/branding-logo-design', icon: 'Palette' as IconName },
-  { title: 'Digital Marketing', href: '/solutions/digital-marketing', icon: 'Megaphone' as IconName },
-  { title: 'SEO', href: '/solutions/digital-marketing', icon: 'Search' as IconName },
-  { title: 'AI Automation', href: '/services/ai-automation', icon: 'Bot' as IconName },
-  { title: 'CRM', href: '/services/crm-software', icon: 'Users' as IconName },
-  { title: 'ERP', href: '/services/erp-software', icon: 'Layers' as IconName },
-  { title: 'Training', href: '/business', icon: 'Rocket' as IconName },
+  {
+    title: 'Website',
+    description: 'Credible public presence and enquiry paths for distributors and prospects.',
+    href: '/services/website-development',
+    icon: 'Globe' as IconName,
+  },
+  {
+    title: 'Mobile apps',
+    description: 'Member experiences on Android and iOS when your operating model requires them.',
+    href: '/services/mobile-app-development',
+    icon: 'Smartphone' as IconName,
+  },
+  {
+    title: 'Branding',
+    description: 'Professional identity that supports trust in regulated-sensitive markets.',
+    href: '/services/branding-logo-design',
+    icon: 'Palette' as IconName,
+  },
+  {
+    title: 'Digital marketing',
+    description: 'Demand systems connected to compliant messaging and follow-up.',
+    href: '/digital-marketing',
+    icon: 'Megaphone' as IconName,
+  },
+  {
+    title: 'SEO',
+    description: 'Long-term discoverability without over-promising income outcomes.',
+    href: '/digital-marketing',
+    icon: 'Search' as IconName,
+  },
+  {
+    title: 'AI automation',
+    description: 'Reduce manual ops load in support, reporting, and repetitive workflows.',
+    href: '/services/ai-automation',
+    icon: 'Bot' as IconName,
+  },
+  {
+    title: 'CRM',
+    description: 'Lead and distributor conversations tracked with clear ownership.',
+    href: '/services/crm-software',
+    icon: 'Users' as IconName,
+  },
+  {
+    title: 'ERP',
+    description: 'Inventory, finance, and operations aligned when product logistics matter.',
+    href: '/services/erp-software',
+    icon: 'Layers' as IconName,
+  },
+  {
+    title: 'Training & enablement',
+    description: 'Launch and admin training so teams operate the platform confidently.',
+    href: '/business-solutions',
+    icon: 'Rocket' as IconName,
+  },
 ];
 
 export const mlmPartnershipTimeline = [
   {
     title: 'Consult',
-    description: 'Understand the model, markets, risks, and success criteria.',
+    description: 'Understand the model, compliance context, risks, and what success must look like.',
   },
   {
     title: 'Design',
-    description: 'Shape compensation logic, architecture, UX, and operating controls.',
+    description: 'Shape compensation logic, scalable architecture, UX, and operating controls.',
   },
   {
     title: 'Develop',
-    description: 'Build modules with validation against real payout scenarios.',
+    description: 'Build and validate against real payout scenarios and security requirements.',
   },
   {
     title: 'Launch',
-    description: 'Go live with training, checklists, and controlled rollout support.',
+    description: 'Go live with training, documentation, and controlled rollout support.',
   },
   {
     title: 'Support',
-    description: 'Stabilize adoption, answer edge cases, and keep operations smooth.',
+    description: 'Stabilize adoption, resolve edge cases, and keep operations dependable.',
   },
   {
     title: 'Optimize',
-    description: 'Improve performance, clarity, automation, and member experience.',
+    description: 'Improve performance, automation, transparency, and member experience.',
   },
   {
     title: 'Scale',
-    description: 'Expand markets, capabilities, and systems as the network grows.',
+    description: 'Expand capabilities and markets when the business — and economics — are ready.',
   },
 ];
 
-/** U&V MLM Success Roadmap™ — journey from idea to long-term partnership */
+/** Long-term partnership journey — from plan decisions to scalable platform */
 export const mlmSuccessRoadmap = [
   {
     step: '01',
-    title: 'Business Vision',
-    description: 'Understand products, market and founder goals.',
+    title: 'Business vision',
+    description:
+      'Clarify products, markets, and founder goals — without income hype or unrealistic promises.',
   },
   {
     step: '02',
-    title: 'Compensation Strategy',
+    title: 'Compensation strategy',
     description:
-      'Analyze every compensation model. Recommend the most sustainable approach.',
+      'Compare plan options and recommend a sustainable structure your economics can support.',
   },
   {
     step: '03',
-    title: 'Business Risk Review',
+    title: 'Risk review',
     description:
-      'Identify payout risks, fraud risks, cash flow risks and scaling challenges.',
+      'Identify payout, fraud, cash-flow, and scaling risks before they are encoded in software.',
   },
   {
     step: '04',
-    title: 'Platform Architecture',
+    title: 'Platform architecture',
     description:
-      'Design Admin, Member, Wallet, Commission Engine, Mobile Apps, Integrations.',
+      'Design admin, member, wallet, commission, mobile, and integration layers for long-term scale.',
   },
   {
     step: '05',
     title: 'Development',
-    description: 'Production-quality software.',
+    description:
+      'Engineer production-quality software with clear milestones and accountable ownership.',
   },
   {
     step: '06',
-    title: 'Testing & Validation',
+    title: 'Testing & validation',
     description:
-      'Simulate commissions, large member trees, edge cases, security.',
+      'Simulate commissions, large genealogies, edge cases, and security scenarios before go-live.',
   },
   {
     step: '07',
     title: 'Launch',
-    description: 'Deployment, training, documentation, go-live support.',
+    description:
+      'Deployment, training, documentation, and go-live support your team can rely on.',
   },
   {
     step: '08',
-    title: 'Business Growth',
-    description: 'SEO, branding, AI, marketing, CRM.',
+    title: 'Operational growth',
+    description:
+      'Branding, marketing systems, CRM, and automation that support — not replace — compliant operations.',
   },
   {
     step: '09',
-    title: 'Global Expansion',
+    title: 'Market expansion',
     description:
-      'Multi-language, multi-currency, cloud, country-specific customization.',
+      'Multi-language, currency, and regional customization when your business is ready — not before.',
   },
   {
     step: '10',
-    title: 'Long-Term Partnership',
+    title: 'Long-term partnership',
     description:
-      'Continuous updates, feature development, consulting, new compensation models, business scaling.',
+      'Continuous improvement, new modules, plan evolution, and consulting as your network matures.',
   },
 ] as const;
 
@@ -245,32 +365,32 @@ export const mlmFaqs = [
   {
     question: 'What makes U&V different from a generic MLM software vendor?',
     answer:
-      'We partner across consulting, compensation design, platform delivery, and post-launch growth. Software is one part of a longer business journey — not the only deliverable.',
+      'We partner across consulting, compensation design, platform delivery, and post-launch operations. Software is one part of building a sustainable network business — not the only deliverable.',
   },
   {
     question: 'Do you only sell ready-made MLM templates?',
     answer:
-      'No. We can start from proven module foundations, but compensation rules, workflows, and controls are adapted to your model. Fully custom plans are supported.',
+      'No. We can start from proven module foundations, but compensation rules, workflows, and controls are adapted to your model. Fully custom plans are supported when economics require it.',
   },
   {
     question: 'Can you implement our exact compensation plan?',
     answer:
-      'Yes. We document rules carefully, validate sample networks, and encode the plan so calculations remain explainable and auditable.',
+      'Yes. We document rules carefully, validate sample networks, and encode the plan so calculations remain explainable and auditable for members and admins.',
   },
   {
     question: 'Which compensation plans can you support?',
     answer:
-      'Binary, referral, unilevel, matrix, board, generation, hybrid, Australian X-Up, monoline, and custom plans designed around your business rules.',
+      'Binary, referral, unilevel, matrix, board, generation, hybrid, Australian X-Up, monoline, and custom plans designed around your documented business rules.',
   },
   {
     question: 'Will members be able to understand their earnings?',
     answer:
-      'That is a core design goal. Dashboards and history should help members and admins trace how income was calculated instead of guessing.',
+      'That is a core design goal. Dashboards and history should help members and admins trace how income was calculated — transparency reduces disputes and support load.',
   },
   {
     question: 'Do you help before software development starts?',
     answer:
-      'Yes. Many engagements begin with business model analysis, plan review, risk checks, and architecture so development starts from clear decisions.',
+      'Yes. Many engagements begin with business model analysis, plan review, risk checks, and architecture so development starts from clear, stable decisions.',
   },
   {
     question: 'Can you review an existing compensation plan for risk?',
@@ -285,12 +405,12 @@ export const mlmFaqs = [
   {
     question: 'What modules are typically included?',
     answer:
-      'Common modules include member and admin panels, e-wallet, income and commission engines, KYC, payments, messaging, notifications, reports, analytics, and AI-assisted dashboards.',
+      'Common modules include member and admin panels, e-wallet, income and commission engines, KYC, payments, messaging, notifications, reports, analytics, and AI-assisted operational insights.',
   },
   {
     question: 'Can the platform support mobile apps?',
     answer:
-      'Yes. Member experiences can be delivered through responsive web plus Android and iOS apps when your growth plan requires them.',
+      'Yes. Member experiences can be delivered through responsive web plus Android and iOS apps when your operating model requires them.',
   },
   {
     question: 'How do payouts and wallets work?',
@@ -310,7 +430,7 @@ export const mlmFaqs = [
   {
     question: 'Can admins investigate disputed commissions?',
     answer:
-      'Audit-friendly calculation history and operational reports are part of a production-minded commission design so disputes can be reviewed with evidence.',
+      'Audit-friendly calculation history and operational reports are part of production-minded commission design so disputes can be reviewed with evidence.',
   },
   {
     question: 'Do you support WhatsApp and SMS notifications?',
@@ -320,7 +440,7 @@ export const mlmFaqs = [
   {
     question: 'What happens after launch?',
     answer:
-      'We support stabilization, adoption, optimization, and roadmap evolution. U&V is structured as a long-term growth partner, not a handoff-and-disappear vendor.',
+      'We support stabilization, adoption, optimization, and roadmap evolution. U&V is structured as a long-term technology and business partner.',
   },
   {
     question: 'Can you help with website, branding, and marketing too?',
@@ -330,7 +450,7 @@ export const mlmFaqs = [
   {
     question: 'How long does an MLM platform engagement take?',
     answer:
-      'Timelines depend on plan complexity, modules, integrations, and content readiness. After discovery we provide a phased plan with clear milestones.',
+      'Timelines depend on plan complexity, modules, integrations, and content readiness. After discovery we provide a phased plan with clear milestones — no unrealistic speed promises.',
   },
   {
     question: 'Can you migrate from an existing MLM system?',
@@ -340,6 +460,6 @@ export const mlmFaqs = [
   {
     question: 'How do we get started?',
     answer:
-      'Book a free MLM consultation. Share your model, plan draft, and goals. We will recommend whether to refine the plan, build, or sequence both with a practical roadmap.',
+      'Book a free MLM platform consultation. Share your model, plan draft, and constraints. We will recommend whether to refine the plan, build, or sequence both with a practical roadmap.',
   },
 ];

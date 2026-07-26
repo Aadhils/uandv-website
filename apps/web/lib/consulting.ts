@@ -2,154 +2,154 @@ import type { IconName } from '@uandv/ui';
 
 export const consultingProcess = [
   {
-    title: 'Business Discovery',
+    title: 'Understand your reality',
     description:
-      'We learn your goals, constraints, customers, and what success must look like before recommending any build.',
+      'We listen to where you are today — your customers, daily bottlenecks, and what growth should actually feel like for your team.',
     icon: 'Search' as IconName,
   },
   {
-    title: 'Market Analysis',
+    title: 'See where you stand',
     description:
-      'We clarify the competitive landscape, buyer journeys, and opportunities that should shape product and growth priorities.',
+      'Clarify who you are competing with and where the real opportunities are — before you invest time, money, or energy in the wrong direction.',
     icon: 'Globe' as IconName,
   },
   {
-    title: 'Technology Planning',
+    title: 'Invest with confidence',
     description:
-      'We map systems, integrations, and build-versus-buy decisions so technology investment stays aligned with business outcomes.',
+      'Decide what to build, buy, or postpone so every decision moves you closer to results — not more complexity to manage.',
     icon: 'Cpu' as IconName,
   },
   {
-    title: 'Solution Architecture',
+    title: 'Design for how you work',
     description:
-      'We design a practical architecture — modules, data flows, roles, and scalability — that your team can operate and extend.',
+      'Plan systems your team can run day to day — and grow into as enquiries, orders, and headcount increase.',
     icon: 'Layers' as IconName,
   },
   {
-    title: 'UI/UX Strategy',
+    title: 'Make it easy to buy from you',
     description:
-      'We define the experience principles, flows, and interface priorities that make products usable for real customers and staff.',
+      'Remove friction for customers and staff so enquiries convert, follow-ups happen on time, and fewer opportunities slip away.',
     icon: 'Palette' as IconName,
   },
   {
-    title: 'Development',
+    title: 'Build what matters',
     description:
-      'We engineer production-quality software with clear milestones, demos, and documentation throughout delivery.',
+      'Turn the plan into working systems with clear milestones — so progress is visible and your team sees value along the way.',
     icon: 'Code2' as IconName,
   },
   {
-    title: 'Testing',
+    title: 'Ready for real life',
     description:
-      'We validate quality across functionality, performance, security basics, and real operating scenarios before release.',
+      'Pressure-test before launch so opening day runs smoothly — not as a scramble your team has to recover from.',
     icon: 'Check' as IconName,
   },
   {
-    title: 'Launch',
+    title: 'Go live without the chaos',
     description:
-      'We support go-live with deployment readiness, training, and a controlled rollout plan that reduces launch-day risk.',
+      'Train your people, phase the rollout, and start seeing value from day one — with support when questions come up.',
     icon: 'Rocket' as IconName,
   },
   {
-    title: 'Growth Support',
+    title: 'Turn momentum into revenue',
     description:
-      'After launch, we help optimize adoption, campaigns, automation, and product iteration based on real usage.',
+      'Improve adoption, follow-up, and outreach after launch so the investment keeps paying off — not sitting unused.',
     icon: 'Megaphone' as IconName,
   },
   {
-    title: 'Continuous Improvement',
+    title: 'Scale without starting over',
     description:
-      'We stay engaged as a long-term partner — refining systems, adding capabilities, and improving outcomes over time.',
+      'Refine, automate, and expand as your business grows — with a partner who already understands your story and goals.',
     icon: 'Sparkles' as IconName,
   },
 ];
 
 export const growthServices = [
   {
-    title: 'Software Consulting',
+    title: 'Stop guessing what to build next',
     description:
-      'Clarify what to build, what to postpone, and how systems should support operations without creating technical debt.',
+      'Get a clear plan for systems that save time, reduce errors, and support growth — without unnecessary complexity or wasted spend.',
     href: '/services/custom-software-development',
     icon: 'Code2' as IconName,
   },
   {
-    title: 'Startup Consulting',
+    title: 'From idea to first paying customer',
     description:
-      'Turn ideas into sequenced plans across registration, branding, product, and first-customer readiness.',
-    href: '/services/startup-business-consulting',
+      'Move from concept to registered business, credible brand, and a launch you are proud to show investors or customers.',
+    href: '/startup',
     icon: 'Rocket' as IconName,
   },
   {
-    title: 'MLM Consulting',
+    title: 'Run your network with confidence',
     description:
-      'Advise on network marketing platforms, commission transparency, member experience, and operational controls.',
-    href: '/solutions/mlm-software',
+      'Keep distributors informed, commissions transparent, and day-to-day operations under control as your organisation scales.',
+    href: '/mlm',
     icon: 'Network' as IconName,
   },
   {
-    title: 'AI Transformation',
+    title: 'Free your team from repetitive work',
     description:
-      'Identify high-leverage automation opportunities with guardrails, integrations, and measurable workflow impact.',
+      'Replace manual follow-ups, data entry, and busywork with practical automation your team can trust and measure.',
     href: '/services/ai-automation',
     icon: 'Bot' as IconName,
   },
   {
-    title: 'ERP & CRM Consulting',
+    title: 'Never miss an enquiry or lose track of stock',
     description:
-      'Align inventory, sales, and customer workflows so teams share one operational picture instead of fragmented tools.',
+      'Keep every customer conversation, order, and inventory update in one place — so nothing falls through the cracks.',
     href: '/services/erp-software',
     icon: 'Layers' as IconName,
   },
   {
-    title: 'Digital Growth Strategy',
+    title: 'Turn attention into enquiries',
     description:
-      'Connect offer clarity, website experience, channels, and follow-up systems so demand can convert into pipeline.',
-    href: '/solutions/digital-marketing',
+      'Clarify your offer, improve how you show up online, and build follow-up that turns interest into steady pipeline.',
+    href: '/digital-marketing',
     icon: 'Megaphone' as IconName,
   },
 ];
 
 export const whyChooseConsulting = [
   {
-    title: 'Partnership over project handoff',
+    title: "We don't disappear after delivery",
     description:
-      'We stay accountable beyond delivery — helping you adopt, improve, and grow the systems we build together.',
+      'You get a partner who helps your team adopt, improve, and grow what we build together — not a vendor chasing the next project.',
   },
   {
-    title: 'Business judgment before technology',
+    title: 'Your business first, tools second',
     description:
-      'Software is a means, not the goal. We start with markets, workflows, and outcomes so builds create real leverage.',
+      'We advise on what will actually move revenue, retention, and operations — not what sounds impressive in a proposal.',
   },
   {
-    title: 'One coordinated team',
+    title: 'One partner, fewer headaches',
     description:
-      'Strategy, product, AI, and growth stay aligned under one roof — fewer handoffs, clearer ownership, faster decisions.',
+      'Strategy, branding, product, and growth stay aligned under one roof — so you are not repeating the same story to five agencies.',
   },
   {
-    title: 'Practical, production-minded delivery',
+    title: 'Built for how you operate',
     description:
-      'We favor maintainable architecture, clear documentation, and operating reality over buzzwords and disposable demos.',
+      'Systems shaped around your real workflows and daily pressure — documented clearly and ready for the pace of real business.',
   },
 ];
 
 export const partnershipModel = [
   {
-    title: 'Launch stabilization',
+    title: 'Settle in after go-live',
     description:
-      'In the first weeks after go-live, we help resolve friction, train users, and confirm the system works in real conditions.',
+      'In the first weeks, we help your team work confidently — fixing friction before it becomes an expensive habit.',
   },
   {
-    title: 'Performance & adoption reviews',
+    title: "See what's working — and what isn't",
     description:
-      'We review usage, bottlenecks, and opportunities so improvements are driven by evidence — not guesswork.',
+      'Review real usage and bottlenecks so improvements come from evidence — not assumptions or guesswork.',
   },
   {
-    title: 'Roadmap evolution',
+    title: 'Grow the system as you grow',
     description:
-      'As your business changes, we plan the next modules, automations, and integrations in a prioritized sequence.',
+      'Plan the next improvements in order — moving from manual workarounds to smoother, more scalable operations.',
   },
   {
-    title: 'Ongoing advisory access',
+    title: 'A growth partner on call',
     description:
-      'You retain a technology and growth partner for decisions on product, AI, digital channels, and operational systems.',
+      'Keep one trusted team for product, marketing, automation, and operational decisions as your business evolves.',
   },
 ];

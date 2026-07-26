@@ -1,53 +1,71 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 import { Icon, buttonVariants, cn } from '@uandv/ui';
 
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import {
+  MarketingCard,
+  MarketingCtaPanel,
+  MarketingEyebrow,
+  MarketingHeroTitle,
+  MarketingIconBox,
+  MarketingLead,
+  MarketingPageContainer,
+  MarketingSection,
+} from '@/components/marketing/marketing-primitives';
+import {
+  MarketingContentPage,
+  MarketingPageHero,
+  MarketingPageHeroInner,
+} from '@/components/marketing/marketing-page-hero';
+import {
   getRelatedServices,
   type ServiceDefinition,
 } from '@/lib/services';
-import { siteConfig } from '@/lib/site';
+import { contactInquiryHref, siteConfig } from '@/lib/site';
 
-import { Breadcrumbs } from './breadcrumbs';
+import { Breadcrumbs, type BreadcrumbItem } from './breadcrumbs';
 import { ServiceIllustration } from './service-illustration';
-import { ServiceInquiryForm } from './service-inquiry-form';
 
-export function ServicePage({ service }: { service: ServiceDefinition }) {
+export function ServicePage({
+  service,
+  afterHero,
+  breadcrumbItems,
+}: {
+  service: ServiceDefinition;
+  afterHero?: ReactNode;
+  breadcrumbItems?: BreadcrumbItem[];
+}) {
   const related = getRelatedServices(service);
-  const inquiryId = 'inquiry';
+  const breadcrumbs = breadcrumbItems ?? [
+    { label: 'Home', href: '/' },
+    { label: 'Services', href: '/services' },
+    { label: service.title },
+  ];
 
   return (
-    <div className="marketing-grain flex-1">
-      <section className="border-b border-uv-border bg-uv-background">
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Services', href: '/services' },
-              { label: service.title },
-            ]}
-          />
+    <MarketingContentPage>
+      <MarketingPageHero>
+        <MarketingPageHeroInner>
+          <Breadcrumbs items={breadcrumbs} />
 
           <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                Our services
-              </p>
-              <h1 className="mt-4 font-[family-name:var(--font-uv-display)] text-4xl font-bold tracking-tight text-uv-foreground sm:text-5xl lg:text-[3.25rem]">
-                {service.title}
-              </h1>
-              <p className="mt-5 max-w-xl text-lg leading-relaxed text-uv-foreground-muted sm:text-xl">
-                {service.tagline}
-              </p>
+              <MarketingEyebrow>Our services</MarketingEyebrow>
+              <MarketingHeroTitle className="mt-4">{service.title}</MarketingHeroTitle>
+              <MarketingLead className="mt-5 max-w-xl">{service.tagline}</MarketingLead>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-uv-foreground-muted">
                 {service.summary}
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
-                  href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
+                  href={contactInquiryHref}
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'marketing-btn-glow justify-center',
+                  )}
                 >
                   Contact us
                 </Link>
@@ -66,11 +84,13 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
             </div>
             <ServiceIllustration name={service.illustration} />
           </div>
-        </div>
-      </section>
+        </MarketingPageHeroInner>
+      </MarketingPageHero>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {afterHero}
+
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Overview"
@@ -87,11 +107,11 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Features"
@@ -102,25 +122,25 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {service.features.map((feature, index) => (
               <Reveal key={feature.title} delayMs={index * 40}>
-                <article>
-                  <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
+                <MarketingCard>
+                  <MarketingIconBox className="mb-4">
                     <Icon name="Check" size="md" />
-                  </div>
+                  </MarketingIconBox>
                   <h3 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
                     {feature.title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
                     {feature.description}
                   </p>
-                </article>
+                </MarketingCard>
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Benefits"
@@ -145,11 +165,11 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Process"
@@ -174,11 +194,11 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
               </Reveal>
             ))}
           </ol>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Technologies"
@@ -198,11 +218,11 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
               ))}
             </ul>
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="marketing-faq border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle" className="marketing-faq">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="FAQ"
@@ -231,17 +251,15 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background-subtle px-6 py-10 sm:px-10 sm:py-12">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
+          <MarketingCtaPanel>
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
-                <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                  Next step
-                </p>
+                <MarketingEyebrow>Next step</MarketingEyebrow>
                 <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
                   Ready to discuss {service.shortTitle}?
                 </h2>
@@ -252,8 +270,11 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
+                  href={contactInquiryHref}
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'marketing-btn-glow justify-center',
+                  )}
                 >
                   Contact us
                 </Link>
@@ -270,13 +291,13 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </MarketingCtaPanel>
+        </MarketingPageContainer>
+      </MarketingSection>
 
       {related.length > 0 ? (
-        <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MarketingSection tone="subtle" className="border-b-0">
+          <MarketingPageContainer>
             <Reveal>
               <SectionHeading
                 eyebrow="Related services"
@@ -289,7 +310,7 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
                 <Reveal key={item.slug} delayMs={index * 50}>
                   <Link
                     href={`/services/${item.slug}`}
-                    className="group block rounded-uv-xl border border-uv-border bg-uv-background p-6 transition-colors hover:border-uv-brand/40 uv-focus-ring"
+                    className="group block rounded-uv-xl border border-uv-border bg-uv-background p-6 shadow-uv-sm transition-colors marketing-card-lift hover:border-uv-brand/40 uv-focus-ring"
                   >
                     <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand transition-transform duration-300 group-hover:-translate-y-0.5">
                       <Icon name={item.icon} size="md" />
@@ -308,48 +329,9 @@ export function ServicePage({ service }: { service: ServiceDefinition }) {
                 </Reveal>
               ))}
             </div>
-          </div>
-        </section>
+          </MarketingPageContainer>
+        </MarketingSection>
       ) : null}
-
-      <section
-        id={inquiryId}
-        className="scroll-mt-20 bg-uv-background py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <Reveal>
-              <SectionHeading
-                eyebrow="Inquiry"
-                title="Start a conversation about this service."
-                description="Share a few details and we will respond with recommended next steps."
-              />
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className={cn(
-                    buttonVariants({ size: 'md', variant: 'outline' }),
-                    'justify-center',
-                  )}
-                >
-                  Email {siteConfig.email}
-                </a>
-                <a
-                  href={siteConfig.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(buttonVariants({ size: 'md' }), 'justify-center')}
-                >
-                  WhatsApp
-                </a>
-              </div>
-            </Reveal>
-            <Reveal delayMs={100}>
-              <ServiceInquiryForm defaultServiceSlug={service.slug} />
-            </Reveal>
-          </div>
-        </div>
-      </section>
-    </div>
+    </MarketingContentPage>
   );
 }

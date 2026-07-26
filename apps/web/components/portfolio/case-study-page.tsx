@@ -2,6 +2,23 @@ import Link from 'next/link';
 
 import { Icon, buttonVariants, cn } from '@uandv/ui';
 
+import {
+  MarketingContentPage,
+  MarketingPageHero,
+  MarketingPageHeroInner,
+} from '@/components/marketing/marketing-page-hero';
+import {
+  MarketingButtonLink,
+  MarketingCard,
+  MarketingCtaPanel,
+  MarketingEyebrow,
+  MarketingHeroActions,
+  MarketingHeroTitle,
+  MarketingIconBox,
+  MarketingLead,
+  MarketingPageContainer,
+  MarketingSection,
+} from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
@@ -12,7 +29,7 @@ import {
   type CaseStudy,
 } from '@/lib/portfolio';
 import { getServiceBySlug } from '@/lib/services';
-import { siteConfig } from '@/lib/site';
+import { contactInquiryHref, siteConfig } from '@/lib/site';
 
 import { DemoProjectBadge } from './portfolio-card';
 
@@ -23,9 +40,9 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   return (
-    <div className="marketing-grain flex-1">
-      <section className="border-b border-uv-border bg-uv-background">
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8">
+    <MarketingContentPage>
+      <MarketingPageHero>
+        <MarketingPageHeroInner>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -37,63 +54,44 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
           <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
               <DemoProjectBadge />
-              <p className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                Case study
-              </p>
-              <h1 className="mt-4 break-words font-[family-name:var(--font-uv-display)] text-[1.75rem] font-bold tracking-tight text-uv-foreground sm:text-4xl md:text-5xl">
-                {study.title}
-              </h1>
+              <MarketingEyebrow className="mt-5">Case study</MarketingEyebrow>
+              <MarketingHeroTitle className="mt-4">{study.title}</MarketingHeroTitle>
               <p className="mt-4 text-lg text-uv-foreground-muted">
                 {study.businessType} · {study.industry}
               </p>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
+              <MarketingLead className="mt-4 max-w-xl text-base sm:text-lg">
                 {study.summary}
-              </p>
+              </MarketingLead>
               <p className="mt-4 max-w-xl text-sm text-uv-foreground-muted">
                 This page is a {DEMO_PROJECT_LABEL.toLowerCase()}. It illustrates
                 approach and expected business value — not a live client claim.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <MarketingHeroActions>
                 {demoHref ? (
-                  <Link
-                    href={demoHref}
-                    className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
-                  >
+                  <MarketingButtonLink href={demoHref}>
                     Live Demo
-                  </Link>
+                  </MarketingButtonLink>
                 ) : null}
-                <a
-                  href="#inquiry"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
-                  )}
-                >
+                <MarketingButtonLink href={contactInquiryHref} variant="outline">
                   Start Your Project
-                </a>
-                <a
+                </MarketingButtonLink>
+                <MarketingButtonLink
                   href={siteConfig.whatsapp}
+                  variant="secondary"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'secondary' }),
-                    'justify-center',
-                  )}
                 >
                   Chat on WhatsApp
-                </a>
-              </div>
+                </MarketingButtonLink>
+              </MarketingHeroActions>
             </div>
             <ServiceIllustration name={study.illustration} />
           </div>
-        </div>
-      </section>
+        </MarketingPageHeroInner>
+      </MarketingPageHero>
 
-      <section
-        id="live-demo"
-        className="scroll-mt-20 border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection id="live-demo" tone="subtle">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Live demo"
@@ -156,7 +154,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                       </Link>
                     ) : (
                       <a
-                        href="#inquiry"
+                        href={contactInquiryHref}
                         className={cn(
                           buttonVariants({ size: 'md' }),
                           'justify-center',
@@ -181,11 +179,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </div>
             </div>
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
+      <MarketingSection tone="subtle">
+        <MarketingPageContainer className="grid gap-10 lg:grid-cols-3">
           <Reveal>
             <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
               Client / business type
@@ -215,11 +213,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               ))}
             </ul>
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Objective"
@@ -227,11 +225,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               description={study.objective}
             />
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Challenge"
@@ -253,11 +251,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </Reveal>
             ))}
           </ul>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Solution"
@@ -279,11 +277,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Features"
@@ -308,11 +306,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Technology stack"
@@ -332,11 +330,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               ))}
             </ul>
           </Reveal>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Process"
@@ -361,11 +359,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </Reveal>
             ))}
           </ol>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Visuals"
@@ -396,11 +394,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="subtle">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Outcomes"
@@ -422,11 +420,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
-      <section className="border-b border-uv-border bg-uv-background py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <MarketingSection tone="default">
+        <MarketingPageContainer>
           <Reveal>
             <SectionHeading
               eyebrow="Timeline"
@@ -453,12 +451,12 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </MarketingPageContainer>
+      </MarketingSection>
 
       {relatedServices.length > 0 ? (
-        <section className="border-b border-uv-border bg-uv-background-subtle py-16 sm:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MarketingSection tone="subtle">
+          <MarketingPageContainer>
             <Reveal>
               <SectionHeading
                 eyebrow="Related services"
@@ -490,21 +488,16 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                 </Reveal>
               ))}
             </div>
-          </div>
-        </section>
+        </MarketingPageContainer>
+        </MarketingSection>
       ) : null}
 
-      <section
-        id="inquiry"
-        className="scroll-mt-20 bg-uv-background py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background-subtle px-6 py-10 sm:px-10 sm:py-12">
+      <MarketingSection id="inquiry" tone="default" className="border-b-0">
+        <MarketingPageContainer>
+          <MarketingCtaPanel className="sm:py-14">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
-                <p className="text-sm font-medium uppercase tracking-[0.18em] text-uv-brand">
-                  Next step
-                </p>
+                <MarketingEyebrow>Next step</MarketingEyebrow>
                 <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
                   Want a solution like this for your business?
                 </h2>
@@ -514,28 +507,22 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/contact"
-                  className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
-                >
+                <MarketingButtonLink href={contactInquiryHref}>
                   Book Consultation
-                </Link>
-                <a
+                </MarketingButtonLink>
+                <MarketingButtonLink
                   href={siteConfig.whatsapp}
+                  variant="outline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
-                  )}
                 >
                   Chat on WhatsApp
-                </a>
+                </MarketingButtonLink>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </div>
+          </MarketingCtaPanel>
+        </MarketingPageContainer>
+      </MarketingSection>
+    </MarketingContentPage>
   );
 }

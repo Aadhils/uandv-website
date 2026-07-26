@@ -149,7 +149,7 @@ export function MlmLoginScreen() {
 
         <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
           <Link
-            href="/solutions/mlm-software"
+            href="/mlm"
             className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
           >
             MLM Solutions

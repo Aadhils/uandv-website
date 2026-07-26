@@ -2,16 +2,17 @@ import { Icon } from '@uandv/ui';
 
 import { faqs } from '@/lib/content';
 
+import {
+  MarketingPageContainer,
+  MarketingSection,
+} from './marketing-primitives';
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
 
 export function Faq() {
   return (
-    <section
-      id="faq"
-      className="marketing-faq scroll-mt-20 border-b border-uv-border bg-uv-background py-16 sm:py-24"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <MarketingSection id="faq" tone="default" className="marketing-faq border-b-0">
+      <MarketingPageContainer>
         <Reveal>
           <SectionHeading
             eyebrow="FAQ"
@@ -41,7 +42,7 @@ export function Faq() {
             </Reveal>
           ))}
         </div>
-      </div>
-    </section>
+      </MarketingPageContainer>
+    </MarketingSection>
   );
 }

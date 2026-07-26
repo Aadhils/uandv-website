@@ -5,13 +5,13 @@ import { LandingPage } from '@/components/marketing/landing-page';
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} — ${siteConfig.headline}`,
+  title: `${siteConfig.name} — Your Business Growth Partner`,
   description: siteConfig.description,
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: `${siteConfig.name} — ${siteConfig.headline}`,
+    title: `${siteConfig.name} — Your Business Growth Partner`,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${siteConfig.name} — ${siteConfig.headline}`,
+    title: `${siteConfig.name} — Your Business Growth Partner`,
     description: siteConfig.description,
     images: ['/twitter-image'],
   },
@@ -40,7 +40,7 @@ export default function MarketingHomePage() {
       <JsonLd
         mode="page"
         page={{
-          title: `${siteConfig.name} — ${siteConfig.headline}`,
+          title: `${siteConfig.name} — Your Business Growth Partner`,
           description: siteConfig.description,
           path: '/',
           breadcrumbs: [{ name: 'Home', path: '/' }],

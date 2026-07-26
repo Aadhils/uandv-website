@@ -114,32 +114,39 @@ export const portfolioTechnologies = [
 
 export const portfolioProcess = [
   {
-    title: 'Discovery',
-    description: 'Clarify goals, users, constraints, and success criteria.',
+    title: 'Listen first',
+    description:
+      'Understand your business goals, daily pressures, and what a successful outcome looks like.',
   },
   {
-    title: 'Planning',
-    description: 'Shape scope, architecture options, milestones, and risks.',
+    title: 'Plan with clarity',
+    description:
+      'Agree on scope, priorities, and milestones — so everyone knows what happens next.',
   },
   {
-    title: 'UI/UX',
-    description: 'Design clear flows, information architecture, and interfaces.',
+    title: 'Design for real use',
+    description:
+      'Shape flows your customers and staff can actually use — not demos that break in production.',
   },
   {
-    title: 'Development',
-    description: 'Build production-minded software with accountable ownership.',
+    title: 'Build with care',
+    description:
+      'Deliver working software with visible progress and quality you can depend on.',
   },
   {
-    title: 'Testing',
-    description: 'Validate quality, edge cases, security, and readiness.',
+    title: 'Test before launch',
+    description:
+      'Validate in real scenarios so go-live day is confident, not chaotic.',
   },
   {
-    title: 'Deployment',
-    description: 'Ship with controlled rollout, documentation, and go-live support.',
+    title: 'Go live together',
+    description:
+      'Roll out with training and support so your team is ready from day one.',
   },
   {
-    title: 'Support',
-    description: 'Stabilize adoption and improve continuously after launch.',
+    title: 'Stay and improve',
+    description:
+      'Refine, support, and evolve the product as your business grows.',
   },
 ];
 
@@ -2051,6 +2058,25 @@ export const caseStudies: CaseStudy[] = [
     },
   },
 ];
+
+export type PortfolioCardStory = {
+  challenge: string;
+  solution: string;
+  outcomeTitle: string;
+  outcomeDescription: string;
+};
+
+/** Business narrative for portfolio index cards — uses existing case study data only. */
+export function getPortfolioCardStory(study: CaseStudy): PortfolioCardStory {
+  const primaryOutcome = study.outcomes[0];
+
+  return {
+    challenge: study.challenge[0] ?? study.objective,
+    solution: study.solution[0] ?? study.summary,
+    outcomeTitle: primaryOutcome?.title ?? 'Expected business benefit',
+    outcomeDescription: primaryOutcome?.description ?? study.objective,
+  };
+}
 
 export function getAllCaseStudies() {
   return caseStudies;

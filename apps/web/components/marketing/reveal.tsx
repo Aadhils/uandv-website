@@ -4,14 +4,26 @@ import { useEffect, useRef, type ReactNode } from 'react';
 
 import { cn } from '@uandv/ui';
 
+export type RevealVariant = 'fade' | 'up' | 'scale' | 'blur' | 'up-blur';
+
+const variantClass: Record<RevealVariant, string> = {
+  fade: 'marketing-reveal-fade',
+  up: 'marketing-reveal-up',
+  scale: 'marketing-reveal-scale',
+  blur: 'marketing-reveal-blur',
+  'up-blur': 'marketing-reveal-up-blur',
+};
+
 export function Reveal({
   children,
   className,
   delayMs = 0,
+  variant = 'up',
 }: {
   children: ReactNode;
   className?: string;
   delayMs?: number;
+  variant?: RevealVariant;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -35,7 +47,7 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.05, rootMargin: '0px 0px 10% 0px' },
+      { threshold: 0.08, rootMargin: '0px 0px 8% 0px' },
     );
 
     observer.observe(node);
@@ -45,7 +57,7 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      className={cn('marketing-reveal min-w-0', className)}
+      className={cn('marketing-reveal-base min-w-0', variantClass[variant], className)}
       style={delayMs ? { transitionDelay: `${delayMs}ms` } : undefined}
     >
       {children}

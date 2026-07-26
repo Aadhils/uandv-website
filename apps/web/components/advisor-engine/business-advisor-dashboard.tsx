@@ -485,19 +485,10 @@ export function BusinessAdvisorDashboard({
 
         <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:flex-wrap">
           <Link
-            href="/dashboard"
+            href="/contact"
             className={cn(buttonVariants({ size: 'lg' }), 'justify-center')}
           >
-            Continue to Business OS Dashboard
-          </Link>
-          <Link
-            href="/dashboard/service-requests"
-            className={cn(
-              buttonVariants({ size: 'lg', variant: 'outline' }),
-              'justify-center border-white/40 bg-transparent text-white hover:bg-white/10',
-            )}
-          >
-            Create service request
+            Start your project
           </Link>
           <Link
             href="/business-discovery"
@@ -509,13 +500,13 @@ export function BusinessAdvisorDashboard({
             Back to discovery
           </Link>
           <Link
-            href="/dashboard/business-advisor/result"
+            href="/"
             className={cn(
-              buttonVariants({ size: 'lg', variant: 'outline' }),
-              'justify-center border-white/40 bg-transparent text-white hover:bg-white/10',
+              buttonVariants({ size: 'lg', variant: 'ghost' }),
+              'justify-center text-[#C4B5FD] hover:bg-white/10 hover:text-white',
             )}
           >
-            Open requirement analysis
+            Homepage
           </Link>
           <Link
             href={buildContactHref({

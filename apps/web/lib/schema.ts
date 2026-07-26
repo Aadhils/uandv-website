@@ -65,7 +65,7 @@ export const schemaServices = [
   },
   {
     name: 'Digital Marketing',
-    path: '/solutions/digital-marketing',
+    path: '/digital-marketing',
     description:
       'Performance-minded digital marketing across SEO, content, ads, and conversion systems.',
   },
@@ -77,7 +77,7 @@ export const schemaServices = [
   },
   {
     name: 'Business Solutions',
-    path: '/business',
+    path: '/business-solutions',
     description:
       'End-to-end business solutions spanning strategy, technology, automation, and long-term growth partnership.',
   },

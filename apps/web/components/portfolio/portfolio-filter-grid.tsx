@@ -50,13 +50,13 @@ export function PortfolioFilterGrid() {
         })}
       </div>
 
-      <p className="mt-6 text-sm text-uv-foreground-muted" aria-live="polite">
+      <p className="mt-6 text-sm leading-relaxed text-uv-foreground-muted" aria-live="polite">
         {category === 'All'
-          ? `Showing ${filtered.length} product demos.`
-          : `Showing ${filtered.length} demo${filtered.length === 1 ? '' : 's'} in ${category}.`}
+          ? `Showing ${filtered.length} solution concepts — each with business challenge, U&V approach, and expected benefits.`
+          : `Showing ${filtered.length} concept${filtered.length === 1 ? '' : 's'} in ${category}.`}
       </p>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
         {filtered.map((study, index) => (
           <Reveal key={study.slug} delayMs={Math.min(index * 35, 280)} className="h-full">
             <PortfolioCard study={study} />
