@@ -1,31 +1,30 @@
-/** Why U&V — company story content (deduplicated) */
+/** About U&V — company story content (deduplicated) */
 
 export const wuvHero = {
-  eyebrow: 'Trust & Partnership',
-  title: 'Why Partnership Matters More Than Software',
+  eyebrow: 'About U&V',
+  title: 'A partner built on trust — not transactions',
   /** Single hero paragraph — full story lives in #our-story */
   lead:
-    'Choosing a software partner is not really a technology decision. It is a trust decision.',
+    'Choosing a software partner is a trust decision. We earn it through how we listen, deliver, and stay long after launch.',
 } as const;
 
 export const wuvOurStory = {
   eyebrow: 'Our story',
   title: 'Built on a premise your business deserves',
   paragraphs: [
-    'Most business owners have been here before. A vendor promises the world, delivers something that almost works, and moves on. You are left managing the gap — fixing what should have been right the first time, explaining delays to your team, wondering whether anyone on the other side actually cares about your business.',
-    'Before choosing the right partner, many businesses live through the same cycle — overpromising, delays, poor communication, incomplete delivery, and a vendor who disappears once the invoice is paid.',
-    'U&V was built on a different premise: your business matters more than any single project. We do not measure success by what we ship. We measure it by whether your business is stronger because we were involved.',
-    'Trust is not something we ask for on day one. It is something we earn — through how we listen, how we communicate, and how we behave long after the work is done.',
+    'Most business owners know the cycle — a vendor overpromises, under-delivers, and moves on. You manage the gap while wondering if anyone on the other side actually cares.',
+    'U&V was built on a different premise: your business matters more than any single project. We measure success by whether you are stronger because we were involved.',
+    'Trust is not something we ask for on day one. It is something we earn — through clarity, accountability, and partnership that continues long after launch.',
   ],
   pullQuote:
-    'Your business matters more than any single project. We measure success by whether your business is stronger because we were involved.',
+    'We measure success by whether your business is stronger because we were involved.',
 } as const;
 
 export const wuvWhyChoose = {
   eyebrow: 'Why businesses choose U&V',
-  title: 'A partner you can trust — in practice, not just on paper',
+  title: 'A partner you can trust — in practice',
   intro:
-    'After the frustration of vendors who disappear, what you need is not another pitch — it is a team that stays clear, accountable, and invested in your business long after launch.',
+    'After vendors who disappear, you need a team that stays clear, accountable, and invested long after launch.',
   pillars: [
     {
       id: 'clarity',
@@ -53,16 +52,16 @@ export const wuvWhyChoose = {
     },
   ],
   principlesIntro:
-    'Principles are easy to print on a website. They are harder to live by when a project gets difficult, a deadline tightens, or a decision needs an honest answer.',
+    'Principles are easy to print. They are harder to live when deadlines tighten or decisions get difficult.',
   principlesTitle: 'What we stand behind',
-  principlesOutro: 'These are not aspirations. They are how we operate.',
+  principlesOutro: 'These are how we operate — not aspirations.',
 } as const;
 
 export const wuvAccountability = {
   eyebrow: 'Proof through accountability',
   title: 'How we stay accountable in practice',
   intro:
-    'We do not ask you to trust slogans. We ask you to trust a delivery framework you can see — clear milestones, written scope, and support that continues after launch.',
+    'A delivery framework you can see — clear milestones, written scope, and support that continues.',
   commitments: [
     {
       title: 'Clear project milestones',
@@ -95,9 +94,9 @@ export const wuvClientsStay = {
   eyebrow: 'Why clients stay',
   title: 'Why our clients don\u2019t leave',
   intro:
-    'The true test of a software partner is not the launch. It is year two. Year three. The moment something breaks at the worst possible time — and someone actually answers.',
+    'The real test is year two and three — when something breaks at the worst time and someone actually answers.',
   closing:
-    'Clients stay because leaving would mean starting again with someone who does not know their business. That is not loyalty through convenience. That is trust earned over time.',
+    'Clients stay because leaving would mean starting again with someone who does not know their business.',
   yearMarkers: ['Year 1', 'Year 2', 'Year 3+'] as const,
 } as const;
 
@@ -105,14 +104,14 @@ export const wuvSolutionsStory = {
   eyebrow: 'Solutions we build',
   title: 'What we help you build and run',
   intro:
-    'Every engagement starts with a real business challenge — not a service catalogue. Find the area closest to yours, then explore how we deliver it.',
+    'Every engagement starts with a real business challenge. Find the area closest to yours, then explore how we deliver it.',
 } as const;
 
 export const wuvConsultationClose = {
   eyebrow: 'Start with clarity',
   title: 'Book a free consultation',
   lead:
-    'Tell us where you are today and where you want to go. We will point you to the right starting point — no pressure, no jargon, just an honest conversation about your business.',
+    'Tell us where you are today and where you want to go. We will point you to the right starting point — no pressure, just an honest conversation.',
 } as const;
 
 export const wuvIndustryTaglines: Record<
@@ -131,6 +130,6 @@ export const wuvIndustries = {
   eyebrow: 'Industries We Understand',
   title: 'Businesses We\u2019ve Partnered With',
   paragraphs: [
-    'Every industry has its own pressures — compliance, seasonality, and operational complexity. We treat sector experience as responsibility: asking the right questions, respecting your constraints, and building for your world — not a learning curve on your time.',
+    'Every industry has its own pressures — compliance, seasonality, and operational complexity. We build for your world, not a learning curve on your time.',
   ],
 } as const;

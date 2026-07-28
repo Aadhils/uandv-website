@@ -28,13 +28,13 @@ export function WuvIndustryShowcase() {
       intro={wuvIndustries.paragraphs[0]}
       tone="lavender"
     >
-      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+      <div className="grid min-w-0 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         {wuvIndustryAnimationIds.map((id, index) => (
           <Reveal key={id} delayMs={index * 100} variant="up" className="wuv-industry-showcase-reveal">
             <article
               data-industry={id}
               className={cn(
-                'wuv-industry-showcase-card group flex h-full flex-col overflow-hidden rounded-uv-2xl border border-uv-border/80 bg-white shadow-uv-sm',
+                'wuv-industry-showcase-card group flex h-full min-w-0 flex-col overflow-hidden rounded-uv-2xl border border-uv-border/80 bg-white shadow-uv-sm',
               )}
             >
               <WuvPremiumIndustryBanner industry={id} />

@@ -55,7 +55,7 @@ function customEntry(
   return { id, title, problem, outcome, detailHref, icon };
 }
 
-/** Grouped service catalog for the Why U&V discovery section. */
+/** Grouped service catalog for the About U&V discovery section. */
 export const wuvServiceGroups: WuvServiceGroup[] = [
   {
     id: 'build-digital-product',

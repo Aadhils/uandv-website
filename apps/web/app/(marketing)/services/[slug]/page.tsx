@@ -75,7 +75,7 @@ export default async function ServiceDetailPage({ params }: ServiceRouteProps) {
           path: `/services/${service.slug}`,
           breadcrumbs: [
             { name: 'Home', path: '/' },
-            { name: 'Services', path: '/why-uandv#services' },
+            { name: 'About U&V', path: '/why-uandv#solutions' },
             { name: service.title, path: `/services/${service.slug}` },
           ],
         }}

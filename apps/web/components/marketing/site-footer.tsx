@@ -38,7 +38,7 @@ export function SiteFooter() {
             title: 'Company',
             links: [
               { label: 'Home', href: '/' },
-              { label: 'Why U&V', href: '/why-uandv' },
+              { label: 'About U&V', href: '/why-uandv' },
               { label: 'What we build', href: '/why-uandv#solutions' },
               { label: 'Business Solutions', href: '/business-solutions' },
               { label: 'Portfolio', href: '/portfolio' },

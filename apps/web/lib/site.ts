@@ -74,16 +74,14 @@ export const contactInquiryHref = '/contact#inquiry-form' as const;
 
 /**
  * Header + mobile marketing navigation (single source of truth).
- * Logo links home — no separate Home item. Contact lives in the footer only.
+ * Logo also links home; Home is listed explicitly per site IA.
  */
 export const marketingNav = [
+  { label: 'Home', href: '/' },
+  { label: 'About U&V', href: '/why-uandv' },
   { label: 'Business Solutions', href: '/business-solutions' },
-  { label: 'Why U&V', href: '/why-uandv' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Digital Marketing', href: '/digital-marketing' },
-  { label: 'MLM', href: '/mlm' },
-  { label: 'FinTech', href: '/fintech' },
-  { label: 'Startup', href: '/startup' },
+  { label: 'Contact', href: '/contact' },
 ] as const;
 
 export type MarketingSocialLink = {

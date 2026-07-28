@@ -3158,11 +3158,12 @@ header nav[aria-label='Main navigation'] ul a[aria-current='page']::after {
 
 @media (max-width: 639px) {
   .wuv-journey-rail {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    margin-inline: -0.25rem;
-    padding-inline: 0.25rem;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.125rem;
+    overflow-x: visible;
+    margin-inline: 0;
+    padding-inline: 0;
   }
 
   .wuv-journey-rail::-webkit-scrollbar {
@@ -3170,13 +3171,22 @@ header nav[aria-label='Main navigation'] ul a[aria-current='page']::after {
   }
 
   .wuv-journey-rail__item {
-    flex: 0 0 auto;
-    min-width: 3.5rem;
+    flex: none;
+    min-width: 0;
   }
 
   .wuv-journey-rail__connector {
-    min-width: 0.75rem;
-    max-width: 1.25rem;
+    display: none;
+  }
+
+  .wuv-journey-rail__step {
+    padding: 0.25rem 0.0625rem;
+  }
+
+  .wuv-journey-rail__label {
+    white-space: normal;
+    text-overflow: clip;
+    line-height: 1.2;
   }
 }
 
@@ -4941,7 +4951,7 @@ header nav[aria-label='Main navigation'] ul a[aria-current='page']::after {
   box-shadow: 0 4px 20px rgb(124 58 237 / 0.06);
 }
 
-.wuv-solutions-chapter + .wuv-solutions-chapter {
+.wuv-solutions-category + .wuv-solutions-category {
   padding-top: 0.5rem;
 }
 

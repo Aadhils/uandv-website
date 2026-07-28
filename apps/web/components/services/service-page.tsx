@@ -48,7 +48,7 @@ export function ServicePage({
   const related = getRelatedServices(service);
   const breadcrumbs = breadcrumbItems ?? [
     { label: 'Home', href: '/' },
-    { label: 'Services', href: '/why-uandv#services' },
+    { label: 'About U&V', href: '/why-uandv#solutions' },
     { label: service.title },
   ];
 

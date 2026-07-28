@@ -7,7 +7,7 @@ import { uvContainer } from '@/components/marketing/marketing-design-tokens';
 import { wuvOurStory } from '@/lib/why-uandv-content';
 
 export function WuvOurStory() {
-  const [opening, vendorCycle, founding, trust] = wuvOurStory.paragraphs;
+  const [opening, founding, trust] = wuvOurStory.paragraphs;
 
   return (
     <section
@@ -34,12 +34,6 @@ export function WuvOurStory() {
             </Reveal>
 
             <Reveal variant="up" delayMs={120} className="mt-5">
-              <p className="text-base leading-[1.75] text-uv-foreground-muted sm:text-lg">
-                {vendorCycle}
-              </p>
-            </Reveal>
-
-            <Reveal variant="up" delayMs={180} className="mt-5">
               <p className="text-base leading-[1.75] text-uv-foreground-muted sm:text-lg">
                 {founding}
               </p>

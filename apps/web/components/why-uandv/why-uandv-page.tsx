@@ -33,7 +33,7 @@ export function WhyUandvPage() {
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Why U&V' },
+              { label: 'About U&V' },
             ]}
           />
 
