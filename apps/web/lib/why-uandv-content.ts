@@ -142,6 +142,59 @@ export const wuvClosingBeat = {
   transition: 'Now you know who we are. The next step is understanding what we can do together.',
 } as const;
 
+export const wuvWhyPartnership = {
+  eyebrow: 'Why partnership matters',
+  title: 'A different way to work together',
+  intro:
+    'After the frustration of vendors who disappear, what you need is not another pitch — it is a team that stays clear, accountable, and invested in your business long after launch.',
+  pillars: [
+    {
+      id: 'clarity',
+      title: 'Clarity from day one',
+      description:
+        'You always know what we are building, why it matters, and what comes next — no jargon, no surprises mid-project.',
+    },
+    {
+      id: 'accountability',
+      title: 'Accountability you can see',
+      description:
+        'Written scope, documented decisions, and milestones you can track — not promises left to memory.',
+    },
+    {
+      id: 'partnership',
+      title: 'Partnership, not handoffs',
+      description:
+        'We listen before we recommend, involve you in real decisions, and treat your success as the measure of ours.',
+    },
+    {
+      id: 'long-term',
+      title: 'Support that continues',
+      description:
+        'Launch is a milestone, not an exit. We stay for maintenance, growth, and the moments when something breaks.',
+    },
+  ],
+} as const;
+
+export const wuvOurStory = {
+  eyebrow: 'Our story',
+  title: 'Built on a premise your business deserves',
+  paragraphs: [
+    'Choosing a software partner is not really a technology decision. It is a trust decision.',
+    'Most business owners have been here before. A vendor promises the world, delivers something that almost works, and moves on. You are left managing the gap — fixing what should have been right the first time, explaining delays to your team, wondering whether anyone on the other side actually cares about your business.',
+    'U&V was built on a different premise: your business matters more than any single project. We do not measure success by what we ship. We measure it by whether your business is stronger because we were involved.',
+    'Trust is not something we ask for on day one. It is something we earn — through how we listen, how we communicate, and how we behave long after the work is done.',
+  ],
+  pullQuote:
+    'Your business matters more than any single project. We measure success by whether your business is stronger because we were involved.',
+} as const;
+
+export const wuvSolutionChapters = {
+  eyebrow: 'Business solutions',
+  title: 'What we help you build and run',
+  intro:
+    'Every engagement starts with a real business challenge — not a service catalogue. Find the area closest to yours, then explore how we deliver it.',
+} as const;
+
 export const wuvJourneyTransition = {
   eyebrow: 'Continue Your Journey',
   title: 'Continue Your Journey',

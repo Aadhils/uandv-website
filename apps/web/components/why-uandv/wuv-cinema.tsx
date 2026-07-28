@@ -4,11 +4,9 @@ import {
   MarketingButtonLink,
   MarketingCtaPanel,
   MarketingEyebrow,
-  MarketingHeroActions,
   MarketingHeroTitle,
 } from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
-import { contactInquiryHref } from '@/lib/site';
 import {
   wuvCommonExperience,
   wuvJourneyTransition,
@@ -19,8 +17,10 @@ import { WuvStoryExperienceVisual } from './scenes/wuv-story-experience-visual';
 import { WuvConsultationBlock } from './wuv-consultation-block';
 import { WuvIndustryShowcase } from './wuv-industry-showcase';
 import { WuvJourneyStorySection } from './wuv-journey-story';
+import { WuvOurStory } from './wuv-our-story';
 import { WuvPrinciplesGrid } from './wuv-principles-grid';
-import { WuvServicesDiscovery } from './wuv-services-discovery';
+import { WuvSolutionChapters } from './wuv-solution-chapters';
+import { WuvWhyPartnership } from './wuv-why-partnership';
 import { WuvClosingGlow } from './wuv-polish';
 import { WuvSplitSection } from './wuv-split-section';
 
@@ -48,7 +48,7 @@ function CommonExperienceSection() {
 
 function ClosingSection() {
   return (
-    <section id="page-ending" aria-label="Long-term partnership" className="scroll-mt-20 bg-white">
+    <section id="start" aria-label="Long-term partnership" className="scroll-mt-20 bg-white">
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
         <Reveal variant="up-blur">
           <WuvClosingGlow>
@@ -72,14 +72,11 @@ function ClosingSection() {
                   </li>
                 ))}
               </ul>
-              <MarketingHeroActions className="mt-8 justify-center">
-                <MarketingButtonLink href={contactInquiryHref}>
-                  Book a Consultation
+              <div className="mt-8 flex justify-center">
+                <MarketingButtonLink href={wuvJourneyTransition.servicesHref}>
+                  Explore what we can build together
                 </MarketingButtonLink>
-                <MarketingButtonLink href="/contact" variant="outline" size="md">
-                  Talk to Our Team
-                </MarketingButtonLink>
-              </MarketingHeroActions>
+              </div>
               <p className="mt-6 text-sm text-uv-foreground-muted">
                 Trusted by businesses across healthcare, finance, education, and more.
               </p>
@@ -95,10 +92,12 @@ export function WuvCinemaActs() {
   return (
     <div className="wuv-v2-flow relative overflow-x-hidden">
       <CommonExperienceSection />
+      <WuvWhyPartnership />
+      <WuvOurStory />
       <WuvJourneyStorySection />
       <WuvPrinciplesGrid />
-      <WuvServicesDiscovery />
       <WuvIndustryShowcase />
+      <WuvSolutionChapters />
       <WuvConsultationBlock />
       <ClosingSection />
     </div>

@@ -62,8 +62,10 @@ export function WhyUandvPage() {
               </div>
               <Reveal delayMs={220} variant="fade">
                 <MarketingHeroActions className="mt-6 sm:mt-8">
-                  <MarketingButtonLink href="/why-uandv#services">Explore Our Services</MarketingButtonLink>
-                  <MarketingButtonLink href="/business-solutions" variant="outline" size="md">
+                  <MarketingButtonLink href="/why-uandv#services">
+                    Explore our solutions
+                  </MarketingButtonLink>
+                  <MarketingButtonLink href="/why-uandv#partner-path" variant="outline" size="md">
                     How we partner
                   </MarketingButtonLink>
                 </MarketingHeroActions>
