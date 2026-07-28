@@ -25,11 +25,7 @@ import { wuvHero } from '@/lib/why-uandv-content';
 import { WuvCinemaActs } from './wuv-cinema';
 import { WuvPremiumHeroBanner } from './scenes/wuv-premium-banners';
 
-const HERO_PARAGRAPH_COUNT = 2;
-
 export function WhyUandvPage() {
-  const heroParagraphs = wuvHero.paragraphs.slice(0, HERO_PARAGRAPH_COUNT);
-
   return (
     <MarketingContentPage className="wuv-v2-page bg-white">
       <MarketingPageHero className="marketing-content-hero-cinematic wuv-hero-act border-b border-uv-border/60 bg-white">
@@ -51,22 +47,16 @@ export function WhyUandvPage() {
                   {wuvHero.title}
                 </MarketingHeroTitle>
               </Reveal>
-              <div className="mt-4 space-y-3 sm:mt-5">
-                {heroParagraphs.map((paragraph, index) => (
-                  <Reveal key={index} delayMs={100 + index * 50} variant="up">
-                    <MarketingLead className="text-base leading-relaxed sm:text-lg">
-                      {paragraph}
-                    </MarketingLead>
-                  </Reveal>
-                ))}
-              </div>
-              <Reveal delayMs={220} variant="fade">
+              <Reveal delayMs={100} variant="up">
+                <MarketingLead className="mt-4 text-base leading-relaxed sm:mt-5 sm:text-lg">
+                  {wuvHero.lead}
+                </MarketingLead>
+              </Reveal>
+              <Reveal delayMs={180} variant="fade">
                 <MarketingHeroActions className="mt-6 sm:mt-8">
-                  <MarketingButtonLink href="/why-uandv#services">
-                    Explore our solutions
-                  </MarketingButtonLink>
-                  <MarketingButtonLink href="/why-uandv#partner-path" variant="outline" size="md">
-                    How we partner
+                  <MarketingButtonLink href="#our-story">Read our story</MarketingButtonLink>
+                  <MarketingButtonLink href="#solutions" variant="outline" size="md">
+                    What we build
                   </MarketingButtonLink>
                 </MarketingHeroActions>
               </Reveal>

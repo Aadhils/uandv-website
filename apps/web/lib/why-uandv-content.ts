@@ -1,20 +1,61 @@
-/** Why U&V v3.0 — Premium Content Lock */
+/** Why U&V — company story content (deduplicated) */
 
-export const wuvCommonExperience = {
-  eyebrow: 'The pattern most owners recognise',
-  title: 'That experience is common. It is also avoidable.',
-  intro:
+export const wuvHero = {
+  eyebrow: 'Trust & Partnership',
+  title: 'Why Partnership Matters More Than Software',
+  /** Single hero paragraph — full story lives in #our-story */
+  lead:
+    'Choosing a software partner is not really a technology decision. It is a trust decision.',
+} as const;
+
+export const wuvOurStory = {
+  eyebrow: 'Our story',
+  title: 'Built on a premise your business deserves',
+  paragraphs: [
+    'Most business owners have been here before. A vendor promises the world, delivers something that almost works, and moves on. You are left managing the gap — fixing what should have been right the first time, explaining delays to your team, wondering whether anyone on the other side actually cares about your business.',
     'Before choosing the right partner, many businesses live through the same cycle — overpromising, delays, poor communication, incomplete delivery, and a vendor who disappears once the invoice is paid.',
-  points: [
-    'Overpromising at the start',
-    'Delays that cost you momentum',
-    'Poor communication when it matters',
-    'Incomplete delivery you inherit',
-    'A vendor who moves on',
-    'You managing the gap alone',
+    'U&V was built on a different premise: your business matters more than any single project. We do not measure success by what we ship. We measure it by whether your business is stronger because we were involved.',
+    'Trust is not something we ask for on day one. It is something we earn — through how we listen, how we communicate, and how we behave long after the work is done.',
   ],
-  closing:
-    'U&V was built on a different premise: your business matters more than any single project. We do not measure success by what we ship — we measure it by whether your business is stronger because we were involved.',
+  pullQuote:
+    'Your business matters more than any single project. We measure success by whether your business is stronger because we were involved.',
+} as const;
+
+export const wuvWhyChoose = {
+  eyebrow: 'Why businesses choose U&V',
+  title: 'A partner you can trust — in practice, not just on paper',
+  intro:
+    'After the frustration of vendors who disappear, what you need is not another pitch — it is a team that stays clear, accountable, and invested in your business long after launch.',
+  pillars: [
+    {
+      id: 'clarity',
+      title: 'Clarity from day one',
+      description:
+        'You always know what we are building, why it matters, and what comes next — no jargon, no surprises mid-project.',
+    },
+    {
+      id: 'accountability',
+      title: 'Accountability you can see',
+      description:
+        'Written scope, documented decisions, and milestones you can track — not promises left to memory.',
+    },
+    {
+      id: 'partnership',
+      title: 'Partnership, not handoffs',
+      description:
+        'We listen before we recommend, involve you in real decisions, and treat your success as the measure of ours.',
+    },
+    {
+      id: 'long-term',
+      title: 'Support that continues',
+      description:
+        'Launch is a milestone, not an exit. We stay for maintenance, growth, and the moments when something breaks.',
+    },
+  ],
+  principlesIntro:
+    'Principles are easy to print on a website. They are harder to live by when a project gets difficult, a deadline tightens, or a decision needs an honest answer.',
+  principlesTitle: 'What we stand behind',
+  principlesOutro: 'These are not aspirations. They are how we operate.',
 } as const;
 
 export const wuvAccountability = {
@@ -50,20 +91,28 @@ export const wuvAccountability = {
   ],
 } as const;
 
-export const wuvPageEnding = {
-  line1: 'Good software delivers features.',
-  line2: 'A real partner helps your business move forward.',
-  support:
-    'Anyone can promise a project. U&V shows up for the business behind it. That is who we are. That is what you can expect.',
-  partnership:
-    'Our relationship does not end at deployment. We continue with support, maintenance, updates, marketing, automation, and growth consultation — as your business evolves.',
-  commitments: [
-    'Clear project milestones you can track',
-    'Written scope and documented decisions',
-    'Support after launch when adoption matters',
-    'Maintenance, updates, and future development',
-    'Marketing, automation, and growth consultation',
-  ],
+export const wuvClientsStay = {
+  eyebrow: 'Why clients stay',
+  title: 'Why our clients don\u2019t leave',
+  intro:
+    'The true test of a software partner is not the launch. It is year two. Year three. The moment something breaks at the worst possible time — and someone actually answers.',
+  closing:
+    'Clients stay because leaving would mean starting again with someone who does not know their business. That is not loyalty through convenience. That is trust earned over time.',
+  yearMarkers: ['Year 1', 'Year 2', 'Year 3+'] as const,
+} as const;
+
+export const wuvSolutionsStory = {
+  eyebrow: 'Solutions we build',
+  title: 'What we help you build and run',
+  intro:
+    'Every engagement starts with a real business challenge — not a service catalogue. Find the area closest to yours, then explore how we deliver it.',
+} as const;
+
+export const wuvConsultationClose = {
+  eyebrow: 'Start with clarity',
+  title: 'Book a free consultation',
+  lead:
+    'Tell us where you are today and where you want to go. We will point you to the right starting point — no pressure, no jargon, just an honest conversation about your business.',
 } as const;
 
 export const wuvIndustryTaglines: Record<
@@ -78,131 +127,10 @@ export const wuvIndustryTaglines: Record<
   logistics: 'Tracking, dispatch, and visibility across a moving operation.',
 };
 
-export const wuvHero = {
-  eyebrow: 'Trust & Partnership',
-  title: 'Why Partnership Matters More Than Software',
-  paragraphs: [
-    'Choosing a software partner is not really a technology decision. It is a trust decision.',
-    'Most business owners have been here before. A vendor promises the world, delivers something that almost works, and moves on. You are left managing the gap — fixing what should have been right the first time, explaining delays to your team, wondering whether anyone on the other side actually cares about your business.',
-    'That experience is common. It is also avoidable.',
-    'U&V was built on a different premise: your business matters more than any single project. We do not measure success by what we ship. We measure it by whether your business is stronger because we were involved.',
-    'Trust is not something we ask for on day one. It is something we earn — through how we listen, how we communicate, and how we behave long after the work is done.',
-  ],
-  transition: 'But what does a real partnership actually look like — compared to the cycle most businesses have already lived through?',
-} as const;
-
-export const wuvPrinciples = {
-  eyebrow: 'Principles We Live By',
-  title: 'What We Stand Behind',
-  intro:
-    'Principles are easy to print on a website. They are harder to live by when a project gets difficult, a deadline tightens, or a decision needs an honest answer.',
-  outro: 'These are not aspirations. They are how we operate.',
-  transition: 'Standards mean nothing if they do not show up in how we work with you every week.',
-} as const;
-
-export const wuvHowWeShowUp = {
-  eyebrow: 'How We Show Up',
-  title: 'How We Work With You',
-  intro:
-    'Trust is not built in a proposal document. It is built in the rhythm of the relationship — in whether we do what we said we would do, when we said we would do it.',
-  outro:
-    'This is what partnership feels like in practice. Predictable. Transparent. Present.',
-  transition: 'But a clear process today does not prove a relationship tomorrow. You need to know we stay.',
-} as const;
-
-export const wuvClientsStay = {
-  eyebrow: 'Why Clients Stay',
-  title: 'Why Our Clients Don\u2019t Leave',
-  intro:
-    'The true test of a software partner is not the launch. It is year two. Year three. The moment something breaks at the worst possible time — and someone actually answers.',
-  closing:
-    'Clients stay because leaving would mean starting again with someone who does not know their business. That is not loyalty through convenience. That is trust earned over time.',
-  transition: 'Long-term trust also means understanding the world you operate in.',
-  yearMarkers: ['Year 1', 'Year 2', 'Year 3'] as const,
-} as const;
-
 export const wuvIndustries = {
   eyebrow: 'Industries We Understand',
   title: 'Businesses We\u2019ve Partnered With',
   paragraphs: [
     'Every industry has its own pressures — compliance, seasonality, and operational complexity. We treat sector experience as responsibility: asking the right questions, respecting your constraints, and building for your world — not a learning curve on your time.',
   ],
-  transition: 'Everything on this page comes down to one belief.',
-} as const;
-
-export const wuvClosingBeat = {
-  eyebrow: 'A Team You Can Rely On',
-  title: 'A Team You Can Rely On',
-  paragraphs: [
-    'You have seen how we think. How we commit. How we behave. How we stay.',
-    'Anyone can promise a project. U&V shows up for the business behind it.',
-    'We are not here to win a contract and move on. We are here because your success is the only measure that matters to us — and because the businesses we partner with deserve someone who treats that seriously.',
-    'That is who we are. That is what you can expect.',
-  ],
-  transition: 'Now you know who we are. The next step is understanding what we can do together.',
-} as const;
-
-export const wuvWhyPartnership = {
-  eyebrow: 'Why partnership matters',
-  title: 'A different way to work together',
-  intro:
-    'After the frustration of vendors who disappear, what you need is not another pitch — it is a team that stays clear, accountable, and invested in your business long after launch.',
-  pillars: [
-    {
-      id: 'clarity',
-      title: 'Clarity from day one',
-      description:
-        'You always know what we are building, why it matters, and what comes next — no jargon, no surprises mid-project.',
-    },
-    {
-      id: 'accountability',
-      title: 'Accountability you can see',
-      description:
-        'Written scope, documented decisions, and milestones you can track — not promises left to memory.',
-    },
-    {
-      id: 'partnership',
-      title: 'Partnership, not handoffs',
-      description:
-        'We listen before we recommend, involve you in real decisions, and treat your success as the measure of ours.',
-    },
-    {
-      id: 'long-term',
-      title: 'Support that continues',
-      description:
-        'Launch is a milestone, not an exit. We stay for maintenance, growth, and the moments when something breaks.',
-    },
-  ],
-} as const;
-
-export const wuvOurStory = {
-  eyebrow: 'Our story',
-  title: 'Built on a premise your business deserves',
-  paragraphs: [
-    'Choosing a software partner is not really a technology decision. It is a trust decision.',
-    'Most business owners have been here before. A vendor promises the world, delivers something that almost works, and moves on. You are left managing the gap — fixing what should have been right the first time, explaining delays to your team, wondering whether anyone on the other side actually cares about your business.',
-    'U&V was built on a different premise: your business matters more than any single project. We do not measure success by what we ship. We measure it by whether your business is stronger because we were involved.',
-    'Trust is not something we ask for on day one. It is something we earn — through how we listen, how we communicate, and how we behave long after the work is done.',
-  ],
-  pullQuote:
-    'Your business matters more than any single project. We measure success by whether your business is stronger because we were involved.',
-} as const;
-
-export const wuvSolutionChapters = {
-  eyebrow: 'Business solutions',
-  title: 'What we help you build and run',
-  intro:
-    'Every engagement starts with a real business challenge — not a service catalogue. Find the area closest to yours, then explore how we deliver it.',
-} as const;
-
-export const wuvJourneyTransition = {
-  eyebrow: 'Continue Your Journey',
-  title: 'Continue Your Journey',
-  lines: [
-    'Trust is the foundation. Everything else follows from it.',
-    'You came here with a fair question — whether U&V is a team you can rely on. We hope this page answered it honestly.',
-    'When you are ready, explore what we can do together — with a partner you already believe in.',
-  ],
-  servicesLabel: 'Services',
-  servicesHref: '/why-uandv#services',
 } as const;

@@ -112,7 +112,7 @@ export function WuvJourneyStorySection() {
   return (
     <WuvSplitSection
       ref={sectionRef}
-      id="partner-path"
+      id="how-we-work"
       ariaLabel="How U&V works with you"
       eyebrow={wuvPartnerPath.eyebrow}
       title={wuvPartnerPath.title}

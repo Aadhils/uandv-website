@@ -78,7 +78,6 @@ export const contactInquiryHref = '/contact#inquiry-form' as const;
  */
 export const marketingNav = [
   { label: 'Business Solutions', href: '/business-solutions' },
-  { label: 'Services', href: '/why-uandv#services' },
   { label: 'Why U&V', href: '/why-uandv' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Digital Marketing', href: '/digital-marketing' },

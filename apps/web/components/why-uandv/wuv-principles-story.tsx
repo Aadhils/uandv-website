@@ -1,7 +1,7 @@
 'use client';
 
 import { Reveal } from '@/components/marketing/reveal';
-import { wuvPrinciples } from '@/lib/why-uandv-content';
+import { wuvWhyChoose } from '@/lib/why-uandv-content';
 import { whyCorePrinciples } from '@/lib/why-uandv';
 
 import { WuvPrincipleIcon } from './wuv-illustrations';
@@ -48,12 +48,12 @@ export function WuvPrinciplesStorySection() {
     >
       <Reveal variant="up-blur" className="mx-auto max-w-2xl text-center">
         <WuvStoryCopy
-          eyebrow={wuvPrinciples.eyebrow}
-          title={wuvPrinciples.title}
+          eyebrow={wuvWhyChoose.eyebrow}
+          title={wuvWhyChoose.principlesTitle}
           className="mx-auto text-center [&_h2]:text-center"
         >
-          <p>{wuvPrinciples.intro}</p>
-          <p className="font-medium text-uv-foreground">{wuvPrinciples.outro}</p>
+          <p>{wuvWhyChoose.principlesIntro}</p>
+          <p className="font-medium text-uv-foreground">{wuvWhyChoose.principlesOutro}</p>
         </WuvStoryCopy>
       </Reveal>
 

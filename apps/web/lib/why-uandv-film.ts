@@ -2,7 +2,7 @@
  * Why U&V — cinematic story chapters (one continuous brand film)
  */
 
-import { wuvPrinciples } from './why-uandv-content';
+import { wuvWhyChoose } from './why-uandv-content';
 
 export type WuvFilmChapterId =
   | 'idea'
@@ -65,7 +65,7 @@ export const wuvFilmChapters: readonly WuvFilmChapter[] = [
     body: [
       'We understand your business, challenges, customers and goals before recommending technology.',
       'We shape the right solution, priorities and roadmap around your business needs.',
-      wuvPrinciples.intro,
+      wuvWhyChoose.principlesIntro,
     ],
     beats: ['Planning together', 'Roadmap', 'Eye contact', 'Trust'],
   },
@@ -108,7 +108,7 @@ export const wuvFilmChapters: readonly WuvFilmChapter[] = [
     body: [
       'We do not ask you to trust slogans. We ask you to trust a delivery framework you can see — clear milestones, written scope, and support that continues after launch.',
       'Anyone can promise a project. U&V shows up for the business behind it. That is who we are. That is what you can expect.',
-      wuvPrinciples.outro,
+      wuvWhyChoose.principlesOutro,
     ],
     beats: ['Support', 'Updates', 'Analytics improving', 'Business growing'],
   },
