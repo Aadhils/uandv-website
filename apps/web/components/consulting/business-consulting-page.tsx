@@ -1,5 +1,3 @@
-import { Reveal } from '@/components/marketing/reveal';
-
 import {
 
   MarketingContentPage,
@@ -45,6 +43,7 @@ import { contactInquiryHref } from '@/lib/site';
 import { HeroScene } from './bs-cinema-art';
 
 import { BsCinemaActs } from './bs-cinema';
+import { BsSolutionGateway } from './bs-solution-gateway';
 
 
 
@@ -128,7 +127,7 @@ export function BusinessConsultingPage() {
 
       </MarketingPageHero>
 
-
+      <BsSolutionGateway />
 
       <BsCinemaActs />
 

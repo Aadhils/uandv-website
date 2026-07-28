@@ -74,10 +74,9 @@ export const contactInquiryHref = '/contact#inquiry-form' as const;
 
 /**
  * Header + mobile marketing navigation (single source of truth).
- * Logo also links home; Home is listed explicitly per site IA.
+ * Logo links home — Home is not duplicated in the nav.
  */
 export const marketingNav = [
-  { label: 'Home', href: '/' },
   { label: 'About U&V', href: '/why-uandv' },
   { label: 'Business Solutions', href: '/business-solutions' },
   { label: 'Portfolio', href: '/portfolio' },
