@@ -31,7 +31,7 @@ export function MarketingContentPage({
   return (
     <div
       className={cn(
-        'marketing-grain marketing-page-ambient flex-1 bg-uv-background',
+        'marketing-grain marketing-page-ambient relative z-[1] flex-1 bg-uv-background',
         className,
       )}
     >

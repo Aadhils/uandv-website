@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 
@@ -23,17 +22,25 @@ import {
   MarketingPageHeroInner,
 } from '@/components/marketing/marketing-page-hero';
 import {
+  MarketingButtonLink,
   MarketingCardTitle,
-  MarketingCtaPanel,
   MarketingEyebrow,
+  MarketingHeroActions,
   MarketingHeroTitle,
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
   MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
+import { ServiceIllustration } from '@/components/services/service-illustration';
 import {
   defaultGuideLanguage,
   getGuideJourney,
@@ -266,7 +273,7 @@ export function ContactPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner className="pb-12 sm:pb-16">
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -274,44 +281,51 @@ export function ContactPage() {
             ]}
           />
 
-          <div className="mt-8 max-w-3xl sm:mt-10">
-            <MarketingEyebrow>{contactPositioning.eyebrow}</MarketingEyebrow>
-            <MarketingHeroTitle className="mt-3 sm:mt-4">
-              {contactPositioning.headline}
-            </MarketingHeroTitle>
-            <MarketingLead className="mt-4 sm:mt-6">
-              {contactPositioning.subheadline}
-            </MarketingLead>
-            {leadContext.hasJourney ? (
-              <p className="mt-4 rounded-uv-lg border border-uv-brand/20 bg-uv-brand-muted/40 px-4 py-3 text-sm text-uv-foreground sm:text-base">
-                Business guide:{' '}
-                <span className="font-semibold text-uv-brand">
-                  {leadContext.journeyTitle}
-                </span>
-                {leadContext.partnerLabel
-                  ? ` · ${leadContext.partnerLabel}`
-                  : ''}
-                {' · '}
-                Follow-up language:{' '}
-                <span className="font-semibold text-uv-brand">
-                  {leadContext.preferredLanguageLabel}
-                </span>
-              </p>
-            ) : null}
-            <ul className="mt-6 flex flex-wrap gap-2 sm:mt-8">
-              {contactTrustPoints.map((point) => (
-                <li
-                  key={point}
-                  className="rounded-uv-full border border-uv-border bg-uv-background/80 px-3 py-1.5 text-xs font-medium text-uv-foreground sm:text-sm"
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
+              <MarketingEyebrow>{contactPositioning.eyebrow}</MarketingEyebrow>
+              <MarketingHeroTitle className="mt-3 sm:mt-4">
+                {contactPositioning.headline}
+              </MarketingHeroTitle>
+              <MarketingLead className="mt-4 sm:mt-6">
+                {contactPositioning.subheadline}
+              </MarketingLead>
+              <MarketingLead className="mt-4 text-base sm:text-lg">
+                {contactPositioning.responseTime}
+              </MarketingLead>
+              {leadContext.hasJourney ? (
+                <p className="mt-4 rounded-uv-lg border border-uv-brand/20 bg-uv-brand-muted/40 px-4 py-3 text-sm text-uv-foreground sm:text-base">
+                  Business guide:{' '}
+                  <span className="font-semibold text-uv-brand">
+                    {leadContext.journeyTitle}
+                  </span>
+                  {leadContext.partnerLabel ? ` · ${leadContext.partnerLabel}` : ''}
+                  {' · '}
+                  Follow-up language:{' '}
+                  <span className="font-semibold text-uv-brand">
+                    {leadContext.preferredLanguageLabel}
+                  </span>
+                </p>
+              ) : null}
+              <MarketingHeroActions className="mt-6 sm:mt-8">
+                <MarketingButtonLink href="#inquiry-form">
+                  Send an enquiry
+                </MarketingButtonLink>
+                <MarketingButtonLink
+                  href={siteConfig.whatsapp}
+                  variant="outline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {point}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 text-sm font-medium text-uv-brand sm:mt-6 sm:text-base">
-              {contactPositioning.responseTime}
-            </p>
-          </div>
+                  Chat on WhatsApp
+                </MarketingButtonLink>
+              </MarketingHeroActions>
+            </MarketingStandardHeroCopy>
+
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name="consulting" className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
 
@@ -321,6 +335,16 @@ export function ContactPage() {
         className="scroll-mt-24"
       >
         <MarketingPageContainer>
+          <ul className="mb-8 flex flex-wrap gap-2 sm:mb-10">
+            {contactTrustPoints.map((point) => (
+              <li
+                key={point}
+                className="rounded-uv-full border border-uv-border bg-uv-background/80 px-3 py-1.5 text-xs font-medium text-uv-foreground sm:text-sm"
+              >
+                {point}
+              </li>
+            ))}
+          </ul>
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-14 xl:gap-16">
             <Reveal>
               <SectionHeading
@@ -682,7 +706,7 @@ export function ContactPage() {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection tone="default">
+      <MarketingSection tone="default" className="border-b-0">
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -721,48 +745,6 @@ export function ContactPage() {
               </div>
             </div>
           </Reveal>
-        </MarketingPageContainer>
-      </MarketingSection>
-
-      <MarketingSection tone="subtle" className="border-b-0">
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="bg-uv-background sm:py-14">
-            <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <MarketingEyebrow>Prefer a direct conversation?</MarketingEyebrow>
-                <MarketingSectionTitle className="mt-3">
-                  WhatsApp works too — same honest, practical follow-up.
-                </MarketingSectionTitle>
-                <p className="mt-3 text-base leading-relaxed text-uv-foreground-muted sm:mt-4 sm:text-lg">
-                  Message us on WhatsApp during business hours. We will listen,
-                  ask the right questions, and recommend next steps without
-                  pressure to buy.
-                </p>
-              </div>
-              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:flex-col xl:flex-row">
-                <a
-                  href={siteConfig.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg' }),
-                    'marketing-btn-glow w-full justify-center sm:w-auto',
-                  )}
-                >
-                  Chat on WhatsApp
-                </a>
-                <Link
-                  href="/services"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'w-full justify-center sm:w-auto',
-                  )}
-                >
-                  Explore services
-                </Link>
-              </div>
-            </div>
-          </MarketingCtaPanel>
         </MarketingPageContainer>
       </MarketingSection>
     </MarketingContentPage>

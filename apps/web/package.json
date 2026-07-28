@@ -17,6 +17,7 @@
     "@next/third-parties": "16.2.9",
     "@uandv/database": "workspace:*",
     "@uandv/ui": "workspace:*",
+    "lottie-react": "^2.4.1",
     "next": "16.2.9",
     "pdfkit": "^0.17.1",
     "react": "19.2.4",

@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-import { Icon } from '@uandv/ui';
+import { Icon, cn } from '@uandv/ui';
 
 import { Reveal } from '@/components/marketing/reveal';
+import { uvCardInteractive, uvCardInteractiveSolid } from '@/components/marketing/marketing-design-tokens';
 import {
   MarketingContentPage,
   MarketingPageHero,
@@ -11,9 +12,7 @@ import {
 } from '@/components/marketing/marketing-page-hero';
 import {
   MarketingButtonLink,
-  MarketingCard,
   MarketingCardTitle,
-  MarketingCtaPanel,
   MarketingEyebrow,
   MarketingHeroActions,
   MarketingHeroTitle,
@@ -22,8 +21,15 @@ import {
   MarketingSection,
   MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
+import { ServiceIllustration } from '@/components/services/service-illustration';
 import {
   compensationPlans,
   mlmConsulting,
@@ -48,7 +54,7 @@ export function MlmSolutionsPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -57,8 +63,8 @@ export function MlmSolutionsPage() {
             ]}
           />
 
-          <div className="mt-10 grid items-end gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="max-w-3xl">
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
               <MarketingEyebrow>MLM Business Technology Partner</MarketingEyebrow>
               <MarketingHeroTitle className="mt-4">
                 Build a reliable, scalable MLM platform — not just buy software
@@ -69,10 +75,10 @@ export function MlmSolutionsPage() {
                 operations, and grow with a long-term partner who understands
                 MLM beyond templates.
               </MarketingLead>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
+              <MarketingLead className="mt-4 text-base sm:text-lg">
                 Honest consultation. No income guarantees. No fast-money
                 promises. Compliance-minded guidance — not legal representation.
-              </p>
+              </MarketingLead>
               <MarketingHeroActions>
                 <MarketingButtonLink href={contactInquiryHref}>
                   Book a Free MLM Platform Consultation
@@ -81,46 +87,12 @@ export function MlmSolutionsPage() {
                   Explore live demo
                 </MarketingButtonLink>
               </MarketingHeroActions>
-            </div>
+            </MarketingStandardHeroCopy>
 
-            <Reveal delayMs={80}>
-              <MarketingCard premium className="sm:p-8">
-                <p className="text-sm font-medium text-uv-brand">
-                  What we help you get right
-                </p>
-                <ul className="mt-5 space-y-4 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Compensation plan selection and validation before code is
-                      locked in.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Scalable architecture, security, automation, and
-                      transparent payouts.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Long-term partnership through launch, optimization, and
-                      growth.
-                    </span>
-                  </li>
-                </ul>
-                <Link
-                  href="/business-solutions"
-                  className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-uv-brand uv-focus-ring"
-                >
-                  See full business solutions
-                  <Icon name="ArrowRight" size="sm" />
-                </Link>
-              </MarketingCard>
-            </Reveal>
-          </div>
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name="mlm" className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
 
@@ -165,7 +137,7 @@ export function MlmSolutionsPage() {
           <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {mlmConsulting.map((item, index) => (
               <Reveal key={item.title} delayMs={index * 30} className="h-full">
-                <article className="marketing-card-lift flex h-full min-h-[15rem] flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-5 sm:p-6">
+                <article className={cn(uvCardInteractive, 'flex h-full min-h-[15rem] flex-col')}>
                   <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                     <Icon name={item.icon} size="md" />
                   </div>
@@ -205,7 +177,7 @@ export function MlmSolutionsPage() {
           <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {compensationPlans.map((plan, index) => (
               <Reveal key={plan.title} delayMs={index * 25} className="h-full">
-                <article className="marketing-card-lift flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background p-5 transition-colors hover:border-uv-brand/35">
+                <article className={cn(uvCardInteractiveSolid, 'flex h-full flex-col')}>
                   <MarketingCardTitle className="text-base sm:text-lg">
                     {plan.title}
                   </MarketingCardTitle>
@@ -265,7 +237,7 @@ export function MlmSolutionsPage() {
           <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {softwareModules.map((module, index) => (
               <Reveal key={module.title} delayMs={index * 20} className="h-full">
-                <article className="marketing-card-lift flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background p-5 sm:p-6">
+                <article className={cn(uvCardInteractiveSolid, 'flex h-full flex-col')}>
                   <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                     <Icon name={module.icon} size="md" />
                   </div>
@@ -296,7 +268,7 @@ export function MlmSolutionsPage() {
               <Reveal key={service.title} delayMs={index * 25} className="h-full">
                 <Link
                   href={service.href}
-                  className="marketing-card-lift group flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-5 sm:p-6 transition-colors hover:border-uv-brand/40 uv-focus-ring"
+                  className={cn(uvCardInteractive, 'group flex h-full flex-col uv-focus-ring')}
                 >
                   <Icon
                     name={service.icon}
@@ -381,7 +353,7 @@ export function MlmSolutionsPage() {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection id="success-roadmap" tone="subtle" aria-label="Partnership journey">
+      <MarketingSection id="success-roadmap" tone="subtle" className="border-b-0" aria-label="Partnership journey">
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -463,43 +435,6 @@ export function MlmSolutionsPage() {
               responsibly.
             </p>
           </Reveal>
-        </MarketingPageContainer>
-      </MarketingSection>
-
-      <MarketingSection id="consultation" tone="default" className="border-b-0" aria-label="Free consultation">
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <MarketingEyebrow>Free consultation</MarketingEyebrow>
-                <MarketingSectionTitle className="mt-3">
-                  Let&apos;s discuss the right MLM platform for your business.
-                </MarketingSectionTitle>
-                <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Share your compensation draft, markets, and operational goals.
-                  We will recommend a practical path across consulting,
-                  architecture, and build — with honest scope, no income
-                  promises, and no fabricated case studies.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col xl:flex-row">
-                <MarketingButtonLink href={contactInquiryHref}>
-                  Book a Free MLM Platform Consultation
-                </MarketingButtonLink>
-                <MarketingButtonLink href="/demo/mlm" variant="outline">
-                  Explore live demo
-                </MarketingButtonLink>
-                <MarketingButtonLink
-                  href={siteConfig.whatsapp}
-                  variant="outline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Chat on WhatsApp
-                </MarketingButtonLink>
-              </div>
-            </div>
-          </MarketingCtaPanel>
         </MarketingPageContainer>
       </MarketingSection>
     </MarketingContentPage>

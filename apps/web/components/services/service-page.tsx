@@ -6,9 +6,10 @@ import { Icon, buttonVariants, cn } from '@uandv/ui';
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import {
+  MarketingButtonLink,
   MarketingCard,
-  MarketingCtaPanel,
   MarketingEyebrow,
+  MarketingHeroActions,
   MarketingHeroTitle,
   MarketingIconBox,
   MarketingLead,
@@ -20,6 +21,12 @@ import {
   MarketingPageHero,
   MarketingPageHeroInner,
 } from '@/components/marketing/marketing-page-hero';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import {
   getRelatedServices,
   type ServiceDefinition,
@@ -48,42 +55,34 @@ export function ServicePage({
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs items={breadcrumbs} />
 
-          <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-            <div>
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
               <MarketingEyebrow>Our services</MarketingEyebrow>
               <MarketingHeroTitle className="mt-4">{service.title}</MarketingHeroTitle>
-              <MarketingLead className="mt-5 max-w-xl">{service.tagline}</MarketingLead>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-uv-foreground-muted">
-                {service.summary}
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href={contactInquiryHref}
-                  className={cn(
-                    buttonVariants({ size: 'lg' }),
-                    'marketing-btn-glow justify-center',
-                  )}
-                >
+              <MarketingLead className="mt-5">{service.tagline}</MarketingLead>
+              <MarketingLead className="mt-4 text-base sm:text-lg">{service.summary}</MarketingLead>
+              <MarketingHeroActions className="mt-8">
+                <MarketingButtonLink href={contactInquiryHref}>
                   Contact us
-                </Link>
-                <a
+                </MarketingButtonLink>
+                <MarketingButtonLink
                   href={siteConfig.whatsapp}
+                  variant="outline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
-                  )}
                 >
                   WhatsApp
-                </a>
-              </div>
-            </div>
-            <ServiceIllustration name={service.illustration} />
-          </div>
+                </MarketingButtonLink>
+              </MarketingHeroActions>
+            </MarketingStandardHeroCopy>
+
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name={service.illustration} className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
 
@@ -221,7 +220,10 @@ export function ServicePage({
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection tone="subtle" className="marketing-faq">
+      <MarketingSection
+        tone="subtle"
+        className={cn('marketing-faq', related.length === 0 && 'border-b-0')}
+      >
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -251,47 +253,6 @@ export function ServicePage({
               </Reveal>
             ))}
           </div>
-        </MarketingPageContainer>
-      </MarketingSection>
-
-      <MarketingSection tone="default">
-        <MarketingPageContainer>
-          <MarketingCtaPanel>
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-xl">
-                <MarketingEyebrow>Next step</MarketingEyebrow>
-                <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
-                  Ready to discuss {service.shortTitle}?
-                </h2>
-                <p className="mt-4 text-base text-uv-foreground-muted sm:text-lg">
-                  Tell us your goals and we will recommend a practical path —
-                  scoped to your stage, budget, and timeline.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href={contactInquiryHref}
-                  className={cn(
-                    buttonVariants({ size: 'lg' }),
-                    'marketing-btn-glow justify-center',
-                  )}
-                >
-                  Contact us
-                </Link>
-                <a
-                  href={siteConfig.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'justify-center',
-                  )}
-                >
-                  WhatsApp
-                </a>
-              </div>
-            </div>
-          </MarketingCtaPanel>
         </MarketingPageContainer>
       </MarketingSection>
 

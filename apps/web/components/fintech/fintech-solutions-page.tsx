@@ -1,7 +1,8 @@
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-import { Icon } from '@uandv/ui';
+import { Icon, cn } from '@uandv/ui';
+
+import { uvCardInteractive } from '@/components/marketing/marketing-design-tokens';
 
 import {
   MarketingContentPage,
@@ -11,16 +12,20 @@ import {
 import {
   MarketingButtonLink,
   MarketingCardTitle,
-  MarketingCtaPanel,
   MarketingEyebrow,
   MarketingHeroActions,
   MarketingHeroTitle,
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
-  MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import {
@@ -97,7 +102,7 @@ export function FintechSolutionsPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -105,8 +110,8 @@ export function FintechSolutionsPage() {
             ]}
           />
 
-          <div className="mt-10 grid items-end gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="max-w-3xl">
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
               <MarketingEyebrow>{fintechPositioning.eyebrow}</MarketingEyebrow>
               <MarketingHeroTitle className="mt-4">
                 {fintechPositioning.headline}
@@ -114,12 +119,9 @@ export function FintechSolutionsPage() {
               <MarketingLead className="mt-6">
                 {fintechPositioning.subheadline}
               </MarketingLead>
-              <p className="mt-4 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+              <MarketingLead className="mt-4 text-base sm:text-lg">
                 {fintechPositioning.heroSummary}
-              </p>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
-                {fintechPositioning.trustLine}
-              </p>
+              </MarketingLead>
               <MarketingHeroActions>
                 <MarketingButtonLink href={contactInquiryHref}>
                   Book a Free FinTech Platform Consultation
@@ -128,14 +130,22 @@ export function FintechSolutionsPage() {
                   Explore what we build
                 </MarketingButtonLink>
               </MarketingHeroActions>
-            </div>
+            </MarketingStandardHeroCopy>
 
-            <Reveal delayMs={80}>
+            <MarketingStandardHeroIllustration>
               <FintechDashboardMockup />
-            </Reveal>
-          </div>
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
+
+      <MarketingSection tone="subtle" density="compact">
+        <MarketingPageContainer>
+          <p className="mx-auto max-w-3xl text-center text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
+            {fintechPositioning.trustLine}
+          </p>
+        </MarketingPageContainer>
+      </MarketingSection>
 
       <MarketingSection tone="subtle" aria-label="What we build">
         <MarketingPageContainer>
@@ -198,7 +208,7 @@ export function FintechSolutionsPage() {
                 delayMs={Math.min(index * 30, 240)}
                 className="h-full"
               >
-                <article className="marketing-card-lift flex h-full min-h-[17rem] flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-6">
+                <article className={cn(uvCardInteractive, 'flex h-full min-h-[17rem] flex-col')}>
                   <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                     <Icon name={solution.icon} />
                   </div>
@@ -281,7 +291,7 @@ export function FintechSolutionsPage() {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection tone="default" aria-label="Why U&V">
+      <MarketingSection tone="default" className="border-b-0" aria-label="Why U&V">
         <MarketingPageContainer>
           <Reveal variant="up-blur">
             <SectionHeading
@@ -307,39 +317,6 @@ export function FintechSolutionsPage() {
               </Reveal>
             ))}
           </div>
-        </MarketingPageContainer>
-      </MarketingSection>
-
-      <MarketingSection id="consultation" tone="subtle" className="border-b-0" aria-label="Free consultation">
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <MarketingEyebrow>Free consultation</MarketingEyebrow>
-                <MarketingSectionTitle className="mt-3">
-                  Let&apos;s discuss your FinTech platform requirements.
-                </MarketingSectionTitle>
-                <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Share your workflows, compliance context, and product goals. We
-                  will help you understand what to build, how to phase it, and
-                  how U&V can deliver secure, scalable technology for your
-                  business.
-                </p>
-              </div>
-              <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col">
-                <MarketingButtonLink href={contactInquiryHref} className="justify-center">
-                  Book a Free FinTech Platform Consultation
-                </MarketingButtonLink>
-                <Link
-                  href={contactInquiryHref}
-                  className="inline-flex items-center justify-center gap-1 text-sm font-semibold text-uv-brand uv-focus-ring"
-                >
-                  View contact options
-                  <Icon name="ArrowRight" size="sm" />
-                </Link>
-              </div>
-            </div>
-          </MarketingCtaPanel>
         </MarketingPageContainer>
       </MarketingSection>
     </MarketingContentPage>

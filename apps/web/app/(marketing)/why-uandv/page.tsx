@@ -5,24 +5,24 @@ import { WhyUandvPage } from '@/components/why-uandv/why-uandv-page';
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Why Businesses Choose U&V | Enterprise Technology Partner',
+  title: 'Why U&V | Trust & Partnership',
   description:
-    'U&V is a long-term technology and business partner — combining strategy, software, AI, branding, and continuous improvement under one roof.',
+    'Why business owners trust U&V as a long-term partner — not another software vendor. Our principles, partnership model, and commitment that lasts beyond launch.',
   keywords: [
+    'why trust U&V',
     'why choose U&V',
-    'enterprise technology partner',
-    'long-term software partner',
-    'AI business partner India',
+    'long-term business partner',
+    'software partnership India',
     'U&V Technologies',
-    'technology consulting Tamil Nadu',
+    'trustworthy software partner Tamil Nadu',
   ],
   alternates: {
     canonical: '/why-uandv',
   },
   openGraph: {
-    title: 'Why Businesses Choose U&V',
+    title: 'Why U&V | Trust & Partnership',
     description:
-      'We combine technology, strategy, automation, branding, and long-term partnership under one roof.',
+      'U&V is a long-term business partner — built on trust, honest communication, and commitment that continues after launch.',
     url: `${siteConfig.url}/why-uandv`,
     siteName: siteConfig.name,
     locale: siteConfig.locale,
@@ -30,9 +30,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Why Businesses Choose U&V | U&V',
+    title: 'Why U&V | Trust & Partnership',
     description:
-      'A long-term technology and business partner for strategy, software, AI, and growth.',
+      'Why business owners trust U&V — a partner who stays, not a vendor who disappears.',
   },
 };
 
@@ -42,9 +42,9 @@ export default function WhyUandvRoute() {
       <JsonLd
         mode="page"
         page={{
-          title: 'Why Businesses Choose U&V | Enterprise Technology Partner',
+          title: 'Why U&V | Trust & Partnership',
           description:
-            'U&V enterprise authority page covering principles, industries, technology expertise, workflow, and long-term partnership.',
+            'Why business owners trust U&V — principles, partnership behaviour, client retention, and industry understanding.',
           path: '/why-uandv',
           breadcrumbs: [
             { name: 'Home', path: '/' },

@@ -7,12 +7,21 @@ import {
   MarketingPageHeroInner,
 } from '@/components/marketing/marketing-page-hero';
 import {
+  MarketingButtonLink,
   MarketingEyebrow,
+  MarketingHeroActions,
   MarketingHeroTitle,
   MarketingLead,
 } from '@/components/marketing/marketing-primitives';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
-import { siteConfig } from '@/lib/site';
+import { ServiceIllustration } from '@/components/services/service-illustration';
+import { contactInquiryHref, siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'FAQ | U&V',
@@ -35,23 +44,37 @@ export default function FaqPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner className="pb-10 sm:pb-12">
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
               { label: 'FAQ' },
             ]}
           />
-          <div className="mt-8 max-w-3xl sm:mt-10">
-            <MarketingEyebrow>FAQ</MarketingEyebrow>
-            <MarketingHeroTitle className="mt-3 sm:mt-4">
-              Answers before you reach out.
-            </MarketingHeroTitle>
-            <MarketingLead className="mt-4 sm:mt-6">
-              Clear expectations on how U&V works, what we deliver, and how to
-              get started.
-            </MarketingLead>
-          </div>
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
+              <MarketingEyebrow>FAQ</MarketingEyebrow>
+              <MarketingHeroTitle className="mt-3 sm:mt-4">
+                Answers before you reach out.
+              </MarketingHeroTitle>
+              <MarketingLead className="mt-4 sm:mt-6">
+                Clear expectations on how U&V works, what we deliver, and how to
+                get started.
+              </MarketingLead>
+              <MarketingHeroActions className="mt-6 sm:mt-8">
+                <MarketingButtonLink href={contactInquiryHref}>
+                  Book a consultation
+                </MarketingButtonLink>
+                <MarketingButtonLink href="/services" variant="outline">
+                  Browse services
+                </MarketingButtonLink>
+              </MarketingHeroActions>
+            </MarketingStandardHeroCopy>
+
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name="software" className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
       <Faq />

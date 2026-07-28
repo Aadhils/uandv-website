@@ -115,7 +115,7 @@ export function PortfolioCard({
   return (
     <article
       className={cn(
-        'group marketing-card-lift flex h-full min-h-[28rem] min-w-0 flex-col overflow-hidden rounded-uv-xl border border-uv-border bg-uv-background transition-colors hover:border-uv-brand/40',
+        'group marketing-card-lift flex h-full min-h-[28rem] min-w-0 flex-col overflow-hidden rounded-uv-xl border border-uv-border bg-uv-background shadow-uv-sm transition-colors hover:border-uv-brand/40',
         className,
       )}
     >
@@ -181,7 +181,7 @@ export function FeaturedProjectCard({
   return (
     <article
       className={cn(
-        'group marketing-card-lift min-w-0 overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background transition-colors hover:border-uv-brand/40',
+        'group marketing-card-lift min-w-0 overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background shadow-uv-sm transition-colors hover:border-uv-brand/40',
         className,
       )}
     >

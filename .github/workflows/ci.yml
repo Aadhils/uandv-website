@@ -10,7 +10,7 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-  env:
+env:
   NODE_ENV: test
   DATABASE_URL: postgresql://uandv:uandv_test_password@localhost:5432/uandv_test?schema=public
   REDIS_URL: redis://localhost:6379

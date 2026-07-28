@@ -9,8 +9,6 @@ import {
 } from '@/components/marketing/marketing-page-hero';
 import {
   MarketingButtonLink,
-  MarketingCard,
-  MarketingCtaPanel,
   MarketingEyebrow,
   MarketingHeroActions,
   MarketingHeroTitle,
@@ -19,6 +17,12 @@ import {
   MarketingPageContainer,
   MarketingSection,
 } from '@/components/marketing/marketing-primitives';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
@@ -42,7 +46,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -51,44 +55,50 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
             ]}
           />
 
-          <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-            <div>
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
               <DemoProjectBadge />
               <MarketingEyebrow className="mt-5">Case study</MarketingEyebrow>
               <MarketingHeroTitle className="mt-4">{study.title}</MarketingHeroTitle>
-              <p className="mt-4 text-lg text-uv-foreground-muted">
+              <MarketingLead className="mt-4 text-base sm:text-lg">
                 {study.businessType} · {study.industry}
-              </p>
-              <MarketingLead className="mt-4 max-w-xl text-base sm:text-lg">
-                {study.summary}
               </MarketingLead>
-              <p className="mt-4 max-w-xl text-sm text-uv-foreground-muted">
-                This page is a {DEMO_PROJECT_LABEL.toLowerCase()}. It illustrates
-                approach and expected business value — not a live client claim.
-              </p>
-              <MarketingHeroActions>
+              <MarketingLead className="mt-4">{study.summary}</MarketingLead>
+              <MarketingHeroActions className="mt-6">
                 {demoHref ? (
                   <MarketingButtonLink href={demoHref}>
                     Live Demo
                   </MarketingButtonLink>
-                ) : null}
-                <MarketingButtonLink href={contactInquiryHref} variant="outline">
-                  Start Your Project
-                </MarketingButtonLink>
+                ) : (
+                  <MarketingButtonLink href={contactInquiryHref}>
+                    Start Your Project
+                  </MarketingButtonLink>
+                )}
                 <MarketingButtonLink
-                  href={siteConfig.whatsapp}
-                  variant="secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={demoHref ? contactInquiryHref : siteConfig.whatsapp}
+                  variant="outline"
+                  {...(demoHref ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
                 >
-                  Chat on WhatsApp
+                  {demoHref ? 'Start Your Project' : 'Chat on WhatsApp'}
                 </MarketingButtonLink>
               </MarketingHeroActions>
-            </div>
-            <ServiceIllustration name={study.illustration} />
-          </div>
+            </MarketingStandardHeroCopy>
+
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name={study.illustration} className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
+
+      <MarketingSection tone="subtle" density="compact">
+        <MarketingPageContainer>
+          <p className="mx-auto max-w-3xl text-center text-sm text-uv-foreground-muted sm:text-base">
+            This page is a {DEMO_PROJECT_LABEL.toLowerCase()}. It illustrates
+            approach and expected business value — not a live client claim.
+          </p>
+        </MarketingPageContainer>
+      </MarketingSection>
 
       <MarketingSection id="live-demo" tone="subtle">
         <MarketingPageContainer>
@@ -423,7 +433,10 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection tone="default">
+      <MarketingSection
+        tone="default"
+        className={cn(relatedServices.length === 0 && 'border-b-0')}
+      >
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -455,7 +468,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
       </MarketingSection>
 
       {relatedServices.length > 0 ? (
-        <MarketingSection tone="subtle">
+        <MarketingSection tone="subtle" className="border-b-0">
           <MarketingPageContainer>
             <Reveal>
               <SectionHeading
@@ -491,38 +504,6 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
         </MarketingPageContainer>
         </MarketingSection>
       ) : null}
-
-      <MarketingSection id="inquiry" tone="default" className="border-b-0">
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-xl">
-                <MarketingEyebrow>Next step</MarketingEyebrow>
-                <h2 className="mt-3 font-[family-name:var(--font-uv-display)] text-3xl font-bold tracking-tight text-uv-foreground sm:text-4xl">
-                  Want a solution like this for your business?
-                </h2>
-                <p className="mt-4 text-base text-uv-foreground-muted sm:text-lg">
-                  Share your goals and we will recommend a practical path —
-                  scoped to your stage and constraints.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <MarketingButtonLink href={contactInquiryHref}>
-                  Book Consultation
-                </MarketingButtonLink>
-                <MarketingButtonLink
-                  href={siteConfig.whatsapp}
-                  variant="outline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Chat on WhatsApp
-                </MarketingButtonLink>
-              </div>
-            </div>
-          </MarketingCtaPanel>
-        </MarketingPageContainer>
-      </MarketingSection>
     </MarketingContentPage>
   );
 }

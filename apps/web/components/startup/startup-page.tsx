@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 
 import { Icon, cn } from '@uandv/ui';
 
+import { uvCardInteractive, uvCardInteractiveSolid } from '@/components/marketing/marketing-design-tokens';
 import {
   MarketingContentPage,
   MarketingPageHero,
@@ -11,16 +12,20 @@ import {
 import {
   MarketingButtonLink,
   MarketingCardTitle,
-  MarketingCtaPanel,
   MarketingEyebrow,
   MarketingHeroActions,
   MarketingHeroTitle,
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
-  MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import { ServiceIllustration } from '@/components/services/service-illustration';
@@ -55,7 +60,7 @@ export function StartupPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -63,8 +68,8 @@ export function StartupPage() {
             ]}
           />
 
-          <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="max-w-3xl">
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
               <MarketingEyebrow>{startupPositioning.eyebrow}</MarketingEyebrow>
               <MarketingHeroTitle className="mt-4">
                 {startupPositioning.headline}
@@ -72,12 +77,9 @@ export function StartupPage() {
               <MarketingLead className="mt-6">
                 {startupPositioning.subheadline}
               </MarketingLead>
-              <p className="mt-4 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+              <MarketingLead className="mt-4 text-base sm:text-lg">
                 {startupPositioning.heroSummary}
-              </p>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
-                {startupPositioning.trustLine}
-              </p>
+              </MarketingLead>
               <MarketingHeroActions>
                 <MarketingButtonLink href={contactInquiryHref}>
                   Book a Free Startup Consultation
@@ -91,14 +93,22 @@ export function StartupPage() {
                   Chat on WhatsApp
                 </MarketingButtonLink>
               </MarketingHeroActions>
-            </div>
+            </MarketingStandardHeroCopy>
 
-            <Reveal delayMs={80}>
-              <ServiceIllustration name="consulting" />
-            </Reveal>
-          </div>
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name="consulting" className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
+
+      <MarketingSection tone="subtle" density="compact">
+        <MarketingPageContainer>
+          <p className="mx-auto max-w-3xl text-center text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
+            {startupPositioning.trustLine}
+          </p>
+        </MarketingPageContainer>
+      </MarketingSection>
 
       <StartupJourney />
 
@@ -118,7 +128,7 @@ export function StartupPage() {
                 delayMs={Math.min(index * 30, 240)}
                 className="h-full"
               >
-                <article className="marketing-card-lift flex h-full min-h-[17rem] flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-6">
+                <article className={cn(uvCardInteractive, 'flex h-full min-h-[17rem] flex-col')}>
                   <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                     <Icon name={area.icon} />
                   </div>
@@ -230,7 +240,11 @@ export function StartupPage() {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection tone="default" className="marketing-faq" aria-label="Startup FAQs">
+      <MarketingSection
+        tone="default"
+        className={cn('marketing-faq', related.length === 0 && 'border-b-0')}
+        aria-label="Startup FAQs"
+      >
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -263,41 +277,6 @@ export function StartupPage() {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection id="consultation" tone="subtle" className="border-b-0" aria-label="Free consultation">
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <MarketingEyebrow>Free consultation</MarketingEyebrow>
-                <MarketingSectionTitle className="mt-3">
-                  Let&apos;s talk about where you are — and what comes next.
-                </MarketingSectionTitle>
-                <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Share your idea, stage, and goals. We will help you understand
-                  what to prioritise and how U&V can guide you from validation
-                  through launch and long-term growth.
-                </p>
-              </div>
-              <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col">
-                <MarketingButtonLink href={contactInquiryHref} className="justify-center">
-                  Book a Free Startup Consultation
-                </MarketingButtonLink>
-                <a
-                  href={siteConfig.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    'inline-flex items-center justify-center gap-2 rounded-uv-lg border border-uv-border bg-uv-background px-6 py-3 text-sm font-semibold text-uv-foreground transition-colors hover:border-uv-brand/40 uv-focus-ring',
-                  )}
-                >
-                  Chat on WhatsApp
-                </a>
-              </div>
-            </div>
-          </MarketingCtaPanel>
-        </MarketingPageContainer>
-      </MarketingSection>
-
       {related.length > 0 ? (
         <MarketingSection tone="default" className="border-b-0">
           <MarketingPageContainer>
@@ -313,7 +292,7 @@ export function StartupPage() {
                 <Reveal key={item.slug} delayMs={index * 50}>
                   <Link
                     href={`/services/${item.slug}`}
-                    className="group block rounded-uv-xl border border-uv-border bg-uv-background p-6 shadow-uv-sm transition-colors marketing-card-lift hover:border-uv-brand/40 uv-focus-ring"
+                    className={cn(uvCardInteractiveSolid, 'group block uv-focus-ring')}
                   >
                     <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand transition-transform duration-300 group-hover:-translate-y-0.5">
                       <Icon name={item.icon} size="md" />

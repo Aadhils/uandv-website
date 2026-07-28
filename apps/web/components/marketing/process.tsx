@@ -6,7 +6,7 @@ import { SectionHeading } from './section-heading';
 
 export function Process() {
   return (
-    <MarketingSection id="process" tone="subtle" className="marketing-section-ambient">
+    <MarketingSection id="process" tone="subtle" className="marketing-section-ambient border-b-0">
       <MarketingPageContainer>
         <Reveal variant="up-blur">
           <SectionHeading

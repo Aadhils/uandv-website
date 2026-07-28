@@ -7,11 +7,19 @@
 export const uvContainer =
   'mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8';
 
-export const uvSection =
-  'scroll-mt-20 border-b border-uv-border py-16 sm:py-24 lg:py-28';
+export const uvSectionBase = 'scroll-mt-20 border-b border-uv-border';
 
-export const uvSectionTight =
-  'scroll-mt-20 border-b border-uv-border py-14 sm:py-20 lg:py-24';
+export const uvSectionPad = 'py-16 sm:py-24 lg:py-28';
+
+export const uvSectionCompactPad = 'py-8 sm:py-10';
+
+export const uvSectionTightPad = 'py-14 sm:py-20 lg:py-24';
+
+export const uvSection = `${uvSectionBase} ${uvSectionPad}`;
+
+export const uvSectionCompact = `${uvSectionBase} ${uvSectionCompactPad}`;
+
+export const uvSectionTight = `${uvSectionBase} ${uvSectionTightPad}`;
 
 /** Typography */
 export const uvEyebrow =
@@ -38,6 +46,16 @@ export const uvCard =
 
 export const uvCardPremium =
   'marketing-glass marketing-card-lift marketing-card-premium marketing-gradient-border rounded-uv-2xl border border-uv-border/80 bg-uv-background p-5 shadow-uv-sm sm:p-6';
+
+/** Standard interactive content card — solution pages, services, portfolio */
+export const uvCardInteractive =
+  'marketing-card-lift rounded-uv-xl border border-uv-border bg-uv-background-subtle p-5 shadow-uv-sm transition-colors hover:border-uv-brand/40 sm:p-6';
+
+export const uvCardInteractiveSolid =
+  'marketing-card-lift rounded-uv-xl border border-uv-border bg-uv-background p-5 shadow-uv-sm transition-colors hover:border-uv-brand/40 sm:p-6';
+
+export const uvHeroIllustrationFrame =
+  'marketing-hero-illustration-frame relative overflow-hidden rounded-uv-2xl shadow-[0_32px_80px_rgb(124_58_237_/_0.12)]';
 
 export const uvBadge =
   'inline-flex items-center rounded-uv-full border border-uv-brand/20 bg-uv-brand-muted/50 px-3 py-1 text-xs font-medium tracking-wide text-uv-brand';

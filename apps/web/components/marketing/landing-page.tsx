@@ -1,8 +1,6 @@
 import { BusinessEcosystem } from './business-ecosystem';
-import { FeaturedIndustries } from './featured-industries';
 import { Hero } from './hero';
 import { Process } from './process';
-import { Technologies } from './technologies';
 import { WhyChoose } from './why-choose';
 
 export function LandingPage() {
@@ -11,9 +9,7 @@ export function LandingPage() {
       <Hero />
       <WhyChoose />
       <BusinessEcosystem />
-      <FeaturedIndustries />
       <Process />
-      <Technologies />
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-import { Icon } from '@uandv/ui';
+import { Icon, cn } from '@uandv/ui';
 
 import { Reveal } from '@/components/marketing/reveal';
+import { uvCardInteractive, uvCardInteractiveSolid } from '@/components/marketing/marketing-design-tokens';
 import {
   MarketingContentPage,
   MarketingPageHero,
@@ -11,19 +12,23 @@ import {
 } from '@/components/marketing/marketing-page-hero';
 import {
   MarketingButtonLink,
-  MarketingCard,
   MarketingCardTitle,
-  MarketingCtaPanel,
   MarketingEyebrow,
   MarketingHeroActions,
   MarketingHeroTitle,
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
-  MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
+import { ServiceIllustration } from '@/components/services/service-illustration';
 import {
   digitalMarketingAudiences,
   digitalMarketingIntegrations,
@@ -32,7 +37,7 @@ import {
   digitalMarketingServices,
   digitalMarketingWhy,
 } from '@/lib/digital-marketing';
-import { contactInquiryHref, siteConfig } from '@/lib/site';
+import { contactInquiryHref } from '@/lib/site';
 
 function StoryLabel({ children }: { children: ReactNode }) {
   return (
@@ -46,7 +51,7 @@ export function DigitalMarketingSolutionsPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -55,8 +60,8 @@ export function DigitalMarketingSolutionsPage() {
             ]}
           />
 
-          <div className="mt-10 grid items-end gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="max-w-3xl">
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
               <MarketingEyebrow>Business growth through digital marketing</MarketingEyebrow>
               <MarketingHeroTitle className="mt-4">
                 Turn attention into customers — not just ad impressions
@@ -67,10 +72,10 @@ export function DigitalMarketingSolutionsPage() {
                 business — strategy, channels, follow-up, and improvement over
                 time.
               </MarketingLead>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
+              <MarketingLead className="mt-4 text-base sm:text-lg">
                 Honest consultation. Sustainable systems. No guaranteed-results
                 promises or inflated statistics.
-              </p>
+              </MarketingLead>
               <MarketingHeroActions>
                 <MarketingButtonLink href={contactInquiryHref}>
                   Book a Free Growth Consultation
@@ -82,45 +87,12 @@ export function DigitalMarketingSolutionsPage() {
                   View service details
                 </MarketingButtonLink>
               </MarketingHeroActions>
-            </div>
+            </MarketingStandardHeroCopy>
 
-            <Reveal delayMs={80}>
-              <MarketingCard premium className="sm:p-8">
-                <p className="text-sm font-medium text-uv-brand">
-                  Marketing that serves your business
-                </p>
-                <ul className="mt-5 space-y-4 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Strategy before spend — so budget attracts customers, not
-                      noise.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Enquiry paths connected to follow-up, CRM, and sales
-                      reality.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Long-term growth habits — not one-off campaigns that fade.
-                    </span>
-                  </li>
-                </ul>
-                <Link
-                  href="/business-solutions"
-                  className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-uv-brand uv-focus-ring"
-                >
-                  See full business solutions
-                  <Icon name="ArrowRight" size="sm" />
-                </Link>
-              </MarketingCard>
-            </Reveal>
-          </div>
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name="marketing" className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
 
@@ -169,7 +141,7 @@ export function DigitalMarketingSolutionsPage() {
                 delayMs={Math.min(index * 30, 240)}
                 className="h-full"
               >
-                <article className="marketing-card-lift flex h-full min-h-[17rem] flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-6">
+                <article className={cn(uvCardInteractive, 'flex h-full min-h-[17rem] flex-col')}>
                   <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                     <Icon name={service.icon} />
                   </div>
@@ -238,7 +210,7 @@ export function DigitalMarketingSolutionsPage() {
           <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6">
             {digitalMarketingAudiences.map((item, index) => (
               <Reveal key={item.title} delayMs={index * 40} className="h-full">
-                <article className="marketing-card-lift flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-6">
+                <article className={cn(uvCardInteractive, 'flex h-full flex-col')}>
                   <MarketingCardTitle>{item.title}</MarketingCardTitle>
                   <div className="mt-3 flex flex-1 flex-col gap-3">
                     <div>
@@ -273,7 +245,7 @@ export function DigitalMarketingSolutionsPage() {
           <div className="mt-12 grid gap-5 sm:mt-16 sm:gap-6 lg:grid-cols-3">
             {digitalMarketingReporting.map((item, index) => (
               <Reveal key={item.title} delayMs={index * 40} className="h-full">
-                <article className="marketing-card-lift flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background p-6">
+                <article className={cn(uvCardInteractiveSolid, 'flex h-full flex-col')}>
                   <MarketingCardTitle>{item.title}</MarketingCardTitle>
                   <div className="mt-3 flex flex-1 flex-col gap-3">
                     <div>
@@ -296,7 +268,7 @@ export function DigitalMarketingSolutionsPage() {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection tone="default" aria-label="Connected growth systems">
+      <MarketingSection tone="default" className="border-b-0" aria-label="Connected growth systems">
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -310,7 +282,7 @@ export function DigitalMarketingSolutionsPage() {
               <Reveal key={item.title} delayMs={index * 40} className="h-full">
                 <Link
                   href={item.href}
-                  className="marketing-card-lift group flex h-full flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-6 transition-colors hover:border-uv-brand/40 uv-focus-ring"
+                  className={cn(uvCardInteractive, 'group flex h-full flex-col uv-focus-ring')}
                 >
                   <MarketingCardTitle>{item.title}</MarketingCardTitle>
                   <div className="mt-3 flex flex-1 flex-col gap-3">
@@ -335,40 +307,6 @@ export function DigitalMarketingSolutionsPage() {
               </Reveal>
             ))}
           </div>
-        </MarketingPageContainer>
-      </MarketingSection>
-
-      <MarketingSection id="consultation" tone="subtle" className="border-b-0" aria-label="Free consultation">
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <MarketingEyebrow>Free consultation</MarketingEyebrow>
-                <MarketingSectionTitle className="mt-3">
-                  Let&apos;s talk honestly about growing your business.
-                </MarketingSectionTitle>
-                <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Share where you are today — your customers, channels, and
-                  goals. We will recommend a practical growth path, including what
-                  to prioritise first and what to avoid — with no pressure and no
-                  fabricated success metrics.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
-                <MarketingButtonLink href={contactInquiryHref}>
-                  Book a Free Growth Consultation
-                </MarketingButtonLink>
-                <MarketingButtonLink
-                  href={siteConfig.whatsapp}
-                  variant="outline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Chat on WhatsApp
-                </MarketingButtonLink>
-              </div>
-            </div>
-          </MarketingCtaPanel>
         </MarketingPageContainer>
       </MarketingSection>
     </MarketingContentPage>

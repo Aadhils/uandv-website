@@ -17,12 +17,15 @@ import {
   uvHeroActions,
   uvHeroTitle,
   uvLead,
-  uvSection,
+  uvSectionBase,
+  uvSectionCompactPad,
+  uvSectionPad,
+  uvSectionTightPad,
   uvSectionTitle,
 } from './marketing-design-tokens';
 
 export const marketingContainerClass = uvContainer;
-export const marketingSectionClass = uvSection;
+export const marketingSectionClass = `${uvSectionBase} ${uvSectionPad}`;
 export const marketingEyebrowClass = uvEyebrow;
 export const marketingHeroTitleClass = uvHeroTitle;
 export const marketingSectionTitleClass = uvSectionTitle;
@@ -49,6 +52,7 @@ export function MarketingSection({
   className,
   id,
   tone = 'default',
+  density = 'default',
   as: Component = 'section',
   'aria-label': ariaLabel,
 }: {
@@ -56,15 +60,24 @@ export function MarketingSection({
   className?: string;
   id?: string;
   tone?: 'default' | 'subtle' | 'none';
+  density?: 'default' | 'compact' | 'tight';
   as?: ElementType;
   'aria-label'?: string;
 }) {
+  const sectionPad =
+    density === 'compact'
+      ? uvSectionCompactPad
+      : density === 'tight'
+        ? uvSectionTightPad
+        : uvSectionPad;
+
   return (
     <Component
       id={id}
       aria-label={ariaLabel}
       className={cn(
-        uvSection,
+        uvSectionBase,
+        sectionPad,
         tone === 'subtle' && 'bg-uv-background-subtle',
         tone === 'default' && 'bg-uv-background',
         className,
@@ -258,6 +271,7 @@ export function MarketingButtonLink({
       className={cn(
         buttonVariants({ size, variant: buttonVariant }),
         variant === 'primary' ? uvBtnPrimary : uvBtnOutline,
+        'uv-focus-ring',
         className,
       )}
     >

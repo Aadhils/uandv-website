@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-import { Icon } from '@uandv/ui';
+import { Icon, cn } from '@uandv/ui';
+
+import { uvCardInteractive } from '@/components/marketing/marketing-design-tokens';
 
 import {
   MarketingContentPage,
@@ -11,22 +13,27 @@ import {
 import {
   MarketingButtonLink,
   MarketingCardTitle,
-  MarketingCtaPanel,
   MarketingEyebrow,
   MarketingHeroActions,
   MarketingHeroTitle,
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
-  MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { serviceIndexCards } from '@/lib/service-index-cards';
 import { getAllServices } from '@/lib/services';
 import { contactInquiryHref, siteConfig } from '@/lib/site';
 
 import { Breadcrumbs } from './breadcrumbs';
+import { ServiceIllustration } from './service-illustration';
 
 function ServiceCardLabel({ children }: { children: ReactNode }) {
   return (
@@ -42,45 +49,51 @@ export function ServicesIndexPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
               { label: 'Services' },
             ]}
           />
-          <div className="mt-10 max-w-3xl">
-            <MarketingEyebrow>Find the right service</MarketingEyebrow>
-            <MarketingHeroTitle className="mt-4">
-              Which U&amp;V service fits your business right now?
-            </MarketingHeroTitle>
-            <MarketingLead className="mt-6">
-              Start with the challenge you face today — each service below
-              explains the problem it solves, the outcome you can expect, and
-              how to take the next step.
-            </MarketingLead>
-            <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
-              Not sure where to begin? Book a free consultation and we will
-              point you to the right starting point.
-            </p>
-            <MarketingHeroActions>
-              <MarketingButtonLink href={contactInquiryHref}>
-                Book a Free Consultation
-              </MarketingButtonLink>
-              <MarketingButtonLink
-                href={siteConfig.whatsapp}
-                variant="outline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Chat on WhatsApp
-              </MarketingButtonLink>
-            </MarketingHeroActions>
-          </div>
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
+              <MarketingEyebrow>Find the right service</MarketingEyebrow>
+              <MarketingHeroTitle className="mt-4">
+                Which U&amp;V service fits your business right now?
+              </MarketingHeroTitle>
+              <MarketingLead className="mt-6">
+                Start with the challenge you face today — each service below
+                explains the problem it solves, the outcome you can expect, and
+                how to take the next step.
+              </MarketingLead>
+              <MarketingLead className="mt-4 text-base sm:text-lg">
+                Not sure where to begin? Book a free consultation and we will
+                point you to the right starting point.
+              </MarketingLead>
+              <MarketingHeroActions>
+                <MarketingButtonLink href={contactInquiryHref}>
+                  Book a Free Consultation
+                </MarketingButtonLink>
+                <MarketingButtonLink
+                  href={siteConfig.whatsapp}
+                  variant="outline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Chat on WhatsApp
+                </MarketingButtonLink>
+              </MarketingHeroActions>
+            </MarketingStandardHeroCopy>
+
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name="software" className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
 
-      <MarketingSection tone="default" aria-label="Service catalog">
+      <MarketingSection tone="default" className="border-b-0" aria-label="Service catalog">
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -100,7 +113,7 @@ export function ServicesIndexPage() {
 
               return (
                 <Reveal key={service.slug} delayMs={index * 30} className="h-full">
-                  <article className="marketing-card-lift flex h-full min-h-[22rem] flex-col rounded-uv-xl border border-uv-border bg-uv-background-subtle p-6 shadow-uv-sm transition-colors hover:border-uv-brand/40">
+                  <article className={cn(uvCardInteractive, 'flex h-full min-h-[22rem] flex-col')}>
                     <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-uv-lg bg-uv-brand-muted text-uv-brand">
                       <Icon name={service.icon} size="md" />
                     </div>
@@ -141,40 +154,6 @@ export function ServicesIndexPage() {
               );
             })}
           </div>
-        </MarketingPageContainer>
-      </MarketingSection>
-
-      <MarketingSection tone="subtle" className="border-b-0" aria-label="Consultation">
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <MarketingEyebrow>Not sure which service?</MarketingEyebrow>
-                <MarketingSectionTitle className="mt-3">
-                  We will help you choose the right starting point.
-                </MarketingSectionTitle>
-                <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Tell us what is slowing your business down today. In a free,
-                  no-pressure conversation, we will recommend the service — or
-                  combination — that makes the most sense for your stage and
-                  budget.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
-                <MarketingButtonLink href={contactInquiryHref}>
-                  Book a Free Consultation
-                </MarketingButtonLink>
-                <MarketingButtonLink
-                  href={siteConfig.whatsapp}
-                  variant="outline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Chat on WhatsApp
-                </MarketingButtonLink>
-              </div>
-            </div>
-          </MarketingCtaPanel>
         </MarketingPageContainer>
       </MarketingSection>
     </MarketingContentPage>

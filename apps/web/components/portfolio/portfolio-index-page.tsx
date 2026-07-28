@@ -9,7 +9,6 @@ import {
   MarketingButtonLink,
   MarketingCard,
   MarketingCardTitle,
-  MarketingCtaPanel,
   MarketingEyebrow,
   MarketingHeroActions,
   MarketingHeroTitle,
@@ -17,17 +16,23 @@ import {
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
-  MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
+import {
+  MarketingStandardHeroCopy,
+  MarketingStandardHeroGrid,
+  MarketingStandardHeroIllustration,
+  marketingStandardHeroInnerClass,
+} from '@/components/marketing/marketing-standard-hero';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
+import { ServiceIllustration } from '@/components/services/service-illustration';
 import {
   DEMO_PROJECT_LABEL,
   portfolioProcess,
   portfolioTechnologies,
 } from '@/lib/portfolio';
-import { contactInquiryHref, siteConfig } from '@/lib/site';
+import { contactInquiryHref } from '@/lib/site';
 
 import { DemoProjectBadge } from './portfolio-card';
 import { PortfolioFilterGrid } from './portfolio-filter-grid';
@@ -36,7 +41,7 @@ export function PortfolioIndexPage() {
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner>
+        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -44,8 +49,8 @@ export function PortfolioIndexPage() {
             ]}
           />
 
-          <div className="mt-10 grid items-end gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="max-w-3xl">
+          <MarketingStandardHeroGrid>
+            <MarketingStandardHeroCopy>
               <DemoProjectBadge />
               <MarketingEyebrow className="mt-5">
                 Product demos &amp; solution concepts
@@ -58,11 +63,11 @@ export function PortfolioIndexPage() {
                 approach it, and the outcomes you can expect — so you can judge
                 whether we are the right partner for your project.
               </MarketingLead>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-uv-foreground-muted sm:text-base">
+              <MarketingLead className="mt-4 text-base sm:text-lg">
                 Every item is a clearly labelled {DEMO_PROJECT_LABEL.toLowerCase()}{' '}
                 with mock data — not a claim about a named client or measured
                 results.
-              </p>
+              </MarketingLead>
               <MarketingHeroActions>
                 <MarketingButtonLink href="#demos" variant="primary">
                   Browse solution concepts
@@ -71,38 +76,12 @@ export function PortfolioIndexPage() {
                   Discuss your project
                 </MarketingButtonLink>
               </MarketingHeroActions>
-            </div>
+            </MarketingStandardHeroCopy>
 
-            <Reveal delayMs={80}>
-              <MarketingCard premium className="sm:p-8">
-                <p className="text-sm font-medium text-uv-brand">
-                  What you can evaluate here
-                </p>
-                <ul className="mt-5 space-y-4 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Whether U&amp;V understands challenges in your industry.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      How we think about solutions — before you commit to a
-                      build.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <Icon name="Check" className="mt-0.5 shrink-0 text-uv-brand" />
-                    <span>
-                      Interactive demos where available — honest placeholders
-                      everywhere else.
-                    </span>
-                  </li>
-                </ul>
-              </MarketingCard>
-            </Reveal>
-          </div>
+            <MarketingStandardHeroIllustration>
+              <ServiceIllustration name="web" className="rounded-none border-0" />
+            </MarketingStandardHeroIllustration>
+          </MarketingStandardHeroGrid>
         </MarketingPageHeroInner>
       </MarketingPageHero>
 
@@ -150,7 +129,7 @@ export function PortfolioIndexPage() {
         </MarketingPageContainer>
       </MarketingSection>
 
-      <MarketingSection id="process" tone="default" aria-label="How we deliver projects">
+      <MarketingSection id="process" tone="default" className="border-b-0" aria-label="How we deliver projects">
         <MarketingPageContainer>
           <Reveal>
             <SectionHeading
@@ -178,44 +157,6 @@ export function PortfolioIndexPage() {
               </Reveal>
             ))}
           </ol>
-        </MarketingPageContainer>
-      </MarketingSection>
-
-      <MarketingSection
-        id="consultation"
-        tone="subtle"
-        className="border-b-0"
-        aria-label="Discuss your project"
-      >
-        <MarketingPageContainer>
-          <MarketingCtaPanel className="sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <MarketingEyebrow>Your project</MarketingEyebrow>
-                <MarketingSectionTitle className="mt-3">
-                  Building something similar? Let&apos;s talk it through.
-                </MarketingSectionTitle>
-                <p className="mt-4 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
-                  Describe your business challenge in a free consultation. We
-                  will share an honest view of scope, approach, and next steps —
-                  without invented case studies or pressure to sign.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
-                <MarketingButtonLink href={contactInquiryHref}>
-                  Discuss a Similar Project
-                </MarketingButtonLink>
-                <MarketingButtonLink
-                  href={siteConfig.whatsapp}
-                  variant="outline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Chat on WhatsApp
-                </MarketingButtonLink>
-              </div>
-            </div>
-          </MarketingCtaPanel>
         </MarketingPageContainer>
       </MarketingSection>
     </MarketingContentPage>
