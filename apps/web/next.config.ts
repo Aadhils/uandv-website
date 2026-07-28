@@ -42,6 +42,11 @@ const nextConfig: NextConfig = {
         destination: '/startup',
         permanent: true,
       },
+      {
+        source: '/services',
+        destination: '/why-uandv#services',
+        permanent: true,
+      },
     ];
   },
   async headers() {

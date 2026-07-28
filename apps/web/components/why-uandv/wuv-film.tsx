@@ -38,7 +38,7 @@ export function WuvFilm() {
               <div className="wuv-film-scene__hero-meta">
                 <MarketingEyebrow className="text-white/95">{wuvHero.eyebrow}</MarketingEyebrow>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4">
-                  <MarketingButtonLink href="/services">Explore Our Services</MarketingButtonLink>
+                  <MarketingButtonLink href="/why-uandv#services">Explore Our Services</MarketingButtonLink>
                   <MarketingButtonLink
                     href="/business-solutions"
                     variant="outline"

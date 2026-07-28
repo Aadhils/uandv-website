@@ -52,9 +52,18 @@ export const wuvAccountability = {
 
 export const wuvPageEnding = {
   line1: 'Good software delivers features.',
-  line2: 'A good partnership keeps your business moving.',
+  line2: 'A real partner helps your business move forward.',
   support:
     'Anyone can promise a project. U&V shows up for the business behind it. That is who we are. That is what you can expect.',
+  partnership:
+    'Our relationship does not end at deployment. We continue with support, maintenance, updates, marketing, automation, and growth consultation — as your business evolves.',
+  commitments: [
+    'Clear project milestones you can track',
+    'Written scope and documented decisions',
+    'Support after launch when adoption matters',
+    'Maintenance, updates, and future development',
+    'Marketing, automation, and growth consultation',
+  ],
 } as const;
 
 export const wuvIndustryTaglines: Record<
@@ -142,5 +151,5 @@ export const wuvJourneyTransition = {
     'When you are ready, explore what we can do together — with a partner you already believe in.',
   ],
   servicesLabel: 'Services',
-  servicesHref: '/services',
+  servicesHref: '/why-uandv#services',
 } as const;
