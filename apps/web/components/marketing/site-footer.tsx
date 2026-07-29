@@ -56,10 +56,7 @@ export function SiteFooter() {
                 label: 'FinTech',
                 href: '/fintech',
               },
-              {
-                label: 'Startup Support',
-                href: '/startup',
-              },
+              { label: 'Startup', href: '/startup' },
             ],
           },
           {

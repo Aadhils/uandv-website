@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 
+import { JsonLd } from '@/components/seo/json-ld';
 import { DigitalMarketingSolutionsPage } from '@/components/solutions/digital-marketing-solutions-page';
+import { organizationId } from '@/lib/schema';
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -36,5 +38,40 @@ export const metadata: Metadata = {
 };
 
 export default function DigitalMarketingRoutePage() {
-  return <DigitalMarketingSolutionsPage />;
+  const url = `${siteConfig.url}/digital-marketing`;
+
+  return (
+    <>
+      <JsonLd
+        mode="page"
+        page={{
+          title: 'Digital Marketing & Business Growth Solutions | U&V',
+          description:
+            'U&V helps businesses build visibility, generate qualified leads, improve conversions, and create sustainable digital growth systems.',
+          path: '/digital-marketing',
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Digital Marketing', path: '/digital-marketing' },
+          ],
+        }}
+        extra={[
+          {
+            '@type': 'Service',
+            '@id': `${url}#digital-marketing-service`,
+            name: 'Digital Marketing & Business Growth Solutions',
+            serviceType: 'Digital marketing and growth consulting',
+            description:
+              'Strategy-led digital marketing connected to website, CRM, and sustainable growth systems.',
+            url,
+            provider: { '@id': organizationId() },
+            areaServed: {
+              '@type': 'Country',
+              name: 'India',
+            },
+          },
+        ]}
+      />
+      <DigitalMarketingSolutionsPage />
+    </>
+  );
 }

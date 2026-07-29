@@ -134,7 +134,7 @@ export function Navbar({
         </div>
 
         {links.length > 0 && centeredLinks ? (
-          <ul className="pointer-events-none absolute left-1/2 top-1/2 z-40 hidden max-w-[min(100%,52rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-0.5 lg:flex xl:gap-1">
+          <ul className="pointer-events-none absolute left-1/2 top-1/2 z-40 hidden max-w-[min(100%,60rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-0.5 lg:flex xl:gap-1">
             {links.map((link) => (
               <li key={link.href} className="pointer-events-auto shrink-0">
                 <NavLink

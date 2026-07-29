@@ -186,10 +186,10 @@ export const fintechCompliance = {
 } as const;
 
 export const fintechCapabilities = [
-  'Custom software & platform engineering',
-  'Workflow automation & AI',
-  'CRM & secure client portals',
-  'Dashboards & operational reporting',
+  'Share market & trading platform software',
+  'Broker CRM & secure client portals',
+  'Trading dashboards & operational reporting',
+  'Workflow automation & financial AI',
   'Mobile apps for clients & teams',
-  'API & data integrations',
+  'API & market data integrations',
 ] as const;

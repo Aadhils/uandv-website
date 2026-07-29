@@ -80,7 +80,10 @@ export const marketingNav = [
   { label: 'About U&V', href: '/why-uandv' },
   { label: 'Business Solutions', href: '/business-solutions' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Digital Marketing', href: '/digital-marketing' },
+  { label: 'MLM', href: '/mlm' },
+  { label: 'FinTech', href: '/fintech' },
+  { label: 'Startup', href: '/startup' },
 ] as const;
 
 export type MarketingSocialLink = {
