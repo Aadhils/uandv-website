@@ -4,63 +4,70 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Icon, cn, type IconName } from '@uandv/ui';
 
+import { Reveal } from '@/components/marketing/reveal';
+import { uvContainer } from '@/components/marketing/marketing-design-tokens';
 import { wuvPartnerPath } from '@/lib/why-uandv-partner-path';
 import type { WuvPartnerPathStage } from '@/lib/why-uandv-partner-path';
 
 import { WuvJourneyStoryBanner } from './scenes/wuv-banner-visuals';
-import { WuvSplitSection } from './wuv-split-section';
 import { useReducedMotion } from './wuv-motion';
 
 const stageIcons: Record<WuvPartnerPathStage['id'], IconName> = {
   listen: 'MessageCircle',
+  understand: 'Search',
   plan: 'Calendar',
   build: 'Code2',
   launch: 'Rocket',
+  improve: 'Sparkles',
   grow: 'TrendingUp',
 };
 
-function WuvJourneyStageRail({
+function WuvJourneyPath({
   activeIndex,
   onSelect,
 }: {
   activeIndex: number;
   onSelect: (index: number) => void;
 }) {
-  return (
-    <div className="wuv-journey-rail" role="tablist" aria-label="Partnership stages">
-      {wuvPartnerPath.stages.map((stage, index) => {
-        const isActive = activeIndex === index;
-        const isReached = index <= activeIndex;
+  const total = wuvPartnerPath.stages.length;
+  const progress = total > 1 ? activeIndex / (total - 1) : 0;
 
-        return (
-          <div key={stage.id} className="wuv-journey-rail__item">
-            {index > 0 ? (
-              <div
-                className={cn('wuv-journey-rail__connector', isReached && 'is-reached')}
-                aria-hidden
-              />
-            ) : null}
-            <button
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              aria-controls={`wuv-journey-panel-${stage.id}`}
-              id={`wuv-journey-tab-${stage.id}`}
-              onClick={() => onSelect(index)}
-              className={cn(
-                'wuv-journey-rail__step',
-                isActive && 'is-active',
-                isReached && 'is-reached',
-              )}
-            >
-              <span className="wuv-journey-rail__icon" aria-hidden>
-                <Icon name={stageIcons[stage.id]} size="sm" />
-              </span>
-              <span className="wuv-journey-rail__label">{stage.label}</span>
-            </button>
-          </div>
-        );
-      })}
+  return (
+    <div className="wuv-journey-path" role="tablist" aria-label="Partnership journey steps">
+      <div className="wuv-journey-path__track" aria-hidden>
+        <div className="wuv-journey-path__track-line" />
+        <div className="wuv-journey-path__track-fill" style={{ transform: `scaleX(${progress})` }} />
+      </div>
+
+      <ol className="wuv-journey-path__steps">
+        {wuvPartnerPath.stages.map((stage, index) => {
+          const isActive = activeIndex === index;
+          const isReached = index <= activeIndex;
+
+          return (
+            <li key={stage.id} className="wuv-journey-path__step">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`wuv-journey-panel-${stage.id}`}
+                id={`wuv-journey-tab-${stage.id}`}
+                onClick={() => onSelect(index)}
+                className={cn(
+                  'wuv-journey-path__node',
+                  isActive && 'is-active',
+                  isReached && 'is-reached',
+                )}
+              >
+                <span className="wuv-journey-path__icon" aria-hidden>
+                  <Icon name={stageIcons[stage.id]} size="sm" />
+                </span>
+                <span className="wuv-journey-path__label">{stage.label}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
@@ -110,34 +117,49 @@ export function WuvJourneyStorySection() {
   }, [reduced]);
 
   return (
-    <WuvSplitSection
+    <section
       ref={sectionRef}
       id="how-we-work"
-      ariaLabel="How U&V works with you"
-      eyebrow={wuvPartnerPath.eyebrow}
-      title={wuvPartnerPath.title}
-      visual={<WuvJourneyStoryBanner activeIndex={activeIndex} />}
-      visualPosition="left"
-      tone="subtle"
-      className="wuv-journey-story-section"
+      aria-label="How the relationship begins"
+      className="wuv-journey-story scroll-mt-20 border-b border-uv-border/60 bg-uv-background-subtle"
     >
-      <p className="wuv-journey-story__intro">{wuvPartnerPath.intro}</p>
+      <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
+        <Reveal variant="up-blur" className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand sm:text-sm">
+            {wuvPartnerPath.eyebrow}
+          </p>
+          <h2 className="mt-2 font-[family-name:var(--font-uv-display)] text-2xl font-bold leading-tight text-uv-foreground sm:mt-3 sm:text-3xl">
+            {wuvPartnerPath.title}
+          </h2>
+          <p className="mt-3 text-base leading-relaxed text-uv-foreground-muted sm:mt-4 sm:text-lg">
+            {wuvPartnerPath.intro}
+          </p>
+        </Reveal>
 
-      <div
-        id={`wuv-journey-panel-${activeStage.id}`}
-        role="tabpanel"
-        aria-labelledby={`wuv-journey-tab-${activeStage.id}`}
-        className="wuv-journey-story__detail"
-        key={activeStage.id}
-      >
-        <p className="wuv-journey-story__stage-eyebrow">{activeStage.label}</p>
-        <p className="wuv-journey-story__stage-title">{activeStage.title}</p>
-        <p className="wuv-journey-story__stage-body">{activeStage.description}</p>
+        <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-10">
+          <Reveal variant="scale" delayMs={60} className="min-w-0 order-2 lg:order-1">
+            <WuvJourneyStoryBanner activeIndex={activeIndex} className="min-h-[200px] sm:min-h-[240px]" />
+          </Reveal>
+
+          <div className="order-1 min-w-0 lg:order-2">
+            <div
+              id={`wuv-journey-panel-${activeStage.id}`}
+              role="tabpanel"
+              aria-labelledby={`wuv-journey-tab-${activeStage.id}`}
+              className="wuv-journey-story__detail"
+              key={activeStage.id}
+            >
+              <p className="wuv-journey-story__stage-eyebrow">{activeStage.label}</p>
+              <p className="wuv-journey-story__stage-title">{activeStage.title}</p>
+              <p className="wuv-journey-story__stage-body">{activeStage.description}</p>
+            </div>
+
+            <WuvJourneyPath activeIndex={activeIndex} onSelect={selectStage} />
+
+            <p className="wuv-journey-story__closing">{wuvPartnerPath.closing}</p>
+          </div>
+        </div>
       </div>
-
-      <WuvJourneyStageRail activeIndex={activeIndex} onSelect={selectStage} />
-
-      <p className="wuv-journey-story__closing">{wuvPartnerPath.closing}</p>
-    </WuvSplitSection>
+    </section>
   );
 }

@@ -77,6 +77,15 @@ const journeyScenes: Record<WuvPartnerPathStage['id'], React.ReactNode> = {
       <WuvChatBubble x={48} y={48} text="Tell us your goals" />
     </>
   ),
+  understand: (
+    <>
+      <WuvWhiteboard x={48} y={64} />
+      <WuvPerson x={200} y={108} variant="owner" facing="right" scale={0.85} />
+      <WuvPerson x={300} y={108} variant="consultant" facing="left" scale={0.85} />
+      <rect x="340" y="72" width="100" height="100" rx="8" fill="#fff" stroke="#7C3AED" strokeWidth="1" strokeOpacity="0.25" />
+      <text x="356" y="92" fill="#7C3AED" fontSize="7" fontWeight="700" fontFamily="system-ui,sans-serif">Your world</text>
+    </>
+  ),
   plan: (
     <>
       <WuvWhiteboard x={72} y={72} />
@@ -102,6 +111,15 @@ const journeyScenes: Record<WuvPartnerPathStage['id'], React.ReactNode> = {
       <WuvPhone x={300} y={100} />
       <WuvPhone x={360} y={100} />
       <WuvChatBubble x={280} y={48} text="We’re live!" />
+    </>
+  ),
+  improve: (
+    <>
+      <WuvPerson x={80} y={108} variant="owner" facing="right" scale={0.85} />
+      <WuvLaptop x={180} y={88} w={72} />
+      <WuvChatBubble x={280} y={48} text="Feedback" />
+      <rect x="300" y="96" width="120" height="80" rx="8" fill="#fff" stroke="#CBD5E1" strokeWidth="1" />
+      <rect x="312" y="120" width="96" height="8" rx="4" fill="#7C3AED" fillOpacity="0.4" />
     </>
   ),
   grow: (

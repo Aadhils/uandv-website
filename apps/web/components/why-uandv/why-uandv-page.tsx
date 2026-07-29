@@ -52,11 +52,16 @@ export function WhyUandvPage() {
                   {wuvHero.lead}
                 </MarketingLead>
               </Reveal>
+              <Reveal delayMs={140} variant="up">
+                <MarketingLead className="mt-3 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
+                  {wuvHero.secondaryLead}
+                </MarketingLead>
+              </Reveal>
               <Reveal delayMs={180} variant="fade">
                 <MarketingHeroActions className="mt-6 sm:mt-8">
-                  <MarketingButtonLink href="#our-story">Read our story</MarketingButtonLink>
-                  <MarketingButtonLink href="#solutions" variant="outline" size="md">
-                    What we build
+                  <MarketingButtonLink href="#consultation">Start a Conversation</MarketingButtonLink>
+                  <MarketingButtonLink href="#how-we-work" variant="outline" size="md">
+                    See How We Work
                   </MarketingButtonLink>
                 </MarketingHeroActions>
               </Reveal>

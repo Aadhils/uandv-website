@@ -4980,3 +4980,276 @@ header nav[aria-label='Main navigation'] ul a[aria-current='page']::after {
     box-shadow: none;
   }
 }
+
+/* ── Why U&V v5 — story-driven eight-section narrative ── */
+
+.wuv-origin-story__quote {
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.wuv-you-we-art.is-active .wuv-you-we-art__graph {
+  animation: wuv-you-we-rise 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+.wuv-you-we-art.is-active .wuv-you-we-art__dot {
+  animation: wuv-pulse 2s ease-in-out 1s infinite;
+}
+
+@keyframes wuv-you-we-rise {
+  from { stroke-dasharray: 80; stroke-dashoffset: 80; }
+  to { stroke-dasharray: 80; stroke-dashoffset: 0; }
+}
+
+.wuv-you-we__panel {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wuv-you-we__panel:hover {
+  border-color: rgb(124 58 237 / 0.2);
+  box-shadow: 0 4px 20px rgb(124 58 237 / 0.06);
+}
+
+/* Journey path — connected line (7 steps) */
+.wuv-journey-path {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.wuv-journey-path__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.25rem;
+  height: 2px;
+  pointer-events: none;
+}
+
+.wuv-journey-path__track-line {
+  position: absolute;
+  inset: 0;
+  background: rgb(124 58 237 / 0.12);
+  border-radius: 1px;
+}
+
+.wuv-journey-path__track-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #7C3AED, #1E3A8A);
+  border-radius: 1px;
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wuv-journey-path__steps {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.25rem;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wuv-journey-path__step {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.wuv-journey-path__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  min-width: 3rem;
+  transition: transform 0.2s ease;
+}
+
+.wuv-journey-path__node:hover {
+  transform: translateY(-1px);
+}
+
+.wuv-journey-path__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 2px solid rgb(124 58 237 / 0.2);
+  background: #fff;
+  color: rgb(100 116 139);
+  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wuv-journey-path__node.is-reached .wuv-journey-path__icon {
+  border-color: rgb(124 58 237 / 0.45);
+  color: #7C3AED;
+}
+
+.wuv-journey-path__node.is-active .wuv-journey-path__icon {
+  border-color: #7C3AED;
+  background: #7C3AED;
+  color: #fff;
+  box-shadow: 0 4px 14px rgb(124 58 237 / 0.3);
+}
+
+.wuv-journey-path__label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgb(100 116 139);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 4rem;
+}
+
+.wuv-journey-path__node.is-reached .wuv-journey-path__label {
+  color: rgb(51 65 85);
+}
+
+.wuv-journey-path__node.is-active .wuv-journey-path__label {
+  color: #7C3AED;
+}
+
+@media (max-width: 639px) {
+  .wuv-journey-path__track {
+    display: none;
+  }
+
+  .wuv-journey-path__steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .wuv-journey-path__step:nth-child(5),
+  .wuv-journey-path__step:nth-child(6),
+  .wuv-journey-path__step:nth-child(7) {
+    grid-column: span 1;
+  }
+
+  .wuv-journey-path__steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .wuv-journey-path__step:nth-child(5) { grid-column: 1; }
+  .wuv-journey-path__step:nth-child(6) { grid-column: 2; }
+  .wuv-journey-path__step:nth-child(7) { grid-column: 3; }
+}
+
+/* Ecosystem hub visual */
+.wuv-ecosystem__visual.is-active .wuv-ecosystem__hub {
+  animation: wuv-pulse 3s ease-in-out infinite;
+}
+
+.wuv-ecosystem__visual.is-active .wuv-ecosystem__line {
+  animation: wuv-eco-line-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.wuv-ecosystem__visual.is-active .wuv-ecosystem__node {
+  animation: wuv-hero-node-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes wuv-eco-line-in {
+  from { stroke-dashoffset: 60; stroke-dasharray: 60; }
+  to { stroke-dashoffset: 0; stroke-dasharray: 60; }
+}
+
+.wuv-ecosystem__node-card {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wuv-ecosystem__node-card:hover {
+  border-color: rgb(124 58 237 / 0.2);
+  box-shadow: 0 4px 16px rgb(124 58 237 / 0.06);
+}
+
+/* Working with us — alternating manifesto */
+.wuv-working-with-us__manifesto {
+  position: relative;
+}
+
+.wuv-working-with-us__guide {
+  position: absolute;
+  left: 50%;
+  top: 2rem;
+  bottom: 2rem;
+  width: 2px;
+  transform: translateX(-50%);
+  background: rgb(124 58 237 / 0.08);
+  border-radius: 1px;
+}
+
+.wuv-working-with-us__guide-fill {
+  display: block;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(180deg, #7C3AED, #1E3A8A);
+  border-radius: 1px;
+}
+
+.wuv-working-with-us__visual {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.wuv-working-with-us__visual.is-visible {
+  border-color: rgb(124 58 237 / 0.2);
+  box-shadow: 0 8px 28px rgb(30 58 138 / 0.05);
+}
+
+/* After launch timeline */
+.wuv-draw-line--vertical {
+  display: block;
+  width: 2px;
+  min-height: 2rem;
+  background: linear-gradient(180deg, #7C3AED, #1E3A8A);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wuv-draw-line--vertical.is-drawn {
+  transform: scaleY(1);
+}
+
+.wuv-after-launch__timeline {
+  box-shadow: 0 8px 30px rgb(30 58 138 / 0.06);
+}
+
+.wuv-after-launch__supports li {
+  transition: color 0.2s ease;
+}
+
+.wuv-consultation-close .marketing-cta-panel {
+  border-color: rgb(124 58 237 / 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wuv-you-we-art.is-active .wuv-you-we-art__graph,
+  .wuv-you-we-art.is-active .wuv-you-we-art__dot,
+  .wuv-ecosystem__visual.is-active .wuv-ecosystem__hub,
+  .wuv-ecosystem__visual.is-active .wuv-ecosystem__line,
+  .wuv-ecosystem__visual.is-active .wuv-ecosystem__node {
+    animation: none !important;
+  }
+
+  .wuv-journey-path__node:hover {
+    transform: none;
+  }
+
+  .wuv-you-we__panel:hover,
+  .wuv-ecosystem__node-card:hover {
+    box-shadow: none;
+  }
+
+  .wuv-journey-path__track-fill {
+    transition: none;
+  }
+}

@@ -1,117 +1,167 @@
-/** About U&V — company story content (deduplicated) */
+/** About U&V — story-driven page content */
 
 export const wuvHero = {
   eyebrow: 'About U&V',
-  title: 'A partner built on trust — not transactions',
-  /** Single hero paragraph — full story lives in #our-story */
+  title: 'Your business is not just another project to us.',
   lead:
-    'Choosing a software partner is a trust decision. We earn it through how we listen, deliver, and stay long after launch.',
+    'We combine technology with real business understanding — and stay with you as a long-term partner, not a vendor who disappears after delivery.',
+  secondaryLead:
+    'Choosing a software partner is a trust decision. We earn it by listening first, recommending honestly, and showing up long after launch.',
 } as const;
 
-export const wuvOurStory = {
-  eyebrow: 'Our story',
-  title: 'Built on a premise your business deserves',
+export const wuvOriginStory = {
+  eyebrow: 'Why U&V exists',
+  title: 'One accountable partner — not a patchwork of vendors',
   paragraphs: [
-    'Most business owners know the cycle — a vendor overpromises, under-delivers, and moves on. You manage the gap while wondering if anyone on the other side actually cares.',
-    'U&V was built on a different premise: your business matters more than any single project. We measure success by whether you are stronger because we were involved.',
-    'Trust is not something we ask for on day one. It is something we earn — through clarity, accountability, and partnership that continues long after launch.',
+    'Most business owners know the cycle. A designer hands off to a developer. The developer blames the hosting team. Marketing starts before the product is ready. Legal gets involved too late. Nobody owns the whole picture — and you are left coordinating the gaps.',
+    'U&V exists because your business deserves better than fragmented vendors. We bring strategy, design, technology, operations, and growth support under one roof — with one team accountable for the outcome.',
+    'We measure success by whether your business is stronger because we were involved — not by how many deliverables we checked off.',
   ],
   pullQuote:
-    'We measure success by whether your business is stronger because we were involved.',
+    'Your business deserves one accountable partner — not a patchwork of vendors.',
 } as const;
 
-export const wuvWhyChoose = {
-  eyebrow: 'Why businesses choose U&V',
-  title: 'A partner you can trust — in practice',
+export const wuvYouWe = {
+  eyebrow: 'You & we',
+  title: 'What we each bring to the partnership',
   intro:
-    'After vendors who disappear, you need a team that stays clear, accountable, and invested long after launch.',
-  pillars: [
+    'Great partnerships are built on clarity about who brings what. You know your business. We bring the capabilities to turn that knowledge into lasting growth.',
+  youTitle: 'You bring',
+  youItems: ['Your idea', 'Your knowledge', 'Your vision', 'Your customers'],
+  weTitle: 'We bring',
+  weItems: ['Strategy', 'Design', 'Technology', 'Execution', 'Support', 'Growth'],
+  equation: 'You + We = Growth',
+} as const;
+
+export const wuvEcosystem = {
+  eyebrow: 'One partner, connected support',
+  title: 'Everything your business needs — connected',
+  intro:
+    'Software, automation, branding, legal guidance, launch support, and long-term growth — coordinated by one team that already understands your business.',
+  nodes: [
+    { id: 'technology', label: 'Technology', description: 'Websites, apps, software, and systems built to run your operations.' },
+    { id: 'operations', label: 'Business Operations', description: 'Workflows, automation, and tools that reduce manual work.' },
+    { id: 'brand', label: 'Brand & Marketing', description: 'Identity, content, and campaigns that reach your customers.' },
+    { id: 'legal', label: 'Legal & Compliance', description: 'Contracts, policies, and compliance handled at the right time.' },
+    { id: 'launch', label: 'Launch Support', description: 'Go-live planning, training, and stabilisation when it matters most.' },
+    { id: 'growth', label: 'Long-Term Growth', description: 'Improvements, scaling, and new capabilities as you evolve.' },
+  ],
+  ctaLabel: 'Explore Business Solutions',
+  ctaHref: '/business-solutions',
+} as const;
+
+export const wuvWorkingWithUs = {
+  eyebrow: 'What working with U&V feels like',
+  title: 'Partnership in practice — not promises on a slide',
+  intro:
+    'These are not marketing slogans. They are how we show up in every conversation, every milestone, and every decision along the way.',
+  principles: [
     {
-      id: 'clarity',
-      title: 'Clarity from day one',
+      id: 'communication',
+      title: 'Clear communication',
       description:
-        'You always know what we are building, why it matters, and what comes next — no jargon, no surprises mid-project.',
+        'You always know what is happening, what changed, and what comes next — in plain language, not jargon.',
     },
     {
-      id: 'accountability',
-      title: 'Accountability you can see',
+      id: 'honesty',
+      title: 'Honest recommendations',
       description:
-        'Written scope, documented decisions, and milestones you can track — not promises left to memory.',
+        'We tell you what you need, not what is easiest to sell. If something should wait, we say so.',
     },
     {
-      id: 'partnership',
-      title: 'Partnership, not handoffs',
+      id: 'progress',
+      title: 'Visible progress',
       description:
-        'We listen before we recommend, involve you in real decisions, and treat your success as the measure of ours.',
+        'Milestones you can track, demos you can review, and updates you do not have to chase.',
     },
     {
-      id: 'long-term',
-      title: 'Support that continues',
+      id: 'documentation',
+      title: 'Documented decisions',
       description:
-        'Launch is a milestone, not an exit. We stay for maintenance, growth, and the moments when something breaks.',
+        'Scope, approvals, and changes are written down — so nothing depends on memory or assumptions.',
+    },
+    {
+      id: 'timelines',
+      title: 'Realistic timelines',
+      description:
+        'We plan for how work actually gets done, with room for the unexpected — not fantasy deadlines.',
+    },
+    {
+      id: 'support',
+      title: 'Continued support',
+      description:
+        'Launch is a milestone, not an exit. We stay when adoption, fixes, and improvements matter most.',
+    },
+    {
+      id: 'responsibility',
+      title: 'Shared responsibility',
+      description:
+        'We treat your success as our success — and take ownership when something needs fixing.',
     },
   ],
-  principlesIntro:
-    'Principles are easy to print. They are harder to live when deadlines tighten or decisions get difficult.',
-  principlesTitle: 'What we stand behind',
-  principlesOutro: 'These are how we operate — not aspirations.',
 } as const;
 
-export const wuvAccountability = {
-  eyebrow: 'Proof through accountability',
-  title: 'How we stay accountable in practice',
+export const wuvAfterLaunch = {
+  eyebrow: 'After launch',
+  title: 'Launch is where the real partnership begins',
   intro:
-    'A delivery framework you can see — clear milestones, written scope, and support that continues.',
-  commitments: [
+    'Going live is not the finish line. It is the start of adoption, improvement, and growth — with a partner who already knows your business.',
+  phases: [
     {
-      title: 'Clear project milestones',
-      description: 'You always know what stage we are in and what comes next.',
+      id: 'launch',
+      label: 'Launch',
+      description: 'Go-live support, stabilisation, and making sure your team and customers can use what we built.',
     },
     {
-      title: 'Written scope and records',
-      description: 'Decisions and deliverables are documented — not left to memory.',
+      id: 'adoption',
+      label: 'Adoption',
+      description: 'Training, feedback loops, and fixing friction so the investment pays off in daily use.',
     },
     {
-      title: 'Transparent progress updates',
-      description: 'Regular, honest communication about progress, risks, and trade-offs.',
+      id: 'improvement',
+      label: 'Improvement',
+      description: 'Maintenance, enhancements, automation, and marketing refinements based on real data.',
     },
     {
-      title: 'Approval before major changes',
-      description: 'Scope shifts are discussed and agreed — never sprung on you mid-project.',
-    },
-    {
-      title: 'Support after launch',
-      description: 'Go-live is a milestone, not an exit. We stay when adoption matters most.',
-    },
-    {
-      title: 'Aligned business and technical decisions',
-      description: 'Technology serves your operations and growth — not the other way around.',
+      id: 'growth',
+      label: 'Growth',
+      description: 'Future versions, scaling, and new capabilities as your business evolves.',
     },
   ],
-} as const;
-
-export const wuvClientsStay = {
-  eyebrow: 'Why clients stay',
-  title: 'Why our clients don\u2019t leave',
-  intro:
-    'The real test is year two and three — when something breaks at the worst time and someone actually answers.',
-  closing:
-    'Clients stay because leaving would mean starting again with someone who does not know their business.',
-  yearMarkers: ['Year 1', 'Year 2', 'Year 3+'] as const,
-} as const;
-
-export const wuvSolutionsStory = {
-  eyebrow: 'Solutions we build',
-  title: 'What we help you build and run',
-  intro:
-    'Every engagement starts with a real business challenge. Find the area closest to yours, then explore how we deliver it.',
+  supports: [
+    'Maintenance and bug fixes',
+    'Feature improvements',
+    'Customer feedback integration',
+    'Process automation',
+    'Marketing optimisation',
+    'Future product versions',
+    'Scaling as you grow',
+  ],
 } as const;
 
 export const wuvConsultationClose = {
   eyebrow: 'Start with clarity',
-  title: 'Book a free consultation',
+  title: "Let's build more than software. Let's build what moves your business forward.",
   lead:
-    'Tell us where you are today and where you want to go. We will point you to the right starting point — no pressure, just an honest conversation.',
+    'Tell us where you are today and where you want to go. We will listen, understand your priorities, and recommend an honest starting point — no pressure, just a real conversation.',
+} as const;
+
+/** Legacy exports — used by film/gallery components outside the story page */
+export const wuvWhyChoose = {
+  eyebrow: 'Why businesses choose U&V',
+  principlesTitle: 'What we stand behind',
+  principlesIntro:
+    'Principles are easy to print. They are harder to live when deadlines tighten or decisions get difficult.',
+  principlesOutro: 'These are how we operate — not aspirations.',
+} as const;
+
+export const wuvAccountability = {
+  commitments: [
+    { title: 'Clear project milestones', description: 'You always know what stage we are in and what comes next.' },
+    { title: 'Written scope and records', description: 'Decisions and deliverables are documented — not left to memory.' },
+    { title: 'Transparent progress updates', description: 'Regular, honest communication about progress, risks, and trade-offs.' },
+    { title: 'Approval before major changes', description: 'Scope shifts are discussed and agreed — never sprung on you mid-project.' },
+  ],
 } as const;
 
 export const wuvIndustryTaglines: Record<
@@ -125,11 +175,3 @@ export const wuvIndustryTaglines: Record<
   hospitality: 'Reservations, orders, and daily operations that must run smoothly.',
   logistics: 'Tracking, dispatch, and visibility across a moving operation.',
 };
-
-export const wuvIndustries = {
-  eyebrow: 'Industries We Understand',
-  title: 'Businesses We\u2019ve Partnered With',
-  paragraphs: [
-    'Every industry has its own pressures — compliance, seasonality, and operational complexity. We build for your world, not a learning curve on your time.',
-  ],
-} as const;

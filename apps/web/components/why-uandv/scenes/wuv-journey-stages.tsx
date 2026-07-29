@@ -22,9 +22,11 @@ import { WuvSceneShell } from './wuv-scene-shell';
 
 const stageLabels: Record<WuvPartnerPathStage['id'], string> = {
   listen: 'Consultation meeting — understanding your business first',
+  understand: 'Deep dive into your customers, challenges, and goals',
   plan: 'Planning session with whiteboard, calendar and roadmap',
   build: 'Team building your website, app and business software',
   launch: 'Product launch with customers celebrating go-live',
+  improve: 'Feedback-driven refinements and continuous improvement',
   grow: 'Ongoing support, analytics and long-term partnership',
 };
 
@@ -37,6 +39,21 @@ function ListenScene() {
     <WuvDocument x={300} y={138} />
     <WuvChatBubble x={88} y={56} text="Tell us your goals" />
     <WuvChatBubble x={420} y={48} text="We’re listening" />
+  </svg>
+  );
+}
+
+function UnderstandScene() {
+  return (
+  <svg viewBox="0 0 640 320" className="h-full w-full" aria-hidden>
+    <WuvWhiteboard x={48} y={72} />
+    <WuvPerson x={220} y={132} variant="owner" facing="right" />
+    <WuvPerson x={340} y={132} variant="consultant" facing="left" />
+    <rect x="420" y="88" width="140" height="120" rx="10" fill="#fff" stroke="#7C3AED" strokeWidth="1.2" strokeOpacity="0.3" />
+    <text x="436" y="112" fill="#7C3AED" fontSize="9" fontWeight="700" fontFamily="system-ui,sans-serif">Your world</text>
+    {['Customers', 'Budget', 'Goals', 'Challenges'].map((item, i) => (
+      <text key={item} x="436" y={132 + i * 18} fill="#64748B" fontSize="8" fontFamily="system-ui,sans-serif">{item}</text>
+    ))}
   </svg>
   );
 }
@@ -112,6 +129,21 @@ function LaunchScene() {
   );
 }
 
+function ImproveScene() {
+  return (
+  <svg viewBox="0 0 640 320" className="h-full w-full" aria-hidden>
+    <WuvPerson x={96} y={138} variant="owner" facing="right" />
+    <WuvLaptop x={200} y={120} w={80} />
+    <WuvChatBubble x={320} y={72} text="Feedback" />
+    <rect x="400" y="128" width="140" height="96" rx="10" fill="#fff" stroke="#CBD5E1" strokeWidth="1.2" />
+    <text x="416" y="152" fill="#64748B" fontSize="9" fontWeight="600" fontFamily="system-ui,sans-serif">Improvements</text>
+    <rect x="416" y="164" width="108" height="8" rx="4" fill="#7C3AED" fillOpacity="0.45" />
+    <rect x="416" y="180" width="88" height="6" rx="3" fill="#E2E8F0" />
+    <rect x="416" y="194" width="72" height="6" rx="3" fill="#E2E8F0" />
+  </svg>
+  );
+}
+
 function GrowScene() {
   return (
   <svg viewBox="0 0 640 320" className="h-full w-full" aria-hidden>
@@ -144,17 +176,21 @@ function IconHeadset({ x, y }: { x: number; y: number }) {
 
 const scenes: Record<WuvPartnerPathStage['id'], () => React.JSX.Element> = {
   listen: ListenScene,
+  understand: UnderstandScene,
   plan: PlanScene,
   build: BuildScene,
   launch: LaunchScene,
+  improve: ImproveScene,
   grow: GrowScene,
 };
 
-const stageBadges: Record<WuvPartnerPathStage['id'], { name: 'MessageCircle' | 'Calendar' | 'Code2' | 'Rocket' | 'TrendingUp'; label: string }> = {
+const stageBadges: Record<WuvPartnerPathStage['id'], { name: 'MessageCircle' | 'Search' | 'Calendar' | 'Code2' | 'Rocket' | 'Sparkles' | 'TrendingUp'; label: string }> = {
   listen: { name: 'MessageCircle', label: 'We listen first' },
+  understand: { name: 'Search', label: 'We understand' },
   plan: { name: 'Calendar', label: 'Clear roadmap' },
   build: { name: 'Code2', label: 'Products built' },
   launch: { name: 'Rocket', label: 'Go live' },
+  improve: { name: 'Sparkles', label: 'Keep improving' },
   grow: { name: 'TrendingUp', label: 'Keep growing' },
 };
 

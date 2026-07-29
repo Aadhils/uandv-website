@@ -1,45 +1,59 @@
-/** Partner Path v3.2 — journey stage content (production lock) */
+/** Partner Path — 7-step journey content */
 
 export const wuvPartnerPath = {
-  eyebrow: 'How U&V works with you',
-  title: 'From your first conversation to long-term growth',
+  eyebrow: 'How the relationship begins',
+  title: 'From first conversation to long-term growth',
   intro:
-    'A real partnership follows a rhythm — listen first, plan with clarity, build with care, launch together, and keep growing.',
+    'We do not recommend solutions until we understand your business, customers, challenges, budget, priorities, and goals. Every step follows that discipline.',
   stages: [
     {
       id: 'listen',
       label: 'Listen',
       title: 'We listen first',
       description:
-        'We understand your business, challenges, customers and goals before recommending technology.',
+        'Your story, pressures, and what success should feel like for you and your team.',
+    },
+    {
+      id: 'understand',
+      label: 'Understand',
+      title: 'We understand your world',
+      description:
+        'Your business model, customers, challenges, budget, priorities, and goals — before any recommendation.',
     },
     {
       id: 'plan',
       label: 'Plan',
-      title: 'Build the right plan',
+      title: 'We plan with clarity',
       description:
-        'We shape the right solution, priorities and roadmap around your business needs.',
+        'The right solution, priorities, and roadmap shaped around what your business actually needs.',
     },
     {
       id: 'build',
       label: 'Build',
-      title: 'Turn ideas into products',
+      title: 'We build with care',
       description:
-        'We design and develop websites, apps, software, CRM and automation with clarity.',
+        'Design and development with visible progress, documented decisions, and quality you can depend on.',
     },
     {
       id: 'launch',
       label: 'Launch',
-      title: 'Go live with confidence',
+      title: 'We launch together',
       description:
-        'We test, refine and support the product through a reliable launch.',
+        'Testing, training, and go-live support so your team and customers are ready — not left guessing.',
+    },
+    {
+      id: 'improve',
+      label: 'Improve',
+      title: 'We keep improving',
+      description:
+        'Feedback, fixes, and refinements based on how the product performs in real use.',
     },
     {
       id: 'grow',
       label: 'Grow',
-      title: 'Long-term business partner',
+      title: 'We grow with you',
       description:
-        'After launch, we continue with support, updates, improvements and future growth.',
+        'Long-term support, new capabilities, and scaling as your business evolves.',
     },
   ],
   closing: "Our partnership doesn't end at launch. That's where it truly begins.",

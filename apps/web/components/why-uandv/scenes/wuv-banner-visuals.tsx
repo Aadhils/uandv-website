@@ -132,13 +132,23 @@ export function WuvCompareBanner({ className }: { className?: string }) {
   );
 }
 
-const stageOrder: WuvPartnerPathStage['id'][] = ['listen', 'plan', 'build', 'launch', 'grow'];
+const stageOrder: WuvPartnerPathStage['id'][] = [
+  'listen',
+  'understand',
+  'plan',
+  'build',
+  'launch',
+  'improve',
+  'grow',
+];
 
 const stageLabels: Record<WuvPartnerPathStage['id'], string> = {
   listen: 'Listen',
+  understand: 'Understand',
   plan: 'Plan',
   build: 'Build',
   launch: 'Launch',
+  improve: 'Improve',
   grow: 'Grow',
 };
 
@@ -151,6 +161,21 @@ function JourneyFeaturedScene({ stageId }: { stageId: WuvPartnerPathStage['id'] 
         <WuvPerson x={312} y={48} variant="consultant" facing="left" scale={0.9} />
         <WuvChatBubble x={48} y={24} text="Your goals" />
         <WuvDocument x={228} y={72} />
+      </>
+    ),
+    understand: (
+      <>
+        <WuvWhiteboard x={32} y={32} />
+        <WuvPerson x={200} y={72} variant="owner" facing="right" scale={0.85} />
+        <WuvPerson x={320} y={72} variant="consultant" facing="left" scale={0.85} />
+        <rect x="360" y="40" width="100" height="120" rx="10" fill="#fff" stroke="#7C3AED" strokeWidth="1.2" strokeOpacity="0.3" />
+        <text x="376" y="60" fill="#7C3AED" fontSize="8" fontWeight="700" fontFamily="system-ui,sans-serif">Your world</text>
+        {['Customers', 'Budget', 'Goals', 'Challenges'].map((item, i) => (
+          <g key={item}>
+            <rect x="372" y={68 + i * 20} width="76" height="14" rx="7" fill={i === 0 ? '#7C3AED' : '#F1F5F9'} fillOpacity={i === 0 ? 0.2 : 1} stroke="#E2E8F0" strokeWidth="1" />
+            <text x="382" y={78 + i * 20} fill="#334155" fontSize="7" fontFamily="system-ui,sans-serif">{item}</text>
+          </g>
+        ))}
       </>
     ),
     plan: (
@@ -207,6 +232,19 @@ function JourneyFeaturedScene({ stageId }: { stageId: WuvPartnerPathStage['id'] 
         <WuvPhone x={160} y={48} />
         <WuvPhone x={300} y={48} />
         <WuvChatBubble x={128} y={16} text="We're live!" />
+      </>
+    ),
+    improve: (
+      <>
+        <WuvPerson x={72} y={80} variant="owner" facing="right" scale={0.85} />
+        <WuvLaptop x={200} y={64} w={80} />
+        <WuvChatBubble x={300} y={24} text="Feedback" />
+        <rect x="320" y="100" width="130" height="72" rx="10" fill="#fff" stroke="#CBD5E1" strokeWidth="1.2" />
+        <text x="336" y="120" fill="#64748B" fontSize="8" fontFamily="system-ui,sans-serif">Improvements</text>
+        <rect x="336" y="128" width="98" height="8" rx="4" fill="#E2E8F0" />
+        <rect x="336" y="128" width="72" height="8" rx="4" fill="#7C3AED" fillOpacity="0.5" className="wuv-banner-progress" />
+        <rect x="336" y="144" width="80" height="6" rx="3" fill="#E2E8F0" />
+        <rect x="336" y="156" width="60" height="6" rx="3" fill="#E2E8F0" />
       </>
     ),
     grow: (
