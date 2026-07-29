@@ -44,7 +44,17 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/services',
-        destination: '/why-uandv#solutions',
+        destination: '/about#solutions',
+        permanent: true,
+      },
+      {
+        source: '/why-uandv',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/why-uandv/:path*',
+        destination: '/about/:path*',
         permanent: true,
       },
     ];

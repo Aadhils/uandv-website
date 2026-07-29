@@ -65,7 +65,7 @@ export default function FaqPage() {
                 <MarketingButtonLink href={contactInquiryHref}>
                   Book a consultation
                 </MarketingButtonLink>
-                <MarketingButtonLink href="/why-uandv#services" variant="outline">
+                <MarketingButtonLink href="/about#services" variant="outline">
                   Browse services
                 </MarketingButtonLink>
               </MarketingHeroActions>

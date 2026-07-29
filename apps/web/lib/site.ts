@@ -77,7 +77,7 @@ export const contactInquiryHref = '/contact#inquiry-form' as const;
  * Logo links home — Home is not duplicated in the nav.
  */
 export const marketingNav = [
-  { label: 'About U&V', href: '/why-uandv' },
+  { label: 'About U&V', href: '/about' },
   { label: 'Business Solutions', href: '/business-solutions' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Digital Marketing', href: '/digital-marketing' },

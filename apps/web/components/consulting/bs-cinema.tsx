@@ -467,7 +467,7 @@ function JourneyTransition() {
           <span className="mx-3 text-uv-border" aria-hidden>
             ·
           </span>
-          <Link href="/why-uandv#services" className="text-uv-brand underline-offset-4 hover:underline">
+          <Link href="/about#services" className="text-uv-brand underline-offset-4 hover:underline">
             Services
           </Link>
         </p>

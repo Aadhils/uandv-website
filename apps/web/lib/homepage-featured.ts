@@ -109,7 +109,7 @@ export const businessEcosystemCards: BusinessEcosystemCard[] = [
   {
     title: 'Long-term Business Growth Support',
     description: 'A sustained partnership across technology, brand, and revenue expansion.',
-    href: '/why-uandv',
+    href: '/about',
     icon: 'TrendingUp',
   },
 ];

@@ -19,7 +19,7 @@ export function WhyChoose() {
               description="We coordinate strategy, branding, technology, and growth under one roof — so you have clarity, capability, and a partner who stays after launch."
             />
             <div className="mt-8">
-              <MarketingButtonLink href="/why-uandv" variant="outline" size="md">
+              <MarketingButtonLink href="/about" variant="outline" size="md">
                 Learn why U&V
               </MarketingButtonLink>
             </div>

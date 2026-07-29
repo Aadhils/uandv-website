@@ -160,7 +160,7 @@ export function BsSolutionGateway() {
           <p className="text-center text-sm text-uv-foreground-muted sm:text-base">
             Need custom software, ERP, CRM, or industry-specific platforms?{' '}
             <Link
-              href="/why-uandv#solutions"
+              href="/about#solutions"
               className="font-semibold text-uv-brand underline-offset-4 hover:underline"
             >
               Browse the full service catalog on About U&V

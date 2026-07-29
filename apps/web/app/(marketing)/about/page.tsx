@@ -17,13 +17,13 @@ export const metadata: Metadata = {
     'trustworthy software partner Tamil Nadu',
   ],
   alternates: {
-    canonical: '/why-uandv',
+    canonical: '/about',
   },
   openGraph: {
     title: 'About U&V | Trust & Partnership',
     description:
       'U&V is a long-term business partner — built on trust, honest communication, and commitment that continues after launch.',
-    url: `${siteConfig.url}/why-uandv`,
+    url: `${siteConfig.url}/about`,
     siteName: siteConfig.name,
     locale: siteConfig.locale,
     type: 'website',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WhyUandvRoute() {
+export default function AboutRoute() {
   return (
     <>
       <JsonLd
@@ -45,10 +45,10 @@ export default function WhyUandvRoute() {
           title: 'About U&V | Trust & Partnership',
           description:
             'About U&V — principles, partnership behaviour, client retention, and industry understanding.',
-          path: '/why-uandv',
+          path: '/about',
           breadcrumbs: [
             { name: 'Home', path: '/' },
-            { name: 'About U&V', path: '/why-uandv' },
+            { name: 'About U&V', path: '/about' },
           ],
         }}
       />
