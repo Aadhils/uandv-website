@@ -1502,8 +1502,184 @@ header nav[aria-label='Main navigation'] ul a[aria-current='page']::after {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 55% 42% at 12% 18%, rgb(124 58 237 / 0.05), transparent 58%),
-    radial-gradient(ellipse 48% 38% at 88% 22%, rgb(30 58 138 / 0.04), transparent 55%);
+    radial-gradient(ellipse 62% 48% at 8% 14%, rgb(124 58 237 / 0.07), transparent 58%),
+    radial-gradient(ellipse 52% 40% at 92% 18%, rgb(30 58 138 / 0.05), transparent 55%),
+    radial-gradient(ellipse 40% 32% at 72% 88%, rgb(124 58 237 / 0.04), transparent 50%);
+}
+
+.wuv-hero-act::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    165deg,
+    rgb(124 58 237 / 0.03) 0%,
+    transparent 38%,
+    transparent 72%,
+    rgb(30 58 138 / 0.025) 100%
+  );
+}
+
+/* Why U&V hero — typography & rhythm */
+.wuv-hero-copy .wuv-hero-eyebrow {
+  letter-spacing: 0.2em;
+}
+
+.wuv-hero-title {
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 1024px) {
+  .wuv-hero-title {
+    font-size: clamp(2.75rem, 3.4vw, 3.5rem);
+    line-height: 1.03;
+    letter-spacing: -0.035em;
+  }
+}
+
+.wuv-hero-lead {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--uv-foreground-muted, #475569);
+}
+
+.wuv-hero-lead-secondary {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgb(100 116 139 / 0.92);
+}
+
+@media (min-width: 640px) {
+  .wuv-hero-lead {
+    font-size: 1.125rem;
+    line-height: 1.62;
+  }
+
+  .wuv-hero-lead-secondary {
+    font-size: 1.0625rem;
+  }
+}
+
+.wuv-hero-actions {
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .wuv-hero-actions {
+    gap: 0.875rem;
+  }
+}
+
+.wuv-hero-grid {
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .wuv-hero-grid {
+    gap: 2.5rem;
+  }
+}
+
+/* Hero reveal — refined entrance timing */
+.wuv-hero-copy .marketing-reveal-fade,
+.wuv-hero-copy .marketing-reveal-up,
+.wuv-hero-copy .marketing-reveal-up-blur {
+  transition-duration: 780ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wuv-hero-copy .marketing-reveal-up:not(.is-visible) {
+  transform: translateY(16px);
+}
+
+.wuv-hero-copy .marketing-reveal-up-blur:not(.is-visible) {
+  transform: translateY(14px);
+  filter: blur(6px);
+}
+
+.wuv-hero-visual .marketing-reveal-scale:not(.is-visible) {
+  transform: scale(0.98);
+}
+
+.wuv-hero-visual .marketing-reveal-scale {
+  transition-duration: 820ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hero illustration — floating ambient shapes */
+.wuv-hero-float {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  border-radius: 9999px;
+  filter: blur(40px);
+}
+
+.wuv-hero-float--lavender {
+  top: 8%;
+  right: -4%;
+  width: 7.5rem;
+  height: 7.5rem;
+  background: rgb(124 58 237 / 0.22);
+  animation: wuv-hero-float-drift 7s ease-in-out infinite;
+}
+
+.wuv-hero-float--navy {
+  bottom: 12%;
+  left: -6%;
+  width: 6rem;
+  height: 6rem;
+  background: rgb(30 58 138 / 0.14);
+  animation: wuv-hero-float-drift 9s ease-in-out infinite reverse;
+}
+
+.wuv-hero-float--sky {
+  top: 42%;
+  left: 28%;
+  width: 5rem;
+  height: 5rem;
+  background: rgb(59 130 246 / 0.12);
+  animation: wuv-hero-float-drift 8s ease-in-out infinite 1s;
+}
+
+@keyframes wuv-hero-float-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate3d(0, -6px, 0) scale(1.05);
+    opacity: 0.95;
+  }
+}
+
+/* Hero partnership visual — photo texture under illustrated scene */
+.wuv-hero-photo-layer {
+  z-index: 0;
+}
+
+.wuv-hero-photo {
+  opacity: 0.38;
+  filter: saturate(0.82) brightness(1.04);
+}
+
+.wuv-hero-scene {
+  z-index: 2;
+  background: linear-gradient(
+    145deg,
+    rgb(248 246 255 / 0.82) 0%,
+    rgb(255 255 255 / 0.55) 42%,
+    rgb(238 244 255 / 0.72) 100%
+  );
+}
+
+.wuv-hero-scene__svg {
+  opacity: 0.96;
 }
 
 /* Why U&V — compact hero (48% copy / 52% image, visual 500–560px desktop) */
@@ -4499,6 +4675,10 @@ header nav[aria-label='Main navigation'] ul a[aria-current='page']::after {
   .wuv-hero-parallax,
   .wuv-hero-parallax__image,
   .wuv-hero-glow,
+  .wuv-hero-float,
+  .wuv-hero-float--lavender,
+  .wuv-hero-float--navy,
+  .wuv-hero-float--sky,
   .wuv-compare-half,
   .wuv-closing-glow__ambient,
   .wuv-accountability-line,

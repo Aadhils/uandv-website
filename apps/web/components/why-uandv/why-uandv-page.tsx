@@ -28,8 +28,8 @@ import { WuvPremiumHeroBanner } from './scenes/wuv-premium-banners';
 export function WhyUandvPage() {
   return (
     <MarketingContentPage className="wuv-v2-page bg-white">
-      <MarketingPageHero className="marketing-content-hero-cinematic wuv-hero-act border-b border-uv-border/60 bg-white">
-        <MarketingPageHeroInner className={cn(marketingStandardHeroInnerClass, 'lg:pb-12')}>
+      <MarketingPageHero className="marketing-content-hero-cinematic marketing-content-hero-glow wuv-hero-act border-b border-uv-border/60">
+        <MarketingPageHeroInner className={cn(marketingStandardHeroInnerClass, 'wuv-hero-inner lg:pb-12')}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -37,28 +37,28 @@ export function WhyUandvPage() {
             ]}
           />
 
-          <MarketingStandardHeroGrid className="mt-4 items-stretch sm:mt-5">
-            <MarketingStandardHeroCopy>
+          <MarketingStandardHeroGrid className="wuv-hero-grid mt-4 items-stretch sm:mt-5">
+            <MarketingStandardHeroCopy className="wuv-hero-copy">
               <Reveal variant="up-blur" immediate>
-                <MarketingEyebrow>{wuvHero.eyebrow}</MarketingEyebrow>
+                <MarketingEyebrow className="wuv-hero-eyebrow">{wuvHero.eyebrow}</MarketingEyebrow>
               </Reveal>
-              <Reveal delayMs={60} variant="up-blur">
-                <MarketingHeroTitle className="mt-3 text-[2rem] leading-[1.08] sm:mt-4 sm:text-4xl lg:text-[3.25rem] lg:leading-[1.06]">
+              <Reveal delayMs={50} variant="up-blur">
+                <MarketingHeroTitle className="wuv-hero-title mt-2.5 sm:mt-3">
                   {wuvHero.title}
                 </MarketingHeroTitle>
               </Reveal>
-              <Reveal delayMs={100} variant="up">
-                <MarketingLead className="mt-4 text-base leading-relaxed sm:mt-5 sm:text-lg">
+              <Reveal delayMs={95} variant="up">
+                <MarketingLead className="wuv-hero-lead mt-3.5 sm:mt-4">
                   {wuvHero.lead}
                 </MarketingLead>
               </Reveal>
-              <Reveal delayMs={140} variant="up">
-                <MarketingLead className="mt-3 text-base leading-relaxed text-uv-foreground-muted sm:text-lg">
+              <Reveal delayMs={135} variant="up">
+                <MarketingLead className="wuv-hero-lead-secondary mt-2.5 sm:mt-3">
                   {wuvHero.secondaryLead}
                 </MarketingLead>
               </Reveal>
-              <Reveal delayMs={180} variant="fade">
-                <MarketingHeroActions className="mt-6 sm:mt-8">
+              <Reveal delayMs={175} variant="fade">
+                <MarketingHeroActions className="wuv-hero-actions mt-5 sm:mt-6">
                   <MarketingButtonLink href="#consultation">Start a Conversation</MarketingButtonLink>
                   <MarketingButtonLink href="#how-we-work" variant="outline" size="md">
                     See How We Work
@@ -67,7 +67,7 @@ export function WhyUandvPage() {
               </Reveal>
             </MarketingStandardHeroCopy>
 
-            <MarketingStandardHeroIllustration delayMs={80} className="flex h-full self-stretch">
+            <MarketingStandardHeroIllustration delayMs={70} className="wuv-hero-visual flex h-full self-stretch">
               <WuvPremiumHeroBanner className="h-full min-h-[220px] w-full sm:min-h-[260px] lg:min-h-[280px]" />
             </MarketingStandardHeroIllustration>
           </MarketingStandardHeroGrid>

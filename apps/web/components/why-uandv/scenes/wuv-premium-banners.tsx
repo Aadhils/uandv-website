@@ -10,6 +10,14 @@ import type { WuvIndustryAnimationId } from '@/lib/why-uandv-animations';
 import { WuvMaskReveal, WuvParallaxWrap } from '../wuv-polish';
 import { useInView, useParallax, useReducedMotion } from '../wuv-motion';
 
+import {
+  WuvDashboard,
+  WuvDocument,
+  WuvLaptop,
+  WuvMeetingTable,
+  WuvPerson,
+  WuvSceneBackdrop,
+} from './wuv-business-art';
 import { WuvIndustryCardBanner } from './wuv-industry-art';
 
 const HERO_IMAGE = '/images/why-uandv/hero-partnership.webp';
@@ -63,33 +71,71 @@ function PremiumBannerFrame({
   );
 }
 
-/** Hero — partnership visual accent */
+/** Hero — partnership visual: illustrated scene with subtle photo texture */
 export function WuvPremiumHeroBanner({ className }: { className?: string }) {
   const imageRef = useRef<HTMLDivElement>(null);
-  useParallax(imageRef, 6);
+  useParallax(imageRef, 5);
 
   return (
-    <WuvMaskReveal className="h-full" delayMs={80} immediate>
+    <WuvMaskReveal className="h-full" delayMs={70} immediate>
       <PremiumBannerFrame
         label="U&V partnership meeting with business dashboard and strategy roadmap"
         className={cn('wuv-premium-hero min-h-[220px] sm:min-h-[260px] lg:min-h-[280px]', className)}
         glow="lavender"
       >
-        <div
-          className="wuv-hero-glow pointer-events-none absolute -right-6 top-1/4 z-0 h-40 w-40 rounded-full bg-[#7C3AED]/25 blur-3xl"
-          aria-hidden
-        />
-        <div ref={imageRef} className="wuv-hero-parallax absolute inset-0">
+        <div className="wuv-hero-float wuv-hero-float--lavender" aria-hidden />
+        <div className="wuv-hero-float wuv-hero-float--navy" aria-hidden />
+        <div className="wuv-hero-float wuv-hero-float--sky" aria-hidden />
+
+        <div ref={imageRef} className="wuv-hero-parallax wuv-hero-photo-layer absolute inset-0">
           <Image
             src={HERO_IMAGE}
             alt=""
             fill
             priority
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="wuv-hero-parallax__image object-cover object-center"
+            className="wuv-hero-parallax__image wuv-hero-photo object-cover object-center"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/15 via-transparent to-transparent" aria-hidden />
+
+        <WuvSceneBackdrop tone="lavender" className="wuv-hero-scene absolute inset-0 rounded-[inherit]">
+          <svg
+            viewBox="0 0 560 340"
+            className="wuv-hero-scene__svg h-full w-full"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden
+          >
+            <rect x="20" y="20" width="520" height="210" rx="14" fill="#fff" fillOpacity="0.72" stroke="#E2E8F0" strokeWidth="1.2" />
+            <WuvMeetingTable x={150} y={158} w={260} />
+            <WuvPerson x={210} y={78} variant="owner" facing="right" scale={1.02} />
+            <WuvPerson x={360} y={78} variant="consultant" facing="left" scale={1.02} />
+            <path
+              d="M288 128 c10-7 28-7 38 0"
+              fill="none"
+              stroke="#7C3AED"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              className="wuv-banner-handshake"
+            />
+            <WuvLaptop x={258} y={118} w={64} />
+            <WuvDocument x={392} y={98} signed />
+            <WuvDashboard x={48} y={52} />
+            <rect x="40" y="252" width="480" height="40" rx="10" fill="#fff" fillOpacity="0.88" stroke="#C4B5FD" strokeWidth="1.2" />
+            <text x="56" y="270" fill="#64748B" fontSize="8" fontWeight="600" fontFamily="system-ui,sans-serif">
+              Partnership progress
+            </text>
+            <rect x="56" y="278" width="448" height="6" rx="3" fill="#E2E8F0" />
+            <rect x="56" y="278" width="300" height="6" rx="3" fill="#7C3AED" fillOpacity="0.55" className="wuv-banner-progress" />
+          </svg>
+        </WuvSceneBackdrop>
+
+        <div
+          className="pointer-events-none absolute left-4 top-4 z-[3] rounded-full border border-white/70 bg-white/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-uv-brand shadow-[0_8px_24px_rgb(124_58_237_/_0.12)] backdrop-blur-sm sm:left-5 sm:top-5 sm:text-[11px]"
+          aria-hidden
+        >
+          Long-term partner
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/12 via-transparent to-white/20" aria-hidden />
       </PremiumBannerFrame>
     </WuvMaskReveal>
   );
