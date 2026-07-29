@@ -44,17 +44,30 @@ export const contactFormCopy = {
     'This is the only enquiry form on our website — every consultation CTA across U&V leads here.',
   requiredNote: 'Fields marked with * are required.',
   submitIdle: 'Submit enquiry',
-  submitSending: 'Sending your enquiry…',
+  submitSending: 'Opening WhatsApp…',
   submitHint: 'We typically respond within 24 business hours.',
   messageHint:
     'Share your business, goals, timeline, and any context that helps us understand what you need.',
   phoneHint: 'Optional — helps us reach you faster if needed.',
 } as const;
 
+export const contactEmailConfirmCopy = {
+  title: 'Enquiry opened in WhatsApp successfully.',
+  body: 'Would you also like to send a copy by email?',
+  continueEmail: 'Continue to Email',
+  notNow: 'Not Now',
+  sendingEmail: 'Sending email…',
+} as const;
+
 export const contactSuccessCopy = {
   title: 'Thank you — we\u2019ve received your enquiry.',
   body:
     'A member of the U&V team will review your requirements and contact you within 24 business hours to discuss practical next steps. No pressure — just clarity on what makes sense for your business.',
-  whatsappCta: 'Share details on WhatsApp',
+  anotherMessage: 'Send another enquiry',
+} as const;
+
+export const contactWhatsAppOnlySuccessCopy = {
+  title: 'Enquiry shared on WhatsApp.',
+  body: 'Your enquiry details were opened in WhatsApp. We will follow up from there — typically within 24 business hours. You can send another enquiry anytime if needed.',
   anotherMessage: 'Send another enquiry',
 } as const;

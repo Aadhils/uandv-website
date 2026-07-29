@@ -1,15 +1,13 @@
 'use client';
 
-import { useId } from 'react';
-
 import { Icon, cn, type IconName } from '@uandv/ui';
 
-import { MarketingButtonLink } from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
 import { uvContainer } from '@/components/marketing/marketing-design-tokens';
 import { wuvEcosystem } from '@/lib/why-uandv-content';
 
-import { useInView, useReducedMotion } from './wuv-motion';
+import { WuvMicroFloatG, WuvMicroPulse, WuvMicroSceneShell, useWuvGradId } from './wuv-micro-scene';
+import { WuvSectionAtmosphere } from './wuv-section-atmosphere';
 
 const nodeIcons: Record<(typeof wuvEcosystem.nodes)[number]['id'], IconName> = {
   technology: 'Code2',
@@ -30,29 +28,24 @@ const nodePositions = [
 ] as const;
 
 function WuvEcosystemVisual() {
-  const uid = useId().replace(/:/g, '');
-  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.12 });
-  const reduced = useReducedMotion();
+  const centerGrad = useWuvGradId('wuv-eco-center');
 
   return (
-    <div
-      ref={ref}
-      className={cn(
-        'wuv-ecosystem__visual relative mx-auto aspect-square w-full max-w-[360px] overflow-hidden rounded-uv-2xl border border-uv-brand/15 bg-gradient-to-br from-[#f8f6ff] via-white to-[#eef4ff] shadow-[0_16px_44px_rgb(30_58_138_/_0.1)] sm:max-w-[400px]',
-        inView && !reduced && 'is-active',
-      )}
-      role="img"
-      aria-label="Central client connected to technology, operations, brand, legal, launch, and growth support"
+    <WuvMicroSceneShell
+      label="Central client connected to technology, operations, brand, legal, launch, and growth support"
+      className="wuv-ecosystem__visual relative mx-auto aspect-square w-full max-w-[360px] overflow-hidden rounded-uv-2xl border border-uv-brand/15 bg-gradient-to-br from-[#f8f6ff] via-white to-[#eef4ff] shadow-[0_16px_44px_rgb(30_58_138_/_0.1)] sm:max-w-[400px]"
+      activeClassName="is-active"
+      threshold={0.12}
     >
       <svg viewBox="0 0 200 200" className="h-full w-full" aria-hidden>
         <defs>
-          <radialGradient id={`wuv-eco-center-${uid}`} cx="50%" cy="50%" r="50%">
+          <radialGradient id={centerGrad} cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.02" />
           </radialGradient>
         </defs>
 
-        {/* Connection lines */}
+        {/* Animated connection lines */}
         {nodePositions.map((pos, i) => (
           <line
             key={wuvEcosystem.nodes[i].id}
@@ -62,30 +55,45 @@ function WuvEcosystemVisual() {
             y2={pos.y * 2}
             stroke="#7C3AED"
             strokeWidth="1.5"
-            strokeOpacity="0.2"
+            strokeOpacity="0.25"
             strokeDasharray="4 3"
-            className="wuv-ecosystem__line"
-            style={{ animationDelay: `${i * 80}ms` }}
+            className="wuv-ecosystem__line wuv-micro-connector"
+            style={{ animationDelay: `${i * 120}ms` }}
           />
         ))}
 
-        {/* Center hub */}
-        <circle cx="100" cy="100" r="32" fill={`url(#wuv-eco-center-${uid})`} stroke="#7C3AED" strokeWidth="2" strokeOpacity="0.35" className="wuv-ecosystem__hub" />
-        <text x="100" y="96" textAnchor="middle" fill="#7C3AED" fontSize="8" fontWeight="700" fontFamily="system-ui,sans-serif">Your</text>
-        <text x="100" y="108" textAnchor="middle" fill="#7C3AED" fontSize="8" fontWeight="700" fontFamily="system-ui,sans-serif">Business</text>
+        {/* Center hub pulse */}
+        <circle cx="100" cy="100" r="32" fill={`url(#${centerGrad})`} stroke="#7C3AED" strokeWidth="2" strokeOpacity="0.35" className="wuv-ecosystem__hub" />
+        <WuvMicroPulse cx={100} cy={100} r={5} />
 
-        {/* Nodes */}
+        {/* Floating micro UI cards at nodes */}
         {wuvEcosystem.nodes.map((node, i) => {
           const pos = nodePositions[i];
+          const cx = pos.x * 2;
+          const cy = pos.y * 2;
           return (
-            <g key={node.id} className="wuv-ecosystem__node" style={{ animationDelay: `${i * 100}ms` }}>
-              <circle cx={pos.x * 2} cy={pos.y * 2} r="18" fill="#fff" stroke="#7C3AED" strokeWidth="1.5" strokeOpacity="0.3" />
-              <circle cx={pos.x * 2} cy={pos.y * 2} r="6" fill="#7C3AED" fillOpacity="0.5" />
-            </g>
+            <WuvMicroFloatG key={node.id} delay={i * 150} duration={`${5 + (i % 3)}s`}>
+              <g className="wuv-ecosystem__node" style={{ animationDelay: `${i * 100}ms` }}>
+                <rect
+                  x={cx - 22}
+                  y={cy - 16}
+                  width="44"
+                  height="32"
+                  rx="8"
+                  fill="#fff"
+                  stroke="#7C3AED"
+                  strokeWidth="1.2"
+                  strokeOpacity="0.28"
+                />
+                <circle cx={cx} cy={cy - 4} r="8" fill="#7C3AED" fillOpacity="0.12" />
+                <rect x={cx - 10} y={cy + 4} width="20" height="3" rx="1.5" fill="#E2E8F0" />
+                <rect x={cx - 6} y={cy + 10} width="12" height="2" rx="1" fill="#E2E8F0" />
+              </g>
+            </WuvMicroFloatG>
           );
         })}
       </svg>
-    </div>
+    </WuvMicroSceneShell>
   );
 }
 
@@ -94,11 +102,12 @@ export function WuvEcosystem() {
     <section
       id="connected-support"
       aria-label="One partner, connected support"
-      className="wuv-ecosystem scroll-mt-20 border-b border-uv-border/60 bg-uv-background-subtle"
+      className="wuv-ecosystem wuv-cinema-section relative overflow-hidden scroll-mt-20 border-b border-uv-border/40"
     >
+      <WuvSectionAtmosphere tone="ecosystem" />
       <div id="solutions" className="scroll-mt-20" aria-hidden="true" />
       <div id="services" className="scroll-mt-20" aria-hidden="true" />
-      <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
+      <div className={cn(uvContainer, 'relative z-[1] py-8 sm:py-10 lg:py-12')}>
         <Reveal variant="up-blur" className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand sm:text-sm">
             {wuvEcosystem.eyebrow}
@@ -132,12 +141,6 @@ export function WuvEcosystem() {
             ))}
           </div>
         </div>
-
-        <Reveal variant="fade" delayMs={200} className="mt-8 text-center sm:mt-10">
-          <MarketingButtonLink href={wuvEcosystem.ctaHref} variant="outline" size="md">
-            {wuvEcosystem.ctaLabel}
-          </MarketingButtonLink>
-        </Reveal>
       </div>
     </section>
   );

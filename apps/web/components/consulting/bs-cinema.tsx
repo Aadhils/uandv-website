@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useState, type ReactNode } from 'react';
 
 import { Icon, cn } from '@uandv/ui';
@@ -13,7 +12,12 @@ import {
   uvEyebrow,
   uvSectionTitle,
 } from '@/components/marketing/marketing-design-tokens';
+import {
+  MarketingButtonLink,
+  MarketingHeroActions,
+} from '@/components/marketing/marketing-primitives';
 import { consultingProcess, growthServices, partnershipModel, whyChooseConsulting } from '@/lib/consulting';
+import { contactInquiryHref } from '@/lib/site';
 
 import {
   AfterScene,
@@ -31,7 +35,8 @@ import {
 } from './bs-enhancements';
 
 /** Shared Business Solutions surface + rhythm tokens */
-const bsSectionPad = 'py-14 sm:py-16 lg:py-20';
+const bsSectionPad = 'py-10 sm:py-12 lg:py-14';
+const bsActBridge = 'mb-6 sm:mb-8';
 const bsSurfaceCard =
   'overflow-hidden rounded-uv-2xl border border-uv-border/60 bg-uv-background shadow-uv-sm';
 const bsStepMeta = 'text-xs font-bold uppercase tracking-[0.18em] text-uv-brand sm:text-sm';
@@ -251,8 +256,8 @@ function ProcessJourney() {
 function GrowthBlocks() {
   return (
     <>
-      <Section id="growth-services" tone="light" className="border-t border-uv-border/40 pb-4 pt-12 sm:pb-6 sm:pt-14" aria-label="Business growth consulting areas">
-        <VisualActBridge className="mb-10 sm:mb-12" />
+      <Section id="growth-services" tone="light" className="border-t border-uv-border/40 pb-2 pt-10 sm:pb-4 sm:pt-12" aria-label="Business growth consulting areas">
+        <VisualActBridge className={bsActBridge} />
         <SectionIntro
           eyebrow="Real results for real businesses"
           title="From daily frustration to measurable growth."
@@ -266,7 +271,7 @@ function GrowthBlocks() {
           <Section
             key={service.title}
             tone={index % 2 === 0 ? 'light' : 'mist'}
-            className={cn('border-t border-uv-border/30', index === growthServices.length - 1 ? 'pb-14 sm:pb-16' : 'pb-10 sm:pb-12', 'pt-10 sm:pt-12')}
+            className={cn('border-t border-uv-border/30', index === growthServices.length - 1 ? 'pb-10 sm:pb-12' : 'pb-8 sm:pb-10', 'pt-8 sm:pt-10')}
           >
             <div className={cn('grid items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-16', !visualLeft && 'lg:[direction:rtl]')}>
               <Reveal variant="scale" className="min-w-0 lg:[direction:ltr]">
@@ -293,7 +298,7 @@ function BeforeAfterSection() {
 
   return (
     <Section tone="sky" className={cn(bsSectionPad, 'bs-section-emphasis')} aria-label="Before and after business transformation">
-      <VisualActBridge className="mb-10 sm:mb-12" />
+      <VisualActBridge className={bsActBridge} />
       <div className="mx-auto mb-8 flex max-w-5xl flex-col items-center gap-3 sm:mb-10">
         <TransformationRibbon />
       </div>
@@ -360,7 +365,7 @@ function WhySection() {
 
   return (
     <Section id="why-uandv" tone="light" className={bsSectionPad} aria-label="Why clients choose U and V">
-      <VisualActBridge className="mb-10 sm:mb-12" />
+      <VisualActBridge className={bsActBridge} />
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,380px)] lg:gap-14">
         <Reveal variant="up-blur">
           <p className={uvEyebrow}>Why clients choose U&amp;V</p>
@@ -416,7 +421,7 @@ function WhySection() {
 function PartnershipSection() {
   return (
     <Section id="partnership" tone="mist" className={cn(bsSectionPad, 'border-b-0')} aria-label="Long-term partnership model">
-      <VisualActBridge className="mb-10 sm:mb-12" />
+      <VisualActBridge className={bsActBridge} />
       <SectionIntro
         eyebrow="After launch"
         title="Growth does not stop when the project goes live."
@@ -455,22 +460,16 @@ function PartnershipSection() {
 
 function JourneyTransition() {
   return (
-    <Section id="next-step" tone="mist" className="border-b-0 py-8 sm:py-10" aria-label="Continue your journey">
+    <Section id="next-step" tone="mist" className="border-b-0 py-10 sm:py-12" aria-label="Continue your journey">
       <div className="mx-auto max-w-2xl text-center">
         <p className={cn(uvBody, 'text-uv-foreground-muted sm:text-base')}>
           Ready to continue your journey?
         </p>
-        <p className="mt-3 text-sm text-uv-foreground-muted">
-          <Link href="/contact" className="text-uv-brand underline-offset-4 hover:underline">
-            Contact
-          </Link>
-          <span className="mx-3 text-uv-border" aria-hidden>
-            ·
-          </span>
-          <Link href="/about#services" className="text-uv-brand underline-offset-4 hover:underline">
-            Services
-          </Link>
-        </p>
+        <MarketingHeroActions className="mt-6 justify-center">
+          <MarketingButtonLink href={contactInquiryHref} size="lg">
+            Book a Free Consultation
+          </MarketingButtonLink>
+        </MarketingHeroActions>
       </div>
     </Section>
   );

@@ -6,7 +6,49 @@ import { Reveal } from '@/components/marketing/reveal';
 import { uvContainer } from '@/components/marketing/marketing-design-tokens';
 import { wuvAfterLaunch } from '@/lib/why-uandv-content';
 
+import { WuvMicroPath, WuvMicroPulse, WuvMicroSceneShell } from './wuv-micro-scene';
 import { WuvDrawLine, useInView } from './wuv-motion';
+import { WuvSectionAtmosphere } from './wuv-section-atmosphere';
+
+function WuvAfterLaunchRibbon() {
+  const phases = wuvAfterLaunch.phases;
+
+  return (
+    <WuvMicroSceneShell
+      label="Partnership continues through launch, adoption, improvement, and growth"
+      className="wuv-after-launch__ribbon mb-3 h-10 overflow-hidden rounded-lg border border-uv-border/50 bg-gradient-to-r from-[#f8f6ff] via-white to-[#eef4ff] sm:h-11"
+      activeClassName="is-active"
+      threshold={0.15}
+    >
+      <svg viewBox="0 0 360 44" className="h-full w-full" preserveAspectRatio="xMidYMid meet" aria-hidden>
+        <WuvMicroPath
+          d="M24 22 C80 22, 100 16, 120 22 C140 28, 160 22, 180 22 C200 22, 220 16, 240 22 C260 28, 280 22, 336 22"
+          className="wuv-after-launch__path"
+          stroke="#7C3AED"
+          strokeWidth={2}
+          dashArray={360}
+        />
+        {phases.map((phase, i) => {
+          const x = 24 + (i / (phases.length - 1)) * 312;
+          return (
+            <circle
+              key={phase.id}
+              cx={x}
+              cy={22}
+              r={i === 0 ? 7 : 5}
+              fill="#fff"
+              stroke="#7C3AED"
+              strokeWidth="1.5"
+              strokeOpacity={0.4}
+              className={i === 0 ? 'wuv-micro-pulse' : undefined}
+            />
+          );
+        })}
+        <WuvMicroPulse cx={336} cy={22} r={3.5} delay={600} />
+      </svg>
+    </WuvMicroSceneShell>
+  );
+}
 
 function TimelinePhase({
   index,
@@ -54,9 +96,10 @@ export function WuvAfterLaunch() {
     <section
       id="after-launch"
       aria-label="After launch"
-      className="wuv-after-launch scroll-mt-20 border-b border-uv-border/60 bg-gradient-to-b from-[#faf9ff] to-white"
+      className="wuv-after-launch wuv-cinema-section relative overflow-hidden scroll-mt-20 border-b border-uv-border/40"
     >
-      <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
+      <WuvSectionAtmosphere tone="after-launch" />
+      <div className={cn(uvContainer, 'relative z-[1] py-8 sm:py-10 lg:py-12')}>
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-12 lg:items-start">
           <div>
             <Reveal variant="up-blur">
@@ -85,6 +128,7 @@ export function WuvAfterLaunch() {
 
           <Reveal variant="scale" delayMs={100}>
             <div className="wuv-after-launch__timeline rounded-uv-2xl border border-uv-border/70 bg-white p-5 sm:p-6">
+              <WuvAfterLaunchRibbon />
               {wuvAfterLaunch.phases.map((phase, index) => (
                 <TimelinePhase
                   key={phase.id}

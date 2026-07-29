@@ -1,12 +1,15 @@
 /** About U&V — story-driven page content */
 
 export const wuvHero = {
-  eyebrow: 'About U&V',
-  title: 'Your business is not just another project to us.',
+  eyebrow: 'ABOUT U&V',
+  title: 'You know your business. We bring everything around it together.',
   lead:
-    'We combine technology with real business understanding — and stay with you as a long-term partner, not a vendor who disappears after delivery.',
-  secondaryLead:
-    'Choosing a software partner is a trust decision. We earn it by listening first, recommending honestly, and showing up long after launch.',
+    'U&V was created for business owners who need more than separate vendors and disconnected services. We bring strategy, technology, branding, business support and long-term guidance together — with one accountable team beside you.',
+  trustLine:
+    'You bring the vision. We bring the structure, technology and support to move it forward.',
+  primaryCta: 'Start a Conversation',
+  secondaryCta: 'See How We Work',
+  secondaryCtaHref: '#how-we-work',
 } as const;
 
 export const wuvOriginStory = {

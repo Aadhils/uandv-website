@@ -23,11 +23,11 @@ export function PortfolioFilterGrid() {
   }, [category, studies]);
 
   return (
-    <div className="min-w-0">
+    <div className="min-w-0 max-w-full overflow-x-clip">
       <div
         role="group"
         aria-label="Filter demos by category"
-        className="flex min-w-0 flex-wrap gap-2"
+        className="flex w-full min-w-0 flex-wrap items-center gap-2 sm:gap-2.5"
       >
         {portfolioCategories.map((item) => {
           const active = category === item;
@@ -38,7 +38,7 @@ export function PortfolioFilterGrid() {
               onClick={() => setCategory(item)}
               aria-pressed={active}
               className={cn(
-                'rounded-uv-full border px-4 py-2 text-sm font-medium transition-colors uv-focus-ring',
+                'min-h-11 max-w-full shrink-0 rounded-uv-full border px-3.5 py-2 text-sm font-medium transition-colors uv-focus-ring sm:px-4',
                 active
                   ? 'uv-brand-gradient border-transparent text-white'
                   : 'border-uv-border bg-uv-background text-uv-foreground-muted hover:border-uv-brand/40 hover:text-uv-foreground',
@@ -56,9 +56,13 @@ export function PortfolioFilterGrid() {
           : `Showing ${filtered.length} concept${filtered.length === 1 ? '' : 's'} in ${category}.`}
       </p>
 
-      <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-7 lg:grid-cols-3 lg:gap-8">
         {filtered.map((study, index) => (
-          <Reveal key={study.slug} delayMs={Math.min(index * 35, 280)} className="h-full">
+          <Reveal
+            key={study.slug}
+            delayMs={Math.min(index * 35, 280)}
+            className="min-w-0 md:h-full"
+          >
             <PortfolioCard study={study} />
           </Reveal>
         ))}

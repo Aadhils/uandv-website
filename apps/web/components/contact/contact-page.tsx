@@ -1,6 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+} from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import {
@@ -22,25 +29,16 @@ import {
   MarketingPageHeroInner,
 } from '@/components/marketing/marketing-page-hero';
 import {
-  MarketingButtonLink,
   MarketingCardTitle,
   MarketingEyebrow,
-  MarketingHeroActions,
   MarketingHeroTitle,
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
   MarketingSectionTitle,
 } from '@/components/marketing/marketing-primitives';
-import {
-  MarketingStandardHeroCopy,
-  MarketingStandardHeroGrid,
-  MarketingStandardHeroIllustration,
-  marketingStandardHeroInnerClass,
-} from '@/components/marketing/marketing-standard-hero';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
-import { ServiceIllustration } from '@/components/services/service-illustration';
 import {
   defaultGuideLanguage,
   getGuideJourney,
@@ -53,21 +51,39 @@ import {
 } from '@/lib/contact-whatsapp';
 import {
   contactChannels,
+  contactEmailConfirmCopy,
   contactEnquirySteps,
   contactFormCopy,
   contactPositioning,
   contactSuccessCopy,
   contactTrustPoints,
+  contactWhatsAppOnlySuccessCopy,
 } from '@/lib/contact';
 import { getAllServices } from '@/lib/services';
 import { formatLocation, siteConfig } from '@/lib/site';
 
-type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+type FormStatus =
+  | 'idle'
+  | 'opening-whatsapp'
+  | 'confirm-email'
+  | 'emailing'
+  | 'success'
+  | 'success-whatsapp'
+  | 'error';
 
 type ContactResponse = {
   ok?: boolean;
   error?: string;
   reference?: string;
+};
+
+type PendingEnquiry = ContactEnquiryHandoff & {
+  visitorType: string;
+  journey: string;
+  partnerType: string;
+  preferredLanguage: string;
+  sourcePage: string;
+  website: string;
 };
 
 function buildPrefillMessage(input: {
@@ -95,14 +111,49 @@ function buildPrefillMessage(input: {
   return lines.join('\n');
 }
 
+function readPendingEnquiry(form: HTMLFormElement): PendingEnquiry {
+  const data = new FormData(form);
+  return {
+    name: String(data.get('name') ?? ''),
+    email: String(data.get('email') ?? ''),
+    phone: String(data.get('phone') ?? ''),
+    company: String(data.get('company') ?? ''),
+    interest: String(data.get('interest') ?? ''),
+    message: String(data.get('message') ?? ''),
+    visitorType: String(data.get('visitorType') ?? ''),
+    journey: String(data.get('journey') ?? ''),
+    partnerType: String(data.get('partnerType') ?? ''),
+    preferredLanguage: String(data.get('preferredLanguage') ?? ''),
+    sourcePage: String(data.get('sourcePage') ?? ''),
+    website: String(data.get('website') ?? ''),
+  };
+}
+
 export function ContactPage() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
-  const [submittedEnquiry, setSubmittedEnquiry] =
-    useState<ContactEnquiryHandoff | null>(null);
+  const [pendingEnquiry, setPendingEnquiry] = useState<PendingEnquiry | null>(
+    null,
+  );
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const continueEmailButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const statusRef = useRef(status);
+  const emailConfirmTitleId = useId();
+  const emailConfirmDescId = useId();
+  const contactFormId = 'contact-enquiry-form';
   const services = getAllServices();
+
+  const formBusy =
+    status === 'opening-whatsapp' ||
+    status === 'confirm-email' ||
+    status === 'emailing';
+  const emailModalOpen =
+    status === 'confirm-email' || status === 'emailing';
+
+  statusRef.current = status;
 
   useEffect(() => {
     const scrollToInquiryForm = () => {
@@ -118,6 +169,80 @@ export function ContactPage() {
     window.addEventListener('hashchange', scrollToInquiryForm);
     return () => window.removeEventListener('hashchange', scrollToInquiryForm);
   }, []);
+
+  function resetFormFields() {
+    const form = document.getElementById(contactFormId);
+    if (form instanceof HTMLFormElement) {
+      form.reset();
+    }
+  }
+
+  function completeWhatsAppOnly() {
+    resetFormFields();
+    setPendingEnquiry(null);
+    setReference(null);
+    setErrorMessage(null);
+    setStatus('success-whatsapp');
+  }
+
+  const completeWhatsAppOnlyRef = useRef(completeWhatsAppOnly);
+  completeWhatsAppOnlyRef.current = completeWhatsAppOnly;
+
+  useEffect(() => {
+    if (!emailModalOpen) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const frame = window.requestAnimationFrame(() => {
+      continueEmailButtonRef.current?.focus();
+    });
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (statusRef.current === 'emailing') return;
+        completeWhatsAppOnlyRef.current();
+        return;
+      }
+
+      if (event.key !== 'Tab' || !modalRef.current) return;
+
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      if (
+        previouslyFocused &&
+        typeof previouslyFocused.focus === 'function' &&
+        document.contains(previouslyFocused)
+      ) {
+        previouslyFocused.focus();
+      } else {
+        submitButtonRef.current?.focus();
+      }
+    };
+  }, [emailModalOpen]);
 
   const leadContext = useMemo(() => {
     const journeyId = searchParams.get('journey') ?? '';
@@ -193,87 +318,93 @@ export function ContactPage() {
     };
   }, [searchParams, services]);
 
-  const whatsappHandoffHref = useMemo(() => {
-    if (!submittedEnquiry) return null;
-    return buildContactEnquiryWhatsAppUrl(submittedEnquiry);
-  }, [submittedEnquiry]);
-
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    if (status === 'submitting') return;
-
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
-
-    const data = new FormData(form);
-
-    setStatus('submitting');
+  async function sendEnquiryEmail(enquiry: PendingEnquiry) {
+    setStatus('emailing');
     setErrorMessage(null);
-    setReference(null);
-    setSubmittedEnquiry(null);
 
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: String(data.get('name') ?? ''),
-          email: String(data.get('email') ?? ''),
-          phone: String(data.get('phone') ?? ''),
-          company: String(data.get('company') ?? ''),
-          interest: String(data.get('interest') ?? ''),
-          message: String(data.get('message') ?? ''),
-          visitorType: String(data.get('visitorType') ?? ''),
-          journey: String(data.get('journey') ?? ''),
-          partnerType: String(data.get('partnerType') ?? ''),
-          preferredLanguage: String(data.get('preferredLanguage') ?? ''),
-          sourcePage: String(data.get('sourcePage') ?? ''),
+          name: enquiry.name,
+          email: enquiry.email,
+          phone: enquiry.phone,
+          company: enquiry.company,
+          interest: enquiry.interest,
+          message: enquiry.message,
+          visitorType: enquiry.visitorType,
+          journey: enquiry.journey,
+          partnerType: enquiry.partnerType,
+          preferredLanguage: enquiry.preferredLanguage,
+          sourcePage: enquiry.sourcePage,
           source: 'contact',
-          website: String(data.get('website') ?? ''),
+          website: enquiry.website,
         }),
       });
 
-      const result = (await response.json().catch(() => null)) as ContactResponse | null;
+      const result = (await response.json().catch(() => null)) as
+        | ContactResponse
+        | null;
 
       if (!response.ok) {
-        setStatus('error');
+        setStatus('confirm-email');
         setErrorMessage(
           result?.error ??
-            'We could not send your enquiry right now. Please try again or contact us on WhatsApp.',
+            'We could not send your enquiry by email. You can try again or choose Not Now.',
         );
         return;
       }
 
-      const enquiryReference = result?.reference ?? '';
-      setReference(enquiryReference || null);
-      if (enquiryReference) {
-        setSubmittedEnquiry({
-          reference: enquiryReference,
-          name: String(data.get('name') ?? ''),
-          email: String(data.get('email') ?? ''),
-          phone: String(data.get('phone') ?? ''),
-          company: String(data.get('company') ?? ''),
-          interest: String(data.get('interest') ?? ''),
-          message: String(data.get('message') ?? ''),
-        });
-      }
+      setReference(result?.reference ?? null);
+      setPendingEnquiry(null);
+      resetFormFields();
       setStatus('success');
-      form.reset();
     } catch {
-      setStatus('error');
+      setStatus('confirm-email');
       setErrorMessage(
-        'Network error while sending your enquiry. Please check your connection and try again.',
+        'Network error while sending email. Please check your connection and try again, or choose Not Now.',
       );
     }
+  }
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (formBusy || status === 'success' || status === 'success-whatsapp') {
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const enquiry = readPendingEnquiry(form);
+
+    setStatus('opening-whatsapp');
+    setErrorMessage(null);
+    setReference(null);
+    setPendingEnquiry(enquiry);
+
+    const whatsappUrl = buildContactEnquiryWhatsAppUrl(enquiry);
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+
+    // Keep form values; confirmation step decides email / reset.
+    setStatus('confirm-email');
   };
+
+  const showSuccess =
+    status === 'success' || status === 'success-whatsapp';
+  const successCopy =
+    status === 'success-whatsapp'
+      ? contactWhatsAppOnlySuccessCopy
+      : contactSuccessCopy;
 
   return (
     <MarketingContentPage>
       <MarketingPageHero>
-        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
+        <MarketingPageHeroInner className="pb-12 sm:pb-16">
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -281,51 +412,44 @@ export function ContactPage() {
             ]}
           />
 
-          <MarketingStandardHeroGrid>
-            <MarketingStandardHeroCopy>
-              <MarketingEyebrow>{contactPositioning.eyebrow}</MarketingEyebrow>
-              <MarketingHeroTitle className="mt-3 sm:mt-4">
-                {contactPositioning.headline}
-              </MarketingHeroTitle>
-              <MarketingLead className="mt-4 sm:mt-6">
-                {contactPositioning.subheadline}
-              </MarketingLead>
-              <MarketingLead className="mt-4 text-base sm:text-lg">
-                {contactPositioning.responseTime}
-              </MarketingLead>
-              {leadContext.hasJourney ? (
-                <p className="mt-4 rounded-uv-lg border border-uv-brand/20 bg-uv-brand-muted/40 px-4 py-3 text-sm text-uv-foreground sm:text-base">
-                  Business guide:{' '}
-                  <span className="font-semibold text-uv-brand">
-                    {leadContext.journeyTitle}
-                  </span>
-                  {leadContext.partnerLabel ? ` · ${leadContext.partnerLabel}` : ''}
-                  {' · '}
-                  Follow-up language:{' '}
-                  <span className="font-semibold text-uv-brand">
-                    {leadContext.preferredLanguageLabel}
-                  </span>
-                </p>
-              ) : null}
-              <MarketingHeroActions className="mt-6 sm:mt-8">
-                <MarketingButtonLink href="#inquiry-form">
-                  Send an enquiry
-                </MarketingButtonLink>
-                <MarketingButtonLink
-                  href={siteConfig.whatsapp}
-                  variant="outline"
-                  target="_blank"
-                  rel="noopener noreferrer"
+          <div className="mt-8 max-w-3xl sm:mt-10">
+            <MarketingEyebrow>{contactPositioning.eyebrow}</MarketingEyebrow>
+            <MarketingHeroTitle className="mt-3 sm:mt-4">
+              {contactPositioning.headline}
+            </MarketingHeroTitle>
+            <MarketingLead className="mt-4 sm:mt-6">
+              {contactPositioning.subheadline}
+            </MarketingLead>
+            {leadContext.hasJourney ? (
+              <p className="mt-4 rounded-uv-lg border border-uv-brand/20 bg-uv-brand-muted/40 px-4 py-3 text-sm text-uv-foreground sm:text-base">
+                Business guide:{' '}
+                <span className="font-semibold text-uv-brand">
+                  {leadContext.journeyTitle}
+                </span>
+                {leadContext.partnerLabel
+                  ? ` · ${leadContext.partnerLabel}`
+                  : ''}
+                {' · '}
+                Follow-up language:{' '}
+                <span className="font-semibold text-uv-brand">
+                  {leadContext.preferredLanguageLabel}
+                </span>
+              </p>
+            ) : null}
+            <ul className="mt-6 flex flex-wrap gap-2 sm:mt-8">
+              {contactTrustPoints.map((point) => (
+                <li
+                  key={point}
+                  className="rounded-uv-full border border-uv-border bg-uv-background/80 px-3 py-1.5 text-xs font-medium text-uv-foreground sm:text-sm"
                 >
-                  Chat on WhatsApp
-                </MarketingButtonLink>
-              </MarketingHeroActions>
-            </MarketingStandardHeroCopy>
-
-            <MarketingStandardHeroIllustration>
-              <ServiceIllustration name="consulting" className="rounded-none border-0" />
-            </MarketingStandardHeroIllustration>
-          </MarketingStandardHeroGrid>
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-sm font-medium text-uv-brand sm:mt-6 sm:text-base">
+              {contactPositioning.responseTime}
+            </p>
+          </div>
         </MarketingPageHeroInner>
       </MarketingPageHero>
 
@@ -335,16 +459,6 @@ export function ContactPage() {
         className="scroll-mt-24"
       >
         <MarketingPageContainer>
-          <ul className="mb-8 flex flex-wrap gap-2 sm:mb-10">
-            {contactTrustPoints.map((point) => (
-              <li
-                key={point}
-                className="rounded-uv-full border border-uv-border bg-uv-background/80 px-3 py-1.5 text-xs font-medium text-uv-foreground sm:text-sm"
-              >
-                {point}
-              </li>
-            ))}
-          </ul>
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-14 xl:gap-16">
             <Reveal>
               <SectionHeading
@@ -497,7 +611,7 @@ export function ContactPage() {
                   </ol>
                 </div>
 
-                {status === 'success' ? (
+                {showSuccess ? (
                   <div
                     className="mt-8 space-y-4 rounded-uv-xl border border-uv-brand/25 bg-uv-brand-muted/40 px-5 py-8 text-center sm:mt-10"
                     role="status"
@@ -507,8 +621,8 @@ export function ContactPage() {
                       <Icon name="Check" size="md" />
                     </div>
                     <p className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl">
-                      {contactSuccessCopy.title}
-                      {reference ? (
+                      {successCopy.title}
+                      {status === 'success' && reference ? (
                         <>
                           {' '}
                           <span className="block mt-2 text-base font-medium text-uv-foreground-muted sm:text-lg">
@@ -521,21 +635,8 @@ export function ContactPage() {
                       ) : null}
                     </p>
                     <p className="mx-auto max-w-md text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
-                      {contactSuccessCopy.body}
+                      {successCopy.body}
                     </p>
-                    {whatsappHandoffHref ? (
-                      <a
-                        href={whatsappHandoffHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cn(
-                          buttonVariants({ size: 'lg' }),
-                          'mt-2 w-full justify-center sm:w-auto',
-                        )}
-                      >
-                        {contactSuccessCopy.whatsappCta}
-                      </a>
-                    ) : null}
                     <Button
                       type="button"
                       variant="outline"
@@ -543,14 +644,16 @@ export function ContactPage() {
                       onClick={() => {
                         setStatus('idle');
                         setReference(null);
-                        setSubmittedEnquiry(null);
+                        setPendingEnquiry(null);
+                        setErrorMessage(null);
                       }}
                     >
-                      {contactSuccessCopy.anotherMessage}
+                      {successCopy.anotherMessage}
                     </Button>
                   </div>
                 ) : (
                   <Form
+                    id={contactFormId}
                     onSubmit={onSubmit}
                     className="relative mt-8 sm:mt-10"
                     aria-label="Business enquiry form"
@@ -607,7 +710,7 @@ export function ContactPage() {
                           autoComplete="name"
                           required
                           aria-required="true"
-                          disabled={status === 'submitting'}
+                          disabled={formBusy}
                         />
                       </FormField>
                       <FormField label="Email" required>
@@ -617,7 +720,7 @@ export function ContactPage() {
                           autoComplete="email"
                           required
                           aria-required="true"
-                          disabled={status === 'submitting'}
+                          disabled={formBusy}
                         />
                       </FormField>
                     </div>
@@ -630,14 +733,14 @@ export function ContactPage() {
                         type="tel"
                         autoComplete="tel"
                         placeholder="+91…"
-                        disabled={status === 'submitting'}
+                        disabled={formBusy}
                       />
                     </FormField>
                     <FormField label="Company" hint="Optional">
                       <Input
                         name="company"
                         autoComplete="organization"
-                        disabled={status === 'submitting'}
+                        disabled={formBusy}
                       />
                     </FormField>
                     <FormField label="I need help with" required>
@@ -647,7 +750,7 @@ export function ContactPage() {
                         defaultValue={leadContext.interest}
                         required
                         aria-required="true"
-                        disabled={status === 'submitting'}
+                        disabled={formBusy}
                       >
                         {services.map((service) => (
                           <option key={service.slug} value={service.slug}>
@@ -669,7 +772,7 @@ export function ContactPage() {
                         rows={leadContext.hasJourney ? 8 : 6}
                         defaultValue={leadContext.message}
                         placeholder="Tell us about your business and what you want to achieve."
-                        disabled={status === 'submitting'}
+                        disabled={formBusy}
                       />
                     </FormField>
 
@@ -685,12 +788,13 @@ export function ContactPage() {
 
                     <div className="flex flex-col gap-2 pt-1">
                       <Button
+                        ref={submitButtonRef}
                         type="submit"
                         size="lg"
                         className="w-full sm:w-auto"
-                        disabled={status === 'submitting'}
+                        disabled={formBusy}
                       >
-                        {status === 'submitting'
+                        {status === 'opening-whatsapp'
                           ? contactFormCopy.submitSending
                           : contactFormCopy.submitIdle}
                       </Button>
@@ -747,6 +851,79 @@ export function ContactPage() {
           </Reveal>
         </MarketingPageContainer>
       </MarketingSection>
+
+      {emailModalOpen ? (
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 sm:items-center"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && status !== 'emailing') {
+              completeWhatsAppOnly();
+            }
+          }}
+        >
+          <div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={emailConfirmTitleId}
+            aria-describedby={emailConfirmDescId}
+            className="w-full max-w-md rounded-uv-2xl border border-uv-border bg-uv-background p-5 shadow-lg sm:p-6"
+          >
+            <div className="mx-auto mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-uv-brand text-white">
+              <Icon name="Check" size="md" />
+            </div>
+            <h2
+              id={emailConfirmTitleId}
+              className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground sm:text-2xl"
+            >
+              {contactEmailConfirmCopy.title}
+            </h2>
+            <p
+              id={emailConfirmDescId}
+              className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base"
+            >
+              {contactEmailConfirmCopy.body}
+            </p>
+
+            {errorMessage ? (
+              <div
+                className="mt-4 rounded-uv-lg border border-uv-error/30 bg-uv-error/5 px-4 py-3 text-sm text-uv-error"
+                role="alert"
+                aria-live="assertive"
+              >
+                {errorMessage}
+              </div>
+            ) : null}
+
+            <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full sm:w-auto"
+                disabled={status === 'emailing'}
+                onClick={completeWhatsAppOnly}
+              >
+                {contactEmailConfirmCopy.notNow}
+              </Button>
+              <Button
+                ref={continueEmailButtonRef}
+                type="button"
+                className="w-full sm:w-auto"
+                disabled={status === 'emailing' || !pendingEnquiry}
+                onClick={() => {
+                  if (!pendingEnquiry || status === 'emailing') return;
+                  void sendEnquiryEmail(pendingEnquiry);
+                }}
+              >
+                {status === 'emailing'
+                  ? contactEmailConfirmCopy.sendingEmail
+                  : contactEmailConfirmCopy.continueEmail}
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </MarketingContentPage>
   );
 }

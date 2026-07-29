@@ -2,7 +2,7 @@
 
 /**
  * Cinematic hero atmosphere — CSS-only motion, no extra libraries.
- * Optional video via NEXT_PUBLIC_HERO_VIDEO_URL; falls back to image in parent.
+ * Background video is handled by HomeHeroBackgroundVideo in the parent.
  */
 export function HeroCinematicLayers() {
   return (

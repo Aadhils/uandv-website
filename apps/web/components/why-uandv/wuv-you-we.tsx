@@ -7,15 +7,17 @@ import { uvContainer } from '@/components/marketing/marketing-design-tokens';
 import { wuvYouWe } from '@/lib/why-uandv-content';
 
 import { WuvYouWeArt } from './scenes/wuv-you-we-art';
+import { WuvSectionAtmosphere } from './wuv-section-atmosphere';
 
 export function WuvYouWe() {
   return (
     <section
       id="you-and-we"
       aria-label="You and we"
-      className="wuv-you-we scroll-mt-20 border-b border-uv-border/60 bg-white"
+      className="wuv-you-we wuv-cinema-section relative overflow-hidden scroll-mt-20 border-b border-uv-border/40"
     >
-      <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
+      <WuvSectionAtmosphere tone="you-we" />
+      <div className={cn(uvContainer, 'relative z-[1] py-8 sm:py-10 lg:py-12')}>
         <Reveal variant="up-blur" className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand sm:text-sm">
             {wuvYouWe.eyebrow}

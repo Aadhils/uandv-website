@@ -1,8 +1,8 @@
 import { getServiceBySlug } from '@/lib/services';
-import { buildWhatsAppUrl, siteConfig } from '@/lib/site';
+import { buildWhatsAppUrl } from '@/lib/site';
 
 export type ContactEnquiryHandoff = {
-  reference: string;
+  reference?: string;
   name: string;
   email: string;
   phone?: string;
@@ -24,34 +24,33 @@ export function resolveContactServiceLabel(interestSlug?: string): string {
     .join(' ');
 }
 
-/** Full enquiry handoff for the Contact page success-state WhatsApp button. */
+/** Prefill body for Contact enquiry WhatsApp handoff (optional fields omitted when empty). */
 export function buildContactEnquiryWhatsAppMessage(
   enquiry: ContactEnquiryHandoff,
 ): string {
   const service = resolveContactServiceLabel(enquiry.interest);
-  const phone = enquiry.phone?.trim() || '—';
-  const company = enquiry.company?.trim() || '—';
+  const phone = enquiry.phone?.trim();
+  const company = enquiry.company?.trim();
+  const reference = enquiry.reference?.trim();
 
-  return [
+  const lines = [
     'Hello U&V Team,',
-    'A new enquiry has been submitted.',
-    'Reference ID:',
-    enquiry.reference,
+    'I would like to submit an enquiry.',
+    ...(reference ? ['', 'Reference ID:', reference] : []),
+    '',
     'Name:',
-    enquiry.name,
+    enquiry.name.trim(),
     'Email:',
-    enquiry.email,
-    'Phone:',
-    phone,
-    'Company:',
-    company,
-    'Interested Service:',
+    enquiry.email.trim(),
+    ...(phone ? ['Phone:', phone] : []),
+    ...(company ? ['Company:', company] : []),
+    'Help with:',
     service,
     'Message:',
     enquiry.message.trim(),
-    'Submitted via:',
-    siteConfig.url,
-  ].join('\n');
+  ];
+
+  return lines.join('\n');
 }
 
 /** Opens WhatsApp app on mobile and WhatsApp Web on desktop. */

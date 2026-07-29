@@ -1,22 +1,13 @@
 'use client';
 
-import { Icon, cn, type IconName } from '@uandv/ui';
+import { cn } from '@uandv/ui';
 
 import { Reveal } from '@/components/marketing/reveal';
 import { uvContainer } from '@/components/marketing/marketing-design-tokens';
 import { wuvWorkingWithUs } from '@/lib/why-uandv-content';
 
-import { useInView } from './wuv-motion';
-
-const principleIcons: Record<(typeof wuvWorkingWithUs.principles)[number]['id'], IconName> = {
-  communication: 'MessageCircle',
-  honesty: 'Check',
-  progress: 'LayoutDashboard',
-  documentation: 'FileText',
-  timelines: 'Calendar',
-  support: 'MessageCircle',
-  responsibility: 'Handshake',
-};
+import { WuvPrincipleMicroScene } from './wuv-principle-micro-scenes';
+import { WuvSectionAtmosphere } from './wuv-section-atmosphere';
 
 function PrincipleRow({
   index,
@@ -30,25 +21,16 @@ function PrincipleRow({
   id: string;
 }) {
   const reversed = index % 2 === 1;
-  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 });
 
   return (
     <div
-      ref={ref}
       className={cn(
-        'wuv-working-with-us__row grid items-center gap-5 sm:gap-6 lg:grid-cols-2 lg:gap-10',
+        'wuv-working-with-us__row grid items-center gap-4 sm:gap-5 lg:grid-cols-2 lg:gap-8',
         reversed && 'lg:[&>*:first-child]:order-2',
       )}
     >
-      <div
-        className={cn(
-          'wuv-working-with-us__visual flex items-center justify-center rounded-uv-xl border border-uv-border/60 bg-gradient-to-br from-white to-[#faf9ff] p-6 sm:p-8',
-          inView && 'is-visible',
-        )}
-      >
-        <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-uv-brand/10 text-uv-brand sm:h-20 sm:w-20">
-          <Icon name={principleIcons[id as keyof typeof principleIcons]} size="lg" />
-        </span>
+      <div className="wuv-working-with-us__visual flex items-center justify-center overflow-hidden rounded-uv-xl border border-uv-border/60 bg-gradient-to-br from-white to-[#faf9ff] p-3 sm:p-4">
+        <WuvPrincipleMicroScene id={id as (typeof wuvWorkingWithUs.principles)[number]['id']} />
       </div>
 
       <div className={cn('min-w-0', reversed ? 'lg:text-right' : '')}>
@@ -69,9 +51,10 @@ export function WuvWorkingWithUs() {
     <section
       id="working-with-us"
       aria-label="What working with U&V feels like"
-      className="wuv-working-with-us scroll-mt-20 border-b border-uv-border/60 bg-white"
+      className="wuv-working-with-us wuv-cinema-section relative overflow-hidden scroll-mt-20 border-b border-uv-border/40"
     >
-      <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
+      <WuvSectionAtmosphere tone="working" />
+      <div className={cn(uvContainer, 'relative z-[1] py-6 sm:py-8 lg:py-10')}>
         <Reveal variant="up-blur" className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand sm:text-sm">
             {wuvWorkingWithUs.eyebrow}
@@ -84,7 +67,7 @@ export function WuvWorkingWithUs() {
           </p>
         </Reveal>
 
-        <div className="wuv-working-with-us__manifesto relative mt-10 space-y-10 sm:mt-12 sm:space-y-14">
+        <div className="wuv-working-with-us__manifesto relative mt-8 space-y-6 sm:mt-10 sm:space-y-8">
           <div className="wuv-working-with-us__guide hidden sm:block" aria-hidden>
             <div className="wuv-working-with-us__guide-fill" />
           </div>

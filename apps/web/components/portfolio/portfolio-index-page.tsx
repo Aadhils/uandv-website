@@ -1,9 +1,8 @@
-import { Icon } from '@uandv/ui';
+import { Icon, cn } from '@uandv/ui';
 
 import {
   MarketingContentPage,
   MarketingPageHero,
-  MarketingPageHeroInner,
 } from '@/components/marketing/marketing-page-hero';
 import {
   MarketingButtonLink,
@@ -16,14 +15,13 @@ import {
   MarketingLead,
   MarketingPageContainer,
   MarketingSection,
+  marketingContainerClass,
 } from '@/components/marketing/marketing-primitives';
 import { Reveal } from '@/components/marketing/reveal';
 import { SectionHeading } from '@/components/marketing/section-heading';
 import {
   MarketingStandardHeroCopy,
-  MarketingStandardHeroGrid,
   MarketingStandardHeroIllustration,
-  marketingStandardHeroInnerClass,
 } from '@/components/marketing/marketing-standard-hero';
 import { Breadcrumbs } from '@/components/services/breadcrumbs';
 import { ServiceIllustration } from '@/components/services/service-illustration';
@@ -37,11 +35,20 @@ import { contactInquiryHref } from '@/lib/site';
 import { DemoProjectBadge } from './portfolio-card';
 import { PortfolioFilterGrid } from './portfolio-filter-grid';
 
+/** Compact Portfolio hero — no viewport min-height; tighter padding than standard. */
+const portfolioHeroInnerClass = cn(
+  marketingContainerClass,
+  'relative z-[1] min-h-0 pb-8 pt-6 sm:pb-10 sm:pt-7 lg:pb-10 lg:pt-8',
+);
+
+const portfolioHeroGridClass =
+  'mt-6 grid items-center gap-6 sm:mt-7 lg:mt-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,400px)] lg:gap-10 xl:gap-12';
+
 export function PortfolioIndexPage() {
   return (
     <MarketingContentPage>
-      <MarketingPageHero>
-        <MarketingPageHeroInner className={marketingStandardHeroInnerClass}>
+      <MarketingPageHero className="min-h-0">
+        <div className={portfolioHeroInnerClass}>
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -49,21 +56,21 @@ export function PortfolioIndexPage() {
             ]}
           />
 
-          <MarketingStandardHeroGrid>
+          <div className={portfolioHeroGridClass}>
             <MarketingStandardHeroCopy>
               <DemoProjectBadge />
-              <MarketingEyebrow className="mt-5">
+              <MarketingEyebrow className="mt-4">
                 Product demos &amp; solution concepts
               </MarketingEyebrow>
-              <MarketingHeroTitle className="mt-4">
+              <MarketingHeroTitle className="mt-3">
                 See how U&amp;V solves real business problems
               </MarketingHeroTitle>
-              <MarketingLead className="mt-6">
+              <MarketingLead className="mt-4">
                 Each concept shows a business challenge, how U&amp;V would
                 approach it, and the outcomes you can expect — so you can judge
                 whether we are the right partner for your project.
               </MarketingLead>
-              <MarketingLead className="mt-4 text-base sm:text-lg">
+              <MarketingLead className="mt-3 text-base sm:text-lg">
                 Every item is a clearly labelled {DEMO_PROJECT_LABEL.toLowerCase()}{' '}
                 with mock data — not a claim about a named client or measured
                 results.
@@ -81,8 +88,8 @@ export function PortfolioIndexPage() {
             <MarketingStandardHeroIllustration>
               <ServiceIllustration name="web" className="rounded-none border-0" />
             </MarketingStandardHeroIllustration>
-          </MarketingStandardHeroGrid>
-        </MarketingPageHeroInner>
+          </div>
+        </div>
       </MarketingPageHero>
 
       <MarketingSection id="demos" tone="default" aria-label="Portfolio concepts">

@@ -7,6 +7,7 @@ import { uvContainer } from '@/components/marketing/marketing-design-tokens';
 import { wuvOriginStory } from '@/lib/why-uandv-content';
 
 import { WuvCompareBanner } from './scenes/wuv-banner-visuals';
+import { WuvSectionAtmosphere } from './wuv-section-atmosphere';
 
 export function WuvOriginStory() {
   const [problem, solution, measure] = wuvOriginStory.paragraphs;
@@ -15,9 +16,10 @@ export function WuvOriginStory() {
     <section
       id="why-we-exist"
       aria-label="Why U&V exists"
-      className="wuv-origin-story scroll-mt-20 border-b border-uv-border/60 bg-gradient-to-b from-[#faf9ff] to-white"
+      className="wuv-origin-story wuv-cinema-section relative overflow-hidden scroll-mt-20 border-b border-uv-border/40"
     >
-      <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
+      <WuvSectionAtmosphere tone="origin" />
+      <div className={cn(uvContainer, 'relative z-[1] py-8 sm:py-10 lg:py-12')}>
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12 lg:items-center">
           <div>
             <Reveal variant="up-blur">

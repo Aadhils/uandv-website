@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import {
   useCallback,
   useEffect,
@@ -9,6 +8,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type CSSProperties,
 } from 'react';
 
 import {
@@ -21,6 +21,7 @@ import {
 import { Logo } from '@/components/brand/logo';
 import { DiscoveryWizard } from '@/components/discovery-wizard';
 import { HeroCinematicLayers } from '@/components/marketing/hero-cinematic-layers';
+import { HomeHeroBackgroundVideo } from '@/components/marketing/home-hero-background-video';
 import { trackEvent } from '@/lib/analytics';
 import {
   clearWizardSession,
@@ -70,7 +71,71 @@ function useWizardSessionStore() {
   );
 }
 
-function JourneyCardButton({
+type GoalCardAccent = {
+  curiosity: string;
+  actionLabel: string;
+  accentA: string;
+  accentB: string;
+  accentGlow: string;
+  iconTile: string;
+  iconTileHover: string;
+  arrow: string;
+};
+
+const GOAL_CARD_META: Record<WizardGoalId, GoalCardAccent> = {
+  'start-new-business': {
+    curiosity: 'founders',
+    actionLabel: 'Start your journey',
+    accentA: '#A78BFA',
+    accentB: '#E879F9',
+    accentGlow: 'rgb(167 139 250 / 0.38)',
+    iconTile: 'bg-[#C4B5FD]/18 text-[#E9D5FF]',
+    iconTileHover: 'group-hover:bg-[#C4B5FD]/30 group-hover:text-white',
+    arrow: 'text-[#E9D5FF]',
+  },
+  'grow-existing-business': {
+    curiosity: 'growing teams',
+    actionLabel: 'Build your growth plan',
+    accentA: '#7C3AED',
+    accentB: '#22D3EE',
+    accentGlow: 'rgb(34 211 238 / 0.3)',
+    iconTile: 'bg-[#7C3AED]/22 text-[#A78BFA]',
+    iconTileHover: 'group-hover:bg-[#7C3AED]/38 group-hover:text-[#67E8F9]',
+    arrow: 'text-[#67E8F9]',
+  },
+  'build-software-or-app': {
+    curiosity: 'digital transformation',
+    actionLabel: 'Shape your solution',
+    accentA: '#6366F1',
+    accentB: '#3B82F6',
+    accentGlow: 'rgb(59 130 246 / 0.32)',
+    iconTile: 'bg-[#4338CA]/28 text-[#C7D2FE]',
+    iconTileHover: 'group-hover:bg-[#4338CA]/42 group-hover:text-[#93C5FD]',
+    arrow: 'text-[#93C5FD]',
+  },
+  'automate-with-ai': {
+    curiosity: 'saving time',
+    actionLabel: 'Find what to automate',
+    accentA: '#8B5CF6',
+    accentB: '#2DD4BF',
+    accentGlow: 'rgb(45 212 191 / 0.3)',
+    iconTile: 'bg-[#7C3AED]/22 text-[#DDD6FE]',
+    iconTileHover: 'group-hover:bg-[#6D28D9]/38 group-hover:text-[#5EEAD4]',
+    arrow: 'text-[#5EEAD4]',
+  },
+  'partner-with-uandv': {
+    curiosity: 'collaboration',
+    actionLabel: 'Explore partnership',
+    accentA: '#7C3AED',
+    accentB: '#FB7185',
+    accentGlow: 'rgb(251 113 133 / 0.3)',
+    iconTile: 'bg-[#5B21B6]/32 text-[#F5D0FE]',
+    iconTileHover: 'group-hover:bg-[#5B21B6]/48 group-hover:text-[#FECDD3]',
+    arrow: 'text-[#FECDD3]',
+  },
+};
+
+function JourneyGoalCard({
   goalId,
   title,
   description,
@@ -87,38 +152,82 @@ function JourneyCardButton({
   panelId: string;
   onSelect: () => void;
 }) {
+  const meta = GOAL_CARD_META[goalId];
+
   return (
-    <button
-      id={`journey-card-${goalId}`}
-      type="button"
-      aria-pressed={selected}
-      aria-expanded={selected}
-      aria-controls={selected ? panelId : undefined}
-      onClick={onSelect}
+    <div
       className={cn(
-        'group marketing-card-lift marketing-card-premium flex h-full min-w-0 w-full flex-col rounded-uv-2xl border p-4 text-left transition-all duration-300 uv-focus-ring sm:p-5',
-        selected
-          ? 'border-uv-brand bg-uv-brand/25 shadow-[0_12px_40px_rgb(124_58_237_/_0.25)] ring-1 ring-uv-brand/40'
-          : 'border-white/15 bg-white/5 hover:border-uv-brand/50 hover:bg-white/10 hover:shadow-[0_8px_24px_rgb(0_0_0_/_0.2)]',
+        'hero-goal-card-shell relative h-full min-w-0 w-full rounded-uv-2xl',
+        selected && 'is-selected',
       )}
+      style={
+        {
+          '--hero-goal-glow': meta.accentGlow,
+          '--hero-goal-a': meta.accentA,
+          '--hero-goal-b': meta.accentB,
+        } as CSSProperties
+      }
     >
-      <span
+      <span className="hero-goal-card-depth" aria-hidden />
+      <button
+        id={`journey-card-${goalId}`}
+        type="button"
+        aria-pressed={selected}
+        aria-expanded={selected}
+        aria-controls={selected ? panelId : undefined}
+        onClick={onSelect}
         className={cn(
-          'inline-flex h-11 w-11 items-center justify-center rounded-uv-lg transition-colors',
-          selected
-            ? 'bg-uv-brand text-white'
-            : 'bg-white/10 text-[#C4B5FD] group-hover:bg-uv-brand/30 group-hover:text-white',
+          'hero-goal-card group relative z-[1] flex h-full min-h-11 min-w-0 w-full cursor-pointer flex-col overflow-hidden rounded-uv-2xl p-3.5 text-left sm:p-4',
+          'uv-focus-ring focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C4B5FD]',
+          selected && 'is-selected',
         )}
       >
-        <Icon name={icon as IconName} size="md" />
-      </span>
-      <span className="mt-4 break-words font-[family-name:var(--font-uv-display)] text-base font-semibold text-white">
-        {title}
-      </span>
-      <span className="mt-2 break-words text-sm leading-relaxed text-[#EDE9FE]/90">
-        {description}
-      </span>
-    </button>
+        <span className="hero-goal-card-edge" aria-hidden />
+        <span className="hero-goal-card-sheen" aria-hidden />
+        <span className="hero-goal-card-radial" aria-hidden />
+        <span className="hero-goal-card-accent-line" aria-hidden />
+
+        {selected ? (
+          <span className="hero-goal-card-badge">Selected</span>
+        ) : null}
+
+        <span
+          className={cn(
+            'hero-goal-card-icon relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-uv-lg',
+            meta.iconTile,
+            meta.iconTileHover,
+            selected && 'is-selected bg-uv-brand text-white',
+          )}
+        >
+          <span className="hero-goal-card-icon-pulse" aria-hidden />
+          <Icon name={icon as IconName} size="md" className="relative z-[1]" />
+        </span>
+
+        <span className="relative mt-3 break-words font-[family-name:var(--font-uv-display)] text-sm font-semibold leading-snug text-white sm:mt-3.5 sm:text-base">
+          {title}
+        </span>
+        <span className="relative mt-1.5 flex-1 break-words text-xs leading-relaxed text-[#EDE9FE] sm:mt-2 sm:text-sm">
+          {description}
+        </span>
+
+        <span className="hero-goal-card-footer relative mt-3 flex min-h-11 flex-col justify-end gap-1 sm:mt-4 sm:min-h-0">
+          <span className="hero-goal-card-curiosity text-[0.65rem] font-medium uppercase tracking-[0.12em] text-[#C4B5FD]/75 sm:text-[0.7rem]">
+            {meta.curiosity}
+          </span>
+          <span
+            className={cn(
+              'hero-goal-card-action inline-flex items-center gap-1 text-xs font-semibold',
+              meta.arrow,
+            )}
+          >
+            <span>{meta.actionLabel}</span>
+            <span className="hero-goal-card-arrow" aria-hidden>
+              →
+            </span>
+          </span>
+        </span>
+      </button>
+    </div>
   );
 }
 
@@ -240,38 +349,13 @@ export function SmartWelcomeHero() {
     </div>
   ) : null;
 
-  const heroVideoUrl = process.env.NEXT_PUBLIC_HERO_VIDEO_URL;
-
   return (
     <section
       className="relative isolate flex min-h-[min(100dvh,920px)] w-full max-w-full overflow-x-clip bg-uv-hero text-white"
       aria-labelledby="hero-heading"
     >
       <div className="absolute inset-0 overflow-hidden">
-        {heroVideoUrl ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=75"
-            className="marketing-hero-media absolute inset-0 h-full w-full object-cover object-center"
-            aria-hidden
-          >
-            <source src={heroVideoUrl} type="video/mp4" />
-          </video>
-        ) : (
-          <Image
-            src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=75"
-            alt="Circuit board technology representing software, AI, and digital systems"
-            fill
-            priority
-            quality={70}
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1400px"
-            className="marketing-hero-media object-cover object-center"
-          />
-        )}
+        <HomeHeroBackgroundVideo />
         <div
           className="absolute inset-0 bg-gradient-to-t from-uv-hero via-uv-hero/90 to-uv-navy-blue/50"
           aria-hidden
@@ -355,7 +439,7 @@ export function SmartWelcomeHero() {
                       key={goal.id}
                       className="flex min-w-0 flex-col gap-3"
                     >
-                      <JourneyCardButton
+                      <JourneyGoalCard
                         goalId={goal.id}
                         title={goal.title}
                         description={goal.description}
@@ -382,7 +466,7 @@ export function SmartWelcomeHero() {
                 aria-label={guide.question}
               >
                 {goals.map((goal) => (
-                  <JourneyCardButton
+                  <JourneyGoalCard
                     key={goal.id}
                     goalId={goal.id}
                     title={goal.title}

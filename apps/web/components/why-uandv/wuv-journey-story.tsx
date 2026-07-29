@@ -10,6 +10,7 @@ import { wuvPartnerPath } from '@/lib/why-uandv-partner-path';
 import type { WuvPartnerPathStage } from '@/lib/why-uandv-partner-path';
 
 import { WuvJourneyStoryBanner } from './scenes/wuv-banner-visuals';
+import { WuvSectionAtmosphere } from './wuv-section-atmosphere';
 import { useReducedMotion } from './wuv-motion';
 
 const stageIcons: Record<WuvPartnerPathStage['id'], IconName> = {
@@ -121,9 +122,10 @@ export function WuvJourneyStorySection() {
       ref={sectionRef}
       id="how-we-work"
       aria-label="How the relationship begins"
-      className="wuv-journey-story scroll-mt-20 border-b border-uv-border/60 bg-uv-background-subtle"
+      className="wuv-journey-story wuv-cinema-section relative overflow-hidden scroll-mt-20 border-b border-uv-border/40"
     >
-      <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
+      <WuvSectionAtmosphere tone="journey" />
+      <div className={cn(uvContainer, 'relative z-[1] py-8 sm:py-10 lg:py-12')}>
         <Reveal variant="up-blur" className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand sm:text-sm">
             {wuvPartnerPath.eyebrow}
