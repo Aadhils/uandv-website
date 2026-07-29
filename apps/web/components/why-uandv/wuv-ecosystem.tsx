@@ -96,6 +96,8 @@ export function WuvEcosystem() {
       aria-label="One partner, connected support"
       className="wuv-ecosystem scroll-mt-20 border-b border-uv-border/60 bg-uv-background-subtle"
     >
+      <div id="solutions" className="scroll-mt-20" aria-hidden="true" />
+      <div id="services" className="scroll-mt-20" aria-hidden="true" />
       <div className={cn(uvContainer, 'py-8 sm:py-10 lg:py-12')}>
         <Reveal variant="up-blur" className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-uv-brand sm:text-sm">
