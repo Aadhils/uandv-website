@@ -34,8 +34,6 @@ export function HomeHeroBackgroundVideo() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
   const [inView, setInView] = useState(false);
-  const [allowVideo, setAllowVideo] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     const node = containerRef.current;
@@ -53,22 +51,10 @@ export function HomeHeroBackgroundVideo() {
   }, []);
 
   useEffect(() => {
-    // Defer enabling video until after mount so SSR/LCP can use the poster image.
-    // Skip entirely when the user prefers reduced motion.
-    setAllowVideo(!prefersReducedMotion);
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
-    if (allowVideo && inView) {
-      setVideoReady(true);
-    }
-  }, [allowVideo, inView]);
-
-  useEffect(() => {
     const video = videoRef.current;
-    if (!video || !videoReady) return;
+    if (!video) return;
 
-    if (inView) {
+    if (inView && !prefersReducedMotion) {
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
@@ -78,9 +64,9 @@ export function HomeHeroBackgroundVideo() {
     } else {
       video.pause();
     }
-  }, [videoReady, inView]);
+  }, [inView, prefersReducedMotion]);
 
-  const showVideo = videoReady && !prefersReducedMotion;
+  const showVideo = inView && !prefersReducedMotion;
 
   return (
     <div ref={containerRef} className="absolute inset-0">

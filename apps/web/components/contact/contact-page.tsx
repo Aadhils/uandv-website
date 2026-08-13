@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  useCallback,
   useEffect,
   useId,
   useMemo,
@@ -140,7 +141,7 @@ export function ContactPage() {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const continueEmailButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const statusRef = useRef(status);
+  const statusRef = useRef<FormStatus>('idle');
   const emailConfirmTitleId = useId();
   const emailConfirmDescId = useId();
   const contactFormId = 'contact-enquiry-form';
@@ -153,7 +154,9 @@ export function ContactPage() {
   const emailModalOpen =
     status === 'confirm-email' || status === 'emailing';
 
-  statusRef.current = status;
+  useEffect(() => {
+    statusRef.current = status;
+  }, [status]);
 
   useEffect(() => {
     const scrollToInquiryForm = () => {
@@ -177,21 +180,25 @@ export function ContactPage() {
     }
   }
 
-  function completeWhatsAppOnly() {
+  const completeWhatsAppOnly = useCallback(() => {
     resetFormFields();
     setPendingEnquiry(null);
     setReference(null);
     setErrorMessage(null);
     setStatus('success-whatsapp');
-  }
+  }, []);
 
-  const completeWhatsAppOnlyRef = useRef(completeWhatsAppOnly);
-  completeWhatsAppOnlyRef.current = completeWhatsAppOnly;
+  const completeWhatsAppOnlyRef = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    completeWhatsAppOnlyRef.current = completeWhatsAppOnly;
+  }, [completeWhatsAppOnly]);
 
   useEffect(() => {
     if (!emailModalOpen) return;
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
+    const submitButton = submitButtonRef.current;
     const frame = window.requestAnimationFrame(() => {
       continueEmailButtonRef.current?.focus();
     });
@@ -239,7 +246,7 @@ export function ContactPage() {
       ) {
         previouslyFocused.focus();
       } else {
-        submitButtonRef.current?.focus();
+        submitButton?.focus();
       }
     };
   }, [emailModalOpen]);
