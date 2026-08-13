@@ -27,6 +27,7 @@ type ServiceRequestRuntimeStore = {
 };
 
 const listeners = new Set<() => void>();
+let fallbackRuntimeStore: ServiceRequestRuntimeStore = emptyStore();
 
 /**
  * useSyncExternalStore requires referentially stable snapshots.
@@ -64,6 +65,25 @@ function emptyStore(): ServiceRequestRuntimeStore {
   return { requests: [], events: [], overrides: {} };
 }
 
+function readRuntimeStore(): ServiceRequestRuntimeStore {
+  if (!canUseStorage()) return fallbackRuntimeStore;
+  try {
+    const raw = window.localStorage.getItem(SERVICE_REQUESTS_RUNTIME_KEY);
+    if (!raw) return fallbackRuntimeStore;
+    const parsed = JSON.parse(raw) as ServiceRequestRuntimeStore;
+    return {
+      requests: Array.isArray(parsed.requests) ? parsed.requests : [],
+      events: Array.isArray(parsed.events) ? parsed.events : [],
+      overrides:
+        parsed.overrides && typeof parsed.overrides === 'object'
+          ? parsed.overrides
+          : {},
+    };
+  } catch {
+    return fallbackRuntimeStore;
+  }
+}
+
 function normalizeRequest(request: ServiceRequest): ServiceRequest {
   return {
     ...request,
@@ -84,32 +104,22 @@ function normalizeRequest(request: ServiceRequest): ServiceRequest {
 }
 
 export function loadServiceRequestRuntime(): ServiceRequestRuntimeStore {
-  if (!canUseStorage()) return emptyStore();
-  try {
-    const raw = window.localStorage.getItem(SERVICE_REQUESTS_RUNTIME_KEY);
-    if (!raw) return emptyStore();
-    const parsed = JSON.parse(raw) as ServiceRequestRuntimeStore;
-    return {
-      requests: Array.isArray(parsed.requests) ? parsed.requests : [],
-      events: Array.isArray(parsed.events) ? parsed.events : [],
-      overrides:
-        parsed.overrides && typeof parsed.overrides === 'object'
-          ? parsed.overrides
-          : {},
-    };
-  } catch {
-    return emptyStore();
-  }
+  return readRuntimeStore();
 }
 
 function saveStore(store: ServiceRequestRuntimeStore): void {
-  if (!canUseStorage()) return;
+  fallbackRuntimeStore = store;
+
+  if (!canUseStorage()) {
+    notify();
+    return;
+  }
   try {
     window.localStorage.setItem(
       SERVICE_REQUESTS_RUNTIME_KEY,
       JSON.stringify(store),
     );
-    queueMicrotask(() => notify());
+    notify();
   } catch {
     // ignore
   }
@@ -425,9 +435,15 @@ export function partnerRespondToRequest(
   };
   const current = getServiceRequestById(requestId);
   if (!current) return null;
+
+  const targetStatus = map[action];
+  if (current.status === targetStatus) {
+    return current;
+  }
+
   const next: ServiceRequest = {
     ...current,
-    status: map[action],
+    status: targetStatus,
     partnerResponseNote: note ?? current.partnerResponseNote,
   };
   upsertRequest(next);

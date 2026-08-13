@@ -28,24 +28,44 @@ export function CustomerQuotationsPage() {
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
+    const controller = new AbortController();
+
     void (async () => {
       try {
-        const response = await fetch('/api/me/quotations');
+        const response = await fetch('/api/me/quotations', {
+          signal: controller.signal,
+        });
         const result = (await response.json()) as {
           ok?: boolean;
           quotations?: QuotationListRow[];
+          error?: string;
         };
-        if (!response.ok || !result.ok || !result.quotations) {
-          setError('Unable to load quotations.');
+
+        if (controller.signal.aborted) return;
+
+        if (!response.ok || !result.ok || !Array.isArray(result.quotations)) {
+          setError(result.error ?? 'Unable to load quotations.');
+          setRows([]);
           return;
         }
+
         setRows(result.quotations);
-      } catch {
-        setError('Network error while loading quotations.');
+        setError(null);
+      } catch (err) {
+        if (controller.signal.aborted) return;
+        setError(
+          err instanceof DOMException && err.name === 'AbortError'
+            ? null
+            : 'Network error while loading quotations.',
+        );
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     })();
+
+    return () => controller.abort();
   }, []);
 
   const pending = rows.find((row) => row.status === 'SENT' || row.status === 'VIEWED');

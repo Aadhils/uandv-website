@@ -45,9 +45,11 @@ export function AdminQuotationsListPage({
   const [q, setQ] = React.useState('');
   const [status, setStatus] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
   const refresh = async () => {
     setLoading(true);
+    setError(null);
     try {
       const params = new URLSearchParams();
       if (q.trim()) params.set('q', q.trim());
@@ -57,11 +59,20 @@ export function AdminQuotationsListPage({
         ok?: boolean;
         quotations?: QuotationListRow[];
         stats?: Stats;
+        error?: string;
       };
-      if (result.ok && result.quotations) {
-        setRows(result.quotations);
-        if (result.stats) setStats(result.stats);
+
+      if (!response.ok || !result.ok || !Array.isArray(result.quotations)) {
+        setRows([]);
+        setError(result.error ?? 'Unable to load quotations.');
+        return;
       }
+
+      setRows(result.quotations);
+      if (result.stats) setStats(result.stats);
+    } catch {
+      setRows([]);
+      setError('Network error while loading quotations.');
     } finally {
       setLoading(false);
     }
@@ -87,6 +98,12 @@ export function AdminQuotationsListPage({
         <StatsCard label="Accepted" value={String(stats.accepted)} icon="Check" />
         <StatsCard label="Rejected / expired" value={String(stats.rejectedOrExpired)} icon="CircleAlert" />
       </section>
+
+      {error ? (
+        <p className="rounded-uv-lg border border-uv-error/30 bg-uv-error/5 px-4 py-3 text-sm text-uv-error" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <div className="flex-1">

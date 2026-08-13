@@ -32,11 +32,45 @@ export function VendorServiceRequestDetailPage({
   const request = useRequest(requestId);
   const [note, setNote] = useState('');
   const [message, setMessage] = useState<string | null>(null);
+  const [busyAction, setBusyAction] = useState<string | null>(null);
   const events = useSyncExternalStore(
     subscribeServiceRequests,
     () => listPartnerVisibleEvents(requestId),
     () => listPartnerVisibleEvents(requestId),
   );
+
+  const partnerActionStatusMap = {
+    accept: 'partner_accepted',
+    decline: 'declined',
+    clarify: 'awaiting_customer',
+    quote: 'awaiting_customer',
+    start: 'in_progress',
+    deliver: 'delivered',
+  } as const;
+
+  const handlePartnerAction = (
+    action: 'accept' | 'decline' | 'clarify' | 'quote' | 'start' | 'deliver',
+  ) => {
+    if (!request || busyAction !== null) return;
+
+    const targetStatus = partnerActionStatusMap[action];
+    if (request.status === targetStatus) {
+      setMessage(`This request is already ${targetStatus.replaceAll('_', ' ')}.`);
+      return;
+    }
+
+    setBusyAction(action);
+    try {
+      const saved = partnerRespondToRequest(request.id, action, note || undefined);
+      if (!saved) {
+        setMessage('This request could not be updated.');
+        return;
+      }
+      setMessage(`${action.charAt(0).toUpperCase() + action.slice(1)} recorded (demo).`);
+    } finally {
+      setBusyAction(null);
+    }
+  };
 
   if (!request) {
     return (
@@ -140,24 +174,35 @@ export function VendorServiceRequestDetailPage({
                 ['start', 'Start work'],
                 ['deliver', 'Mark delivered'],
               ] as const
-            ).map(([action, label]) => (
-              <button
-                key={action}
-                type="button"
-                className={cn(
-                  buttonVariants({
-                    size: 'sm',
-                    variant: action === 'accept' ? 'primary' : 'outline',
-                  }),
-                )}
-                onClick={() => {
-                  partnerRespondToRequest(request.id, action, note || undefined);
-                  setMessage(`${label} recorded (demo).`);
-                }}
-              >
-                {label}
-              </button>
-            ))}
+            ).map(([action, label]) => {
+              const targetStatus = partnerActionStatusMap[action];
+              const isActionDisabled =
+                busyAction !== null ||
+                request.status === targetStatus ||
+                busyAction === action;
+
+              return (
+                <button
+                  key={action}
+                  type="button"
+                  disabled={isActionDisabled}
+                  className={cn(
+                    buttonVariants({
+                      size: 'sm',
+                      variant: action === 'accept' ? 'primary' : 'outline',
+                    }),
+                    isActionDisabled && 'cursor-not-allowed opacity-60',
+                  )}
+                  onClick={() => handlePartnerAction(action)}
+                >
+                  {request.status === targetStatus
+                    ? 'Accepted'
+                    : busyAction === action
+                      ? 'Updating…'
+                      : label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
