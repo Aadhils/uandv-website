@@ -39,7 +39,7 @@ export const siteConfig = {
     'U&V delivers international-quality software, branding, and growth services for startups, SMEs, and enterprises — from business idea to long-term scale.',
   mission:
     'We understand your business, the market you compete in, and the systems you need to grow — with honest guidance and accountable delivery.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://uandv.com',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.uandv.net',
   locale: 'en_IN',
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'info@uandv.com',
   emailSecondary:
