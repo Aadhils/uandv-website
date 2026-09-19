@@ -105,13 +105,13 @@ export function buildOrganizationSchema() {
     '@id': organizationId(),
     name: 'U&V Technologies',
     alternateName: 'U&V',
-    url: 'https://uandv.com',
+    url: siteConfig.url,
     logo: {
       '@type': 'ImageObject',
-      url: 'https://uandv.com/icon.svg',
-      contentUrl: 'https://uandv.com/icon.svg',
+      url: `${siteConfig.url}/icon.svg`,
+      contentUrl: `${siteConfig.url}/icon.svg`,
     },
-    image: 'https://uandv.com/icon.svg',
+    image: `${siteConfig.url}/icon.svg`,
     email: 'info@uandv.com',
     sameAs: [...schemaSameAs],
     foundingDate: String(siteConfig.founded),
@@ -137,7 +137,7 @@ export function buildWebSiteSchema() {
   return {
     '@type': 'WebSite',
     '@id': websiteId(),
-    url: 'https://uandv.com',
+    url: siteConfig.url,
     name: 'U&V Technologies',
     alternateName: 'U&V',
     description: siteConfig.description,
@@ -147,7 +147,7 @@ export function buildWebSiteSchema() {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://uandv.com/services?q={search_term_string}',
+        urlTemplate: `${siteConfig.url}/services?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
@@ -310,14 +310,14 @@ export function validateJsonLd(document: unknown): {
     if (organization.name !== 'U&V Technologies') {
       errors.push('Organization.name must be U&V Technologies');
     }
-    if (organization.url !== 'https://uandv.com') {
+    if (organization.url !== siteConfig.url) {
       errors.push('Organization.url must be https://uandv.com');
     }
     if (organization.email !== 'info@uandv.com') {
       errors.push('Organization.email must be info@uandv.com');
     }
     const logo = organization.logo as Record<string, unknown> | undefined;
-    if (!logo || logo.url !== 'https://uandv.com/icon.svg') {
+    if (!logo || logo.url !== `${siteConfig.url}/icon.svg`) {
       errors.push('Organization.logo.url must be https://uandv.com/icon.svg');
     }
     const sameAs = organization.sameAs;
