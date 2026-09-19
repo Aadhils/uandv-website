@@ -27,11 +27,11 @@ const organization = graph.find((n) => n['@type'] === 'Organization') as Record<
   unknown
 >;
 assert.equal(organization.name, 'U&V Technologies');
-assert.equal(organization.url, 'https://uandv.com');
+assert.equal(organization.url, 'https://www.uandv.net');
 assert.equal(organization.email, 'info@uandv.com');
 assert.equal(
   (organization.logo as Record<string, unknown>).url,
-  'https://uandv.com/icon.svg',
+  'https://www.uandv.net/icon.svg',
 );
 assert.deepEqual(organization.sameAs, [...schemaSameAs]);
 

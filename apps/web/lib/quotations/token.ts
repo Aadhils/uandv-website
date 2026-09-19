@@ -5,7 +5,7 @@ export function generateQuotationPublicToken(): string {
 }
 
 export function buildPublicQuotationUrl(publicToken: string): string {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://uandv.com').replace(
+  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.uandv.net').replace(
     /\/$/,
     '',
   );

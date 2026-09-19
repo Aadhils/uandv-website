@@ -300,7 +300,7 @@ export function buildRoadmapText(summary: BusinessSummary, copy: DiscoveryCopy) 
     copy.disclaimer,
     '',
     `Journey: ${summary.journeyTitle}`,
-    'Prepared with your U&V growth partner — https://uandv.com',
+    'Prepared with your U&V growth partner — https://www.uandv.net',
   ].join('\n');
 }
 
