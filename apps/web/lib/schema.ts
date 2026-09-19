@@ -311,14 +311,14 @@ export function validateJsonLd(document: unknown): {
       errors.push('Organization.name must be U&V Technologies');
     }
     if (organization.url !== siteConfig.url) {
-      errors.push('Organization.url must be https://uandv.com');
+      errors.push(`Organization.url must be ${siteConfig.url}`);
     }
     if (organization.email !== 'info@uandv.com') {
       errors.push('Organization.email must be info@uandv.com');
     }
     const logo = organization.logo as Record<string, unknown> | undefined;
     if (!logo || logo.url !== `${siteConfig.url}/icon.svg`) {
-      errors.push('Organization.logo.url must be https://uandv.com/icon.svg');
+      errors.push(`Organization.logo.url must be ${siteConfig.url}/icon.svg`);
     }
     const sameAs = organization.sameAs;
     if (
