@@ -84,7 +84,7 @@ export function formatAdvisorReportText(report: AdvisorEngineReport): string {
   }
 
   lines.push('Disclaimer: Demo-only advisory output. Not legal, financial, or tax advice.');
-  lines.push('Prepared by U&V Technologies — https://uandv.com');
+  lines.push('Prepared by U&V Technologies — https://www.uandv.net');
 
   return lines.join('\n');
 }
