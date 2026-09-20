@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 
 const benefits = [
   {
-    icon: 'Layers' as const,
+    icon: 'LayoutDashboard' as const,
     title: 'One secure identity',
     text: 'Keep your U&V journey connected from one account.',
   },
   {
-    icon: 'BriefcaseBusiness' as const,
+    icon: 'Briefcase' as const,
     title: 'Choose how you work with us',
     text: 'Start as a Customer, Vendor, or Partner based on what you need today.',
   },
