@@ -32,13 +32,13 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             Many workspaces.
           </p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/75 xl:text-base">
-            Sign in once to access Customer, Vendor, Partner, and future
-            Employee or Admin workspaces — built on the U&V Business Workspace
-            foundation.
+            Sign in once to access the workspaces available to your account —
+            customer, vendor, partner, employee, or admin — from one secure
+            U&amp;V identity.
           </p>
         </div>
         <p className="relative z-10 text-xs text-white/55">
-          {siteConfig.legalName} · Identity & Access Foundation · Sprint 3.0.2
+          {siteConfig.legalName} · Secure workspace access
         </p>
       </aside>
 
