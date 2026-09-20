@@ -9,7 +9,9 @@ import {
   Button,
   Form,
   FormField,
+  Icon,
   Input,
+  InputGroup,
 } from '@uandv/ui';
 
 import { AccountTypeSelector } from '@/components/auth/account-type-selector';
@@ -378,7 +380,8 @@ function ClerkSignupForm() {
           name="fullName"
           id="signup-full-name"
           autoComplete="name"
-          placeholder="Your full name"
+          placeholder="Enter your full name"
+          className="h-12"
           disabled={submitting}
         />
       </FormField>
@@ -395,24 +398,28 @@ function ClerkSignupForm() {
           type="email"
           autoComplete="email"
           placeholder="you@company.com"
+          className="h-12"
           disabled={submitting}
         />
       </FormField>
 
       <FormField
-        label="Mobile"
+        label="Mobile number"
         htmlFor="signup-mobile"
         required
         error={errors.mobile}
       >
-        <Input
-          name="mobile"
-          id="signup-mobile"
-          type="tel"
-          autoComplete="tel"
-          placeholder="+91…"
-          disabled={submitting}
-        />
+        <InputGroup startAdornment={<Icon name="Phone" size="sm" />}>
+          <Input
+            name="mobile"
+            id="signup-mobile"
+            type="tel"
+            autoComplete="tel"
+            placeholder="+91  Enter your mobile number"
+            className="h-12"
+            disabled={submitting}
+          />
+        </InputGroup>
       </FormField>
 
       <AccountTypeSelector
@@ -425,6 +432,8 @@ function ClerkSignupForm() {
         name="password"
         id="signup-password"
         label="Password"
+        placeholder="Create a password"
+        className="h-12"
         autoComplete="new-password"
         error={errors.password}
         disabled={submitting}
@@ -434,6 +443,8 @@ function ClerkSignupForm() {
         name="confirmPassword"
         id="signup-confirm-password"
         label="Confirm password"
+        placeholder="Confirm your password"
+        className="h-12"
         autoComplete="new-password"
         error={errors.confirmPassword}
         disabled={submitting}
@@ -469,8 +480,8 @@ function ClerkSignupForm() {
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-        {submitting ? 'Creating account…' : 'Create account'}
+      <Button type="submit" size="lg" className="min-h-12 w-full" disabled={submitting}>
+        {submitting ? 'Creating account…' : 'Create account →'}
       </Button>
     </Form>
   );

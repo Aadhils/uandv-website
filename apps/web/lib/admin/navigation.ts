@@ -15,8 +15,8 @@ export type AdminRouteMeta = {
 export const adminRoutes: AdminRouteMeta[] = [
   {
     path: '/admin',
-    title: 'Admin Dashboard',
-    subtitle: 'Operations overview · demo UI',
+    title: 'Control Center',
+    subtitle: 'Operations, leads, and business activity overview',
     breadcrumb: 'Dashboard',
   },
   {
@@ -148,7 +148,7 @@ export const adminRoutes: AdminRouteMeta[] = [
   {
     path: '/admin/notifications',
     title: 'Admin Notifications',
-    subtitle: 'Ops alerts · demo only',
+    subtitle: 'Operations alerts and reminders',
     breadcrumb: 'Notifications',
   },
   {
@@ -240,7 +240,7 @@ export const adminRoutes: AdminRouteMeta[] = [
 
 /** Admin Workspace sidebar — centralized enable/disable. */
 export const adminNavConfig: NavItemConfig[] = [
-  { label: 'Dashboard', href: '/admin', icon: 'LayoutDashboard', enabled: true },
+  { label: 'Overview', href: '/admin', icon: 'LayoutDashboard', enabled: true },
   { label: 'Business', href: '/admin/business', icon: 'Sparkles', enabled: false, status: 'coming_soon' },
   { label: 'Customers', href: '/admin/customers', icon: 'Users', enabled: false, status: 'coming_soon' },
   { label: 'Lead Management', href: '/admin/leads/list', icon: 'ClipboardList', enabled: true },

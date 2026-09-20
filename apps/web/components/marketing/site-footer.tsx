@@ -40,6 +40,7 @@ export function SiteFooter() {
               { label: 'About U&V', href: '/about' },
               { label: 'What we build', href: '/about#solutions' },
               { label: 'Business Solutions', href: '/business-solutions' },
+              { label: 'Services', href: '/about#services' },
               { label: 'Portfolio', href: '/portfolio' },
               { label: 'FAQ', href: '/faq' },
             ],

@@ -17,8 +17,8 @@ export type VendorRouteMeta = {
 export const vendorRoutes: VendorRouteMeta[] = [
   {
     path: '/vendor',
-    title: 'Vendor Dashboard',
-    subtitle: 'Assigned work · deliverables · payments · demo UI',
+    title: 'My Work Hub',
+    subtitle: 'Assigned work, deliverables, and payment updates',
     breadcrumb: 'Dashboard',
   },
   {
@@ -48,7 +48,7 @@ export const vendorRoutes: VendorRouteMeta[] = [
   {
     path: '/vendor/invoices',
     title: 'Invoice Center',
-    subtitle: 'Raise and track invoices · demo',
+    subtitle: 'Raise and track invoices',
     breadcrumb: 'Invoices',
   },
   {
@@ -60,7 +60,7 @@ export const vendorRoutes: VendorRouteMeta[] = [
   {
     path: '/vendor/payments',
     title: 'Payment Status',
-    subtitle: 'Approved, paid, and pending · demo',
+    subtitle: 'Approved, paid, and pending',
     breadcrumb: 'Payments',
   },
   {
@@ -96,19 +96,19 @@ export const vendorRoutes: VendorRouteMeta[] = [
   {
     path: '/vendor/profile',
     title: 'Profile',
-    subtitle: 'Vendor profile · demo',
+    subtitle: 'Your vendor profile',
     breadcrumb: 'Profile',
   },
   {
     path: '/vendor/settings',
     title: 'Settings',
-    subtitle: 'Workspace preferences · demo',
+    subtitle: 'Workspace preferences and security',
     breadcrumb: 'Settings',
   },
 ];
 
 const vendorNavItems: Array<{ label: string; href: string; icon: IconName }> = [
-  { label: 'Dashboard', href: '/vendor', icon: 'LayoutDashboard' },
+  { label: 'Overview', href: '/vendor', icon: 'LayoutDashboard' },
   { label: 'My Work', href: '/vendor/work', icon: 'Briefcase' },
   { label: 'Opportunities', href: '/vendor/opportunities', icon: 'Sparkles' },
   { label: 'Timeline', href: '/vendor/timeline', icon: 'Workflow' },
@@ -159,7 +159,7 @@ export function getVendorRouteMeta(pathname: string): VendorRouteMeta {
     nested ?? {
       path: pathname,
       title: 'Vendor Workspace',
-      subtitle: 'Assigned work only · demo UI',
+      subtitle: 'Assigned work and delivery updates',
       breadcrumb: 'Vendor',
     }
   );

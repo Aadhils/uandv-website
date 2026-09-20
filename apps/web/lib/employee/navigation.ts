@@ -17,8 +17,8 @@ export type EmployeeRouteMeta = {
 export const employeeRoutes: EmployeeRouteMeta[] = [
   {
     path: '/employee',
-    title: 'Employee Dashboard',
-    subtitle: 'Today’s work · assigned only · demo UI',
+    title: 'Team Workspace',
+    subtitle: 'Today’s assigned work and next actions',
     breadcrumb: 'Dashboard',
   },
   {
@@ -84,19 +84,19 @@ export const employeeRoutes: EmployeeRouteMeta[] = [
   {
     path: '/employee/profile',
     title: 'Profile',
-    subtitle: 'Employee profile · demo',
+    subtitle: 'Your employee profile',
     breadcrumb: 'Profile',
   },
   {
     path: '/employee/settings',
     title: 'Settings',
-    subtitle: 'Workspace preferences · demo',
+    subtitle: 'Workspace preferences and security',
     breadcrumb: 'Settings',
   },
 ];
 
 const employeeNavItems: Array<{ label: string; href: string; icon: IconName }> = [
-  { label: 'Dashboard', href: '/employee', icon: 'LayoutDashboard' },
+  { label: 'Overview', href: '/employee', icon: 'LayoutDashboard' },
   { label: 'Today’s Follow-ups', href: '/employee/follow-ups', icon: 'Calendar' },
   { label: 'Leads', href: '/employee/leads', icon: 'ClipboardList' },
   { label: 'Customers', href: '/employee/customers', icon: 'Users' },
@@ -147,7 +147,7 @@ export function getEmployeeRouteMeta(pathname: string): EmployeeRouteMeta {
     nested ?? {
       path: pathname,
       title: 'Employee Workspace',
-      subtitle: 'Assigned work only · demo UI',
+      subtitle: 'Assigned work and next actions',
       breadcrumb: 'Employee',
     }
   );
