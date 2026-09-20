@@ -46,7 +46,7 @@ export function Footer({
           className={cn(
             'grid gap-12',
             columns.length > 0
-              ? 'lg:grid-cols-[1.5fr_repeat(3,1fr)]'
+              ? 'sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(4,minmax(0,1fr))]'
               : 'lg:grid-cols-1',
           )}
         >
