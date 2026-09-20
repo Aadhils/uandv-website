@@ -6,11 +6,11 @@ import { getWorkspaceUserDisplay } from '@/lib/auth/workspace-user';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Customer Workspace',
-    template: '%s · Customer Workspace · U&V',
+    default: 'My Business Workspace',
+    template: '%s · My Business Workspace · U&V',
   },
   description:
-    'U&V Customer Workspace — projects, requests, agreements, payments, documents, and support foundation.',
+    'Your U&V Business Workspace — business journey, conversations, recommendations, projects, assets, and support in one place.',
   robots: {
     index: false,
     follow: false,
