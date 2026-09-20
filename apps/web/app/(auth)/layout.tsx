@@ -9,7 +9,7 @@ import { siteConfig } from '@/lib/site';
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col bg-uv-background lg:flex-row">
-      <aside className="relative hidden overflow-hidden bg-uv-navy text-white lg:flex lg:w-[40%] lg:flex-col lg:justify-between lg:px-10 lg:py-10 xl:px-14">
+      <aside className="relative hidden overflow-hidden bg-uv-navy text-white lg:flex lg:w-[34%] lg:max-w-[30rem] lg:flex-col lg:justify-between lg:px-10 lg:py-10 xl:px-14">
         <div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -69,9 +69,9 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
         <main
           id="auth-main"
-          className="flex flex-1 items-start justify-center px-4 py-8 sm:px-6 sm:py-10 lg:items-center lg:px-10"
+          className="flex flex-1 items-start justify-center px-4 py-8 sm:px-6 sm:py-10 lg:px-8 xl:px-10"
         >
-          <div className="w-full max-w-xl">{children}</div>
+          <div className="w-full max-w-6xl">{children}</div>
         </main>
       </div>
     </div>
