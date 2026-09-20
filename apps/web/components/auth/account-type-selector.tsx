@@ -37,7 +37,7 @@ export function AccountTypeSelector({
               <label
                 key={type.value}
                 className={cn(
-                  'relative flex min-h-[8.5rem] cursor-pointer flex-col gap-2 rounded-uv-xl border-2 p-4 transition-colors',
+                  'relative flex min-h-[7.5rem] cursor-pointer flex-col gap-2 rounded-uv-xl border-2 p-3.5 transition-colors sm:min-h-[9rem] sm:p-4',
                   'focus-within:ring-2 focus-within:ring-uv-brand/45 focus-within:ring-offset-2 focus-within:ring-offset-uv-background',
                   selected
                     ? 'border-uv-brand bg-uv-brand/15 shadow-[0_0_0_1px_rgb(124_58_237_/_0.35)]'
@@ -56,7 +56,7 @@ export function AccountTypeSelector({
                     />
                     <span
                       className={cn(
-                        'font-[family-name:var(--font-uv-display)] text-base font-semibold',
+                        'break-words font-[family-name:var(--font-uv-display)] text-sm font-semibold sm:text-base',
                         selected ? 'text-uv-brand' : 'text-uv-foreground',
                       )}
                     >
@@ -77,7 +77,7 @@ export function AccountTypeSelector({
                 </span>
                 <span
                   className={cn(
-                    'pl-7 text-sm leading-relaxed',
+                    'text-xs leading-relaxed sm:pl-7 sm:text-sm',
                     selected
                       ? 'text-uv-foreground'
                       : 'text-uv-foreground-muted',
@@ -90,10 +90,10 @@ export function AccountTypeSelector({
           })}
         </div>
       </RadioGroup>
-      <p className="text-xs text-uv-foreground-subtle">
-        One identity can hold multiple workspace roles later. Employee and Admin
-        access will be added separately.
-      </p>
+      <div className="rounded-uv-lg border border-uv-brand/15 bg-uv-brand-muted/25 px-3 py-2.5 text-xs leading-relaxed text-uv-foreground-muted">
+        Start with the role that best matches what you want to do today. More
+        workspace roles can be added to the same U&amp;V identity later.
+      </div>
       {error ? (
         <p id={errorId} className="text-xs text-uv-error" role="alert">
           {error}
