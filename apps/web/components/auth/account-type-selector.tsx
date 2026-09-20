@@ -25,7 +25,7 @@ export function AccountTypeSelector({
   return (
     <div className="space-y-2">
       <RadioGroup
-        legend="Account type"
+        legend="How would you like to start?"
         aria-required
         aria-invalid={error ? true : undefined}
         aria-describedby={errorId}
@@ -91,8 +91,9 @@ export function AccountTypeSelector({
         </div>
       </RadioGroup>
       <div className="rounded-uv-lg border border-uv-brand/15 bg-uv-brand-muted/25 px-3 py-2.5 text-xs leading-relaxed text-uv-foreground-muted">
-        Start with the role that best matches what you want to do today. More
-        workspace roles can be added to the same U&amp;V identity later.
+        Customer is selected as the easiest starting point. Vendor and Partner
+        access follows the relevant review process. You can add eligible workspace
+        roles to the same U&amp;V identity later.
       </div>
       {error ? (
         <p id={errorId} className="text-xs text-uv-error" role="alert">

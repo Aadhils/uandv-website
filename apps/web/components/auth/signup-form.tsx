@@ -113,7 +113,7 @@ function ClerkSignupForm() {
   const router = useRouter();
   const { isLoaded, signUp, setActive } = useSignUp();
   const [accountType, setAccountType] = React.useState<SignupAccountType | ''>(
-    '',
+    'customer',
   );
   const [acceptTerms, setAcceptTerms] = React.useState(false);
   const [errors, setErrors] = React.useState<FieldErrors>({});
@@ -367,6 +367,10 @@ function ClerkSignupForm() {
 
   return (
     <Form spacing="md" onSubmit={onSubmit} noValidate>
+      <div className="rounded-uv-lg border border-uv-brand/15 bg-uv-brand-muted/20 px-3.5 py-3 text-xs leading-relaxed text-uv-foreground-muted">
+        <span className="font-semibold text-uv-foreground">A simple start.</span>{' '}
+        Tell us the essentials now. You can complete the rest of your business profile after your account is ready.
+      </div>
       {/* Required when Clerk bot protection / CAPTCHA is enabled */}
       <div id="clerk-captcha" />
 
