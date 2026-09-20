@@ -828,11 +828,7 @@ export function ContactPage() {
           </Reveal>
 
           <Reveal delayMs={80}>
-            <div
-              className="relative mt-8 flex min-h-[240px] items-center justify-center overflow-hidden rounded-uv-2xl border border-dashed border-uv-border bg-uv-background-subtle sm:mt-10 sm:min-h-[360px]"
-              role="img"
-              aria-label="Google Maps placeholder for Tamil Nadu, India"
-            >
+            <div className="relative mt-8 flex min-h-[220px] items-center justify-center overflow-hidden rounded-uv-2xl border border-uv-border bg-uv-background-subtle p-6 sm:mt-10 sm:min-h-[260px] sm:p-8">
               <div
                 className="pointer-events-none absolute inset-0 opacity-60"
                 aria-hidden
@@ -847,11 +843,12 @@ export function ContactPage() {
                   <Icon name="MapPin" size="md" />
                 </div>
                 <p className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
-                  Google Maps placeholder
+                  Serving businesses from {formatLocation()}
                 </p>
-                <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">
-                  {formatLocation()}. Exact map embed will be added when a
-                  public office address is confirmed.
+                <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted sm:text-base">
+                  We work remotely with businesses across India and globally.
+                  Visitor directions will be published when a public office
+                  address is available.
                 </p>
               </div>
             </div>
