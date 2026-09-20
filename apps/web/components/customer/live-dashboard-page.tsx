@@ -82,11 +82,11 @@ export async function LiveCustomerDashboardPage() {
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           {[
             ['MessageSquare', 'Talk to U&V', 'Tell us what your business needs.'],
-            ['Route', 'See the next step', 'Follow the journey without confusion.'],
-            ['FolderOpen', 'Keep it together', 'Your work and assets stay connected.'],
+            ['ArrowRight', 'See the next step', 'Follow the journey without confusion.'],
+            ['FileText', 'Keep it together', 'Your work and assets stay connected.'],
           ].map(([icon, title, text]) => (
             <div key={title} className="rounded-uv-xl border border-uv-border/80 bg-uv-background/80 p-4">
-              <Icon name={icon as 'MessageSquare'} size="sm" className="text-uv-brand" />
+              <Icon name={icon as 'MessageSquare' | 'ArrowRight' | 'FileText'} size="sm" className="text-uv-brand" />
               <p className="mt-3 text-sm font-semibold text-uv-foreground">{title}</p>
               <p className="mt-1 text-xs leading-relaxed text-uv-foreground-muted">{text}</p>
             </div>
