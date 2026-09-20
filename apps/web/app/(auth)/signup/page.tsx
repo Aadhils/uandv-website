@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <AuthFormCard
-      title="Create account"
-      description="Register as a Customer to access your live workspace. Vendor and Partner applications are accepted for review."
+      title="Create your account"
+      description="Get started with U&V and choose how you want to use the platform."
       footer={
         <p>
           Already have an account?{' '}
