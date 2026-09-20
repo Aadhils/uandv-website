@@ -15,8 +15,8 @@ export type CustomerRouteMeta = {
 export const customerRoutes: CustomerRouteMeta[] = [
   {
     path: '/dashboard',
-    title: 'Dashboard',
-    subtitle: 'Version 3.0 Business Operating System overview',
+    title: 'My Business Workspace',
+    subtitle: 'Your business journey, activity, and next steps',
     breadcrumb: 'Overview',
   },
   {
@@ -28,7 +28,7 @@ export const customerRoutes: CustomerRouteMeta[] = [
   {
     path: '/dashboard/business-advisor',
     title: 'Business Advisor',
-    subtitle: 'AI requirement analyzer · rule-based demo',
+    subtitle: 'Turn your business needs into clear next steps',
     breadcrumb: 'Business Advisor',
   },
   {
@@ -52,19 +52,19 @@ export const customerRoutes: CustomerRouteMeta[] = [
   {
     path: '/dashboard/payments',
     title: 'Payments',
-    subtitle: 'Invoices and payment status — UI only',
+    subtitle: 'Invoices and payment status',
     breadcrumb: 'Payments',
   },
   {
     path: '/dashboard/agreements',
     title: 'Agreements',
-    subtitle: 'Contracts and digital trust placeholders',
+    subtitle: 'Contracts, approvals, and agreement history',
     breadcrumb: 'Agreements',
   },
   {
     path: '/dashboard/documents',
     title: 'Documents',
-    subtitle: 'Files, versions, and audit placeholders',
+    subtitle: 'Files, versions, and document history',
     breadcrumb: 'Documents',
   },
   {
@@ -82,7 +82,7 @@ export const customerRoutes: CustomerRouteMeta[] = [
   {
     path: '/dashboard/support',
     title: 'Support',
-    subtitle: 'Tickets and conversation placeholders',
+    subtitle: 'Support conversations and follow-up',
     breadcrumb: 'Support',
   },
   {
@@ -100,7 +100,7 @@ export const customerRoutes: CustomerRouteMeta[] = [
   {
     path: '/dashboard/settings',
     title: 'Settings',
-    subtitle: 'Preferences and security placeholders',
+    subtitle: 'Workspace preferences and security',
     breadcrumb: 'Settings',
   },
   // Secondary routes remain reachable; not shown in primary sidebar
@@ -132,7 +132,7 @@ export const customerRoutes: CustomerRouteMeta[] = [
 
 /** Primary Customer Business Workspace sidebar — centralized enable/disable. */
 export const customerNavConfig: NavItemConfig[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard', enabled: true },
+  { label: 'Overview', href: '/dashboard', icon: 'LayoutDashboard', enabled: true },
   { label: 'My Projects', href: '/dashboard/projects', icon: 'Briefcase', enabled: false, status: 'coming_soon' },
   { label: 'Service Requests', href: '/dashboard/service-requests', icon: 'ClipboardList', enabled: false, status: 'in_development' },
   { label: 'Business Advisor', href: '/dashboard/business-advisor', icon: 'Sparkles', enabled: true },
