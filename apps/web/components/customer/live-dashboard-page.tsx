@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
-import { buttonVariants, cn } from '@uandv/ui';
+import { Icon, buttonVariants, cn } from '@uandv/ui';
 
 import { CustomerPageHeader } from '@/components/customer/page-header';
 import { dashboardGreetingName, ensureDbUser } from '@/lib/auth/server-user';
@@ -66,9 +66,33 @@ export async function LiveCustomerDashboardPage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <CustomerPageHeader
           title={`Welcome, ${greetingName}`}
-          description="Your live U&V customer workspace — profile and enquiries from real submissions."
+          description="Your business journey in one place — see what needs attention now, what happens next, and where your U&V work is moving."
         />
       </div>
+
+      <section className="overflow-hidden rounded-uv-2xl border border-uv-brand/20 bg-[linear-gradient(135deg,rgba(124,58,237,0.10),rgba(37,99,235,0.04))] p-5 sm:p-6">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-uv-brand">Your business journey</p>
+            <h2 className="mt-2 font-[family-name:var(--font-uv-display)] text-2xl font-semibold tracking-tight text-uv-foreground">Know where you are. Know what happens next.</h2>
+            <p className="mt-2 text-sm leading-relaxed text-uv-foreground-muted">U&amp;V keeps your conversations, recommendations and future work connected so you do not have to chase updates across different places.</p>
+          </div>
+          <Link href="/contact" className={cn(buttonVariants({ size: 'sm' }), 'shrink-0')}>Start a conversation</Link>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          {[
+            ['MessageSquare', 'Talk to U&V', 'Tell us what your business needs.'],
+            ['ArrowRight', 'See the next step', 'Follow the journey without confusion.'],
+            ['FileText', 'Keep it together', 'Your work and assets stay connected.'],
+          ].map(([icon, title, text]) => (
+            <div key={title} className="rounded-uv-xl border border-uv-border/80 bg-uv-background/80 p-4">
+              <Icon name={icon as 'MessageSquare' | 'ArrowRight' | 'FileText'} size="sm" className="text-uv-brand" />
+              <p className="mt-3 text-sm font-semibold text-uv-foreground">{title}</p>
+              <p className="mt-1 text-xs leading-relaxed text-uv-foreground-muted">{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <section className="grid gap-4 rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:grid-cols-3 sm:p-6">
         <div>
@@ -98,13 +122,13 @@ export async function LiveCustomerDashboardPage() {
       <section className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
-            Profile summary
+            Your business
           </h2>
           <Link
             href="/dashboard/profile"
             className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
           >
-            Edit profile
+            Update business details
           </Link>
         </div>
         <dl className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -144,13 +168,13 @@ export async function LiveCustomerDashboardPage() {
       <section className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
-            Quotations
+            What needs your attention
           </h2>
           <Link
             href="/dashboard/quotations"
             className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
           >
-            View all
+            See all quotations
           </Link>
         </div>
         {quotationSummary.pending ? (
@@ -183,10 +207,10 @@ export async function LiveCustomerDashboardPage() {
       <section className="rounded-uv-2xl border border-uv-border bg-uv-background p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-[family-name:var(--font-uv-display)] text-xl font-semibold text-uv-foreground">
-            My enquiries
+            Business conversations
           </h2>
           <Link href="/contact" className={cn(buttonVariants({ size: 'sm' }))}>
-            Create new enquiry
+            Start a new conversation
           </Link>
         </div>
 
@@ -227,7 +251,7 @@ export async function LiveCustomerDashboardPage() {
 
       <section className="rounded-uv-2xl border border-dashed border-uv-border bg-uv-background-subtle p-5 sm:p-6">
         <h2 className="font-[family-name:var(--font-uv-display)] text-lg font-semibold text-uv-foreground">
-          Coming soon / demo modules
+          Your workspace is growing with you
         </h2>
         <p className="mt-2 text-sm text-uv-foreground-muted">
           Projects, payments, agreements, Business OS panels, and marketplace
@@ -239,13 +263,13 @@ export async function LiveCustomerDashboardPage() {
             href="/dashboard/projects"
             className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
           >
-            Projects (demo)
+            View project area
           </Link>
           <Link
             href="/dashboard/payments"
             className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
           >
-            Payments (demo)
+            View payment area
           </Link>
         </div>
       </section>
